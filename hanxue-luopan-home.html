@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>韩学罗盘</title>
+    <style>
+      :root {
+        --paper: #fbfbf8;
+        --ink: #0a0a0a;
+        --yellow: #ffe07a;
+        --mint: #a4d4c5;
+        --pink: #ffd0d8;
+        --green: #71d39b;
+        --lavender: #b8a4ed;
+        --peach: #ffb084;
+        --coral: #ff6b5a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          "Microsoft YaHei UI", "Microsoft YaHei", "微软雅黑", "PingFang SC", "Noto Sans CJK SC",
+          "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "MS Gothic", "Malgun Gothic", Inter,
+          system-ui, -apple-system, sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        display: flex;
+        min-height: 100vh;
+        height: 100vh;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .site-header {
+        position: relative;
+        z-index: 10;
+        padding: 1rem 2rem;
+      }
+
+      .header-inner {
+        display: flex;
+        min-height: 5rem;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .logo {
+        display: block;
+        width: 5rem;
+        height: 5rem;
+        object-fit: contain;
+      }
+
+      .top-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .nav-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5rem 1rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1;
+        transition: background-color 150ms ease;
+      }
+
+      .nav-pill:hover,
+      .nav-pill:focus,
+      .nav-pill:active {
+        background: var(--paper);
+        outline: none;
+      }
+
+      .nav-yellow {
+        background: var(--yellow);
+      }
+
+      .nav-mint {
+        background: var(--mint);
+      }
+
+      .nav-pink {
+        background: var(--pink);
+      }
+
+      .entries {
+        margin-top: auto;
+        flex-shrink: 0;
+      }
+
+      .entries-list {
+        border-top: 1px solid var(--ink);
+      }
+
+      .entry-shell {
+        --entry-overlap: 1.12rem;
+        --entry-lift-extra: 0.38rem;
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-bottom: calc(-1 * var(--entry-overlap));
+        transform: translate3d(0, 0, 0);
+        transition:
+          transform 300ms ease,
+          background-color 150ms ease;
+      }
+
+      .entry-shell:hover,
+      .entry-shell:focus,
+      .entry-shell:active,
+      .entry-shell:focus-within {
+        z-index: 50;
+        transform: translate3d(0, calc(-1 * (var(--entry-overlap) + var(--entry-lift-extra))), 0);
+      }
+
+      .entry-row {
+        position: relative;
+        min-height: 4.05rem;
+        overflow: visible;
+        border-top: 1px solid var(--ink);
+        border-bottom: 1px solid var(--ink);
+        background: var(--paper);
+        transition: background-color 150ms ease;
+      }
+
+      .entry-shell:nth-child(1):hover .entry-row {
+        background: #ffc2df;
+      }
+
+      .entry-shell:nth-child(2):hover .entry-row {
+        background: #c8f1d7;
+      }
+
+      .entry-shell:nth-child(3):hover .entry-row {
+        background: #ffe88d;
+      }
+
+      .entry-shell:nth-child(4):hover .entry-row {
+        background: #d8c9ff;
+      }
+
+      .entry-shell:nth-child(5):hover .entry-row {
+        background: #ffc09c;
+      }
+
+      .entry-shell:nth-child(6):hover .entry-row {
+        background: #b7e1d5;
+      }
+
+      .entry-shell:nth-child(7):hover .entry-row {
+        background: #ff8b7e;
+      }
+
+      .entry-copy {
+        display: flex;
+        min-height: 4.05rem;
+        width: max-content;
+        min-width: 100%;
+        align-items: flex-start;
+        gap: 1.75rem;
+        padding: 0.75rem 11rem 0.5rem 2rem;
+      }
+
+      .entry-title {
+        margin: 0;
+        white-space: nowrap;
+        color: var(--ink);
+        font-size: 2.48rem;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .entry-pill {
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.375rem;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--paper);
+        padding: 0.375rem 0.75rem;
+        font-size: 0.6rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .footer {
+        flex-shrink: 0;
+        border-top: 1px solid var(--ink);
+        background: var(--paper);
+        padding: 1rem 2rem;
+      }
+
+      .footer-inner {
+        display: flex;
+        max-width: 92rem;
+        margin: 0 auto;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        font-size: 0.875rem;
+      }
+
+      @media (max-width: 720px) {
+        .site-header {
+          padding: 0.75rem 1rem;
+        }
+
+        .header-inner {
+          min-height: 4rem;
+        }
+
+        .logo {
+          width: 4rem;
+          height: 4rem;
+        }
+
+        .top-nav {
+          gap: 0.35rem;
+        }
+
+        .nav-pill {
+          padding: 0.5rem 0.65rem;
+          font-size: 0.9rem;
+        }
+
+        .entry-row,
+        .entry-copy {
+          min-height: 2.75rem;
+        }
+
+        .entry-copy {
+          gap: 1rem;
+          padding: 0.625rem 7rem 0.5rem 0.75rem;
+        }
+
+        .entry-title {
+          font-size: 1.48rem;
+        }
+
+        .entry-pill {
+          margin-top: 0.25rem;
+          font-size: 0.53rem;
+        }
+
+        .footer {
+          padding: 0.85rem 1rem;
+        }
+
+        .footer-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          font-size: 0.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="site-header">
+        <div class="header-inner">
+          <a href="./hanxue-luopan-home.html" aria-label="韩学罗盘">
+            <img class="logo" src="./public/hanxue-luopan-logo.png" alt="韩学罗盘" />
+          </a>
+          <nav class="top-nav" aria-label="主导航">
+            <a class="nav-pill nav-yellow" href="./exchange-rate.html">汇率</a>
+            <a class="nav-pill nav-mint" href="./korea-overview.html">韩国概况</a>
+            <a class="nav-pill nav-pink" href="./about.html">关于我们</a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="entries" aria-label="信息入口">
+        <div class="entries-list">
+          <a class="entry-shell" href="./universities.html">
+            <article class="entry-row">
+              <div class="entry-copy">
+                <h2 class="entry-title">韩国大学库</h2>
+                <span class="entry-pill">50校比较 ↗</span>
+              </div>
+            </article>
+          </a>
+          <a class="entry-shell" href="./topik.html">
+            <article class="entry-row">
+              <div class="entry-copy">
+                <h2 class="entry-title">TOPIK考试</h2>
+                <span class="entry-pill">TOPIK路线 ↗</span>
+              </div>
+            </article>
+          </a>
+          <a class="entry-shell" href="./cost.html">
+            <article class="entry-row">
+              <div class="entry-copy">
+                <h2 class="entry-title">留学费用</h2>
+                <span class="entry-pill">年预算估算 ↗</span>
+              </div>
+            </article>
+          </a>
+          <a class="entry-shell" href="./korean-learning.html">
+            <article class="entry-row">
+              <div class="entry-copy">
+                <h2 class="entry-title">韩语学习</h2>
+                <span class="entry-pill">零基础到6级 ↗</span>
+              </div>
+            </article>
+          </a>
+          <a class="entry-shell" href="./scholarships.html">
+            <article class="entry-row">
+              <div class="entry-copy">
+                <h2 class="entry-title">奖学金</h2>
+                <span class="entry-pill">奖学金线索 ↗</span>
+              </div>
+            </article>
+          </a>
+          <a class="entry-shell" href="./application.html">
+            <article class="entry-row">
+              <div class="entry-copy">
+                <h2 class="entry-title">申请路线</h2>
+                <span class="entry-pill">申请路径 ↗</span>
+              </div>
+            </article>
+          </a>
+          <a class="entry-shell" href="./agency-check.html">
+            <article class="entry-row">
+              <div class="entry-copy">
+                <h2 class="entry-title">自申 vs 中介</h2>
+                <span class="entry-pill">自申判断 ↗</span>
+              </div>
+            </article>
+          </a>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <span>韩学罗盘 © 2026</span>
+          <span>官方优先 → 经验参考分离</span>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
