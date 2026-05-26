@@ -1,0 +1,90 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #0a0a0a;
+  background: #fbfbf8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #fbfbf8;
+  font-family:
+    "Microsoft YaHei UI", "Microsoft YaHei", "微软雅黑", "PingFang SC", "Noto Sans CJK SC",
+    "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "MS Gothic", "Malgun Gothic", Inter,
+    system-ui, -apple-system, sans-serif;
+}
+
+.entry-sticker {
+  transform: translate3d(1.8rem, -0.25rem, 0) rotate(-4deg) scale(0.9);
+}
+
+.entry-shell {
+  --entry-overlap: 0.92rem;
+  --entry-lift-extra: 0.24rem;
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-bottom: calc(-1 * var(--entry-overlap));
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 300ms ease,
+    background-color 150ms ease;
+}
+
+.entry-shell:hover,
+.entry-shell:focus,
+.entry-shell:focus-visible,
+.entry-shell:active,
+.entry-shell:focus-within {
+  z-index: 50;
+  transform: translate3d(0, calc(-1 * (var(--entry-overlap) + var(--entry-lift-extra))), 0);
+}
+
+.entry-copy {
+  transform: translateZ(0);
+}
+
+.entry-shell:hover .entry-sticker {
+  opacity: 1;
+  transform: translate3d(-0.6rem, 0.15rem, 0) rotate(4deg) scale(1.04);
+}
+
+@media (min-width: 640px) {
+  .entry-shell {
+    --entry-overlap: 1.02rem;
+    --entry-lift-extra: 0.3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .entry-shell {
+    --entry-overlap: 1.12rem;
+    --entry-lift-extra: 0.38rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
