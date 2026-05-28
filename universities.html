@@ -7,6 +7,7 @@
     <style>
       :root {
         --paper: #fbfbf8;
+        --surface: #fffefb;
         --ink: #0a0a0a;
         --muted: #66645d;
         --panel: #f0eee6;
@@ -97,10 +98,85 @@
       }
 
       
+      .wrap {
+        width: min(1500px, calc(100% - 4rem));
+      }
+
+      .university-panel {
+        width: 91%;
+        margin: 0 auto;
+      }
+
+      .university-titlebar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .university-titlebar h1 {
+        margin: 0;
+        font-size: clamp(1.25rem, 3.5vw, 2.75rem);
+      }
+
+      .university-titlebar .back {
+        flex: 0 0 auto;
+      }
+
+      .category-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.25rem;
+      }
+
+      .category-button {
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.82rem;
+        font-weight: 700;
+        line-height: 1;
+        padding: 0.5rem 0.85rem;
+      }
+
+      .category-button[aria-pressed="true"] {
+        background: var(--yellow);
+      }
+
+      .category-region-sort {
+        margin-left: auto;
+      }
+
+      .region-controls {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 0.5rem;
+      }
+
+      .region-filter {
+        font-size: 0.78rem;
+        padding: 0.45rem 0.75rem;
+      }
+
+      .ranking-note {
+        margin: 0.75rem 0 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.6;
+        text-align: right;
+      }
+
       table {
         width: 100%;
         margin-top: 2rem;
         border-collapse: collapse;
+        table-layout: fixed;
         background: #fffefb;
         border: 1px solid var(--ink);
       }
@@ -110,12 +186,15 @@
         border-bottom: 1px solid var(--ink);
         padding: 0.8rem 0.9rem;
         text-align: left;
-        vertical-align: top;
+        vertical-align: middle;
+        word-break: keep-all;
+        overflow-wrap: anywhere;
       }
 
       th {
         background: var(--panel);
-        font-size: 0.82rem;
+        font-size: 1rem;
+        font-weight: 800;
       }
 
       td span {
@@ -123,6 +202,36 @@
         margin-top: 0.25rem;
         color: var(--muted);
         font-size: 0.82rem;
+      }
+
+      .university-name .rank-note {
+        display: none;
+        margin: 0 0 0 0.35rem;
+        color: var(--muted);
+        font-size: 0.82em;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      .show-rank-note .university-name .rank-note {
+        display: inline;
+      }
+
+      .student-head {
+        display: block;
+        line-height: 1.25;
+      }
+
+      .student-head span,
+      .student-scope {
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--ink);
+        font-weight: 400;
+      }
+
+      .student-count {
+        display: block;
       }
 
       .badge {
@@ -138,9 +247,27 @@
       }
 
       @media (max-width: 880px) {
-        table { font-size: 0.85rem; }
-        th:nth-child(3), td:nth-child(3),
-        th:nth-child(6), td:nth-child(6) { display: none; }
+        .wrap {
+          width: min(100% - 2rem, 1500px);
+        }
+
+        .university-panel {
+          width: 100%;
+        }
+
+        .university-titlebar {
+          align-items: flex-start;
+        }
+
+        .category-region-sort {
+          margin-left: 0;
+        }
+
+        table {
+          width: 100%;
+          font-size: 0.85rem;
+        }
+        th:nth-child(3), td:nth-child(3) { display: none; }
       }
   
 
@@ -164,572 +291,1017 @@
       </nav>
     </header>
     <main class="wrap">
-      <a class="back" href="./hanxue-luopan-home.html">返回首页</a>
-      <h1>韩国大学库</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>学校</th>
-            <th>城市</th>
-            <th>类型</th>
-            <th>方向参考</th>
-            <th>状态</th>
-          </tr>
-        </thead>
-        <tbody>
+      <section class="university-panel">
+        <div class="university-titlebar">
+          <h1>韩国大学库</h1>
+          <a class="back" href="./hanxue-luopan-home.html">返回首页</a>
+        </div>
+        <div class="category-controls" aria-label="大学列表分类">
+          <button class="category-button" type="button" data-filter="rank" aria-pressed="true">大学排名</button>
+          <button class="category-button" type="button" data-filter="national" aria-pressed="false">国立</button>
+          <button class="category-button" type="button" data-filter="private" aria-pressed="false">私立</button>
+          <button class="category-button category-region-sort" type="button" data-filter="region" aria-pressed="false">地区分类</button>
+          <div class="region-controls" aria-label="韩国地区筛选">
+          <button class="category-button region-filter" type="button" data-filter="region:seoul" aria-pressed="false">首尔</button>
+          <button class="category-button region-filter" type="button" data-filter="region:gyeonggi" aria-pressed="false">京畿道</button>
+          <button class="category-button region-filter" type="button" data-filter="region:incheon" aria-pressed="false">仁川</button>
+          <button class="category-button region-filter" type="button" data-filter="region:busan" aria-pressed="false">釜山</button>
+          <button class="category-button region-filter" type="button" data-filter="region:daegu" aria-pressed="false">大邱</button>
+          <button class="category-button region-filter" type="button" data-filter="region:gwangju" aria-pressed="false">光州</button>
+          <button class="category-button region-filter" type="button" data-filter="region:daejeon" aria-pressed="false">大田</button>
+          <button class="category-button region-filter" type="button" data-filter="region:ulsan" aria-pressed="false">蔚山</button>
+          <button class="category-button region-filter" type="button" data-filter="region:sejong" aria-pressed="false">世宗</button>
+          <button class="category-button region-filter" type="button" data-filter="region:gangwon" aria-pressed="false">江原道</button>
+          <button class="category-button region-filter" type="button" data-filter="region:chungbuk" aria-pressed="false">忠清北道</button>
+          <button class="category-button region-filter" type="button" data-filter="region:chungnam" aria-pressed="false">忠清南道</button>
+          <button class="category-button region-filter" type="button" data-filter="region:jeonbuk" aria-pressed="false">全罗北道</button>
+          <button class="category-button region-filter" type="button" data-filter="region:gyeongbuk" aria-pressed="false">庆尚北道</button>
+          <button class="category-button region-filter" type="button" data-filter="region:jeju" aria-pressed="false">济州道</button>
+          </div>
+        </div>
+        <table>
+          <colgroup>
+            <col style="width: 6%" />
+            <col style="width: 28%" />
+            <col style="width: 8.4%" />
+            <col style="width: 10%" />
+            <col style="width: 24%" />
+            <col style="width: 11.8%" />
+            <col style="width: 11.8%" />
+          </colgroup>
+          <thead>
             <tr>
+              <th>No.</th>
+              <th>学校</th>
+              <th>城市</th>
+              <th>类型</th>
+              <th>方向参考</th>
+              <th><span class="student-head">学生数<span>(外国人)</span></span></th>
+              <th><span class="student-head">学校宿舍<span>(占学生数)</span></span></th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr data-list-order="1" data-rank="1" data-rank-label="1" data-city="首尔" data-type="国立" data-primary-region="seoul" data-regions="seoul">
               <td>1</td>
               <td>
-                <strong>首尔大学</strong>
+                <strong class="university-name">首尔大学<span class="rank-note">第1名</span></strong>
                 <span>서울대학교 · Seoul National University</span>
               </td>
               <td>首尔</td>
               <td>国立</td>
               <td>综合研究、理工、人文社科</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>2</td>
               <td>
-                <strong>延世大学</strong>
+                <strong class="student-count">21,856人</strong>
+                <span class="student-scope">(1,383人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,961人</strong>
+                <span class="student-scope">(22.7%)</span>
+              </td>
+            </tr>
+<tr data-list-order="2" data-rank="3" data-rank-label="3" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>3</td>
+              <td>
+                <strong class="university-name">延世大学<span class="rank-note">第3名</span></strong>
                 <span>연세대학교 · Yonsei University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
-              <td>SKY、经营、国际化、医学</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>3</td>
+              <td>经营、国际学、医学</td>
               <td>
-                <strong>高丽大学</strong>
+                <strong class="student-count">36,977人</strong>
+                <span class="student-scope">(5,362人)</span>
+              </td>
+              <td>
+                <strong class="student-count">12,942~21,077人</strong>
+                <span class="student-scope">(35~57%)</span>
+              </td>
+            </tr>
+<tr data-list-order="3" data-rank="6" data-rank-label="6" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>6</td>
+              <td>
+                <strong class="university-name">高丽大学<span class="rank-note">第6名</span></strong>
                 <span>고려대학교 · Korea University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
-              <td>SKY、经营、传媒、政经</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
+              <td>经营、传媒、政治经济</td>
+              <td>
+                <strong class="student-count">37,294人</strong>
+                <span class="student-scope">(5,067人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,289~13,277人</strong>
+                <span class="student-scope">(11.5~35.6%)</span>
+              </td>
             </tr>
-<tr>
+<tr data-list-order="4" data-rank="4" data-rank-label="4" data-city="首尔/水原" data-type="私立" data-primary-region="seoul" data-regions="seoul gyeonggi">
               <td>4</td>
               <td>
-                <strong>成均馆大学</strong>
+                <strong class="university-name">成均馆大学<span class="rank-note">第4名</span></strong>
                 <span>성균관대학교 · Sungkyunkwan University</span>
               </td>
               <td>首尔/水原</td>
               <td>私立</td>
               <td>工科、经营、半导体、AI</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>5</td>
               <td>
-                <strong>汉阳大学</strong>
+                <strong class="student-count">25,399人</strong>
+                <span class="student-scope">(3,911人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,131人</strong>
+                <span class="student-scope">(20.2%)</span>
+              </td>
+            </tr>
+<tr data-list-order="5" data-rank="8" data-rank-label="=8" data-city="首尔/ERICA" data-type="私立" data-primary-region="seoul" data-regions="seoul gyeonggi">
+              <td>=8</td>
+              <td>
+                <strong class="university-name">汉阳大学<span class="rank-note">并列第8名</span></strong>
                 <span>한양대학교 · Hanyang University</span>
               </td>
               <td>首尔/ERICA</td>
               <td>私立</td>
               <td>工科、创业、实用学科</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>6</td>
               <td>
-                <strong>庆熙大学</strong>
+                <strong class="student-count">37,835人</strong>
+                <span class="student-scope">(6,491人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,902~8,248人</strong>
+                <span class="student-scope">(15.6~21.8%)</span>
+              </td>
+            </tr>
+<tr data-list-order="6" data-rank="8" data-rank-label="=8" data-city="首尔/水原" data-type="私立" data-primary-region="seoul" data-regions="seoul gyeonggi">
+              <td>=8</td>
+              <td>
+                <strong class="university-name">庆熙大学<span class="rank-note">并列第8名</span></strong>
                 <span>경희대학교 · Kyung Hee University</span>
               </td>
               <td>首尔/水原</td>
               <td>私立</td>
               <td>酒店旅游、国际学、艺术</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>7</td>
               <td>
-                <strong>中央大学</strong>
+                <strong class="student-count">32,859人</strong>
+                <span class="student-scope">(3,535人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,619人</strong>
+                <span class="student-scope">(17.1%)</span>
+              </td>
+            </tr>
+<tr data-list-order="7" data-rank="12" data-rank-label="=12" data-city="首尔/安城" data-type="私立" data-primary-region="seoul" data-regions="seoul gyeonggi">
+              <td>=12</td>
+              <td>
+                <strong class="university-name">中央大学<span class="rank-note">并列第12名</span></strong>
                 <span>중앙대학교 · Chung-Ang University</span>
               </td>
               <td>首尔/安城</td>
               <td>私立</td>
               <td>传媒、电影、表演、艺术科技</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>8</td>
               <td>
-                <strong>梨花女子大学</strong>
+                <strong class="student-count">32,069人</strong>
+                <span class="student-scope">(4,935人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,073~12,282人</strong>
+                <span class="student-scope">(12.7~38.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="8" data-rank="15" data-rank-label="=15" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>=15</td>
+              <td>
+                <strong class="university-name">梨花女子大学<span class="rank-note">并列第15名</span></strong>
                 <span>이화여자대학교 · Ewha Womans University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>女子名校、国际学、设计、教育</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>9</td>
               <td>
-                <strong>西江大学</strong>
+                <strong class="student-count">20,145人</strong>
+                <span class="student-scope">(2,089人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,251人</strong>
+                <span class="student-scope">(21.1%)</span>
+              </td>
+            </tr>
+<tr data-list-order="9" data-rank="23" data-rank-label="=23" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>=23</td>
+              <td>
+                <strong class="university-name">西江大学<span class="rank-note">并列第23名</span></strong>
                 <span>서강대학교 · Sogang University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>经营、经济、传媒</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>10</td>
               <td>
-                <strong>韩国外国语大学</strong>
+                <strong class="student-count">11,921人</strong>
+                <span class="student-scope">(2,021人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,347人</strong>
+                <span class="student-scope">(11.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="10" data-rank="9999" data-rank-label="*" data-city="首尔/龙仁" data-type="私立" data-primary-region="seoul" data-regions="seoul gyeonggi">
+              <td>*</td>
+              <td>
+                <strong class="university-name">韩国外国语大学<span class="rank-note">*</span></strong>
                 <span>한국외국어대학교 · Hankuk University of Foreign Studies</span>
               </td>
               <td>首尔/龙仁</td>
               <td>私立</td>
               <td>外语、国际地域、通翻译</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>11</td>
               <td>
-                <strong>东国大学</strong>
+                <strong class="student-count">22,693人</strong>
+                <span class="student-scope">(2,949人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,130人</strong>
+                <span class="student-scope">(18.2%)</span>
+              </td>
+            </tr>
+<tr data-list-order="11" data-rank="9999" data-rank-label="*" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>*</td>
+              <td>
+                <strong class="university-name">东国大学<span class="rank-note">*</span></strong>
                 <span>동국대학교 · Dongguk University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>电影影像、佛教学、AI</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>12</td>
               <td>
-                <strong>建国大学</strong>
+                <strong class="student-count">28,461人</strong>
+                <span class="student-scope">(3,111人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,899~7,371人</strong>
+                <span class="student-scope">(13.7~25.9%)</span>
+              </td>
+            </tr>
+<tr data-list-order="12" data-rank="15" data-rank-label="=15" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>=15</td>
+              <td>
+                <strong class="university-name">建国大学<span class="rank-note">并列第15名</span></strong>
                 <span>건국대학교 · Konkuk University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>经营、传媒、房地产、设计</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>13</td>
               <td>
-                <strong>弘益大学</strong>
+                <strong class="student-count">33,209人</strong>
+                <span class="student-scope">(2,446人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,679~10,029人</strong>
+                <span class="student-scope">(17.1~30.2%)</span>
+              </td>
+            </tr>
+<tr data-list-order="13" data-rank="9999" data-rank-label="*" data-city="首尔/世宗" data-type="私立" data-primary-region="seoul" data-regions="seoul sejong">
+              <td>*</td>
+              <td>
+                <strong class="university-name">弘益大学<span class="rank-note">*</span></strong>
                 <span>홍익대학교 · Hongik University</span>
               </td>
               <td>首尔/世宗</td>
               <td>私立</td>
               <td>美术、设计、建筑</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>14</td>
               <td>
-                <strong>国民大学</strong>
+                <strong class="student-count">24,836人</strong>
+                <span class="student-scope">(1,480人)</span>
+              </td>
+              <td>
+                <strong class="student-count">2,384~4,992人</strong>
+                <span class="student-scope">(9.6~20.1%)</span>
+              </td>
+            </tr>
+<tr data-list-order="14" data-rank="30" data-rank-label="=30" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>=30</td>
+              <td>
+                <strong class="university-name">国民大学<span class="rank-note">并列第30名</span></strong>
                 <span>국민대학교 · Kookmin University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>汽车设计、工业设计、AI</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>15</td>
               <td>
-                <strong>世宗大学</strong>
+                <strong class="student-count">20,428人</strong>
+                <span class="student-scope">(1,533人)</span>
+              </td>
+              <td>
+                <strong class="student-count">2,717人</strong>
+                <span class="student-scope">(13.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="15" data-rank="8" data-rank-label="=8" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>=8</td>
+              <td>
+                <strong class="university-name">世宗大学<span class="rank-note">并列第8名</span></strong>
                 <span>세종대학교 · Sejong University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>酒店旅游、动画、AI</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>16</td>
               <td>
-                <strong>崇实大学</strong>
+                <strong class="student-count">17,077人</strong>
+                <span class="student-scope">(2,844人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,947人</strong>
+                <span class="student-scope">(11.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="16" data-rank="9999" data-rank-label="*" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>*</td>
+              <td>
+                <strong class="university-name">崇实大学<span class="rank-note">*</span></strong>
                 <span>숭실대학교 · Soongsil University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>IT、计算机、经营</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>17</td>
               <td>
-                <strong>首尔市立大学</strong>
+                <strong class="student-count">19,963人</strong>
+                <span class="student-scope">(2,479人)</span>
+              </td>
+              <td>
+                <strong class="student-count">2,316人</strong>
+                <span class="student-scope">(11.6%)</span>
+              </td>
+            </tr>
+<tr data-list-order="17" data-rank="27" data-rank-label="=27" data-city="首尔" data-type="公立" data-primary-region="seoul" data-regions="seoul">
+              <td>=27</td>
+              <td>
+                <strong class="university-name">首尔市立大学<span class="rank-note">并列第27名</span></strong>
                 <span>서울시립대학교 · University of Seoul</span>
               </td>
               <td>首尔</td>
               <td>公立</td>
               <td>城市行政、低学费、都市研究</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>18</td>
               <td>
-                <strong>釜山大学</strong>
+                <strong class="student-count">11,801人</strong>
+                <span class="student-scope">(725人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,310人</strong>
+                <span class="student-scope">(11.1%)</span>
+              </td>
+            </tr>
+<tr data-list-order="18" data-rank="15" data-rank-label="=15" data-city="釜山" data-type="国立" data-primary-region="busan" data-regions="busan">
+              <td>=15</td>
+              <td>
+                <strong class="university-name">釜山大学<span class="rank-note">并列第15名</span></strong>
                 <span>부산대학교 · Pusan National University</span>
               </td>
               <td>釜山</td>
               <td>国立</td>
               <td>工科、自然科学、国立综合</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>19</td>
               <td>
-                <strong>庆北大学</strong>
+                <strong class="student-count">26,434人</strong>
+                <span class="student-scope">(1,134人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,366人</strong>
+                <span class="student-scope">(20.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="19" data-rank="15" data-rank-label="=15" data-city="大邱" data-type="国立" data-primary-region="daegu" data-regions="daegu">
+              <td>=15</td>
+              <td>
+                <strong class="university-name">庆北大学<span class="rank-note">并列第15名</span></strong>
                 <span>경북대학교 · Kyungpook National University</span>
               </td>
               <td>大邱</td>
               <td>国立</td>
               <td>工科、IT、国立综合</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>20</td>
               <td>
-                <strong>全南大学</strong>
+                <strong class="student-count">29,489人</strong>
+                <span class="student-scope">(1,660人)</span>
+              </td>
+              <td>
+                <strong class="student-count">6,989人</strong>
+                <span class="student-scope">(23.7%)</span>
+              </td>
+            </tr>
+<tr data-list-order="20" data-rank="23" data-rank-label="=23" data-city="光州" data-type="国立" data-primary-region="gwangju" data-regions="gwangju">
+              <td>=23</td>
+              <td>
+                <strong class="university-name">全南大学<span class="rank-note">并列第23名</span></strong>
                 <span>전남대학교 · Chonnam National University</span>
               </td>
               <td>光州</td>
               <td>国立</td>
               <td>工科、农业生命、医学</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>21</td>
               <td>
-                <strong>忠南大学</strong>
+                <strong class="student-count">25,568人</strong>
+                <span class="student-scope">(1,109人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,932~8,463人</strong>
+                <span class="student-scope">(23.2~33.1%)</span>
+              </td>
+            </tr>
+<tr data-list-order="21" data-rank="27" data-rank-label="=27" data-city="大田" data-type="国立" data-primary-region="daejeon" data-regions="daejeon">
+              <td>=27</td>
+              <td>
+                <strong class="university-name">忠南大学<span class="rank-note">并列第27名</span></strong>
                 <span>충남대학교 · Chungnam National University</span>
               </td>
               <td>大田</td>
               <td>国立</td>
               <td>科学技术、国立综合</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>22</td>
               <td>
-                <strong>忠北大学</strong>
+                <strong class="student-count">22,499人</strong>
+                <span class="student-scope">(674人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,837人</strong>
+                <span class="student-scope">(21.5%)</span>
+              </td>
+            </tr>
+<tr data-list-order="22" data-rank="27" data-rank-label="=27" data-city="清州" data-type="国立" data-primary-region="chungbuk" data-regions="chungbuk">
+              <td>=27</td>
+              <td>
+                <strong class="university-name">忠北大学<span class="rank-note">并列第27名</span></strong>
                 <span>충북대학교 · Chungbuk National University</span>
               </td>
               <td>清州</td>
               <td>国立</td>
               <td>工科、自然科学、国立</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>23</td>
               <td>
-                <strong>全北大学</strong>
+                <strong class="student-count">17,358人</strong>
+                <span class="student-scope">(826人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,235人</strong>
+                <span class="student-scope">(24.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="23" data-rank="23" data-rank-label="=23" data-city="全州" data-type="国立" data-primary-region="jeonbuk" data-regions="jeonbuk">
+              <td>=23</td>
+              <td>
+                <strong class="university-name">全北大学<span class="rank-note">并列第23名</span></strong>
                 <span>전북대학교 · Jeonbuk National University</span>
               </td>
               <td>全州</td>
               <td>国立</td>
               <td>农生命、工科、国立</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>24</td>
               <td>
-                <strong>江原大学</strong>
+                <strong class="student-count">23,561人</strong>
+                <span class="student-scope">(1,112人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,796人</strong>
+                <span class="student-scope">(24.6%)</span>
+              </td>
+            </tr>
+<tr data-list-order="24" data-rank="30" data-rank-label="=30" data-city="春川" data-type="国立" data-primary-region="gangwon" data-regions="gangwon">
+              <td>=30</td>
+              <td>
+                <strong class="university-name">江原大学<span class="rank-note">并列第30名</span></strong>
                 <span>강원대학교 · Kangwon National University</span>
               </td>
               <td>春川</td>
               <td>国立</td>
               <td>自然、森林、兽医</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>25</td>
               <td>
-                <strong>济州大学</strong>
+                <strong class="student-count">29,248人</strong>
+                <span class="student-scope">(1,114人)</span>
+              </td>
+              <td>
+                <strong class="student-count">7,751~14,185人</strong>
+                <span class="student-scope">(26.5~48.5%)</span>
+              </td>
+            </tr>
+<tr data-list-order="25" data-rank="30" data-rank-label="=30" data-city="济州" data-type="国立" data-primary-region="jeju" data-regions="jeju">
+              <td>=30</td>
+              <td>
+                <strong class="university-name">济州大学<span class="rank-note">并列第30名</span></strong>
                 <span>제주대학교 · Jeju National University</span>
               </td>
               <td>济州</td>
               <td>国立</td>
               <td>旅游、海洋、生态</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>26</td>
               <td>
-                <strong>仁荷大学</strong>
+                <strong class="student-count">12,891人</strong>
+                <span class="student-scope">(331人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,571人</strong>
+                <span class="student-scope">(27.7%)</span>
+              </td>
+            </tr>
+<tr data-list-order="26" data-rank="23" data-rank-label="=23" data-city="仁川" data-type="私立" data-primary-region="incheon" data-regions="incheon">
+              <td>=23</td>
+              <td>
+                <strong class="university-name">仁荷大学<span class="rank-note">并列第23名</span></strong>
                 <span>인하대학교 · Inha University</span>
               </td>
               <td>仁川</td>
               <td>私立</td>
               <td>工科、航空、物流</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>27</td>
               <td>
-                <strong>亚洲大学</strong>
+                <strong class="student-count">24,862人</strong>
+                <span class="student-scope">(1,954人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,083人</strong>
+                <span class="student-scope">(12.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="27" data-rank="12" data-rank-label="=12" data-city="水原" data-type="私立" data-primary-region="gyeonggi" data-regions="gyeonggi">
+              <td>=12</td>
+              <td>
+                <strong class="university-name">亚洲大学<span class="rank-note">并列第12名</span></strong>
                 <span>아주대학교 · Ajou University</span>
               </td>
               <td>水原</td>
               <td>私立</td>
               <td>工科、医学、经营</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>28</td>
               <td>
-                <strong>嘉泉大学</strong>
+                <strong class="student-count">13,674人</strong>
+                <span class="student-scope">(2,411人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,883人</strong>
+                <span class="student-scope">(28.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="28" data-rank="15" data-rank-label="=15" data-city="城南" data-type="私立" data-primary-region="gyeonggi" data-regions="gyeonggi">
+              <td>=15</td>
+              <td>
+                <strong class="university-name">嘉泉大学<span class="rank-note">并列第15名</span></strong>
                 <span>가천대학교 · Gachon University</span>
               </td>
               <td>城南</td>
               <td>私立</td>
               <td>医疗、AI、国际学生扩招</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>29</td>
               <td>
-                <strong>檀国大学</strong>
+                <strong class="student-count">29,323人</strong>
+                <span class="student-scope">(4,996人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,665人</strong>
+                <span class="student-scope">(12.5%)</span>
+              </td>
+            </tr>
+<tr data-list-order="29" data-rank="40" data-rank-label="=40" data-city="龙仁/天安" data-type="私立" data-primary-region="gyeonggi" data-regions="gyeonggi chungnam">
+              <td>=40</td>
+              <td>
+                <strong class="university-name">檀国大学<span class="rank-note">并列第40名</span></strong>
                 <span>단국대학교 · Dankook University</span>
               </td>
               <td>龙仁/天安</td>
               <td>私立</td>
               <td>艺术、牙医学、内容产业</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>30</td>
               <td>
-                <strong>明知大学</strong>
+                <strong class="student-count">29,024人</strong>
+                <span class="student-scope">(1,103人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,573~5,892人</strong>
+                <span class="student-scope">(19.2~20.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="30" data-rank="9999" data-rank-label="*" data-city="首尔/龙仁" data-type="私立" data-primary-region="seoul" data-regions="seoul gyeonggi">
+              <td>*</td>
+              <td>
+                <strong class="university-name">明知大学<span class="rank-note">*</span></strong>
                 <span>명지대학교 · Myongji University</span>
               </td>
               <td>首尔/龙仁</td>
               <td>私立</td>
               <td>建筑、人文、艺术</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>31</td>
               <td>
-                <strong>祥明大学</strong>
+                <strong class="student-count">18,009人</strong>
+                <span class="student-scope">(2,428人)</span>
+              </td>
+              <td>
+                <strong class="student-count">2,485~5,655人</strong>
+                <span class="student-scope">(13.8~31.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="31" data-rank="9999" data-rank-label="*" data-city="首尔/天安" data-type="私立" data-primary-region="seoul" data-regions="seoul chungnam">
+              <td>*</td>
+              <td>
+                <strong class="university-name">祥明大学<span class="rank-note">*</span></strong>
                 <span>상명대학교 · Sangmyung University</span>
               </td>
               <td>首尔/天安</td>
               <td>私立</td>
               <td>设计、动画、艺术</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>32</td>
               <td>
-                <strong>诚信女子大学</strong>
+                <strong class="student-count">15,997人</strong>
+                <span class="student-scope">(239人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,424~3,103人</strong>
+                <span class="student-scope">(8.9~19.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="32" data-rank="9999" data-rank-label="*" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>*</td>
+              <td>
+                <strong class="university-name">诚信女子大学<span class="rank-note">*</span></strong>
                 <span>성신여자대학교 · Sungshin Women's University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>美妆、设计、女子大学</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>33</td>
               <td>
-                <strong>淑明女子大学</strong>
+                <strong class="student-count">11,438人</strong>
+                <span class="student-scope">(890人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,167人</strong>
+                <span class="student-scope">(10.2%)</span>
+              </td>
+            </tr>
+<tr data-list-order="33" data-rank="9999" data-rank-label="*" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>*</td>
+              <td>
+                <strong class="university-name">淑明女子大学<span class="rank-note">*</span></strong>
                 <span>숙명여자대학교 · Sookmyung Women's University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>全球服务、经营、女子大学</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>34</td>
               <td>
-                <strong>德成女子大学</strong>
+                <strong class="student-count">11,877人</strong>
+                <span class="student-scope">(520人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,425人</strong>
+                <span class="student-scope">(12%)</span>
+              </td>
+            </tr>
+<tr data-list-order="34" data-rank="9999" data-rank-label="*" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>*</td>
+              <td>
+                <strong class="university-name">德成女子大学<span class="rank-note">*</span></strong>
                 <span>덕성여자대학교 · Duksung Women's University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>药学、心理、人文</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>35</td>
               <td>
-                <strong>首尔女子大学</strong>
+                <strong class="student-count">6,567人</strong>
+                <span class="student-scope">(571人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,005人</strong>
+                <span class="student-scope">(15.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="35" data-rank="9999" data-rank-label="*" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>*</td>
+              <td>
+                <strong class="university-name">首尔女子大学<span class="rank-note">*</span></strong>
                 <span>서울여자대학교 · Seoul Women's University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>教育、人文、内容</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>36</td>
               <td>
-                <strong>光云大学</strong>
+                <strong class="student-count">9,584人</strong>
+                <span class="student-scope">(1,131人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,112人</strong>
+                <span class="student-scope">(11.6%)</span>
+              </td>
+            </tr>
+<tr data-list-order="36" data-rank="9999" data-rank-label="*" data-city="首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul">
+              <td>*</td>
+              <td>
+                <strong class="university-name">光云大学<span class="rank-note">*</span></strong>
                 <span>광운대학교 · Kwangwoon University</span>
               </td>
               <td>首尔</td>
               <td>私立</td>
               <td>电子工程、机器人、IT</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>37</td>
               <td>
-                <strong>加图立大学</strong>
+                <strong class="student-count">11,217人</strong>
+                <span class="student-scope">(1,009人)</span>
+              </td>
+              <td>
+                <strong class="student-count">1,380人</strong>
+                <span class="student-scope">(12.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="37" data-rank="22" data-rank-label="22" data-city="富川/首尔" data-type="私立" data-primary-region="seoul" data-regions="seoul gyeonggi">
+              <td>22</td>
+              <td>
+                <strong class="university-name">加图立大学<span class="rank-note">第22名</span></strong>
                 <span>가톨릭대학교 · The Catholic University of Korea</span>
               </td>
               <td>富川/首尔</td>
               <td>私立</td>
               <td>医学、护理、心理</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>38</td>
               <td>
-                <strong>韩国航空大学</strong>
+                <strong class="student-count">11,408人</strong>
+                <span class="student-scope">(1,674人)</span>
+              </td>
+              <td>
+                <strong class="student-count">913~12,982人</strong>
+                <span class="student-scope">(8~113.8%)</span>
+              </td>
+            </tr>
+<tr data-list-order="38" data-rank="9999" data-rank-label="*" data-city="高阳" data-type="私立" data-primary-region="gyeonggi" data-regions="gyeonggi">
+              <td>*</td>
+              <td>
+                <strong class="university-name">韩国航空大学<span class="rank-note">*</span></strong>
                 <span>한국항공대학교 · Korea Aerospace University</span>
               </td>
               <td>高阳</td>
               <td>私立</td>
               <td>航空、物流、工程</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>39</td>
               <td>
-                <strong>韩国海洋大学</strong>
+                <strong class="student-count">5,866人</strong>
+                <span class="student-scope">(194人)</span>
+              </td>
+              <td>
+                <strong class="student-count">962人</strong>
+                <span class="student-scope">(16.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="39" data-rank="9999" data-rank-label="*" data-city="釜山" data-type="国立" data-primary-region="busan" data-regions="busan">
+              <td>*</td>
+              <td>
+                <strong class="university-name">韩国海洋大学<span class="rank-note">*</span></strong>
                 <span>한국해양대학교 · Korea Maritime &amp; Ocean University</span>
               </td>
               <td>釜山</td>
               <td>国立</td>
               <td>海洋、物流、造船</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>40</td>
               <td>
-                <strong>釜庆大学</strong>
+                <strong class="student-count">7,950人</strong>
+                <span class="student-scope">(241人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,204人</strong>
+                <span class="student-scope">(40.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="40" data-rank="30" data-rank-label="=30" data-city="釜山" data-type="国立" data-primary-region="busan" data-regions="busan">
+              <td>=30</td>
+              <td>
+                <strong class="university-name">釜庆大学<span class="rank-note">并列第30名</span></strong>
                 <span>부경대학교 · Pukyong National University</span>
               </td>
               <td>釜山</td>
               <td>国立</td>
               <td>海洋、水产、工程</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>41</td>
               <td>
-                <strong>岭南大学</strong>
+                <strong class="student-count">20,447人</strong>
+                <span class="student-scope">(1,115人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,580人</strong>
+                <span class="student-scope">(22.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="41" data-rank="15" data-rank-label="=15" data-city="庆山" data-type="私立" data-primary-region="gyeongbuk" data-regions="gyeongbuk">
+              <td>=15</td>
+              <td>
+                <strong class="university-name">岭南大学<span class="rank-note">并列第15名</span></strong>
                 <span>영남대학교 · Yeungnam University</span>
               </td>
               <td>庆山</td>
               <td>私立</td>
               <td>大邱圈大型私立</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>42</td>
               <td>
-                <strong>东亚大学</strong>
+                <strong class="student-count">27,952人</strong>
+                <span class="student-scope">(1,439人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,913人</strong>
+                <span class="student-scope">(14%)</span>
+              </td>
+            </tr>
+<tr data-list-order="42" data-rank="9999" data-rank-label="*" data-city="釜山" data-type="私立" data-primary-region="busan" data-regions="busan">
+              <td>*</td>
+              <td>
+                <strong class="university-name">东亚大学<span class="rank-note">*</span></strong>
                 <span>동아대학교 · Dong-A University</span>
               </td>
               <td>釜山</td>
               <td>私立</td>
               <td>釜山圈私立、经营、法学</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>43</td>
               <td>
-                <strong>圆光大学</strong>
+                <strong class="student-count">24,259人</strong>
+                <span class="student-scope">(1,676人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,226人</strong>
+                <span class="student-scope">(13.3%)</span>
+              </td>
+            </tr>
+<tr data-list-order="43" data-rank="9999" data-rank-label="*" data-city="益山" data-type="私立" data-primary-region="jeonbuk" data-regions="jeonbuk">
+              <td>*</td>
+              <td>
+                <strong class="university-name">圆光大学<span class="rank-note">*</span></strong>
                 <span>원광대학교 · Wonkwang University</span>
               </td>
               <td>益山</td>
               <td>私立</td>
               <td>韩医学、保健、人文</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>44</td>
               <td>
-                <strong>启明大学</strong>
+                <strong class="student-count">16,672人</strong>
+                <span class="student-scope">(132人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,485人</strong>
+                <span class="student-scope">(26.9%)</span>
+              </td>
+            </tr>
+<tr data-list-order="44" data-rank="9999" data-rank-label="*" data-city="大邱" data-type="私立" data-primary-region="daegu" data-regions="daegu">
+              <td>*</td>
+              <td>
+                <strong class="university-name">启明大学<span class="rank-note">*</span></strong>
                 <span>계명대학교 · Keimyung University</span>
               </td>
               <td>大邱</td>
               <td>私立</td>
               <td>艺术、国际化、大邱圈</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>45</td>
               <td>
-                <strong>蔚山大学</strong>
+                <strong class="student-count">28,615人</strong>
+                <span class="student-scope">(3,044人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,834人</strong>
+                <span class="student-scope">(13.4%)</span>
+              </td>
+            </tr>
+<tr data-list-order="45" data-rank="15" data-rank-label="=15" data-city="蔚山" data-type="私立" data-primary-region="ulsan" data-regions="ulsan">
+              <td>=15</td>
+              <td>
+                <strong class="university-name">蔚山大学<span class="rank-note">并列第15名</span></strong>
                 <span>울산대학교 · University of Ulsan</span>
               </td>
               <td>蔚山</td>
               <td>私立</td>
               <td>医学、工程、产业连接</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>46</td>
               <td>
-                <strong>顺天乡大学</strong>
+                <strong class="student-count">15,597人</strong>
+                <span class="student-scope">(257人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,541人</strong>
+                <span class="student-scope">(22.7%)</span>
+              </td>
+            </tr>
+<tr data-list-order="46" data-rank="30" data-rank-label="=30" data-city="牙山" data-type="私立" data-primary-region="chungnam" data-regions="chungnam">
+              <td>=30</td>
+              <td>
+                <strong class="university-name">顺天乡大学<span class="rank-note">并列第30名</span></strong>
                 <span>순천향대학교 · Soonchunhyang University</span>
               </td>
               <td>牙山</td>
               <td>私立</td>
               <td>医学、保健、国际教育</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>47</td>
               <td>
-                <strong>韩东大学</strong>
+                <strong class="student-count">14,107人</strong>
+                <span class="student-scope">(675人)</span>
+              </td>
+              <td>
+                <strong class="student-count">5,459人</strong>
+                <span class="student-scope">(38.7%)</span>
+              </td>
+            </tr>
+<tr data-list-order="47" data-rank="9999" data-rank-label="*" data-city="浦项" data-type="私立" data-primary-region="gyeongbuk" data-regions="gyeongbuk">
+              <td>*</td>
+              <td>
+                <strong class="university-name">韩东大学<span class="rank-note">*</span></strong>
                 <span>한동대학교 · Handong Global University</span>
               </td>
               <td>浦项</td>
               <td>私立</td>
               <td>英语课程、国际化</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>48</td>
               <td>
-                <strong>韩国艺术综合学校</strong>
+                <strong class="student-count">5,231人</strong>
+                <span class="student-scope">(177人)</span>
+              </td>
+              <td>
+                <strong class="student-count">4,237人</strong>
+                <span class="student-scope">(81%)</span>
+              </td>
+            </tr>
+<tr data-list-order="48" data-rank="9999" data-rank-label="*" data-city="首尔" data-type="国立特殊" data-primary-region="seoul" data-regions="seoul">
+              <td>*</td>
+              <td>
+                <strong class="university-name">韩国艺术综合学校<span class="rank-note">*</span></strong>
                 <span>한국예술종합학교 · Korea National University of Arts</span>
               </td>
               <td>首尔</td>
               <td>国立特殊</td>
               <td>音乐、舞蹈、戏剧、影视</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>49</td>
               <td>
-                <strong>首尔科学技术大学</strong>
+                <strong class="student-count">3,331人</strong>
+                <span class="student-scope">(86人)</span>
+              </td>
+              <td>
+                <strong class="student-count">63人</strong>
+                <span class="student-scope">(1.9%)</span>
+              </td>
+            </tr>
+<tr data-list-order="49" data-rank="30" data-rank-label="=30" data-city="首尔" data-type="国立" data-primary-region="seoul" data-regions="seoul">
+              <td>=30</td>
+              <td>
+                <strong class="university-name">首尔科学技术大学<span class="rank-note">并列第30名</span></strong>
                 <span>서울과학기술대학교 · Seoul National University of Science and Technology</span>
               </td>
               <td>首尔</td>
               <td>国立</td>
               <td>工程、设计、性价比</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
-            </tr>
-<tr>
-              <td>50</td>
               <td>
-                <strong>韩国科学技术院</strong>
+                <strong class="student-count">13,811人</strong>
+                <span class="student-scope">(1,129人)</span>
+              </td>
+              <td>
+                <strong class="student-count">3,135人</strong>
+                <span class="student-scope">(22.7%)</span>
+              </td>
+            </tr>
+<tr data-list-order="50" data-rank="2" data-rank-label="2" data-city="大田" data-type="国立特殊" data-primary-region="daejeon" data-regions="daejeon">
+              <td>2</td>
+              <td>
+                <strong class="university-name">韩国科学技术院<span class="rank-note">第2名</span></strong>
                 <span>한국과학기술원 · KAIST</span>
               </td>
               <td>大田</td>
               <td>国立特殊</td>
               <td>科学技术、AI、工程</td>
-              <td><span class="badge">待核验 · 2026-05</span></td>
+              <td>
+                <strong class="student-count">5,109人</strong>
+                <span class="student-scope">(481人)</span>
+              </td>
+              <td>
+                <strong class="student-count">2,820人</strong>
+                <span class="student-scope">(55.2%)</span>
+              </td>
             </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+        <p class="ranking-note">大学排名：<a href="https://www.timeshighereducation.com/student/best-universities/best-universities-south-korea" target="_blank" rel="noreferrer">THE World University Rankings 2026</a></p>
+      </section>
+      <script>
+        (() => {
+          const buttons = Array.from(document.querySelectorAll(".category-button"));
+          const tbody = document.querySelector("tbody");
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          const regionOrder = new Map([["seoul",0],["gyeonggi",1],["incheon",2],["busan",3],["daegu",4],["gwangju",5],["daejeon",6],["ulsan",7],["sejong",8],["gangwon",9],["chungbuk",10],["chungnam",11],["jeonbuk",12],["gyeongbuk",13],["jeju",14]]);
+
+          function applyFilter(filter) {
+            buttons.forEach((button) => {
+              button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
+            });
+
+            const [filterType, filterValue] = filter.split(":");
+
+            const sortedRows = [...rows].sort((a, b) => {
+              if (filter === "region") {
+                const regionCompare =
+                  (regionOrder.get(a.dataset.primaryRegion) ?? 999) -
+                  (regionOrder.get(b.dataset.primaryRegion) ?? 999);
+                if (regionCompare !== 0) return regionCompare;
+              }
+              const rankCompare = Number(a.dataset.rank) - Number(b.dataset.rank);
+              if (rankCompare !== 0) return rankCompare;
+              return Number(a.dataset.listOrder) - Number(b.dataset.listOrder);
+            });
+
+            let visibleIndex = 1;
+
+            sortedRows.forEach((row) => {
+              const type = row.dataset.type || "";
+              const isNational = type.includes("国立") || type.includes("公立");
+              const isPrivate = type.includes("私立");
+              const regions = (row.dataset.regions || "").split(" ");
+              const visible =
+                filter === "rank" ||
+                filter === "region" ||
+                (filter === "national" && isNational) ||
+                (filter === "private" && isPrivate) ||
+                (filterType === "region" && regions.includes(filterValue));
+
+              row.hidden = !visible;
+              row.classList.toggle("show-rank-note", filter !== "rank");
+              if (visible) {
+                row.cells[0].textContent = filter === "rank" ? row.dataset.rankLabel : String(visibleIndex);
+                visibleIndex += 1;
+              }
+              tbody.appendChild(row);
+            });
+          }
+
+          buttons.forEach((button) => {
+            button.addEventListener("click", () => applyFilter(button.dataset.filter));
+          });
+
+          applyFilter("rank");
+        })();
+      </script>
     </main>
   </body>
 </html>

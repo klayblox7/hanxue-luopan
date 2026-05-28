@@ -28,7 +28,6 @@
 
       body {
         margin: 0;
-        overflow: hidden;
         background: var(--paper);
         color: var(--ink);
         font-family:
@@ -45,9 +44,7 @@
       .page {
         display: flex;
         min-height: 100vh;
-        height: 100vh;
         flex-direction: column;
-        overflow: hidden;
       }
 
       .site-header {
@@ -109,8 +106,226 @@
         background: var(--pink);
       }
 
+      .recommender {
+        border-top: 1px solid var(--ink);
+        border-bottom: 0;
+        padding: 4.1rem 2rem 2rem;
+      }
+
+      .recommender-inner {
+        display: block;
+        max-width: 92rem;
+        margin: 0 auto;
+      }
+
+      .recommender-kicker {
+        display: inline-flex;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--mint);
+        padding: 0.35rem 0.7rem;
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .recommender-title {
+        max-width: 14ch;
+        margin: 0.75rem 0 0;
+        font-size: clamp(2.25rem, 4.5vw, 4.5rem);
+        font-weight: 900;
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .recommender-copy {
+        max-width: 58ch;
+        margin: 1rem 0 0;
+        color: #6a6a6a;
+        font-size: 1rem;
+        line-height: 1.75;
+      }
+
+      .recommender-form {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        border: 1px solid var(--ink);
+        background: #ffffff;
+        padding: 1rem;
+      }
+
+      .recommender-form label {
+        display: grid;
+        gap: 0.3rem;
+        font-size: 0.85rem;
+        font-weight: 800;
+      }
+
+      .recommender-form input,
+      .recommender-form select {
+        width: 100%;
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        padding: 0.55rem 0.65rem;
+        font: inherit;
+      }
+
+      .recommend-button {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.9rem;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--yellow);
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .reset-button {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--green);
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .recommend-action-row {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin-top: 0.9rem;
+      }
+
+      .recommend-action-row .recommend-button {
+        margin-top: 0;
+      }
+
+      .recommender-note {
+        margin: 0;
+        color: #6a6a6a;
+        font-size: 0.78rem;
+        line-height: 1.6;
+        margin-left: 0.6rem;
+      }
+
+      .recommendation-results {
+        display: none;
+        margin-top: 1.25rem;
+      }
+
+      .recommendation-results.is-visible {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .recommendation-results h2 {
+        margin: 0;
+        font-size: 1.15rem;
+        line-height: 1.2;
+      }
+
+      .recommendation-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        border: 1px solid var(--ink);
+        background: #ffffff;
+        padding: 0.9rem;
+      }
+
+      .recommendation-index {
+        display: inline-flex;
+        width: 1.6rem;
+        height: 1.6rem;
+        flex: 0 0 1.6rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background: var(--ink);
+        color: #ffffff;
+        font-size: 0.78rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-top: 0.05rem;
+      }
+
+      .recommendation-body {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .recommendation-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .recommendation-card h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .recommendation-rank {
+        margin-left: 0.35rem;
+        color: var(--muted);
+        font-size: 0.82em;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      .recommendation-card p {
+        margin: 0.45rem 0 0;
+        color: #6a6a6a;
+        font-size: 0.78rem;
+        line-height: 1.65;
+      }
+
+      .recommendation-score {
+        color: #173a6a;
+        font-weight: 700;
+      }
+
+      .result-badge {
+        flex-shrink: 0;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.2rem 0.45rem;
+        font-size: 0.68rem;
+        font-weight: 900;
+      }
+
+      .recommender-form:not(.recommender-form-live),
+      .recommend-button:not(#recommend-button) {
+        display: none;
+      }
+
+      .recommender-inner > div:nth-child(3) {
+        display: none;
+      }
+
+      .recommender-inner > div[aria-hidden="true"] {
+        display: none;
+      }
+
+      @media (max-width: 1100px) {
+        .recommender-form {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
       .entries {
-        margin-top: auto;
+        margin-top: 2.1rem;
         flex-shrink: 0;
       }
 
@@ -154,26 +369,22 @@
       }
 
       .entry-shell:nth-child(2):hover .entry-row {
-        background: #c8f1d7;
-      }
-
-      .entry-shell:nth-child(3):hover .entry-row {
-        background: #ffe88d;
-      }
-
-      .entry-shell:nth-child(4):hover .entry-row {
         background: #d8c9ff;
       }
 
-      .entry-shell:nth-child(5):hover .entry-row {
-        background: #ffc09c;
+      .entry-shell:nth-child(3):hover .entry-row {
+        background: #c8f1d7;
       }
 
-      .entry-shell:nth-child(6):hover .entry-row {
+      .entry-shell:nth-child(4):hover .entry-row {
+        background: #ffe88d;
+      }
+
+      .entry-shell:nth-child(5):hover .entry-row {
         background: #b7e1d5;
       }
 
-      .entry-shell:nth-child(7):hover .entry-row {
+      .entry-shell:nth-child(6):hover .entry-row {
         background: #ff8b7e;
       }
 
@@ -195,6 +406,10 @@
         font-weight: 700;
         line-height: 1;
         letter-spacing: 0;
+      }
+
+      .entry-title-note {
+        font-size: 0.8em;
       }
 
       .entry-pill {
@@ -252,6 +467,19 @@
           font-size: 0.9rem;
         }
 
+        .recommender {
+          padding: 1.25rem 1rem;
+        }
+
+        .recommender-inner,
+        .recommender-form {
+          grid-template-columns: 1fr;
+        }
+
+        .recommender-title {
+          font-size: 2.35rem;
+        }
+
         .entry-row,
         .entry-copy {
           min-height: 2.75rem;
@@ -298,6 +526,156 @@
         </div>
       </header>
 
+      <section class="recommender" aria-label="韩国大学推荐">
+        <div class="recommender-inner">
+          <div aria-hidden="true"></div>
+          <div>
+            <div class="recommender-form recommender-form-live" aria-label="推荐条件">
+              <label>年龄<input id="rec-age" type="number" value="18" min="15" max="30" /></label>
+              <label>高中均分<input id="rec-gpa" type="number" value="88" min="0" max="100" /></label>
+              <label>
+                高中类型
+                <select id="rec-school-tier">
+                  <option value="provincial_key">省重点</option>
+                  <option value="city_key" selected>市重点</option>
+                  <option value="regular">普通高中</option>
+                  <option value="unknown">不确定</option>
+                </select>
+              </label>
+              <label>
+                年级排名
+                <select id="rec-rank">
+                  <option value="top_5">前5%</option>
+                  <option value="top_10">前10%</option>
+                  <option value="top_25" selected>前25%</option>
+                  <option value="middle">中游</option>
+                  <option value="unknown">不确定</option>
+                </select>
+              </label>
+              <label>
+                TOPIK等级
+                <select id="rec-topik">
+                  <option value="0">暂无</option>
+                  <option value="1">1级</option>
+                  <option value="2">2级</option>
+                  <option value="3">3级</option>
+                  <option value="4" selected>4级</option>
+                  <option value="5">5级</option>
+                  <option value="6">6级</option>
+                </select>
+              </label>
+              <label>
+                高考/统考资料
+                <select id="rec-gaokao">
+                  <option value="high">高分/强证明</option>
+                  <option value="above_tier_one">一本线以上</option>
+                  <option value="submitted">可提交</option>
+                  <option value="not_submitted" selected>暂不提交</option>
+                </select>
+              </label>
+              <label>
+                希望专业
+                <select id="rec-major">
+                  <option value="undecided">还没确定</option>
+                  <option value="business">经营/商科</option>
+                  <option value="computer-science" selected>计算机/AI</option>
+                  <option value="engineering">工科</option>
+                  <option value="media">传媒/影视</option>
+                  <option value="art-design">艺术/设计</option>
+                  <option value="korean-language">韩语/教育</option>
+                  <option value="tourism">酒店/旅游</option>
+                  <option value="humanities">人文/外语</option>
+                  <option value="science">自然科学/生命</option>
+                </select>
+              </label>
+              <label>
+                希望地区
+                <select id="rec-region">
+                  <option value="不限" selected>不限</option>
+                  <option value="首尔">首尔</option>
+                  <option value="釜山">釜山</option>
+                  <option value="大田">大田</option>
+                  <option value="大邱">大邱</option>
+                  <option value="水原">水原</option>
+                  <option value="济州">济州</option>
+                </select>
+              </label>
+              <label>
+                预算
+                <select id="rec-budget">
+                  <option value="low">尽量低</option>
+                  <option value="medium" selected>中等</option>
+                  <option value="high">较充足</option>
+                </select>
+              </label>
+              <label>
+                学校类型
+                <select id="rec-type">
+                  <option value="any" selected>不限</option>
+                  <option value="national">国立/公立</option>
+                  <option value="private">私立也可以</option>
+                </select>
+              </label>
+            </div>
+            <div class="recommend-action-row">
+              <button class="recommend-button" id="recommend-button" type="button">生成5所推荐大学</button>
+              <button class="reset-button" id="reset-recommendation-button" type="button">还原</button>
+              <p class="recommender-note">
+                推荐结果仅用于初步选校，不代表录取保证。请以学校最新招生简章为准。
+              </p>
+            </div>
+            <div class="recommendation-results" id="recommendation-results" aria-live="polite"></div>
+          </div>
+          <div>
+            <div class="recommender-form" aria-label="推荐条件">
+              <label>年龄<input type="number" value="18" min="15" max="30" /></label>
+              <label>高中均分<input type="number" value="88" min="0" max="100" /></label>
+              <label>
+                高中类型
+                <select>
+                  <option>省重点</option>
+                  <option selected>市重点</option>
+                  <option>普通高中</option>
+                </select>
+              </label>
+              <label>
+                年级排名
+                <select>
+                  <option>前5%</option>
+                  <option>前10%</option>
+                  <option selected>前25%</option>
+                  <option>中游</option>
+                </select>
+              </label>
+              <label>
+                TOPIK等级
+                <select>
+                  <option>暂无</option>
+                  <option>3级</option>
+                  <option selected>4级</option>
+                  <option>5级</option>
+                  <option>6级</option>
+                </select>
+              </label>
+              <label>
+                希望专业
+                <select>
+                  <option>还没确定</option>
+                  <option selected>计算机/AI</option>
+                  <option>经营/商科</option>
+                  <option>艺术/设计</option>
+                  <option>传媒/影视</option>
+                </select>
+              </label>
+            </div>
+            <span class="recommend-button">生成5所推荐大学</span>
+            <p class="recommender-note">
+              推荐结果仅用于初步选校，不代表录取保证。请以学校最新招生简章为准。完整交互版会在本地 Next 页面中运行。
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section class="entries" aria-label="信息入口">
         <div class="entries-list">
           <a class="entry-shell" href="./universities.html">
@@ -305,6 +683,14 @@
               <div class="entry-copy">
                 <h2 class="entry-title">韩国大学库</h2>
                 <span class="entry-pill">50校比较 ↗</span>
+              </div>
+            </article>
+          </a>
+          <a class="entry-shell" href="./korean-learning.html">
+            <article class="entry-row">
+              <div class="entry-copy">
+                <h2 class="entry-title">韩语学习</h2>
+                <span class="entry-pill">零基础到6级 ↗</span>
               </div>
             </article>
           </a>
@@ -319,24 +705,8 @@
           <a class="entry-shell" href="./cost.html">
             <article class="entry-row">
               <div class="entry-copy">
-                <h2 class="entry-title">留学费用</h2>
-                <span class="entry-pill">年预算估算 ↗</span>
-              </div>
-            </article>
-          </a>
-          <a class="entry-shell" href="./korean-learning.html">
-            <article class="entry-row">
-              <div class="entry-copy">
-                <h2 class="entry-title">韩语学习</h2>
-                <span class="entry-pill">零基础到6级 ↗</span>
-              </div>
-            </article>
-          </a>
-          <a class="entry-shell" href="./scholarships.html">
-            <article class="entry-row">
-              <div class="entry-copy">
-                <h2 class="entry-title">奖学金</h2>
-                <span class="entry-pill">奖学金线索 ↗</span>
+                <h2 class="entry-title">留学费用<span class="entry-title-note">（奖学金）</span></h2>
+                <span class="entry-pill">预算+奖学金 ↗</span>
               </div>
             </article>
           </a>
@@ -344,7 +714,7 @@
             <article class="entry-row">
               <div class="entry-copy">
                 <h2 class="entry-title">申请路线</h2>
-                <span class="entry-pill">申请路径 ↗</span>
+                <span class="entry-pill">时间线+材料 ↗</span>
               </div>
             </article>
           </a>
@@ -365,6 +735,239 @@
           <span>官方优先 → 经验参考分离</span>
         </div>
       </footer>
+      <script>
+        (() => {
+          const universities = [
+            { slug: "seoul-national-university", name: "首尔大学", city: "首尔", type: "国立", focus: "综合研究、理工、人文社科", status: "verified", topikMinimum: 3, academicGate: 85, target: 94, caution: "85%只能当作入场券，首尔大还会综合看学校档次、年级排名、文书、活动和补充成绩。" },
+            { slug: "sungkyunkwan-university", name: "成均馆大学", city: "首尔/水原", type: "私立", focus: "工科、经营、半导体、AI", status: "verified", topikMinimum: 4, target: 88, caution: "成绩扎实且TOPIK 4-5级的学生可重点考虑，但强势专业仍需要认真准备材料。" },
+            { slug: "pusan-national-university", name: "釜山大学", city: "釜山", type: "国立", focus: "工科、自然科学、国立综合", status: "verified", topikMinimum: 3, target: 82, caution: "首尔以外国立大学中的强选项，预算敏感且专业匹配的学生可以重点考虑。" },
+            { slug: "jeonbuk-national-university", name: "全北大学", city: "全州", type: "国立", focus: "农生命、工科、国立、人文", status: "verified", topikMinimum: 2, target: 68, tuition: "low", caution: "TOPIK 2可作为现实候选，但入学后通常要完成韩语补强课程，面试和学习计划书很重要。" },
+            { slug: "pukyong-national-university", name: "釜庆大学", city: "釜山", type: "国立", focus: "海洋、水产、工程、国立", status: "verified", topikMinimum: 3, target: 70, tuition: "low", caution: "TOPIK 2学生还差一级，适合列为补到3级后的釜山国立候选。" },
+            { slug: "kyungpook-national-university", name: "庆北大学", city: "大邱", type: "国立", focus: "工科、IT、国立综合", status: "partial", topikMinimum: 3, target: 73, tuition: "low", caution: "TOPIK 3是基本线，部分学科要求4级；需要准备部门面试和材料。" },
+            { slug: "chonnam-national-university", name: "全南大学", city: "光州", type: "国立", focus: "工科、农业生命、医学、国立综合", status: "verified", topikMinimum: 3, target: 70, tuition: "low", caution: "一般学科按TOPIK 3规划，个别丽水校区学科可看TOPIK 2例外；低TOPIK入学后要补韩语。" },
+            { slug: "chungnam-national-university", name: "忠南大学", city: "大田", type: "国立", focus: "科学技术、国立综合、工科", status: "partial", topikMinimum: 3, target: 70, tuition: "low", caution: "TOPIK 2学生还差一级，补到3级后可作为大田国立候选；面试和学习计划要认真准备。" },
+            { slug: "chungbuk-national-university", name: "忠北大学", city: "清州", type: "国立", focus: "工科、自然科学、国立", status: "partial", topikMinimum: 3, target: 69, tuition: "low", caution: "目前按TOPIK 3保守规划，具体学科和面试要求仍要核对2026简章。" },
+            { slug: "kangwon-national-university", name: "江原大学", city: "春川", type: "国立", focus: "自然、森林、兽医、国立", status: "partial", topikMinimum: 3, target: 68, tuition: "low", caution: "语言要求按学科不同，适合预算敏感学生作为补语言后的国立备选。" },
+            { slug: "jeju-national-university", name: "济州大学", city: "济州", type: "国立", focus: "旅游、海洋、生态、国立", status: "partial", topikMinimum: 3, target: 67, tuition: "low", caution: "地区接受度很重要；TOPIK 2阶段先按补到3级准备，再看具体学科。" },
+            { slug: "korea-maritime-ocean-university", name: "韩国海洋大学", city: "釜山", type: "国立", focus: "海洋、物流、造船、工程、国立", status: "partial", topikMinimum: 3, target: 68, tuition: "low", caution: "海洋、物流、造船方向匹配时价值高；普通人文方向不要只因为预算低而优先。" },
+            { slug: "dong-a-university", name: "东亚大学", city: "釜山", type: "私立", focus: "釜山圈私立、经营、法学、人文", status: "partial", topikMinimum: 3, target: 67, tuition: "medium", caution: "TOPIK 2学生还差一级，补到3级后可作为釜山私立现实候选。" },
+            { slug: "keimyung-university", name: "启明大学", city: "大邱", type: "私立", focus: "艺术、国际化、大邱圈、经营、工科", status: "verified", topikMinimum: 3, target: 66, tuition: "medium", caution: "一般学科按TOPIK 3规划，艺体音乐方向可看TOPIK 2路径；需比较学费和奖学金。" },
+            { slug: "wonkwang-university", name: "圆光大学", city: "益山", type: "私立", focus: "韩医学、保健、人文、艺体", status: "partial", topikMinimum: 3, target: 64, tuition: "medium", caution: "中低成绩学生可作为现实私立候选，但TOPIK 2阶段仍要看校内韩语考试或艺体例外。" },
+            { slug: "kwangwoon-university", name: "光云大学", city: "首尔", type: "私立", focus: "电子工程、机器人、IT", status: "partial", topikMinimum: 3, target: 72, tuition: "medium", caution: "首尔圈中段私立，TOPIK 2阶段偏早，补到3级后再重点比较学费和奖学金。" },
+            { slug: "hankuk-university-of-foreign-studies", name: "韩国外国语大学", city: "首尔/龙仁", type: "私立", focus: "外语、国际地域、人文、通翻译", status: "verified", topikMinimum: 3, target: 76, tuition: "medium", caution: "TOPIK 2学生目前不足；外语/人文方向匹配，但要同时比较私立学费和奖学金。" },
+            { slug: "hongik-university", name: "弘益大学", city: "首尔/世宗", type: "私立", focus: "美术、设计、建筑", status: "verified", topikMinimum: 4, target: 84, caution: "艺术和设计方向要把作品集和面试当成核心竞争力。" },
+            { slug: "kyung-hee-university", name: "庆熙大学", city: "首尔/水原", type: "私立", focus: "酒店旅游、国际学、艺术", status: "partial", topikMinimum: 3, target: 85, caution: "酒店旅游、国际学和艺术方向要特别核对校区和学科的单独要求。" },
+            { slug: "seoultech", name: "首尔科学技术大学", city: "首尔", type: "国立", focus: "工程、设计、性价比", status: "partial", topikMinimum: 4, target: 83, caution: "工程、设计和实用技术方向可与其他国立/公立选项一起比较。" },
+            { slug: "yonsei-university", name: "延世大学", city: "首尔", type: "私立", focus: "SKY、经营、国际化、医学", status: "partial", target: 91, caution: "冲SKY层级时，语言、学校档次、年级排名、文书和补充材料都会影响竞争力。" },
+            { slug: "korea-university", name: "高丽大学", city: "首尔", type: "私立", focus: "SKY、经营、传媒、政经", status: "partial", target: 91, caution: "TOP5-10层级比首尔大更现实一些，但仍要看具体学科规则。" },
+            { slug: "hanyang-university", name: "汉阳大学", city: "首尔/ERICA", type: "私立", focus: "工科、创业、实用学科", status: "partial", target: 87, caution: "工科方向、成绩较好且TOPIK 4-5级的学生可以考虑，但必须核对当年学科要求。" },
+            { slug: "chung-ang-university", name: "中央大学", city: "首尔/安城", type: "私立", focus: "传媒、电影、表演、艺术科技", status: "partial", topikMinimum: 4, target: 85, caution: "传媒、电影、表演和广告方向通常不能只看成绩，还要准备专业相关材料。" }
+          ];
+
+          const rankingNotes = {
+            "seoul-national-university": "第1名",
+            "sungkyunkwan-university": "第4名",
+            "pusan-national-university": "并列第15名",
+            "jeonbuk-national-university": "并列第23名",
+            "pukyong-national-university": "并列第30名",
+            "kyungpook-national-university": "并列第15名",
+            "chonnam-national-university": "并列第23名",
+            "chungnam-national-university": "并列第27名",
+            "chungbuk-national-university": "并列第27名",
+            "kangwon-national-university": "并列第30名",
+            "jeju-national-university": "并列第30名",
+            "korea-maritime-ocean-university": "*",
+            "dong-a-university": "*",
+            "keimyung-university": "*",
+            "wonkwang-university": "*",
+            "kwangwoon-university": "*",
+            "hankuk-university-of-foreign-studies": "*",
+            "hongik-university": "*",
+            "kyung-hee-university": "并列第8名",
+            seoultech: "并列第30名",
+            "yonsei-university": "第3名",
+            "korea-university": "第6名",
+            "hanyang-university": "并列第8名",
+            "chung-ang-university": "并列第12名"
+          };
+
+          const majorKeywords = {
+            business: ["经营", "商", "经济", "贸易", "政经"],
+            "computer-science": ["IT", "AI", "计算机", "软件", "数据", "人工智能", "半导体"],
+            engineering: ["工科", "工程", "电子", "机械", "半导体", "航空", "造船"],
+            media: ["传媒", "电影", "影像", "广告", "内容", "表演"],
+            "art-design": ["艺术", "设计", "美术", "动画", "建筑"],
+            "korean-language": ["韩语", "韩国语", "人文", "教育", "外语"],
+            tourism: ["旅游", "酒店"],
+            humanities: ["人文", "外语", "国际", "教育", "文学", "历史"],
+            science: ["自然", "科学", "生命", "医学", "农业"],
+            undecided: []
+          };
+
+          const schoolTierBonus = { provincial_key: 4, city_key: 3, regular: 0, unknown: 1 };
+          const rankBonus = { top_5: 5, top_10: 4, top_25: 2, middle: 0, unknown: 1 };
+          const gaokaoBonus = { high: 5, above_tier_one: 4, submitted: 2, not_submitted: 0 };
+
+          function value(id) {
+            return document.getElementById(id).value;
+          }
+
+          function scoreMajor(focus, major) {
+            if (major === "undecided") return 18;
+            return Math.min(30, (majorKeywords[major] || []).filter((keyword) => focus.includes(keyword)).length * 12);
+          }
+
+          function scoreLanguage(topik, minimum) {
+            if (!minimum) return topik >= 3 ? 14 : 8;
+            if (topik >= minimum + 2) return 20;
+            if (topik >= minimum + 1) return 18;
+            if (topik >= minimum) return 15;
+            if (topik + 1 === minimum) return 8;
+            return 3;
+          }
+
+          function readinessPenalty({ academicGateBlocked, languageGateBlocked, adjustedAcademicGap, languageGap }) {
+            let penalty = 0;
+            if (academicGateBlocked) penalty += 60;
+            if (languageGateBlocked) penalty += 35;
+            if (adjustedAcademicGap < -18) penalty += 35;
+            else if (adjustedAcademicGap < -12) penalty += 22;
+            else if (adjustedAcademicGap < -8) penalty += 12;
+            if (languageGap <= -2) penalty += 30;
+            else if (languageGap === -1) penalty += 12;
+            return penalty;
+          }
+
+          function fitPriority({ academicGateBlocked, languageGateBlocked, adjustedAcademicGap, languageGap }) {
+            if (academicGateBlocked || languageGateBlocked || adjustedAcademicGap < -18 || languageGap <= -2) return 2;
+            if (adjustedAcademicGap < -8 || languageGap < 0) return 1;
+            return 0;
+          }
+
+          function recommend() {
+            const applicant = {
+              gpa: Number(value("rec-gpa")),
+              schoolTier: value("rec-school-tier"),
+              rank: value("rec-rank"),
+              gaokao: value("rec-gaokao"),
+              topik: Number(value("rec-topik")),
+              major: value("rec-major"),
+              region: value("rec-region"),
+              budget: value("rec-budget"),
+              type: value("rec-type")
+            };
+
+            const results = universities
+              .filter((school) => {
+                if (applicant.type === "national") return school.type.includes("国立") || school.type.includes("公立");
+                if (applicant.type === "private") return school.type.includes("私立");
+                return true;
+              })
+              .filter((school) => {
+                if (applicant.budget !== "low") return true;
+                return school.type.includes("国立") || school.type.includes("公立");
+              })
+              .map((school) => {
+                const languageScore = scoreLanguage(applicant.topik, school.topikMinimum);
+                const academicAdjusted =
+                  applicant.gpa -
+                  school.target +
+                  schoolTierBonus[applicant.schoolTier] +
+                  rankBonus[applicant.rank] +
+                  gaokaoBonus[applicant.gaokao];
+                const academicScore = academicAdjusted >= 8 ? 20 : academicAdjusted >= 3 ? 17 : academicAdjusted >= 0 ? 14 : academicAdjusted >= -5 ? 9 : 4;
+                const academicGateBlocked = Boolean(school.academicGate && applicant.gpa < school.academicGate);
+                const languageGap = school.topikMinimum ? applicant.topik - school.topikMinimum : applicant.topik >= 3 ? 0 : -1;
+                const languageGateBlocked = Boolean(school.topikMinimum && applicant.topik < school.topikMinimum);
+                const budgetScore =
+                  applicant.budget === "high" || school.tuition === "low" || school.type.includes("国立")
+                    ? 10
+                    : school.tuition === "medium"
+                      ? applicant.budget === "medium" ? 6 : 2
+                      : applicant.budget === "medium" ? 7 : 3;
+                const regionScore = applicant.region === "不限" || school.city.includes(applicant.region) ? 10 : 3;
+                const typeScore =
+                  applicant.type === "any" ||
+                  (applicant.type === "national" && school.type.includes("国立")) ||
+                  (applicant.type === "private" && school.type.includes("私立"))
+                    ? 5
+                    : 1;
+                const reliabilityScore = school.status === "verified" ? 5 : 3;
+                const rawScore =
+                  scoreMajor(school.focus, applicant.major) +
+                  languageScore +
+                  academicScore +
+                  budgetScore +
+                  regionScore +
+                  typeScore +
+                  reliabilityScore;
+                const fit = fitPriority({ academicGateBlocked, languageGateBlocked, adjustedAcademicGap: academicAdjusted, languageGap });
+                const score = Math.max(
+                  0,
+                  rawScore - readinessPenalty({ academicGateBlocked, languageGateBlocked, adjustedAcademicGap: academicAdjusted, languageGap })
+                );
+                const hardGatePassed = !academicGateBlocked && !languageGateBlocked;
+                const category = !hardGatePassed || fit === 2 ? "先补条件" : score >= 82 ? "较稳候选" : score >= 68 ? "适合考虑" : "冲刺候选";
+                return { ...school, score, category, fit, academicAdjusted };
+              })
+              .sort((a, b) => {
+                const fitCompare = a.fit - b.fit;
+                if (fitCompare !== 0) return fitCompare;
+                if (a.fit === 2) return b.academicAdjusted - a.academicAdjusted || b.score - a.score;
+                return b.score - a.score;
+              })
+              .slice(0, 5);
+
+            const target = document.getElementById("recommendation-results");
+            target.classList.add("is-visible");
+            target.innerHTML = `<h2>初步推荐结果</h2>${results
+              .map(
+                (school, index) => `<article class="recommendation-card">
+                  <span class="recommendation-index" aria-label="推荐第${index + 1}位">${index + 1}</span>
+                  <div class="recommendation-body">
+                    <div class="recommendation-head">
+                      <div>
+                        <h3>${school.name}<span class="recommendation-rank">${rankingNotes[school.slug] || "*"}</span></h3>
+                        <p>${school.city} · ${school.category} · <span class="recommendation-score">${school.score}分</span></p>
+                      </div>
+                      <span class="result-badge">${school.status}</span>
+                    </div>
+                    <p><strong>${school.city} / ${school.type}</strong> / 专业方向匹配：${school.focus}</p>
+                    <p>${school.caution}</p>
+                  </div>
+                </article>`
+              )
+              .join("")}`;
+          }
+
+          function resetRecommendation() {
+            const defaults = {
+              "rec-age": "18",
+              "rec-gpa": "88",
+              "rec-school-tier": "city_key",
+              "rec-rank": "top_25",
+              "rec-topik": "4",
+              "rec-gaokao": "not_submitted",
+              "rec-major": "computer-science",
+              "rec-region": "不限",
+              "rec-budget": "medium",
+              "rec-type": "any"
+            };
+
+            Object.entries(defaults).forEach(([id, defaultValue]) => {
+              const field = document.getElementById(id);
+              if (field) field.value = defaultValue;
+            });
+
+            const target = document.getElementById("recommendation-results");
+            target.classList.remove("is-visible");
+            target.innerHTML = "";
+          }
+
+          document.getElementById("recommend-button").addEventListener("click", recommend);
+          document.getElementById("reset-recommendation-button").addEventListener("click", resetRecommendation);
+        })();
+      </script>
     </main>
   </body>
 </html>

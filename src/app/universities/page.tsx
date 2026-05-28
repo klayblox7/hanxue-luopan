@@ -83,7 +83,6 @@ export default function UniversitiesPage() {
                 <th className="px-4 py-3">城市</th>
                 <th className="px-4 py-3">类型</th>
                 <th className="px-4 py-3">方向参考</th>
-                <th className="px-4 py-3">状态</th>
               </tr>
             </thead>
             <tbody>
@@ -99,9 +98,6 @@ export default function UniversitiesPage() {
                   <td className="px-4 py-4 text-soft">{university.city}</td>
                   <td className="px-4 py-4 text-soft">{university.type}</td>
                   <td className="max-w-sm px-4 py-4 leading-6 text-muted">{university.focus}</td>
-                  <td className="px-4 py-4">
-                    <SourceBadge type={university.sourceType} detail={university.updatedAt} />
-                  </td>
                 </tr>
               ))}
             </tbody>

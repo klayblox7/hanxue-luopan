@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 
+import { AdmissionsRecommender } from "@/components/AdmissionsRecommender";
 import { HomeEntryCard } from "@/components/HomeEntryCard";
 import { SiteHeader } from "@/components/SiteHeader";
 import { homeEntries } from "@/data/home";
@@ -12,10 +13,12 @@ const copy = {
 
 export default function Home() {
   return (
-    <main id="top" className="flex h-screen min-h-screen flex-col overflow-hidden bg-paper text-ink">
+    <main id="top" className="flex min-h-screen flex-col bg-paper text-ink">
       <SiteHeader />
 
-      <section id="entries" aria-label="\u4fe1\u606f\u5165\u53e3" className="mt-auto shrink-0 scroll-mt-40 bg-paper">
+      <AdmissionsRecommender />
+
+      <section id="entries" aria-label="\u4fe1\u606f\u5165\u53e3" className="shrink-0 scroll-mt-40 bg-paper">
         <div className="border-t border-ink">
           {homeEntries.map((entry) => (
             <HomeEntryCard entry={entry} key={entry.title} />

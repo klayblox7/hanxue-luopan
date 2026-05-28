@@ -4,7 +4,6 @@ import {
   Calculator,
   FileCheck2,
   GraduationCap,
-  Landmark,
   Route,
   SearchCheck
 } from "lucide-react";
@@ -29,7 +28,7 @@ const entryVisuals = {
     icon: Calculator,
     sticker: "bg-[#ffe07a] text-ink rotate-[-4deg]",
     hover: "hover:bg-[#ffe88d]",
-    action: "\u5e74\u9884\u7b97\u4f30\u7b97"
+    action: "\u9884\u7b97+\u5956\u5b66\u91d1"
   },
   "/korean-learning": {
     icon: BookOpen,
@@ -37,17 +36,11 @@ const entryVisuals = {
     hover: "hover:bg-[#d8c9ff]",
     action: "\u96f6\u57fa\u7840\u52306\u7ea7"
   },
-  "/scholarships": {
-    icon: Landmark,
-    sticker: "bg-[#ffb084] text-ink rotate-[-7deg]",
-    hover: "hover:bg-[#ffc09c]",
-    action: "\u5956\u5b66\u91d1\u7ebf\u7d22"
-  },
   "/application": {
     icon: Route,
     sticker: "bg-[#a4d4c5] text-ink rotate-[5deg]",
     hover: "hover:bg-[#b7e1d5]",
-    action: "\u7533\u8bf7\u8def\u5f84"
+    action: "\u65f6\u95f4\u7ebf+\u6750\u6599"
   },
   "/application#agency-check": {
     icon: SearchCheck,
@@ -61,6 +54,21 @@ type HomeEntryCardProps = {
   entry: HomeEntry;
 };
 
+function renderEntryTitle(title: string) {
+  const parentheticalMatch = title.match(/^(.*?)(（.*）)$/);
+
+  if (!parentheticalMatch) {
+    return title;
+  }
+
+  return (
+    <>
+      {parentheticalMatch[1]}
+      <span className="text-[0.8em]">{parentheticalMatch[2]}</span>
+    </>
+  );
+}
+
 export function HomeEntryCard({ entry }: HomeEntryCardProps) {
   const visual = entryVisuals[entry.href as keyof typeof entryVisuals] ?? entryVisuals["/application"];
   const Icon = visual.icon ?? ArrowUpRight;
@@ -73,7 +81,7 @@ export function HomeEntryCard({ entry }: HomeEntryCardProps) {
       <div className="entry-copy flex min-h-[2.75rem] w-max min-w-full items-start gap-x-6 pl-3 pr-28 pt-2.5 pb-2 sm:min-h-[3.4rem] sm:gap-x-7 sm:pl-5 sm:pt-2.5 sm:pb-2 lg:min-h-[4.05rem] lg:pl-8 lg:pr-44 lg:pt-3 lg:pb-2">
         <div className="min-w-0 shrink-0">
           <h3 className="whitespace-nowrap text-[1.48rem] font-bold leading-none tracking-normal text-ink sm:text-[2.13rem] lg:text-[2.48rem]">
-            {entry.title}
+            {renderEntryTitle(entry.title)}
           </h3>
         </div>
 

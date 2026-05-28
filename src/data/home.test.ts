@@ -45,14 +45,13 @@ describe("home data", () => {
     }
   });
 
-  it("exposes seven homepage entries that point to future product routes", () => {
-    expect(homeEntries).toHaveLength(7);
+  it("exposes six homepage entries that point to future product routes", () => {
+    expect(homeEntries).toHaveLength(6);
     expect(homeEntries.map((entry) => entry.href)).toEqual([
       "/universities",
+      "/korean-learning",
       "/topik",
       "/cost",
-      "/korean-learning",
-      "/scholarships",
       "/application",
       "/application#agency-check"
     ]);
@@ -62,6 +61,8 @@ describe("home data", () => {
       actionLabel: "查看学校列表",
       status: "available"
     });
+    expect(homeEntries.some((entry) => entry.title === "韩国大学库")).toBe(true);
+    expect(homeEntries.some((entry) => entry.title === "留学费用（奖学金）")).toBe(true);
   });
 
   it("uses one latest update marker for the home trust bar", () => {

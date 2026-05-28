@@ -20,5 +20,13 @@ describe("universities data", () => {
       expect(university.nameEn).toBeTruthy();
     }
   });
+
+  it("stores dormitory capacity and share without redundant availability text", () => {
+    for (const university of universities) {
+      expect(university.dormitoryCapacity).toMatch(/^\d{1,3}(,\d{3})*(~\d{1,3}(,\d{3})*)?人$/);
+      expect(university.dormitoryRate).toMatch(/^\d+(\.\d+)?(~\d+(\.\d+)?)?%$/);
+      expect(`${university.dormitoryCapacity} ${university.dormitoryRate}`).not.toContain("有");
+    }
+  });
 });
 

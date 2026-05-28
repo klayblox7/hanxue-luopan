@@ -116,24 +116,6 @@ export const homeEntries: HomeEntry[] = [
     status: "available"
   },
   {
-    title: "TOPIK考试",
-    description: "查询等级、费用、考点、备考路线和大学申请关系。",
-    href: "/topik",
-    category: "语言成绩",
-    sourceType: "official",
-    actionLabel: "查看规划入口",
-    status: "planned"
-  },
-  {
-    title: "留学费用",
-    description: "估算首尔/非首尔、国立/私立、宿舍/租房预算。",
-    href: "/cost",
-    category: "人民币预算",
-    sourceType: "estimate",
-    actionLabel: "查看规划入口",
-    status: "planned"
-  },
-  {
     title: "韩语学习",
     description: "从零基础到TOPIK 6级的学习路线、教材和网课。",
     href: "/korean-learning",
@@ -143,19 +125,28 @@ export const homeEntries: HomeEntry[] = [
     status: "planned"
   },
   {
-    title: "奖学金",
-    description: "了解政府奖学金、学校奖学金、TOPIK等级奖学金。",
-    href: "/scholarships",
-    category: "资金支持",
-    sourceType: "school",
+    title: "TOPIK考试",
+    description: "查询等级、费用、考点、备考路线和大学申请关系。",
+    href: "/topik",
+    category: "语言成绩",
+    sourceType: "official",
+    actionLabel: "查看规划入口",
+    status: "planned"
+  },
+  {
+    title: "留学费用（奖学金）",
+    description: "估算学费、住宿、生活费，并整理政府、学校和TOPIK奖学金线索。",
+    href: "/cost",
+    category: "人民币预算",
+    sourceType: "estimate",
     actionLabel: "查看规划入口",
     status: "planned"
   },
   {
     title: "申请路线",
-    description: "本科、插班、研究生、语学院、艺术类申请路径。",
+    description: "按本科、插班、研究生、语学院拆申请时间线、材料清单和关键截止日。",
     href: "/application",
-    category: "人群路径",
+    category: "时间线+材料",
     sourceType: "pending",
     actionLabel: "查看规划入口",
     status: "planned"

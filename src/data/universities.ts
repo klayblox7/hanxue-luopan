@@ -9,6 +9,10 @@ export type University = {
   city: string;
   type: string;
   focus: string;
+  totalStudents?: string;
+  foreignStudents?: string;
+  dormitoryCapacity?: string;
+  dormitoryRate?: string;
   sourceType: SourceType;
   updatedAt: string;
 };
@@ -23,6 +27,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "国立",
     focus: "综合研究、理工、人文社科",
+    totalStudents: "21,856人",
+    foreignStudents: "1,383人",
+    dormitoryCapacity: "4,961人",
+    dormitoryRate: "22.7%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -34,7 +42,11 @@ export const universities: University[] = [
     nameEn: "Yonsei University",
     city: "首尔",
     type: "私立",
-    focus: "SKY、经营、国际化、医学",
+    focus: "经营、国际学、医学",
+    totalStudents: "36,977人",
+    foreignStudents: "5,362人",
+    dormitoryCapacity: "12,942~21,077人",
+    dormitoryRate: "35~57%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -46,7 +58,11 @@ export const universities: University[] = [
     nameEn: "Korea University",
     city: "首尔",
     type: "私立",
-    focus: "SKY、经营、传媒、政经",
+    focus: "经营、传媒、政治经济",
+    totalStudents: "37,294人",
+    foreignStudents: "5,067人",
+    dormitoryCapacity: "4,289~13,277人",
+    dormitoryRate: "11.5~35.6%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -59,6 +75,10 @@ export const universities: University[] = [
     city: "首尔/水原",
     type: "私立",
     focus: "工科、经营、半导体、AI",
+    totalStudents: "25,399人",
+    foreignStudents: "3,911人",
+    dormitoryCapacity: "5,131人",
+    dormitoryRate: "20.2%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -71,6 +91,10 @@ export const universities: University[] = [
     city: "首尔/ERICA",
     type: "私立",
     focus: "工科、创业、实用学科",
+    totalStudents: "37,835人",
+    foreignStudents: "6,491人",
+    dormitoryCapacity: "5,902~8,248人",
+    dormitoryRate: "15.6~21.8%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -83,6 +107,10 @@ export const universities: University[] = [
     city: "首尔/水原",
     type: "私立",
     focus: "酒店旅游、国际学、艺术",
+    totalStudents: "32,859人",
+    foreignStudents: "3,535人",
+    dormitoryCapacity: "5,619人",
+    dormitoryRate: "17.1%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -95,6 +123,10 @@ export const universities: University[] = [
     city: "首尔/安城",
     type: "私立",
     focus: "传媒、电影、表演、艺术科技",
+    totalStudents: "32,069人",
+    foreignStudents: "4,935人",
+    dormitoryCapacity: "4,073~12,282人",
+    dormitoryRate: "12.7~38.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -107,6 +139,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "女子名校、国际学、设计、教育",
+    totalStudents: "20,145人",
+    foreignStudents: "2,089人",
+    dormitoryCapacity: "4,251人",
+    dormitoryRate: "21.1%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -119,6 +155,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "经营、经济、传媒",
+    totalStudents: "11,921人",
+    foreignStudents: "2,021人",
+    dormitoryCapacity: "1,347人",
+    dormitoryRate: "11.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -131,6 +171,10 @@ export const universities: University[] = [
     city: "首尔/龙仁",
     type: "私立",
     focus: "外语、国际地域、通翻译",
+    totalStudents: "22,693人",
+    foreignStudents: "2,949人",
+    dormitoryCapacity: "4,130人",
+    dormitoryRate: "18.2%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -143,6 +187,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "电影影像、佛教学、AI",
+    totalStudents: "28,461人",
+    foreignStudents: "3,111人",
+    dormitoryCapacity: "3,899~7,371人",
+    dormitoryRate: "13.7~25.9%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -155,6 +203,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "经营、传媒、房地产、设计",
+    totalStudents: "33,209人",
+    foreignStudents: "2,446人",
+    dormitoryCapacity: "5,679~10,029人",
+    dormitoryRate: "17.1~30.2%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -167,6 +219,10 @@ export const universities: University[] = [
     city: "首尔/世宗",
     type: "私立",
     focus: "美术、设计、建筑",
+    totalStudents: "24,836人",
+    foreignStudents: "1,480人",
+    dormitoryCapacity: "2,384~4,992人",
+    dormitoryRate: "9.6~20.1%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -179,6 +235,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "汽车设计、工业设计、AI",
+    totalStudents: "20,428人",
+    foreignStudents: "1,533人",
+    dormitoryCapacity: "2,717人",
+    dormitoryRate: "13.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -191,6 +251,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "酒店旅游、动画、AI",
+    totalStudents: "17,077人",
+    foreignStudents: "2,844人",
+    dormitoryCapacity: "1,947人",
+    dormitoryRate: "11.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -203,6 +267,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "IT、计算机、经营",
+    totalStudents: "19,963人",
+    foreignStudents: "2,479人",
+    dormitoryCapacity: "2,316人",
+    dormitoryRate: "11.6%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -215,6 +283,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "公立",
     focus: "城市行政、低学费、都市研究",
+    totalStudents: "11,801人",
+    foreignStudents: "725人",
+    dormitoryCapacity: "1,310人",
+    dormitoryRate: "11.1%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -227,6 +299,10 @@ export const universities: University[] = [
     city: "釜山",
     type: "国立",
     focus: "工科、自然科学、国立综合",
+    totalStudents: "26,434人",
+    foreignStudents: "1,134人",
+    dormitoryCapacity: "5,366人",
+    dormitoryRate: "20.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -239,6 +315,10 @@ export const universities: University[] = [
     city: "大邱",
     type: "国立",
     focus: "工科、IT、国立综合",
+    totalStudents: "29,489人",
+    foreignStudents: "1,660人",
+    dormitoryCapacity: "6,989人",
+    dormitoryRate: "23.7%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -251,6 +331,10 @@ export const universities: University[] = [
     city: "光州",
     type: "国立",
     focus: "工科、农业生命、医学",
+    totalStudents: "25,568人",
+    foreignStudents: "1,109人",
+    dormitoryCapacity: "5,932~8,463人",
+    dormitoryRate: "23.2~33.1%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -263,6 +347,10 @@ export const universities: University[] = [
     city: "大田",
     type: "国立",
     focus: "科学技术、国立综合",
+    totalStudents: "22,499人",
+    foreignStudents: "674人",
+    dormitoryCapacity: "4,837人",
+    dormitoryRate: "21.5%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -275,6 +363,10 @@ export const universities: University[] = [
     city: "清州",
     type: "国立",
     focus: "工科、自然科学、国立",
+    totalStudents: "17,358人",
+    foreignStudents: "826人",
+    dormitoryCapacity: "4,235人",
+    dormitoryRate: "24.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -287,6 +379,10 @@ export const universities: University[] = [
     city: "全州",
     type: "国立",
     focus: "农生命、工科、国立",
+    totalStudents: "23,561人",
+    foreignStudents: "1,112人",
+    dormitoryCapacity: "5,796人",
+    dormitoryRate: "24.6%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -299,6 +395,10 @@ export const universities: University[] = [
     city: "春川",
     type: "国立",
     focus: "自然、森林、兽医",
+    totalStudents: "29,248人",
+    foreignStudents: "1,114人",
+    dormitoryCapacity: "7,751~14,185人",
+    dormitoryRate: "26.5~48.5%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -311,6 +411,10 @@ export const universities: University[] = [
     city: "济州",
     type: "国立",
     focus: "旅游、海洋、生态",
+    totalStudents: "12,891人",
+    foreignStudents: "331人",
+    dormitoryCapacity: "3,571人",
+    dormitoryRate: "27.7%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -323,6 +427,10 @@ export const universities: University[] = [
     city: "仁川",
     type: "私立",
     focus: "工科、航空、物流",
+    totalStudents: "24,862人",
+    foreignStudents: "1,954人",
+    dormitoryCapacity: "3,083人",
+    dormitoryRate: "12.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -335,6 +443,10 @@ export const universities: University[] = [
     city: "水原",
     type: "私立",
     focus: "工科、医学、经营",
+    totalStudents: "13,674人",
+    foreignStudents: "2,411人",
+    dormitoryCapacity: "3,883人",
+    dormitoryRate: "28.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -347,6 +459,10 @@ export const universities: University[] = [
     city: "城南",
     type: "私立",
     focus: "医疗、AI、国际学生扩招",
+    totalStudents: "29,323人",
+    foreignStudents: "4,996人",
+    dormitoryCapacity: "3,665人",
+    dormitoryRate: "12.5%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -359,6 +475,10 @@ export const universities: University[] = [
     city: "龙仁/天安",
     type: "私立",
     focus: "艺术、牙医学、内容产业",
+    totalStudents: "29,024人",
+    foreignStudents: "1,103人",
+    dormitoryCapacity: "5,573~5,892人",
+    dormitoryRate: "19.2~20.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -371,6 +491,10 @@ export const universities: University[] = [
     city: "首尔/龙仁",
     type: "私立",
     focus: "建筑、人文、艺术",
+    totalStudents: "18,009人",
+    foreignStudents: "2,428人",
+    dormitoryCapacity: "2,485~5,655人",
+    dormitoryRate: "13.8~31.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -383,6 +507,10 @@ export const universities: University[] = [
     city: "首尔/天安",
     type: "私立",
     focus: "设计、动画、艺术",
+    totalStudents: "15,997人",
+    foreignStudents: "239人",
+    dormitoryCapacity: "1,424~3,103人",
+    dormitoryRate: "8.9~19.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -395,6 +523,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "美妆、设计、女子大学",
+    totalStudents: "11,438人",
+    foreignStudents: "890人",
+    dormitoryCapacity: "1,167人",
+    dormitoryRate: "10.2%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -407,6 +539,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "全球服务、经营、女子大学",
+    totalStudents: "11,877人",
+    foreignStudents: "520人",
+    dormitoryCapacity: "1,425人",
+    dormitoryRate: "12%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -419,6 +555,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "药学、心理、人文",
+    totalStudents: "6,567人",
+    foreignStudents: "571人",
+    dormitoryCapacity: "1,005人",
+    dormitoryRate: "15.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -431,6 +571,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "教育、人文、内容",
+    totalStudents: "9,584人",
+    foreignStudents: "1,131人",
+    dormitoryCapacity: "1,112人",
+    dormitoryRate: "11.6%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -443,6 +587,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "私立",
     focus: "电子工程、机器人、IT",
+    totalStudents: "11,217人",
+    foreignStudents: "1,009人",
+    dormitoryCapacity: "1,380人",
+    dormitoryRate: "12.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -455,6 +603,10 @@ export const universities: University[] = [
     city: "富川/首尔",
     type: "私立",
     focus: "医学、护理、心理",
+    totalStudents: "11,408人",
+    foreignStudents: "1,674人",
+    dormitoryCapacity: "913~12,982人",
+    dormitoryRate: "8~113.8%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -467,6 +619,10 @@ export const universities: University[] = [
     city: "高阳",
     type: "私立",
     focus: "航空、物流、工程",
+    totalStudents: "5,866人",
+    foreignStudents: "194人",
+    dormitoryCapacity: "962人",
+    dormitoryRate: "16.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -479,6 +635,10 @@ export const universities: University[] = [
     city: "釜山",
     type: "国立",
     focus: "海洋、物流、造船",
+    totalStudents: "7,950人",
+    foreignStudents: "241人",
+    dormitoryCapacity: "3,204人",
+    dormitoryRate: "40.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -491,6 +651,10 @@ export const universities: University[] = [
     city: "釜山",
     type: "国立",
     focus: "海洋、水产、工程",
+    totalStudents: "20,447人",
+    foreignStudents: "1,115人",
+    dormitoryCapacity: "4,580人",
+    dormitoryRate: "22.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -503,6 +667,10 @@ export const universities: University[] = [
     city: "庆山",
     type: "私立",
     focus: "大邱圈大型私立",
+    totalStudents: "27,952人",
+    foreignStudents: "1,439人",
+    dormitoryCapacity: "3,913人",
+    dormitoryRate: "14%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -515,6 +683,10 @@ export const universities: University[] = [
     city: "釜山",
     type: "私立",
     focus: "釜山圈私立、经营、法学",
+    totalStudents: "24,259人",
+    foreignStudents: "1,676人",
+    dormitoryCapacity: "3,226人",
+    dormitoryRate: "13.3%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -527,6 +699,10 @@ export const universities: University[] = [
     city: "益山",
     type: "私立",
     focus: "韩医学、保健、人文",
+    totalStudents: "16,672人",
+    foreignStudents: "132人",
+    dormitoryCapacity: "4,485人",
+    dormitoryRate: "26.9%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -539,6 +715,10 @@ export const universities: University[] = [
     city: "大邱",
     type: "私立",
     focus: "艺术、国际化、大邱圈",
+    totalStudents: "28,615人",
+    foreignStudents: "3,044人",
+    dormitoryCapacity: "3,834人",
+    dormitoryRate: "13.4%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -551,6 +731,10 @@ export const universities: University[] = [
     city: "蔚山",
     type: "私立",
     focus: "医学、工程、产业连接",
+    totalStudents: "15,597人",
+    foreignStudents: "257人",
+    dormitoryCapacity: "3,541人",
+    dormitoryRate: "22.7%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -563,6 +747,10 @@ export const universities: University[] = [
     city: "牙山",
     type: "私立",
     focus: "医学、保健、国际教育",
+    totalStudents: "14,107人",
+    foreignStudents: "675人",
+    dormitoryCapacity: "5,459人",
+    dormitoryRate: "38.7%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -575,6 +763,10 @@ export const universities: University[] = [
     city: "浦项",
     type: "私立",
     focus: "英语课程、国际化",
+    totalStudents: "5,231人",
+    foreignStudents: "177人",
+    dormitoryCapacity: "4,237人",
+    dormitoryRate: "81%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -587,6 +779,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "国立特殊",
     focus: "音乐、舞蹈、戏剧、影视",
+    totalStudents: "3,331人",
+    foreignStudents: "86人",
+    dormitoryCapacity: "63人",
+    dormitoryRate: "1.9%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -599,6 +795,10 @@ export const universities: University[] = [
     city: "首尔",
     type: "国立",
     focus: "工程、设计、性价比",
+    totalStudents: "13,811人",
+    foreignStudents: "1,129人",
+    dormitoryCapacity: "3,135人",
+    dormitoryRate: "22.7%",
     sourceType: "pending",
     updatedAt: "2026-05"
   },
@@ -611,8 +811,13 @@ export const universities: University[] = [
     city: "大田",
     type: "国立特殊",
     focus: "科学技术、AI、工程",
+    totalStudents: "5,109人",
+    foreignStudents: "481人",
+    dormitoryCapacity: "2,820人",
+    dormitoryRate: "55.2%",
     sourceType: "pending",
     updatedAt: "2026-05"
   }
 ];
+
 
