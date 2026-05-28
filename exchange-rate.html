@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>汇率｜韩学罗盘</title>
+    <style>
+      :root {
+        --paper: #fbfbf8;
+        --ink: #0a0a0a;
+        --muted: #66645d;
+        --panel: #f0eee6;
+        --yellow: #ffe07a;
+        --mint: #a4d4c5;
+        --pink: #ffd0d8;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          "Microsoft YaHei UI", "Microsoft YaHei", "微软雅黑", "PingFang SC", "Noto Sans CJK SC",
+          "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "MS Gothic", "Malgun Gothic", Inter,
+          system-ui, -apple-system, sans-serif;
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        min-height: 7rem;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .logo {
+        width: 5rem;
+        height: 5rem;
+        object-fit: contain;
+      }
+
+      .nav {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5rem 1rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .yellow { background: var(--yellow); }
+      .mint { background: var(--mint); }
+      .pink { background: var(--pink); }
+
+      .wrap {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 2.5rem 0 4rem;
+      }
+
+      .back {
+        display: inline-flex;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.55rem 0.9rem;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 2rem 0 0;
+        font-size: clamp(2.5rem, 7vw, 5.5rem);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 46rem;
+        margin: 1rem 0 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+
+      
+
+      @media (max-width: 720px) {
+        .header { min-height: auto; padding: 0.75rem 1rem; }
+        .logo { width: 4rem; height: 4rem; }
+        .nav { gap: 0.35rem; }
+        .pill { padding: 0.5rem 0.65rem; font-size: 0.9rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="./hanxue-luopan-home.html" aria-label="韩学罗盘">
+        <img class="logo" src="./public/hanxue-luopan-logo.png" alt="韩学罗盘" />
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a class="pill yellow" href="./exchange-rate.html">汇率</a>
+        <a class="pill mint" href="./korea-overview.html">韩国概况</a>
+        <a class="pill pink" href="./about.html">关于我们</a>
+      </nav>
+    </header>
+    <main class="wrap">
+      <a class="back" href="./hanxue-luopan-home.html">返回首页</a>
+      <h1>汇率</h1>
+      <p class="lead">人民币与韩元汇率入口后续会接入实时或定期更新的参考数据。</p>
+    </main>
+  </body>
+</html>

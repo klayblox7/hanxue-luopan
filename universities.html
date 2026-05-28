@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>韩国大学库｜韩学罗盘</title>
+    <style>
+      :root {
+        --paper: #fbfbf8;
+        --ink: #0a0a0a;
+        --muted: #66645d;
+        --panel: #f0eee6;
+        --yellow: #ffe07a;
+        --mint: #a4d4c5;
+        --pink: #ffd0d8;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          "Microsoft YaHei UI", "Microsoft YaHei", "微软雅黑", "PingFang SC", "Noto Sans CJK SC",
+          "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "MS Gothic", "Malgun Gothic", Inter,
+          system-ui, -apple-system, sans-serif;
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        min-height: 7rem;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .logo {
+        width: 5rem;
+        height: 5rem;
+        object-fit: contain;
+      }
+
+      .nav {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5rem 1rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .yellow { background: var(--yellow); }
+      .mint { background: var(--mint); }
+      .pink { background: var(--pink); }
+
+      .wrap {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 2.5rem 0 4rem;
+      }
+
+      .back {
+        display: inline-flex;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.55rem 0.9rem;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 2rem 0 0;
+        font-size: clamp(2.5rem, 7vw, 5.5rem);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 46rem;
+        margin: 1rem 0 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+
+      
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-top: 2rem;
+      }
+
+      .summary-card {
+        border: 1px solid var(--ink);
+        border-radius: 1rem;
+        padding: 1rem;
+        background: var(--panel);
+      }
+
+      .summary-card strong {
+        display: block;
+        margin-top: 0.4rem;
+        font-size: 2rem;
+      }
+
+      table {
+        width: 100%;
+        margin-top: 2rem;
+        border-collapse: collapse;
+        background: #fffefb;
+        border: 1px solid var(--ink);
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--ink);
+        padding: 0.8rem 0.9rem;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--panel);
+        font-size: 0.82rem;
+      }
+
+      td span {
+        display: block;
+        margin-top: 0.25rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .badge {
+        display: inline-flex;
+        border: 1px solid #d8ceb5;
+        border-radius: 999px;
+        background: #f5f0e0;
+        padding: 0.3rem 0.55rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 880px) {
+        .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        table { font-size: 0.85rem; }
+        th:nth-child(3), td:nth-child(3),
+        th:nth-child(6), td:nth-child(6) { display: none; }
+      }
+  
+
+      @media (max-width: 720px) {
+        .header { min-height: auto; padding: 0.75rem 1rem; }
+        .logo { width: 4rem; height: 4rem; }
+        .nav { gap: 0.35rem; }
+        .pill { padding: 0.5rem 0.65rem; font-size: 0.9rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="./hanxue-luopan-home.html" aria-label="韩学罗盘">
+        <img class="logo" src="./public/hanxue-luopan-logo.png" alt="韩学罗盘" />
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a class="pill yellow" href="./exchange-rate.html">汇率</a>
+        <a class="pill mint" href="./korea-overview.html">韩国概况</a>
+        <a class="pill pink" href="./about.html">关于我们</a>
+      </nav>
+    </header>
+    <main class="wrap">
+      <a class="back" href="./hanxue-luopan-home.html">返回首页</a>
+      <h1>韩国大学库</h1>
+      <p class="lead">
+        中国学生常查的韩国大学50校基础名单。这里先展示学校名、城市、类型和方向参考，后续可以继续扩展TOPIK要求、奖学金、费用和官方来源。
+      </p>
+      <section class="summary" aria-label="基础统计">
+        <article class="summary-card">学校数量<strong>50所</strong></article>
+        <article class="summary-card">更新日期<strong>2026-05</strong></article>
+        <article class="summary-card">数据状态<strong>待核验</strong></article>
+        <article class="summary-card">展示原则<strong>参考入口</strong></article>
+      </section>
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>学校</th>
+            <th>城市</th>
+            <th>类型</th>
+            <th>方向参考</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td>1</td>
+              <td>
+                <strong>首尔大学</strong>
+                <span>서울대학교 · Seoul National University</span>
+              </td>
+              <td>首尔</td>
+              <td>国立</td>
+              <td>综合研究、理工、人文社科</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>2</td>
+              <td>
+                <strong>延世大学</strong>
+                <span>연세대학교 · Yonsei University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>SKY、经营、国际化、医学</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>3</td>
+              <td>
+                <strong>高丽大学</strong>
+                <span>고려대학교 · Korea University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>SKY、经营、传媒、政经</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>4</td>
+              <td>
+                <strong>成均馆大学</strong>
+                <span>성균관대학교 · Sungkyunkwan University</span>
+              </td>
+              <td>首尔/水原</td>
+              <td>私立</td>
+              <td>工科、经营、半导体、AI</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>5</td>
+              <td>
+                <strong>汉阳大学</strong>
+                <span>한양대학교 · Hanyang University</span>
+              </td>
+              <td>首尔/ERICA</td>
+              <td>私立</td>
+              <td>工科、创业、实用学科</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>6</td>
+              <td>
+                <strong>庆熙大学</strong>
+                <span>경희대학교 · Kyung Hee University</span>
+              </td>
+              <td>首尔/水原</td>
+              <td>私立</td>
+              <td>酒店旅游、国际学、艺术</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>7</td>
+              <td>
+                <strong>中央大学</strong>
+                <span>중앙대학교 · Chung-Ang University</span>
+              </td>
+              <td>首尔/安城</td>
+              <td>私立</td>
+              <td>传媒、电影、表演、艺术科技</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>8</td>
+              <td>
+                <strong>梨花女子大学</strong>
+                <span>이화여자대학교 · Ewha Womans University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>女子名校、国际学、设计、教育</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>9</td>
+              <td>
+                <strong>西江大学</strong>
+                <span>서강대학교 · Sogang University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>经营、经济、传媒</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>10</td>
+              <td>
+                <strong>韩国外国语大学</strong>
+                <span>한국외국어대학교 · Hankuk University of Foreign Studies</span>
+              </td>
+              <td>首尔/龙仁</td>
+              <td>私立</td>
+              <td>外语、国际地域、通翻译</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>11</td>
+              <td>
+                <strong>东国大学</strong>
+                <span>동국대학교 · Dongguk University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>电影影像、佛教学、AI</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>12</td>
+              <td>
+                <strong>建国大学</strong>
+                <span>건국대학교 · Konkuk University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>经营、传媒、房地产、设计</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>13</td>
+              <td>
+                <strong>弘益大学</strong>
+                <span>홍익대학교 · Hongik University</span>
+              </td>
+              <td>首尔/世宗</td>
+              <td>私立</td>
+              <td>美术、设计、建筑</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>14</td>
+              <td>
+                <strong>国民大学</strong>
+                <span>국민대학교 · Kookmin University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>汽车设计、工业设计、AI</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>15</td>
+              <td>
+                <strong>世宗大学</strong>
+                <span>세종대학교 · Sejong University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>酒店旅游、动画、AI</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>16</td>
+              <td>
+                <strong>崇实大学</strong>
+                <span>숭실대학교 · Soongsil University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>IT、计算机、经营</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>17</td>
+              <td>
+                <strong>首尔市立大学</strong>
+                <span>서울시립대학교 · University of Seoul</span>
+              </td>
+              <td>首尔</td>
+              <td>公立</td>
+              <td>城市行政、低学费、都市研究</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>18</td>
+              <td>
+                <strong>釜山大学</strong>
+                <span>부산대학교 · Pusan National University</span>
+              </td>
+              <td>釜山</td>
+              <td>国立</td>
+              <td>工科、自然科学、国立综合</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>19</td>
+              <td>
+                <strong>庆北大学</strong>
+                <span>경북대학교 · Kyungpook National University</span>
+              </td>
+              <td>大邱</td>
+              <td>国立</td>
+              <td>工科、IT、国立综合</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>20</td>
+              <td>
+                <strong>全南大学</strong>
+                <span>전남대학교 · Chonnam National University</span>
+              </td>
+              <td>光州</td>
+              <td>国立</td>
+              <td>工科、农业生命、医学</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>21</td>
+              <td>
+                <strong>忠南大学</strong>
+                <span>충남대학교 · Chungnam National University</span>
+              </td>
+              <td>大田</td>
+              <td>国立</td>
+              <td>科学技术、国立综合</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>22</td>
+              <td>
+                <strong>忠北大学</strong>
+                <span>충북대학교 · Chungbuk National University</span>
+              </td>
+              <td>清州</td>
+              <td>国立</td>
+              <td>工科、自然科学、国立</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>23</td>
+              <td>
+                <strong>全北大学</strong>
+                <span>전북대학교 · Jeonbuk National University</span>
+              </td>
+              <td>全州</td>
+              <td>国立</td>
+              <td>农生命、工科、国立</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>24</td>
+              <td>
+                <strong>江原大学</strong>
+                <span>강원대학교 · Kangwon National University</span>
+              </td>
+              <td>春川</td>
+              <td>国立</td>
+              <td>自然、森林、兽医</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>25</td>
+              <td>
+                <strong>济州大学</strong>
+                <span>제주대학교 · Jeju National University</span>
+              </td>
+              <td>济州</td>
+              <td>国立</td>
+              <td>旅游、海洋、生态</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>26</td>
+              <td>
+                <strong>仁荷大学</strong>
+                <span>인하대학교 · Inha University</span>
+              </td>
+              <td>仁川</td>
+              <td>私立</td>
+              <td>工科、航空、物流</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>27</td>
+              <td>
+                <strong>亚洲大学</strong>
+                <span>아주대학교 · Ajou University</span>
+              </td>
+              <td>水原</td>
+              <td>私立</td>
+              <td>工科、医学、经营</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>28</td>
+              <td>
+                <strong>嘉泉大学</strong>
+                <span>가천대학교 · Gachon University</span>
+              </td>
+              <td>城南</td>
+              <td>私立</td>
+              <td>医疗、AI、国际学生扩招</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>29</td>
+              <td>
+                <strong>檀国大学</strong>
+                <span>단국대학교 · Dankook University</span>
+              </td>
+              <td>龙仁/天安</td>
+              <td>私立</td>
+              <td>艺术、牙医学、内容产业</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>30</td>
+              <td>
+                <strong>明知大学</strong>
+                <span>명지대학교 · Myongji University</span>
+              </td>
+              <td>首尔/龙仁</td>
+              <td>私立</td>
+              <td>建筑、人文、艺术</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>31</td>
+              <td>
+                <strong>祥明大学</strong>
+                <span>상명대학교 · Sangmyung University</span>
+              </td>
+              <td>首尔/天安</td>
+              <td>私立</td>
+              <td>设计、动画、艺术</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>32</td>
+              <td>
+                <strong>诚信女子大学</strong>
+                <span>성신여자대학교 · Sungshin Women's University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>美妆、设计、女子大学</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>33</td>
+              <td>
+                <strong>淑明女子大学</strong>
+                <span>숙명여자대학교 · Sookmyung Women's University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>全球服务、经营、女子大学</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>34</td>
+              <td>
+                <strong>德成女子大学</strong>
+                <span>덕성여자대학교 · Duksung Women's University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>药学、心理、人文</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>35</td>
+              <td>
+                <strong>首尔女子大学</strong>
+                <span>서울여자대학교 · Seoul Women's University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>教育、人文、内容</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>36</td>
+              <td>
+                <strong>光云大学</strong>
+                <span>광운대학교 · Kwangwoon University</span>
+              </td>
+              <td>首尔</td>
+              <td>私立</td>
+              <td>电子工程、机器人、IT</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>37</td>
+              <td>
+                <strong>加图立大学</strong>
+                <span>가톨릭대학교 · The Catholic University of Korea</span>
+              </td>
+              <td>富川/首尔</td>
+              <td>私立</td>
+              <td>医学、护理、心理</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>38</td>
+              <td>
+                <strong>韩国航空大学</strong>
+                <span>한국항공대학교 · Korea Aerospace University</span>
+              </td>
+              <td>高阳</td>
+              <td>私立</td>
+              <td>航空、物流、工程</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>39</td>
+              <td>
+                <strong>韩国海洋大学</strong>
+                <span>한국해양대학교 · Korea Maritime &amp; Ocean University</span>
+              </td>
+              <td>釜山</td>
+              <td>国立</td>
+              <td>海洋、物流、造船</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>40</td>
+              <td>
+                <strong>釜庆大学</strong>
+                <span>부경대학교 · Pukyong National University</span>
+              </td>
+              <td>釜山</td>
+              <td>国立</td>
+              <td>海洋、水产、工程</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>41</td>
+              <td>
+                <strong>岭南大学</strong>
+                <span>영남대학교 · Yeungnam University</span>
+              </td>
+              <td>庆山</td>
+              <td>私立</td>
+              <td>大邱圈大型私立</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>42</td>
+              <td>
+                <strong>东亚大学</strong>
+                <span>동아대학교 · Dong-A University</span>
+              </td>
+              <td>釜山</td>
+              <td>私立</td>
+              <td>釜山圈私立、经营、法学</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>43</td>
+              <td>
+                <strong>圆光大学</strong>
+                <span>원광대학교 · Wonkwang University</span>
+              </td>
+              <td>益山</td>
+              <td>私立</td>
+              <td>韩医学、保健、人文</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>44</td>
+              <td>
+                <strong>启明大学</strong>
+                <span>계명대학교 · Keimyung University</span>
+              </td>
+              <td>大邱</td>
+              <td>私立</td>
+              <td>艺术、国际化、大邱圈</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>45</td>
+              <td>
+                <strong>蔚山大学</strong>
+                <span>울산대학교 · University of Ulsan</span>
+              </td>
+              <td>蔚山</td>
+              <td>私立</td>
+              <td>医学、工程、产业连接</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>46</td>
+              <td>
+                <strong>顺天乡大学</strong>
+                <span>순천향대학교 · Soonchunhyang University</span>
+              </td>
+              <td>牙山</td>
+              <td>私立</td>
+              <td>医学、保健、国际教育</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>47</td>
+              <td>
+                <strong>韩东大学</strong>
+                <span>한동대학교 · Handong Global University</span>
+              </td>
+              <td>浦项</td>
+              <td>私立</td>
+              <td>英语课程、国际化</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>48</td>
+              <td>
+                <strong>韩国艺术综合学校</strong>
+                <span>한국예술종합학교 · Korea National University of Arts</span>
+              </td>
+              <td>首尔</td>
+              <td>国立特殊</td>
+              <td>音乐、舞蹈、戏剧、影视</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>49</td>
+              <td>
+                <strong>首尔科学技术大学</strong>
+                <span>서울과학기술대학교 · Seoul National University of Science and Technology</span>
+              </td>
+              <td>首尔</td>
+              <td>国立</td>
+              <td>工程、设计、性价比</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+<tr>
+              <td>50</td>
+              <td>
+                <strong>韩国科学技术院</strong>
+                <span>한국과학기술원 · KAIST</span>
+              </td>
+              <td>大田</td>
+              <td>国立特殊</td>
+              <td>科学技术、AI、工程</td>
+              <td><span class="badge">待核验 · 2026-05</span></td>
+            </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>
