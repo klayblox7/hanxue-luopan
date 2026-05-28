@@ -179,26 +179,6 @@ const universityRows = universities
 const universitiesHtml = shell({
   title: "韩国大学库",
   extraStyle: `
-      .summary {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 0.75rem;
-        margin-top: 2rem;
-      }
-
-      .summary-card {
-        border: 1px solid var(--ink);
-        border-radius: 1rem;
-        padding: 1rem;
-        background: var(--panel);
-      }
-
-      .summary-card strong {
-        display: block;
-        margin-top: 0.4rem;
-        font-size: 2rem;
-      }
-
       table {
         width: 100%;
         margin-top: 2rem;
@@ -240,7 +220,6 @@ const universitiesHtml = shell({
       }
 
       @media (max-width: 880px) {
-        .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         table { font-size: 0.85rem; }
         th:nth-child(3), td:nth-child(3),
         th:nth-child(6), td:nth-child(6) { display: none; }
@@ -249,15 +228,6 @@ const universitiesHtml = shell({
   body: `<main class="wrap">
       <a class="back" href="./hanxue-luopan-home.html">返回首页</a>
       <h1>韩国大学库</h1>
-      <p class="lead">
-        中国学生常查的韩国大学50校基础名单。这里先展示学校名、城市、类型和方向参考，后续可以继续扩展TOPIK要求、奖学金、费用和官方来源。
-      </p>
-      <section class="summary" aria-label="基础统计">
-        <article class="summary-card">学校数量<strong>${universities.length}所</strong></article>
-        <article class="summary-card">更新日期<strong>2026-05</strong></article>
-        <article class="summary-card">数据状态<strong>待核验</strong></article>
-        <article class="summary-card">展示原则<strong>参考入口</strong></article>
-      </section>
       <table>
         <thead>
           <tr>
