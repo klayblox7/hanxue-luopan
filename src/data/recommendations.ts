@@ -1,4 +1,5 @@
 import { admissionProfiles, type AdmissionProfile, type TuitionLevel, type VerificationStatus } from "./admissions";
+import { getUniversityTier } from "./universityTiers";
 import { universities } from "./universities";
 
 export type HighSchoolTier = "provincial_key" | "city_key" | "regular" | "unknown";
@@ -49,6 +50,16 @@ export type UniversityRecommendation = {
   reasons: string[];
   cautions: string[];
 };
+
+const recommendationSlatePlan: RecommendationCategory[] = [
+  "stable",
+  "stable",
+  "stable",
+  "match",
+  "match",
+  "reach",
+  "prepare_first"
+];
 
 const majorKeywords: Record<IntendedMajor, string[]> = {
   business: ["经营", "商", "经济", "贸易", "政经"],
@@ -151,8 +162,17 @@ function scoreBudget(type: string, budgetLevel: BudgetLevel, tuitionLevel: Tuiti
 }
 
 function scoreRegion(city: string, preferredRegion: string): number {
-  if (!preferredRegion || preferredRegion === "不限") return 8;
+  if (!preferredRegion || preferredRegion === "不限" || preferredRegion === "都可以") return 8;
+  if (preferredRegion === "首尔") return city.includes("首尔") ? 10 : 0;
+  if (preferredRegion === "地方") return city.includes("首尔") ? 0 : 10;
   return city.includes(preferredRegion) ? 10 : 3;
+}
+
+function matchesPreferredRegion(city: string, preferredRegion: string): boolean {
+  if (!preferredRegion || preferredRegion === "不限" || preferredRegion === "都可以") return true;
+  if (preferredRegion === "首尔") return city.includes("首尔");
+  if (preferredRegion === "地方") return !city.includes("首尔");
+  return city.includes(preferredRegion);
 }
 
 function scoreSchoolType(type: string, preference: SchoolTypePreference): number {
@@ -218,6 +238,20 @@ function categorize(score: number, status: VerificationStatus, hardGatePassed: b
   if (score >= 82) return "stable";
   if (score >= 68) return "match";
   return "reach";
+}
+
+function recommendationTierRank(schoolNameCn: string): number {
+  return Number(getUniversityTier(schoolNameCn).slice(1));
+}
+
+function compareRecommendationsByEase(a: UniversityRecommendation, b: UniversityRecommendation): number {
+  const tierCompare = recommendationTierRank(b.schoolNameCn) - recommendationTierRank(a.schoolNameCn);
+  if (tierCompare !== 0) return tierCompare;
+
+  const fitCompare = a.fitPriority - b.fitPriority;
+  if (fitCompare !== 0) return fitCompare;
+  if (a.fitPriority === 2) return b.academicGap - a.academicGap || b.score - a.score;
+  return b.score - a.score;
 }
 
 export function scoreUniversityRecommendation(applicant: ApplicantProfile, schoolSlug: string): UniversityRecommendation | undefined {
@@ -295,7 +329,7 @@ export function scoreUniversityRecommendation(applicant: ApplicantProfile, schoo
 }
 
 export function recommendUniversities(applicant: ApplicantProfile): UniversityRecommendation[] {
-  return admissionProfiles
+  const sortedResults = admissionProfiles
     .map((profile) => scoreUniversityRecommendation(applicant, profile.schoolSlug))
     .filter((result): result is UniversityRecommendation => Boolean(result))
     .filter((result) => {
@@ -310,11 +344,55 @@ export function recommendUniversities(applicant: ApplicantProfile): UniversityRe
       if (applicant.budgetLevel !== "low") return true;
       return result.schoolType.includes("国立") || result.schoolType.includes("公立");
     })
+    .filter((result) => matchesPreferredRegion(result.city, applicant.preferredRegion))
     .sort((a, b) => {
       const fitCompare = a.fitPriority - b.fitPriority;
       if (fitCompare !== 0) return fitCompare;
       if (a.fitPriority === 2) return b.academicGap - a.academicGap || b.score - a.score;
       return b.score - a.score;
-    })
-    .slice(0, 5);
+    });
+
+  return buildBalancedSlate(sortedResults).sort(compareRecommendationsByEase);
+}
+
+function buildBalancedSlate(results: UniversityRecommendation[]): UniversityRecommendation[] {
+  const selected: UniversityRecommendation[] = [];
+  const used = new Set<string>();
+  const isUnused = (result: UniversityRecommendation) => !used.has(result.schoolSlug);
+  const isConfirmedEnough = (result: UniversityRecommendation) => result.verificationStatus !== "pending";
+  const pickFirst = (predicate: (result: UniversityRecommendation) => boolean) => results.find((result) => isUnused(result) && predicate(result));
+  const pickLast = (predicate: (result: UniversityRecommendation) => boolean) =>
+    [...results].reverse().find((result) => isUnused(result) && predicate(result));
+
+  function pickForSlot(category: RecommendationCategory): UniversityRecommendation | undefined {
+    if (category === "stable") return pickFirst((result) => result.category === "stable" && isConfirmedEnough(result)) ?? pickFirst(isConfirmedEnough);
+    if (category === "match")
+      return (
+        pickFirst((result) => result.category === "match" && isConfirmedEnough(result)) ??
+        pickFirst((result) => result.category === "stable" && isConfirmedEnough(result)) ??
+        pickFirst(isConfirmedEnough)
+      );
+    if (category === "reach")
+      return (
+        pickFirst((result) => result.category === "reach" && isConfirmedEnough(result)) ??
+        pickFirst((result) => result.fitPriority === 1 && isConfirmedEnough(result)) ??
+        pickFirst(isConfirmedEnough)
+      );
+    if (category === "prepare_first")
+      return (
+        pickFirst((result) => result.category === "prepare_first" && isConfirmedEnough(result)) ??
+        pickLast((result) => result.fitPriority > 0 && isConfirmedEnough(result)) ??
+        pickLast(isConfirmedEnough)
+      );
+    return pickFirst(isConfirmedEnough);
+  }
+
+  recommendationSlatePlan.forEach((category) => {
+    const result = pickForSlot(category) ?? pickFirst(() => true);
+    if (!result) return;
+    used.add(result.schoolSlug);
+    selected.push({ ...result, category });
+  });
+
+  return selected;
 }

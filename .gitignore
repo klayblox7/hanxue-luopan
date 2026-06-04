@@ -5,6 +5,9 @@ dist/
 coverage/
 output/
 test-results/
+backups/
+*.tsbuildinfo
+TOPIK
 .agents/
 .codex/
 clay/

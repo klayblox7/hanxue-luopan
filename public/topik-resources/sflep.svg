@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" role="img" aria-label="SFLEP">
+  <rect width="80" height="80" fill="#f1f1ee"/>
+  <rect x="12" y="18" width="56" height="44" fill="#fffefb" stroke="#0a0a0a" stroke-width="2"/>
+  <text x="40" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="900" fill="#0a0a0a">SF</text>
+  <text x="40" y="54" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#66645d">PDF</text>
+</svg>

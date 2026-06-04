@@ -42,7 +42,7 @@ const entryVisuals = {
     hover: "hover:bg-[#b7e1d5]",
     action: "\u65f6\u95f4\u7ebf+\u6750\u6599"
   },
-  "/application#agency-check": {
+  "/agency-check": {
     icon: SearchCheck,
     sticker: "bg-[#ff6b5a] text-paper rotate-[-6deg]",
     hover: "hover:bg-[#ff8b7e]",

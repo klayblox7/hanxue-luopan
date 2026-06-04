@@ -14,9 +14,19 @@
         --yellow: #ffe07a;
         --mint: #a4d4c5;
         --pink: #ffd0d8;
+        --green: #71d39b;
+        --peach: #ffb084;
+        --coral: #ff6b5a;
+        --soft-red: #f2aaa1;
+        --soft-green: #b7dbc6;
       }
 
       * { box-sizing: border-box; }
+
+      html {
+        overflow-y: scroll;
+        scrollbar-gutter: stable;
+      }
 
       body {
         margin: 0;
@@ -31,97 +41,1487 @@
       a { color: inherit; text-decoration: none; }
 
       .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        min-height: 7rem;
-        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        padding: 1rem 4rem;
+        background: var(--paper);
         border-bottom: 1px solid var(--ink);
       }
 
-      .logo {
-        width: 5rem;
-        height: 5rem;
-        object-fit: contain;
+      .header-inner {
+        display: grid;
+        min-height: 5rem;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .logo { display: block; width: 6.5rem; height: 5rem; object-fit: contain; }
+
+      .header-title {
+        min-width: 8rem;
+        overflow: hidden;
+        padding-left: 1rem;
+        font-size: clamp(1.11rem, 1.92vw, 2.1rem);
+        font-weight: 900;
+        line-height: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .nav {
         display: flex;
-        gap: 0.75rem;
+        max-width: min(72rem, calc(100vw - 11rem));
+        flex-wrap: wrap;
+        gap: 0.5rem;
         align-items: center;
+        justify-content: flex-end;
       }
 
-      .pill {
+      .pill,
+      .back {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         border: 1px solid var(--ink);
         border-radius: 999px;
-        padding: 0.5rem 1rem;
-        font-size: 1.25rem;
-        font-weight: 700;
+        padding: 0.45rem 0.72rem;
+        font-size: 0.95rem;
+        font-weight: 800;
         line-height: 1;
+        background: var(--surface);
       }
 
-      .yellow { background: var(--yellow); }
-      .mint { background: var(--mint); }
-      .pink { background: var(--pink); }
+      .pill.pink.active,
+      .pill.pink:hover,
+      .pill.pink:focus { background: var(--pink); }
+      .pill.green.active,
+      .pill.green:hover,
+      .pill.green:focus { background: var(--green); }
+      .pill.yellow.active,
+      .pill.yellow:hover,
+      .pill.yellow:focus { background: var(--yellow); }
+      .pill.mint.active,
+      .pill.mint:hover,
+      .pill.mint:focus { background: var(--mint); }
+      .pill.peach.active,
+      .pill.peach:hover,
+      .pill.peach:focus { background: var(--peach); }
+
+      .page-guide {
+        position: fixed;
+        top: 9rem;
+        left: 2.25rem;
+        z-index: 30;
+        display: flex;
+        width: 10rem;
+        max-height: calc(100vh - 10rem);
+        overflow: auto;
+        flex-direction: column;
+        gap: 0.58rem;
+        background: transparent;
+        padding: 1.05rem 0.85rem;
+        font-size: 0.73rem;
+        font-style: italic;
+        line-height: 1.45;
+      }
+
+      .page-guide a {
+        display: inline-flex;
+        align-items: flex-start;
+        gap: 0.42rem;
+      }
+
+      .page-guide a::before {
+        content: "";
+        flex: 0 0 auto;
+        width: 0.336rem;
+        height: 0.336rem;
+        margin-top: 0.46em;
+        border-radius: 999px;
+        background: var(--ink);
+      }
 
       .wrap {
-        width: min(1120px, calc(100% - 2rem));
+        width: calc(100% - 25rem);
         margin: 0 auto;
-        padding: 2.5rem 0 4rem;
+        padding: 1.875rem 0 4rem;
       }
 
-      .back {
-        display: inline-flex;
-        border: 1px solid var(--ink);
-        border-radius: 999px;
-        padding: 0.55rem 0.9rem;
-        font-weight: 700;
+      .page-actionbar { display: flex; justify-content: flex-end; }
+      .back { border-radius: 0; padding: 0.55rem 0.9rem; }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 18rem;
+        gap: 2rem;
+        align-items: end;
+        border-top: 1px solid var(--ink);
+        border-bottom: 1px solid var(--ink);
+        margin-top: 1.5rem;
+        padding: 1.8rem 0 2rem;
+      }
+
+      .eyebrow {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
       }
 
       h1 {
-        margin: 2rem 0 0;
-        font-size: clamp(2.5rem, 7vw, 5.5rem);
-        line-height: 0.95;
+        max-width: 62rem;
+        margin: 0.72rem 0 0;
+        font-size: clamp(2.6rem, 5vw, 4.6rem);
+        line-height: 0.98;
         letter-spacing: 0;
       }
 
       .lead {
-        max-width: 46rem;
+        max-width: 52rem;
         margin: 1rem 0 0;
         color: var(--muted);
-        font-size: 1.05rem;
+        font-size: 1.02rem;
         line-height: 1.8;
       }
 
-      
+      .hero-verdict {
+        border: 1px solid var(--ink);
+        background: var(--yellow);
+        padding: 1rem;
+      }
+
+      .hero-verdict strong {
+        display: block;
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .hero-verdict span {
+        display: block;
+        margin-top: 0.65rem;
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.55;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        border: 1px solid var(--ink);
+        margin-top: 1.875rem;
+      }
+
+      .metric {
+        border-right: 1px solid var(--ink);
+        padding: 0.76rem 1rem;
+      }
+
+      .metric:last-child { border-right: 0; }
+      .metric .pill {
+        background: #f1f1ee;
+        padding: 0.36rem 0.58rem;
+        font-size: 0.76rem;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 0.76rem;
+        font-size: 1.24rem;
+        line-height: 1;
+      }
+
+      .metric p {
+        margin: 0.6rem 0 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+        line-height: 1.45;
+      }
+
+      .section {
+        margin-top: 1.875rem;
+        scroll-margin-top: 8.75rem;
+      }
+
+      .summary-title {
+        display: inline-flex;
+        align-items: center;
+        max-width: 100%;
+        margin: 0 0 1rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--ink);
+        background: var(--yellow);
+        font-size: clamp(0.8rem, 1.28vw, 1.2rem);
+        font-weight: 900;
+        line-height: 1.15;
+      }
+
+      .mode-grid,
+      .formula-grid,
+      .major-grid {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .mode-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .formula-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .major-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+      .card {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        padding: 1rem;
+      }
+
+      .card .pill {
+        background: #f1f1ee;
+        padding: 0.36rem 0.58rem;
+        font-size: 0.76rem;
+      }
+
+      .card h3 {
+        margin: 0.8rem 0 0;
+        font-size: 1.22rem;
+        line-height: 1.15;
+      }
+
+      .card p {
+        margin: 0.7rem 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.65;
+      }
+
+      .card ul {
+        margin: 0.75rem 0 0;
+        padding-left: 1.1rem;
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.65;
+      }
+
+      .score {
+        display: grid;
+        grid-template-columns: 7rem 1fr 5rem;
+        gap: 0.8rem;
+        align-items: center;
+        border: 1px solid var(--ink);
+        border-bottom: 0;
+        background: var(--surface);
+        padding: 0.85rem 1rem;
+      }
+
+      .score:last-child { border-bottom: 1px solid var(--ink); }
+      .score strong { font-size: 0.95rem; }
+      .score span { color: var(--muted); font-size: 0.84rem; line-height: 1.45; }
+
+      .bar {
+        position: relative;
+        height: 2rem;
+        border: 1px solid var(--ink);
+        background: var(--paper);
+      }
+
+      .bar-fill {
+        position: absolute;
+        inset: 0 auto 0 0;
+        display: grid;
+        place-items: center;
+        min-width: 3.5rem;
+        border-right: 1px solid var(--ink);
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        margin-top: 1rem;
+      }
+
+      table {
+        width: 100%;
+        min-width: 780px;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.9rem;
+      }
+
+      th {
+        border-bottom: 1px solid var(--ink);
+        background: var(--pink);
+        padding: 0.78rem 0.9rem;
+        font-weight: 900;
+      }
+
+      td {
+        border-bottom: 1px solid var(--ink);
+        padding: 0.78rem 0.9rem;
+        vertical-align: top;
+        line-height: 1.55;
+      }
+
+      tr:last-child td { border-bottom: 0; }
+      td + td, th + th { border-left: 1px solid var(--ink); }
+
+      .risk-map {
+        display: grid;
+        grid-template-columns: 8rem repeat(5, minmax(0, 1fr));
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .risk-map div {
+        min-height: 3.2rem;
+        border-right: 1px solid var(--ink);
+        border-bottom: 1px solid var(--ink);
+        padding: 0.7rem 0.8rem;
+        font-size: 0.84rem;
+        line-height: 1.35;
+      }
+
+      .risk-map div:nth-child(6n) { border-right: 0; }
+      .head { background: #f1f1ee; font-weight: 900; }
+      .low { background: #d8f3df; }
+      .mid { background: #fff0a8; }
+      .high { background: #ffd0b3; }
+      .max { background: var(--soft-red); font-weight: 900; }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .step {
+        border-right: 1px solid var(--ink);
+        padding: 0.85rem;
+      }
+
+      .step:last-child { border-right: 0; }
+      .step strong { display: block; font-size: 0.95rem; }
+      .step p {
+        margin: 0.45rem 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.55;
+      }
+
+      .red-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+
+      .red-item {
+        display: grid;
+        grid-template-columns: 2.4rem 1fr;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .red-item span {
+        display: grid;
+        place-items: center;
+        border-right: 1px solid var(--ink);
+        background: var(--soft-red);
+        font-weight: 900;
+      }
+
+      .red-item p {
+        margin: 0;
+        padding: 0.75rem 0.9rem;
+        font-size: 0.88rem;
+        line-height: 1.6;
+      }
+
+      .matrix {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .matrix > div {
+        border-right: 1px solid var(--ink);
+        padding: 1rem;
+      }
+
+      .matrix > div:last-child { border-right: 0; }
+      .matrix strong { display: block; font-size: 1.25rem; }
+      .matrix p {
+        margin: 0.7rem 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.65;
+      }
+
+      .note {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        color: var(--muted);
+        margin-top: 1rem;
+        padding: 0.85rem 1rem;
+        font-size: 0.9rem;
+        line-height: 1.7;
+      }
+
+      /* Fixed desktop shortcut navigation */
+      @media (min-width: 721px) {
+        .site-header .header-inner,
+        .header .header-inner {
+          display: grid;
+          grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+        }
+
+        .top-nav,
+        .nav {
+          position: absolute;
+          top: 2.3rem;
+          right: 4rem;
+          width: min(61.5rem, calc(100vw - 13rem));
+          max-width: none;
+          flex-wrap: nowrap;
+          justify-content: flex-end;
+        }
+
+        .top-nav {
+          grid-column: 3;
+          justify-self: end;
+        }
+
+        .nav {
+          justify-self: end;
+        }
+
+        .top-nav > .nav-pill,
+        .nav > .pill {
+          flex: 0 0 auto;
+          height: 2.35rem;
+          min-height: 0;
+          padding: 0;
+          white-space: nowrap;
+        }
+
+        
+      .nav-suffix { font-weight: 400; }
+.top-nav > .nav-pill:nth-child(1),
+        .nav > .pill:nth-child(1) { width: 11.4rem; }
+        .top-nav > .nav-pill:nth-child(2),
+        .nav > .pill:nth-child(2) { width: 9.4rem; }
+        .top-nav > .nav-pill:nth-child(3),
+        .nav > .pill:nth-child(3) { width: 10.6rem; }
+        .top-nav > .nav-pill:nth-child(4),
+        .nav > .pill:nth-child(4) { width: 12.4rem; }
+        .top-nav > .nav-pill:nth-child(5),
+        .nav > .pill:nth-child(5) { width: 8.4rem; }
+        .top-nav > .nav-pill:nth-child(6),
+        .nav > .pill:nth-child(6) { width: 5.6rem; }
+      }
+
+        .top-nav > .nav-pill:focus,
+        .nav > .pill:focus {
+          outline: none;
+        }
+
+      @media (max-width: 1200px) {
+        .wrap { width: calc(100% - 4rem); }
+        .page-guide { display: none; }
+        .summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .metric:nth-child(3n) { border-right: 0; }
+        .metric:nth-child(n+4) { border-top: 1px solid var(--ink); }
+        .major-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .step { border-bottom: 1px solid var(--ink); }
+        .step:nth-child(3n) { border-right: 0; }
+        .step:nth-last-child(-n + 3) { border-bottom: 0; }
+      }
+
+      @media (max-width: 900px) {
+        .hero,
+        .mode-grid,
+        .formula-grid,
+        .major-grid,
+        .matrix,
+        .red-list { grid-template-columns: 1fr; }
+        .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .metric:nth-child(3n) { border-right: 1px solid var(--ink); }
+        .metric:nth-child(2n) { border-right: 0; }
+        .metric:nth-child(n+3) { border-top: 1px solid var(--ink); }
+        .score { grid-template-columns: 1fr; }
+        .risk-map { grid-template-columns: 7rem repeat(5, 9rem); overflow-x: auto; }
+      }
 
       @media (max-width: 720px) {
-        .header { min-height: auto; padding: 0.75rem 1rem; }
-        .logo { width: 4rem; height: 4rem; }
-        .nav { gap: 0.35rem; }
-        .pill { padding: 0.5rem 0.65rem; font-size: 0.9rem; }
+        .header { padding: 0.75rem 1rem; }
+        .header-inner { min-height: auto; grid-template-columns: auto 1fr; }
+        .logo { width: 4.9rem; height: 3.75rem; }
+        .header-title { min-width: 0; padding-left: 0; font-size: 0.69rem; }
+        .nav {
+          grid-column: 1 / -1;
+          display: flex;
+          max-width: none;
+          margin: 0 -1rem;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          gap: 0.4rem;
+          justify-content: flex-start;
+          padding: 0.25rem 1rem 0.2rem;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .nav::-webkit-scrollbar { display: none; }
+        .pill { flex: 0 0 auto; min-height: 2.5rem; padding: 0.5rem 0.7rem; font-size: 0.86rem; }
+        .wrap { width: calc(100% - 1.5rem); padding-top: 1rem; padding-bottom: calc(4rem + env(safe-area-inset-bottom)); }
+        h1 { font-size: 2.25rem; }
+        .summary { grid-template-columns: 1fr; }
+        .metric { border-right: 0 !important; border-top: 1px solid var(--ink); }
+        .metric:first-child { border-top: 0; }
+        .timeline { grid-template-columns: 1fr; }
+        .step { border-right: 0 !important; border-bottom: 1px solid var(--ink) !important; }
+        .step:last-child { border-bottom: 0 !important; }
+        .table-wrap { overflow-x: visible; }
+        .table-wrap table { display: block; min-width: 0 !important; }
+        .table-wrap thead { display: none; }
+        .table-wrap tbody,
+        .table-wrap tr,
+        .table-wrap td { display: block; width: 100%; }
+        .table-wrap tr { border-bottom: 1px solid var(--ink); }
+        .table-wrap tr:last-child { border-bottom: 0; }
+        .table-wrap td { border-bottom: 0; padding: 0.75rem 0.9rem; }
+        .table-wrap td + td { border-left: 0; }
+        .table-wrap td:first-child { font-weight: 900; color: var(--ink); }
       }
+
+      .back-to-top-button {
+        position: fixed;
+        right: 2rem;
+        bottom: 2rem;
+        z-index: 70;
+        display: inline-flex;
+        min-height: 2.5rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink, #0a0a0a);
+        border-radius: 999px;
+        background: var(--yellow, #ffe07a);
+        color: var(--ink, #0a0a0a);
+        padding: 0.55rem 0.95rem;
+        font: inherit;
+        font-size: 0.9rem;
+        font-weight: 900;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .back-to-top-button:hover,
+      .back-to-top-button:focus {
+        background: #ffec9f;
+        outline: none;
+      }
+
+      .back-to-top-button:focus-visible {
+        outline: 2px solid var(--ink, #0a0a0a);
+        outline-offset: 3px;
+      }
+
+      .back-to-top-button:active {
+        background: #ffd75f;
+      }
+
+      @media (max-width: 720px) {
+        .back-to-top-button {
+          right: 1rem;
+          bottom: calc(1rem + env(safe-area-inset-bottom));
+          min-height: 2.35rem;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.82rem;
+        }
+      }
+      /* Image back-to-top control */
+      .back-to-top-button {
+        position: fixed;
+        right: 4.25rem;
+        bottom: 1.25rem;
+        z-index: 90;
+        display: block;
+        width: 5.1rem;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      .back-to-top-button img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        pointer-events: none;
+      }
+
+      .back-to-top-button:hover,
+      .back-to-top-button:focus,
+      .back-to-top-button:active {
+        background: transparent;
+      }
+
+      .back-to-top-button:focus {
+        outline: none;
+      }
+
+      .back-to-top-button:focus-visible {
+        border-radius: 0.75rem;
+        outline: 2px solid var(--ink, #0a0a0a);
+        outline-offset: 0.25rem;
+      }
+
+      @media (max-width: 720px) {
+        .back-to-top-button {
+          right: 0.75rem;
+          bottom: calc(0.75rem + env(safe-area-inset-bottom));
+          width: 4.08rem;
+        }
+      }
+
+    
+      /* header-lock: keep page headers aligned across every module */
+      .nav-suffix {
+        font-size: 0.85em;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      @media (min-width: 721px) {
+        .header {
+          padding: 1rem 4rem;
+        }
+        .header .header-inner {
+          display: grid;
+          min-height: 5rem;
+          grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1rem;
+        }
+        .header .logo,
+        .header img.logo {
+          width: 6.5rem;
+          height: 5rem;
+          object-fit: contain;
+        }
+        .header .header-title {
+          min-width: 12rem;
+          overflow: hidden;
+          padding-left: 1rem;
+          font-size: clamp(1.11rem, 1.92vw, 2.1rem);
+          font-weight: 900;
+          line-height: 1;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .header .nav,
+        .header .top-nav {
+          position: absolute;
+          top: 2.3rem;
+          right: 4rem;
+          width: min(61.5rem, calc(100vw - 13rem));
+          max-width: none;
+          flex-wrap: nowrap;
+          justify-content: flex-end;
+          justify-self: end;
+        }
+        .header .nav > .pill,
+        .header .top-nav > .nav-pill {
+          flex: 0 0 auto;
+          height: 2.35rem;
+          min-height: 0;
+          padding: 0;
+          white-space: nowrap;
+        }
+        .header .nav > .pill:nth-child(1),
+        .header .top-nav > .nav-pill:nth-child(1) { width: 11.4rem; }
+        .header .nav > .pill:nth-child(2),
+        .header .top-nav > .nav-pill:nth-child(2) { width: 9.4rem; }
+        .header .nav > .pill:nth-child(3),
+        .header .top-nav > .nav-pill:nth-child(3) { width: 10.6rem; }
+        .header .nav > .pill:nth-child(4),
+        .header .top-nav > .nav-pill:nth-child(4) { width: 12.4rem; }
+        .header .nav > .pill:nth-child(5),
+        .header .top-nav > .nav-pill:nth-child(5) { width: 8.4rem; }
+        .header .nav > .pill:nth-child(6),
+        .header .top-nav > .nav-pill:nth-child(6) { width: 5.6rem; }
+      }
+
+      @media (max-width: 980px) {
+        .header {
+          padding: 0.85rem 1rem;
+        }
+        .header .header-inner {
+          min-height: auto;
+          grid-template-columns: auto 1fr;
+        }
+        .header .logo,
+        .header img.logo {
+          width: 4.9rem;
+          height: 3.75rem;
+        }
+        .header .header-title {
+          min-width: 0;
+          padding-left: 0;
+          font-size: 0.69rem;
+        }
+        .header .nav,
+        .header .top-nav {
+          grid-column: 1 / -1;
+          position: static;
+          width: auto;
+          max-width: none;
+          margin: 0 -1rem;
+          padding: 0.25rem 1rem 0.15rem;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+      }
+
+    
+      /* header-lock-pill: normalize nav pill height across modules */
+      .header .nav > .pill,
+      .header .top-nav > .nav-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.15rem;
+        font-size: 0.95rem;
+        line-height: 1;
+      }
+
+      @media (max-width: 980px) {
+        .header .nav > .pill,
+        .header .top-nav > .nav-pill {
+          flex: 0 0 auto;
+          height: 2.35rem;
+          min-height: 0;
+          padding: 0 0.72rem;
+          white-space: nowrap;
+        }
+      }
+
+    
+      /* final-header-lock: absolute header geometry, based on application/cost pages */
+      .nav-suffix {
+        font-size: 0.85em !important;
+        font-style: italic !important;
+        font-weight: 400 !important;
+      }
+
+      @media (min-width: 981px) {
+        .header {
+          position: sticky !important;
+          top: 0 !important;
+          height: 7.05rem !important;
+          min-height: 7.05rem !important;
+          padding: 1rem 4rem !important;
+          box-sizing: border-box !important;
+        }
+        .header .header-inner {
+          position: relative !important;
+          display: block !important;
+          width: 100% !important;
+          max-width: none !important;
+          height: 5rem !important;
+          min-height: 5rem !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .header .logo,
+        .header img.logo {
+          position: absolute !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 6.5rem !important;
+          height: 5rem !important;
+          object-fit: contain !important;
+        }
+        .header .header-title {
+          position: absolute !important;
+          left: 8.5rem !important;
+          top: 50% !important;
+          width: calc(100vw - 18rem) !important;
+          min-width: 0 !important;
+          max-width: none !important;
+          transform: translateY(-50%) !important;
+          overflow: hidden !important;
+          padding-left: 0 !important;
+          font-size: clamp(1.11rem, 1.92vw, 2.1rem) !important;
+          font-weight: 900 !important;
+          line-height: 1 !important;
+          text-overflow: ellipsis !important;
+          white-space: nowrap !important;
+        }
+        .header .nav,
+        .header .top-nav {
+          position: absolute !important;
+          top: 50% !important;
+          right: 0 !important;
+          width: 61.5rem !important;
+          max-width: calc(100vw - 13rem) !important;
+          height: 2.35rem !important;
+          transform: translateY(-50%) !important;
+          display: flex !important;
+          flex-wrap: nowrap !important;
+          align-items: center !important;
+          justify-content: flex-end !important;
+          gap: 0.5rem !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: visible !important;
+          scrollbar-width: auto !important;
+        }
+        .header .nav > .pill,
+        .header .top-nav > .nav-pill {
+          display: inline-flex !important;
+          flex: 0 0 auto !important;
+          box-sizing: border-box !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: normal !important;
+          height: 2.35rem !important;
+          min-height: 0 !important;
+          padding: 0 !important;
+          font-size: 0.95rem !important;
+          line-height: 1 !important;
+          white-space: nowrap !important;
+        }
+        .header .nav > .pill:nth-child(1),
+        .header .top-nav > .nav-pill:nth-child(1) { width: 11.4rem !important; }
+        .header .nav > .pill:nth-child(2),
+        .header .top-nav > .nav-pill:nth-child(2) { width: 9.4rem !important; }
+        .header .nav > .pill:nth-child(3),
+        .header .top-nav > .nav-pill:nth-child(3) { width: 10.6rem !important; }
+        .header .nav > .pill:nth-child(4),
+        .header .top-nav > .nav-pill:nth-child(4) { width: 12.4rem !important; }
+        .header .nav > .pill:nth-child(5),
+        .header .top-nav > .nav-pill:nth-child(5) { width: 8.4rem !important; }
+        .header .nav > .pill:nth-child(6),
+        .header .top-nav > .nav-pill:nth-child(6) { width: 5.6rem !important; }
+      }
+
+      @media (max-width: 980px) {
+        .header {
+          height: 9.25rem !important;
+          min-height: 9.25rem !important;
+          padding: 0.85rem 1rem !important;
+          box-sizing: border-box !important;
+        }
+        .header .header-inner {
+          position: relative !important;
+          display: block !important;
+          height: 4.25rem !important;
+          min-height: 4.25rem !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .header .logo,
+        .header img.logo {
+          position: absolute !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 4.9rem !important;
+          height: 3.75rem !important;
+          object-fit: contain !important;
+        }
+        .header .header-title {
+          position: absolute !important;
+          left: 5.95rem !important;
+          top: 1.9rem !important;
+          width: calc(100vw - 7rem) !important;
+          min-width: 0 !important;
+          transform: translateY(-50%) !important;
+          overflow: hidden !important;
+          padding-left: 0 !important;
+          font-size: 0.69rem !important;
+          font-weight: 900 !important;
+          line-height: 1 !important;
+          text-overflow: ellipsis !important;
+          white-space: nowrap !important;
+        }
+        .header .nav,
+        .header .top-nav {
+          position: absolute !important;
+          left: -1rem !important;
+          top: 4.65rem !important;
+          width: calc(100vw) !important;
+          max-width: none !important;
+          height: 2.75rem !important;
+          display: flex !important;
+          flex-wrap: nowrap !important;
+          align-items: center !important;
+          justify-content: flex-start !important;
+          gap: 0.4rem !important;
+          margin: 0 !important;
+          padding: 0.25rem 1rem 0.15rem !important;
+          overflow-x: auto !important;
+          overflow-y: hidden !important;
+          transform: none !important;
+          -webkit-overflow-scrolling: touch !important;
+          scrollbar-width: none !important;
+        }
+        .header .nav > .pill,
+        .header .top-nav > .nav-pill {
+          display: inline-flex !important;
+          flex: 0 0 auto !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 0.15rem !important;
+          height: 2.35rem !important;
+          min-height: 0 !important;
+          padding: 0 0.72rem !important;
+          font-size: 0.95rem !important;
+          line-height: 1 !important;
+          white-space: nowrap !important;
+        }
+      }
+
+      /* Readability refresh for the self-apply vs agency guide */
+      .page-guide {
+        left: 1rem;
+        width: 8.6rem;
+        border: 0;
+        background: rgba(255, 254, 251, 0.96);
+        box-shadow: none;
+        font-size: 0.78rem;
+        font-style: normal;
+        font-weight: 400;
+      }
+
+      .page-guide::before {
+        content: "快速定位";
+        display: block;
+        border-bottom: 1px solid var(--ink);
+        margin: -0.25rem -0.1rem 0.35rem;
+        padding-bottom: 0.45rem;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 400;
+      }
+
+      .page-guide a {
+        font-weight: 400;
+      }
+
+      .page-guide a::before {
+        width: 1.15rem;
+        height: 1.15rem;
+        margin-top: 0;
+        border: 0;
+        background: transparent;
+        color: var(--ink);
+        display: inline-grid;
+        place-items: center;
+        font-size: 0.64rem;
+        font-style: normal;
+        font-weight: 400;
+      }
+
+      .page-guide a:nth-child(1)::before { content: "1"; }
+      .page-guide a:nth-child(2)::before { content: "2"; }
+      .page-guide a:nth-child(3)::before { content: "3"; }
+      .page-guide a:nth-child(4)::before { content: "4"; }
+      .page-guide a:nth-child(5)::before { content: "5"; }
+      .page-guide a:nth-child(6)::before { content: "6"; }
+
+      .wrap {
+        width: calc(100% - 25rem);
+        padding-top: 1.6rem;
+      }
+
+      .summary {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+        border: 0;
+        margin-top: 0;
+      }
+
+      .metric {
+        min-height: 7.2rem;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        padding: 0.95rem 1.05rem;
+      }
+
+      .metric:last-child,
+      .metric:nth-child(3n) {
+        border-right: 1px solid var(--ink);
+      }
+
+      .metric strong {
+        font-size: 1.55rem;
+      }
+
+      .metric p {
+        max-width: 14rem;
+        font-size: 0.9rem;
+      }
+
+      .section {
+        margin-top: 2.35rem;
+      }
+
+      .summary-title {
+        margin-bottom: 0.85rem;
+        font-size: 1.18rem;
+      }
+
+      .mode-grid,
+      .major-grid {
+        gap: 0.9rem;
+      }
+
+      .card {
+        background: var(--surface);
+        padding: 1.05rem 1.15rem;
+      }
+
+      .card h3 {
+        font-size: 1.34rem;
+      }
+
+      .card ul,
+      .card p {
+        font-size: 0.94rem;
+      }
+
+      .score-board {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 0.85rem;
+      }
+
+      .score {
+        display: block;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        padding: 0;
+      }
+
+      .score:last-child {
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .score > strong,
+      .score > span {
+        display: block;
+        padding: 0.68rem 0.8rem;
+      }
+
+      .score > strong {
+        background: #f1f1ee;
+        border-bottom: 1px solid var(--ink);
+        font-size: 1rem;
+      }
+
+      .score > span {
+        color: var(--ink);
+        font-size: 0.86rem;
+        font-weight: 800;
+      }
+
+      .bar {
+        height: 2.55rem;
+        border-width: 0 0 1px;
+        background: #fff;
+      }
+
+      .bar-fill {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-width: 8.2rem;
+        height: 100%;
+        padding: 0 0.8rem;
+        color: var(--ink);
+        font-size: 1rem;
+        font-weight: 900;
+      }
+
+      .bar-fill.green {
+        background: var(--green);
+      }
+
+      .bar-fill.yellow {
+        background: var(--yellow);
+      }
+
+      .bar-fill.peach {
+        background: var(--peach);
+      }
+
+      .compare-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.85rem;
+      }
+
+      .compare-card {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .compare-card h3 {
+        margin: 0;
+        border-bottom: 1px solid var(--ink);
+        padding: 0.85rem 1rem;
+        font-size: 1.28rem;
+      }
+
+      .compare-card.self h3 { background: #eefaf4; }
+      .compare-card.hybrid h3 { background: #fff4b8; }
+      .compare-card.full h3 { background: #fff0e6; }
+
+      .compare-card dl {
+        margin: 0;
+      }
+
+      .compare-card .compare-row {
+        display: grid;
+        grid-template-columns: 5.1rem minmax(0, 1fr);
+        border-bottom: 1px solid var(--ink);
+        min-height: 4.1rem;
+      }
+
+      .compare-card .compare-row:last-child {
+        border-bottom: 0;
+      }
+
+      .compare-card dt,
+      .compare-card dd {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0.65rem 0.8rem;
+        line-height: 1.5;
+      }
+
+      .compare-card dt {
+        border-right: 1px solid var(--ink);
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+
+      .compare-card dd {
+        font-size: 0.92rem;
+        font-weight: 800;
+      }
+
+      .risk-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.65rem;
+      }
+
+      .risk-chip {
+        border: 1px solid var(--ink);
+        padding: 0.28rem 0.65rem;
+        font-size: 0.8rem;
+        font-weight: 900;
+      }
+
+      .risk-map div {
+        min-height: 3.65rem;
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+      }
+
+      .timeline {
+        gap: 0.75rem;
+        border: 0;
+        background: transparent;
+      }
+
+      .step {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        padding: 1rem;
+      }
+
+      .step strong {
+        display: inline-flex;
+        align-items: center;
+        border-bottom: 0.45rem solid var(--yellow);
+        font-size: 1.05rem;
+        line-height: 0.9;
+      }
+
+      .red-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.7rem;
+      }
+
+      .red-item {
+        grid-template-columns: 2.7rem 1fr;
+        background: #fffdfc;
+      }
+
+      .red-item p {
+        font-size: 0.9rem;
+        font-weight: 800;
+      }
+
+      .matrix {
+        gap: 0.8rem;
+        border: 0;
+        background: transparent;
+      }
+
+      .matrix > div {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .matrix > div:last-child {
+        border-right: 1px solid var(--ink);
+      }
+
+      .matrix strong {
+        display: inline-flex;
+        margin-bottom: 0.35rem;
+        border-bottom: 0.45rem solid var(--yellow);
+        font-size: 1.45rem;
+        line-height: 0.9;
+      }
+
+      @media (max-width: 1200px) {
+        .wrap { width: calc(100% - 4rem); }
+        .metric:nth-child(n+4) { border-top: 1px solid var(--ink); }
+        .red-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      @media (max-width: 900px) {
+        .score-board,
+        .compare-grid,
+        .mode-grid,
+        .major-grid,
+        .matrix,
+        .red-list {
+          grid-template-columns: 1fr;
+        }
+        .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .metric:nth-child(n+3) { border-top: 1px solid var(--ink); }
+      }
+
+      @media (max-width: 720px) {
+        .wrap { width: calc(100% - 1.5rem); }
+        .summary { grid-template-columns: 1fr; }
+        .compare-card .compare-row { grid-template-columns: 4.5rem minmax(0, 1fr); }
+      }
+
     </style>
   </head>
   <body>
     <header class="header">
-      <a href="./hanxue-luopan-home.html" aria-label="韩学罗盘">
-        <img class="logo" src="./public/hanxue-luopan-logo.png" alt="韩学罗盘" />
-      </a>
-      <nav class="nav" aria-label="主导航">
-        <a class="pill yellow" href="./exchange-rate.html">汇率</a>
-        <a class="pill mint" href="./korea-overview.html">韩国概况</a>
-        <a class="pill pink" href="./about.html">关于我们</a>
-      </nav>
+      <div class="header-inner">
+        <a href="./hanxue-luopan-home.html" aria-label="韩学罗盘">
+          <img class="logo" src="./public/korea-link-logo.gif" alt="韩学罗盘" />
+        </a>
+        <div class="header-title">自申 vs 中介</div>
+        <nav class="nav" aria-label="主导航">
+                  <a class="pill pink" href="./universities.html">&#38889;&#22269;&#22823;&#23398;&#24211; <span class="nav-suffix">&#65288;&#30452;&#21319;&#65289;</span></a>
+          <a class="pill mint" href="./application.html">&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;</a>
+          <a class="pill green" href="./topik.html">&#38889;&#35821;(TOPIK)</a>
+          <a class="pill yellow" href="./cost.html">&#30041;&#23398;&#36153;&#29992; <span class="nav-suffix">&#65288;&#22870;&#23398;&#37329;&#65289;</span></a>
+          <a class="pill peach active" href="./agency-check.html">&#33258;&#30003; vs &#20013;&#20171;</a>
+          <a class="pill yellow" href="./exchange-rate.html">&#27719;&#29575;</a>
+
+
+
+        </nav>
+      </div>
     </header>
+
+    <nav class="page-guide" aria-label="页面导览">
+      <a href="#decision">先给结论</a>
+      <a href="#cost">费用与时间</a>
+      <a href="#risk">风险热力图</a>
+      <a href="#timeline">申请时间线</a>
+      <a href="#contract">合同红线</a>
+      <a href="#major">专业方向</a>
+    </nav>
+
     <main class="wrap">
-      <a class="back" href="./hanxue-luopan-home.html">返回首页</a>
-      <h1>自申 vs 中介</h1>
-      <p class="lead">判断自己是否适合自己申请的工具将在这里扩展。</p>
+      <section class="summary" aria-label="核心指标">
+        <article class="metric"><span class="pill green">自申</span><strong>2000-5000元</strong><p>最低成本，最高参与度。</p></article>
+        <article class="metric"><span class="pill peach">全包</span><strong>10000-20000元</strong><p>省时间，但合同风险更高。</p></article>
+        <article class="metric"><span class="pill yellow">半托管</span><strong>4000-8000元</strong><p>多数家庭最稳的折中。</p></article>
+        <article class="metric"><span class="pill mint">准备周期</span><strong>6-12个月</strong><p>越早做材料越少慌。</p></article>
+        <article class="metric"><span class="pill pink">核心资产</span><strong>账号归属</strong><p>邮箱、网申号必须在自己手里。</p></article>
+        <article class="metric"><span class="pill peach">最大红线</span><strong>保录保签</strong><p>看到就暂停付款。</p></article>
+      </section>
+
+      <section class="section" id="decision">
+        <h2 class="summary-title">先给结论：你更像哪一种</h2>
+        <div class="mode-grid">
+          <article class="card">
+            <span class="pill green">选自申</span>
+            <h3>有时间，有语言基础，目标不复杂</h3>
+            <ul>
+              <li>每周能拿出4小时以上</li>
+              <li>能看懂韩文/英文招生简章</li>
+              <li>只申1-3所同类型学校</li>
+              <li>预算紧，愿意自己做表格管理</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="pill yellow">选半托管</span>
+            <h3>方向自己定，易错环节找人帮</h3>
+            <ul>
+              <li>会选学校，但怕材料漏项</li>
+              <li>文书、翻译、公证、面试需要支持</li>
+              <li>想省钱，也想降低流程风险</li>
+              <li>适合大多数高二/高三家庭</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="pill peach">选全包</span>
+            <h3>时间非常紧，或申请本身高风险</h3>
+            <ul>
+              <li>高三任务重，家长无法跟流程</li>
+              <li>零韩语、跨专业、材料复杂</li>
+              <li>冲首尔热门校或SKY梯队</li>
+              <li>有拒签史，需要专业复盘</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="cost">
+        <h2 class="summary-title">费用与时间：一眼看差异</h2>
+        <div class="score-board" aria-label="费用与投入对比图">
+          <div class="score">
+            <strong>自申</strong>
+            <div class="bar"><span class="bar-fill green" style="width:25%">0.2-0.5w</span></div>
+            <span>每周4-6小时，适合愿意自己盯流程。</span>
+          </div>
+          <div class="score">
+            <strong>半托管</strong>
+            <div class="bar"><span class="bar-fill yellow" style="width:48%">0.4-0.8w</span></div>
+            <span>每周2-3小时，材料和文书有人复核。</span>
+          </div>
+          <div class="score">
+            <strong>全包</strong>
+            <div class="bar"><span class="bar-fill peach" style="width:100%">1-2w</span></div>
+            <span>学生耗时最低，但合同和账号要看清。</span>
+          </div>
+        </div>
+
+        <div class="compare-grid" aria-label="模式关键区别">
+          <article class="compare-card self">
+            <h3>自申</h3>
+            <dl>
+              <div class="compare-row"><dt>钱花哪</dt><dd>申请费、公证、认证、签证。</dd></div>
+              <div class="compare-row"><dt>账号</dt><dd>必须本人持有。</dd></div>
+              <div class="compare-row"><dt>适合</dt><dd>普通本科，目标少，学生或家长能跟流程。</dd></div>
+              <div class="compare-row"><dt>风险</dt><dd>漏材料、错截止日、缴费节点看错。</dd></div>
+            </dl>
+          </article>
+          <article class="compare-card hybrid">
+            <h3>半托管</h3>
+            <dl>
+              <div class="compare-row"><dt>钱花哪</dt><dd>刚需费用 + 文书、材料、面试等单项服务。</dd></div>
+              <div class="compare-row"><dt>账号</dt><dd>仍建议本人持有，机构只协助操作。</dd></div>
+              <div class="compare-row"><dt>适合</dt><dd>多数本科申请，想省钱但怕材料出错。</dd></div>
+              <div class="compare-row"><dt>风险</dt><dd>服务边界不清，哪些内容另收费要写清。</dd></div>
+            </dl>
+          </article>
+          <article class="compare-card full">
+            <h3>全包</h3>
+            <dl>
+              <div class="compare-row"><dt>钱花哪</dt><dd>刚需费用 + 全流程服务费。</dd></div>
+              <div class="compare-row"><dt>账号</dt><dd>合同写明最终交还账号、邮箱和材料。</dd></div>
+              <div class="compare-row"><dt>适合</dt><dd>时间紧、材料复杂、冲刺名校或高风险申请。</dd></div>
+              <div class="compare-row"><dt>风险</dt><dd>隐形收费、保录话术、申请过程不透明。</dd></div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="risk">
+        <h2 class="summary-title">风险热力图：哪里最容易出事</h2>
+        <div class="risk-legend" aria-label="风险等级说明">
+          <span class="risk-chip low">低</span>
+          <span class="risk-chip mid">中</span>
+          <span class="risk-chip high">高</span>
+          <span class="risk-chip max">极高</span>
+        </div>
+        <div class="risk-map" aria-label="风险热力图">
+          <div class="head">模式</div><div class="head">选校</div><div class="head">材料</div><div class="head">文书</div><div class="head">缴费</div><div class="head">签证</div>
+          <div class="head">自申</div><div class="mid">中</div><div class="high">高</div><div class="mid">中</div><div class="mid">中</div><div class="high">高</div>
+          <div class="head">半托管</div><div class="mid">中</div><div class="low">低</div><div class="low">低</div><div class="mid">中</div><div class="mid">中</div>
+          <div class="head">全包</div><div class="low">低</div><div class="low">低</div><div class="low">低</div><div class="high">高</div><div class="mid">中</div>
+          <div class="head">不透明机构</div><div class="max">极高</div><div class="max">极高</div><div class="high">高</div><div class="max">极高</div><div class="high">高</div>
+        </div>
+        <p class="note">风险不是“谁做”决定的，而是“信息是否透明、账号是否归你、付款是否可追踪、合同是否写清楚”决定的。</p>
+      </section>
+
+      <section class="section" id="timeline">
+        <h2 class="summary-title">申请时间线：只记6步</h2>
+        <div class="timeline">
+          <article class="step"><strong>12个月前</strong><p>定入学季、城市、预算，做冲稳保学校表。</p></article>
+          <article class="step"><strong>8个月前</strong><p>查学校简章，确认语言、资金、父母国籍要求。</p></article>
+          <article class="step"><strong>6个月前</strong><p>准备成绩、学历、亲属、存款、公证认证。</p></article>
+          <article class="step"><strong>4个月前</strong><p>完成文书、网申、申请费、材料邮寄。</p></article>
+          <article class="step"><strong>2个月前</strong><p>面试、补件、录取确认、缴纳学费。</p></article>
+          <article class="step"><strong>1个月前</strong><p>办D-2签证、住宿、机票、入境准备。</p></article>
+        </div>
+      </section>
+
+      <section class="section" id="contract">
+        <h2 class="summary-title">合同红线：出现这些就先别付钱</h2>
+        <div class="red-list">
+          <article class="red-item"><span>1</span><p>承诺保录取、保签证、内部名额。</p></article>
+          <article class="red-item"><span>2</span><p>不写具体学校、专业、申请批次。</p></article>
+          <article class="red-item"><span>3</span><p>申请账号、邮箱、密码不交给学生。</p></article>
+          <article class="red-item"><span>4</span><p>要求转账到个人账户或陌生主体。</p></article>
+          <article class="red-item"><span>5</span><p>第三方费用不列明，后续不断加钱。</p></article>
+          <article class="red-item"><span>6</span><p>退款条件、争议地、违约责任模糊。</p></article>
+          <article class="red-item"><span>7</span><p>说材料可以包装、美化、补做经历。</p></article>
+          <article class="red-item"><span>8</span><p>不让学生看最终提交材料。</p></article>
+        </div>
+      </section>
+
+      <section class="section" id="major">
+        <h2 class="summary-title">专业方向：先按学生类型粗选</h2>
+        <div class="major-grid">
+          <article class="card"><span class="pill yellow">商科</span><h3>容错最高</h3><p>经营、国际通商、金融。适合方向还不确定、想保就业面的学生。</p></article>
+          <article class="card"><span class="pill pink">传媒</span><h3>文科热门</h3><p>新媒体、广告、影视、韩语翻译。看语言和作品表达。</p></article>
+          <article class="card"><span class="pill mint">理工IT</span><h3>薪资上限高</h3><p>AI、计算机、半导体、汽车。适合理科基础稳定的学生。</p></article>
+          <article class="card"><span class="pill peach">艺术设计</span><h3>作品集关键</h3><p>视觉传达、时尚、美妆、实用音乐。申请服务和作品集服务分开看。</p></article>
+          <article class="card"><span class="pill green">文旅康养</span><h3>低分友好</h3><p>酒店观光、幼儿教育。适合想降低录取难度的学生。</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="summary-title">最后一张决策卡</h2>
+        <div class="matrix">
+          <div><strong>想省钱</strong><p>自申。把钱留给TOPIK、申请费、公证认证和生活预算。</p></div>
+          <div><strong>怕出错</strong><p>半托管。自己控制方向，找人复核材料和文书。</p></div>
+          <div><strong>没时间</strong><p>全包。只选合同透明、账号可见、费用拆分清楚的机构。</p></div>
+        </div>
+        <p class="note">正式提交前，永远回到三类资料核对：学校官网招生简章、Korea Visa Portal/使领馆要求、签署的正式合同附件。</p>
+      </section>
     </main>
+    <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Back to top">
+      <img src="./public/up.gif" alt="" aria-hidden="true" />
+    </button>
   </body>
 </html>

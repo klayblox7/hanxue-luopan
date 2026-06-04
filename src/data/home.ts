@@ -143,7 +143,7 @@ export const homeEntries: HomeEntry[] = [
     status: "planned"
   },
   {
-    title: "申请路线",
+    title: "国内+韩国项目",
     description: "按本科、插班、研究生、语学院拆申请时间线、材料清单和关键截止日。",
     href: "/application",
     category: "时间线+材料",
@@ -154,7 +154,7 @@ export const homeEntries: HomeEntry[] = [
   {
     title: "自申 vs 中介",
     description: "判断自己是否适合自己申请，避免信息不透明。",
-    href: "/application#agency-check",
+    href: "/agency-check",
     category: "决策工具",
     sourceType: "community",
     actionLabel: "查看规划入口",

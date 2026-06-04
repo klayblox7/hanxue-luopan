@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" role="img" aria-label="TOPIK Guide">
+  <rect width="80" height="80" fill="#f1f1ee"/>
+  <rect x="12" y="12" width="56" height="56" fill="#fffefb" stroke="#0a0a0a" stroke-width="2"/>
+  <text x="40" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="900" fill="#0a0a0a">TOPIK</text>
+  <text x="40" y="54" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="800" fill="#66645d">GUIDE</text>
+</svg>

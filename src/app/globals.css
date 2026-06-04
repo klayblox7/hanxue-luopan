@@ -8,7 +8,10 @@
 }
 
 html {
+  overflow-y: scroll;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -18,6 +21,50 @@ body {
     "Microsoft YaHei UI", "Microsoft YaHei", "微软雅黑", "PingFang SC", "Noto Sans CJK SC",
     "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "MS Gothic", "Malgun Gothic", Inter,
     system-ui, -apple-system, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+@media (max-width: 767px) {
+  button,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.detail-page-container {
+  width: calc(100% - 1.5rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 640px) {
+  .detail-page-container {
+    width: calc(100% - 3rem);
+  }
+}
+
+@media (min-width: 1280px) {
+  .detail-page-container {
+    width: calc(100vw - 25rem);
+  }
 }
 
 .entry-sticker {

@@ -53,7 +53,7 @@ describe("home data", () => {
       "/topik",
       "/cost",
       "/application",
-      "/application#agency-check"
+      "/agency-check"
     ]);
     expect(homeEntries[0]).toMatchObject({
       title: "韩国大学库",

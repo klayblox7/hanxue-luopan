@@ -13,12 +13,14 @@ import {
   type IntendedMajor,
   type SchoolTypePreference
 } from "@/data/recommendations";
-import { getKoreaRankingNote } from "@/data/universityRankings";
+import { getAdmissionCaseSummary } from "@/data/admissionCases";
+import { getUniversityTier } from "@/data/universityTiers";
+import { UniversityCasePanel } from "./UniversitiesDirectory";
 
 const defaultApplicant: ApplicantProfile = {
   age: 18,
-  gpaPercent: 88,
-  highSchoolTier: "city_key",
+  gpaPercent: 77,
+  highSchoolTier: "regular",
   gradeRankBand: "top_25",
   gaokaoStrength: "not_submitted",
   topikLevel: 3,
@@ -30,23 +32,34 @@ const defaultApplicant: ApplicantProfile = {
 };
 
 const categoryLabels = {
-  stable: "较稳候选",
-  match: "适合考虑",
-  reach: "冲刺候选",
+  stable: "较有希望",
+  match: "适合申请",
+  reach: "冲刺申请",
   prepare_first: "先补条件",
-  verify: "需官方确认"
+  verify: "需确认"
 };
+
+const gpaBandOptions = [
+  { label: "60分以下", value: 55 },
+  { label: "60-70分", value: 65 },
+  { label: "70-75分", value: 72 },
+  { label: "75-80分", value: 77 },
+  { label: "80-85分", value: 82 },
+  { label: "85-90分", value: 88 },
+  { label: "90分以上", value: 95 }
+];
 
 export function AdmissionsRecommender() {
   const [applicant, setApplicant] = useState<ApplicantProfile>(defaultApplicant);
   const [submitted, setSubmitted] = useState(false);
+  const [expandedSchoolSlug, setExpandedSchoolSlug] = useState<string | null>(null);
   const results = useMemo(() => recommendUniversities(applicant), [applicant]);
 
   return (
-    <section className="border-y border-ink bg-paper px-4 py-7 sm:px-6 lg:px-8" aria-label="韩国大学推荐">
-      <div className="mx-auto grid w-full max-w-[92rem] gap-4">
+    <section className="border-y border-ink bg-paper px-3 py-4 sm:px-6 sm:py-6 lg:px-8" aria-label="韩国大学推荐">
+      <div className="detail-page-container grid gap-3 sm:gap-4">
         <div className="grid gap-4">
-          <div className="grid gap-3 border border-ink bg-surface p-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-3 rounded-lg border border-ink bg-surface p-3 sm:grid-cols-2 sm:p-4 lg:grid-cols-5">
             <label className="grid gap-1 text-sm font-bold">
               年龄
               <input
@@ -61,14 +74,17 @@ export function AdmissionsRecommender() {
 
             <label className="grid gap-1 text-sm font-bold">
               高中均分
-              <input
+              <select
                 className="border border-ink bg-paper px-3 py-2"
-                max={100}
-                min={0}
-                type="number"
                 value={applicant.gpaPercent}
                 onChange={(event) => setApplicant({ ...applicant, gpaPercent: Number(event.target.value) })}
-              />
+              >
+                {gpaBandOptions.map((option) => (
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
@@ -150,19 +166,15 @@ export function AdmissionsRecommender() {
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              希望地区
+              倾向地区
               <select
                 className="border border-ink bg-paper px-3 py-2"
                 value={applicant.preferredRegion}
                 onChange={(event) => setApplicant({ ...applicant, preferredRegion: event.target.value })}
               >
-                <option value="不限">不限</option>
+                <option value="不限">都可以</option>
                 <option value="首尔">首尔</option>
-                <option value="釜山">釜山</option>
-                <option value="大田">大田</option>
-                <option value="大邱">大邱</option>
-                <option value="水原">水原</option>
-                <option value="济州">济州</option>
+                <option value="地方">地方</option>
               </select>
             </label>
 
@@ -190,25 +202,44 @@ export function AdmissionsRecommender() {
               >
                 <option value="any">不限</option>
                 <option value="national">国立/公立</option>
-                <option value="private">私立也可以</option>
+                <option value="private">私立</option>
               </select>
             </label>
-          </div>
 
-          <button
-            className="inline-flex w-fit items-center gap-2 rounded-full border border-ink bg-yellow px-5 py-3 text-sm font-black"
-            type="button"
-            onClick={() => setSubmitted(true)}
-          >
-            <Search size={16} aria-hidden="true" />
-            生成5所推荐大学
-          </button>
+            <div className="grid gap-2 sm:col-span-2 sm:flex sm:items-center sm:gap-3 lg:col-span-5 lg:ml-auto lg:w-[min(58rem,100%)] lg:justify-end">
+              <p className="text-xs italic leading-5 text-muted sm:mb-0.5 sm:mr-3 sm:flex-1 sm:self-end sm:text-right">
+                推荐结果仅用于初步选校，不代表录取保证。请以学校最新招生简章为准。
+              </p>
+              <button
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-ink bg-yellow px-5 py-3 text-sm font-black sm:w-fit"
+                type="button"
+                onClick={() => {
+                  setSubmitted(true);
+                  setExpandedSchoolSlug(null);
+                }}
+              >
+                <Search size={16} aria-hidden="true" />
+                生成7所推荐大学
+              </button>
+              <button
+                className="inline-flex w-full items-center justify-center rounded-full border border-ink bg-[#71d39b] px-5 py-3 text-sm font-black sm:w-fit"
+                type="button"
+                onClick={() => {
+                  setApplicant(defaultApplicant);
+                  setSubmitted(false);
+                  setExpandedSchoolSlug(null);
+                }}
+              >
+                还原
+              </button>
+            </div>
+          </div>
 
           {submitted ? (
             <div className="grid gap-3">
               <h2 className="text-xl font-black">初步推荐结果</h2>
               {results.map((result, index) => (
-                <article className="border border-ink bg-surface p-4" data-testid="recommendation-result" key={result.schoolSlug}>
+                <article className="rounded-lg border border-ink bg-surface p-3 sm:p-4" data-testid="recommendation-result" key={result.schoolSlug}>
                   <div className="flex items-start gap-3">
                     <span
                       aria-label={`推荐第${index + 1}位`}
@@ -218,32 +249,51 @@ export function AdmissionsRecommender() {
                       {index + 1}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-3">
+                      <div className="grid gap-2 sm:flex sm:items-start sm:justify-between sm:gap-3">
                         <div>
                           <h3 className="text-lg font-black">
-                            {result.schoolNameCn}
-                            <span className="ml-2 text-[0.82em] font-normal italic text-muted">
-                              {getKoreaRankingNote(result.schoolSlug)}
+                            <button
+                              aria-expanded={expandedSchoolSlug === result.schoolSlug}
+                              className="text-left font-black underline-offset-4 hover:underline focus:underline focus:outline-none"
+                              data-testid="recommendation-school-toggle"
+                              type="button"
+                              onClick={() =>
+                                setExpandedSchoolSlug((current) => (current === result.schoolSlug ? null : result.schoolSlug))
+                              }
+                            >
+                              {result.schoolNameCn}
+                            </button>
+                            <span className="ml-2 align-baseline text-[0.82em] font-black not-italic text-muted">
+                              {getUniversityTier(result.schoolNameCn)}
+                            </span>
+                            <span className="ml-5 align-baseline text-[0.82em] font-bold text-ink">
+                              {result.city} / {result.schoolType} ·{" "}
+                              <span className="text-[#9f1d1d]" data-testid="recommendation-confidence">
+                                {categoryLabels[result.category]}
+                              </span>
                             </span>
                           </h3>
-                          <p className="text-sm text-muted">
-                            {result.city} · {categoryLabels[result.category]} ·{" "}
-                            <span className="font-bold text-[#173a6a]">{result.score}分</span>
-                          </p>
                         </div>
-                        <span className="rounded-full border border-ink px-2 py-1 text-xs font-bold">
+                        <span className="w-fit rounded-full border border-ink px-2 py-1 text-xs font-bold">
                           {result.verificationStatus}
                         </span>
                       </div>
-                      <p className="mt-3 text-sm leading-6">{result.reasons.join(" / ")}</p>
-                      <p className="mt-2 text-sm leading-6 text-muted">{result.cautions.join(" ")}</p>
+                      <p className="mt-3 text-sm leading-6 text-ink">{result.reasons.slice(1).join(" / ")}</p>
+                      <p className="mt-2 text-sm leading-6 text-ink" data-testid="recommendation-cautions">
+                        {result.cautions.join(" ")}
+                      </p>
+                      {expandedSchoolSlug === result.schoolSlug ? (
+                        <div className="mt-4" data-testid="recommendation-case-panel">
+                          <UniversityCasePanel
+                            schoolName={result.schoolNameCn}
+                            summary={getAdmissionCaseSummary(result.schoolSlug)}
+                          />
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </article>
               ))}
-              <p className="text-xs leading-5 text-muted">
-                推荐结果仅用于初步选校，不代表录取保证。请以学校最新招生简章为准。
-              </p>
             </div>
           ) : null}
         </div>

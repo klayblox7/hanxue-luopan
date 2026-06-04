@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:static-encoding": "node scripts/check-static-encoding.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
