@@ -966,7 +966,7 @@
           position: absolute;
           top: 2.3rem;
           right: 4rem;
-          width: min(61.5rem, calc(100vw - 13rem));
+          width: min(53rem, calc(100vw - 13rem));
           max-width: none;
           flex-wrap: nowrap;
           justify-content: flex-end;
@@ -1001,9 +1001,7 @@
         .top-nav > .nav-pill:nth-child(4),
         .nav > .pill:nth-child(4) { width: 12.4rem; }
         .top-nav > .nav-pill:nth-child(5),
-        .nav > .pill:nth-child(5) { width: 8.4rem; }
-        .top-nav > .nav-pill:nth-child(6),
-        .nav > .pill:nth-child(6) { width: 5.6rem; }
+        .nav > .pill:nth-child(5) { width: 5.6rem; }
       }
 
         .top-nav > .nav-pill:focus,
@@ -1467,7 +1465,7 @@
           position: absolute;
           top: 2.3rem;
           right: 4rem;
-          width: min(61.5rem, calc(100vw - 13rem));
+          width: min(53rem, calc(100vw - 13rem));
           max-width: none;
           flex-wrap: nowrap;
           justify-content: flex-end;
@@ -1490,9 +1488,7 @@
         .header .nav > .pill:nth-child(4),
         .header .top-nav > .nav-pill:nth-child(4) { width: 12.4rem; }
         .header .nav > .pill:nth-child(5),
-        .header .top-nav > .nav-pill:nth-child(5) { width: 8.4rem; }
-        .header .nav > .pill:nth-child(6),
-        .header .top-nav > .nav-pill:nth-child(6) { width: 5.6rem; }
+        .header .top-nav > .nav-pill:nth-child(5) { width: 5.6rem; }
       }
 
       @media (max-width: 980px) {
@@ -1609,7 +1605,7 @@
           position: absolute !important;
           top: 50% !important;
           right: 0 !important;
-          width: 61.5rem !important;
+          width: 53rem !important;
           max-width: calc(100vw - 13rem) !important;
           height: 2.35rem !important;
           transform: translateY(-50%) !important;
@@ -1646,9 +1642,7 @@
         .header .nav > .pill:nth-child(4),
         .header .top-nav > .nav-pill:nth-child(4) { width: 12.4rem !important; }
         .header .nav > .pill:nth-child(5),
-        .header .top-nav > .nav-pill:nth-child(5) { width: 8.4rem !important; }
-        .header .nav > .pill:nth-child(6),
-        .header .top-nav > .nav-pill:nth-child(6) { width: 5.6rem !important; }
+        .header .top-nav > .nav-pill:nth-child(5) { width: 5.6rem !important; }
       }
 
       @media (max-width: 980px) {
@@ -2761,7 +2755,6 @@
           <a class="nav-pill nav-shortcut nav-mint" href="./application.html">&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;</a>
           <a class="nav-pill nav-shortcut nav-green" href="./topik.html">&#38889;&#35821;(TOPIK)</a>
           <a class="nav-pill nav-shortcut nav-yellow" href="./cost.html">&#30041;&#23398;&#36153;&#29992; <span class="nav-suffix">&#65288;&#22870;&#23398;&#37329;&#65289;</span></a>
-          <a class="nav-pill nav-shortcut nav-peach" href="./agency-check.html">&#25253;&#32771;&#27969;&#31243;</a>
           <a class="nav-pill nav-shortcut nav-yellow" href="./exchange-rate.html">&#27719;&#29575;</a>
 
 
@@ -2774,7 +2767,6 @@
         <a class="mobile-home-card" href="./topik.html"><span style="background: var(--green)">&#38889;</span><span><strong>&#38889;&#35821;(TOPIK)</strong><small>&#22791;&#32771;&#36335;&#32447;</small></span></a>
         <a class="mobile-home-card" href="./cost.html"><span style="background: var(--yellow)">&#36153;</span><span><strong>&#30041;&#23398;&#36153;&#29992;</strong><small>&#20154;&#27665;&#24065;&#39044;&#31639;</small></span></a>
         <a class="mobile-home-card" href="./application.html"><span style="background: var(--mint)">&#39033;</span><span><strong>&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;</strong><small>&#39033;&#30446;&#36335;&#32447;</small></span></a>
-        <a class="mobile-home-card" href="./agency-check.html"><span style="background: var(--peach)">&#27969;</span><span><strong>&#25253;&#32771;&#27969;&#31243;</strong><small>&#30003;&#35831;&#39034;&#24207;</small></span></a>
         <a class="mobile-home-card" href="./exchange-rate.html"><span style="background: var(--lavender)">&#27719;</span><span><strong>&#27719;&#29575;</strong><small>&#38889;&#20803;&#21442;&#32771;</small></span></a>
       </section>
       <!-- Map sources: SGIS/KOSTAT 2020 administrative boundaries via statgarten/maps for the visible Korea and Seoul SVG maps; Wikimedia Commons locator SVGs were downloaded only as reference candidates. -->
@@ -3002,118 +2994,938 @@
       
 <script src="./admission-case-summaries.js"></script>
       <script>
-        (function recommendationBundle() {
-  const universities = [{"slug":"seoul-national-university","name":"首尔大学","city":"首尔","type":"国立","focus":"综合研究、理工、人文社科","no":1},{"slug":"yonsei-university","name":"延世大学","city":"首尔","type":"私立","focus":"经营、国际学、医学","no":2},{"slug":"korea-university","name":"高丽大学","city":"首尔","type":"私立","focus":"经营、传媒、政治经济","no":3},{"slug":"sungkyunkwan-university","name":"成均馆大学","city":"首尔/水原","type":"私立","focus":"工科、经营、半导体、AI","no":4},{"slug":"hanyang-university","name":"汉阳大学","city":"首尔/ERICA","type":"私立","focus":"工科、创业、实用学科","no":5},{"slug":"kyung-hee-university","name":"庆熙大学","city":"首尔/水原","type":"私立","focus":"酒店旅游、国际学、艺术","no":6},{"slug":"chung-ang-university","name":"中央大学","city":"首尔/安城","type":"私立","focus":"传媒、电影、表演、艺术科技","no":7},{"slug":"ewha-womans-university","name":"梨花女子大学","city":"首尔","type":"私立","focus":"女子名校、国际学、设计、教育","no":8},{"slug":"sogang-university","name":"西江大学","city":"首尔","type":"私立","focus":"经营、经济、传媒","no":9},{"slug":"hankuk-university-of-foreign-studies","name":"韩国外国语大学","city":"首尔/龙仁","type":"私立","focus":"外语、国际地域、通翻译","no":10},{"slug":"dongguk-university","name":"东国大学","city":"首尔","type":"私立","focus":"电影影像、佛教学、AI","no":11},{"slug":"konkuk-university","name":"建国大学","city":"首尔","type":"私立","focus":"经营、传媒、房地产、设计","no":12},{"slug":"hongik-university","name":"弘益大学","city":"首尔/世宗","type":"私立","focus":"美术、设计、建筑","no":13},{"slug":"kookmin-university","name":"国民大学","city":"首尔","type":"私立","focus":"汽车设计、工业设计、AI","no":14},{"slug":"sejong-university","name":"世宗大学","city":"首尔","type":"私立","focus":"酒店旅游、动画、AI","no":15},{"slug":"soongsil-university","name":"崇实大学","city":"首尔","type":"私立","focus":"IT、计算机、经营","no":16},{"slug":"university-of-seoul","name":"首尔市立大学","city":"首尔","type":"公立","focus":"城市行政、低学费、都市研究","no":17},{"slug":"pusan-national-university","name":"釜山大学","city":"釜山","type":"国立","focus":"工科、自然科学、国立综合","no":18},{"slug":"kyungpook-national-university","name":"庆北大学","city":"大邱","type":"国立","focus":"工科、IT、国立综合","no":19},{"slug":"chonnam-national-university","name":"全南大学","city":"光州","type":"国立","focus":"工科、农业生命、医学","no":20},{"slug":"chungnam-national-university","name":"忠南大学","city":"大田","type":"国立","focus":"科学技术、国立综合","no":21},{"slug":"chungbuk-national-university","name":"忠北大学","city":"清州","type":"国立","focus":"工科、自然科学、国立","no":22},{"slug":"jeonbuk-national-university","name":"全北大学","city":"全州","type":"国立","focus":"农生命、工科、国立","no":23},{"slug":"kangwon-national-university","name":"江原大学","city":"春川","type":"国立","focus":"自然、森林、兽医","no":24},{"slug":"jeju-national-university","name":"济州大学","city":"济州","type":"国立","focus":"旅游、海洋、生态","no":25},{"slug":"inha-university","name":"仁荷大学","city":"仁川","type":"私立","focus":"工科、航空、物流","no":26},{"slug":"ajou-university","name":"亚洲大学","city":"水原","type":"私立","focus":"工科、医学、经营","no":27},{"slug":"gachon-university","name":"嘉泉大学","city":"城南","type":"私立","focus":"医疗、AI、国际学生扩招","no":28},{"slug":"dankook-university","name":"檀国大学","city":"龙仁/天安","type":"私立","focus":"艺术、牙医学、内容产业","no":29},{"slug":"myongji-university","name":"明知大学","city":"首尔/龙仁","type":"私立","focus":"建筑、人文、艺术","no":30},{"slug":"sangmyung-university","name":"祥明大学","city":"首尔/天安","type":"私立","focus":"设计、动画、艺术","no":31},{"slug":"sungshin-womens-university","name":"诚信女子大学","city":"首尔","type":"私立","focus":"美妆/美容、美妆、设计、女子大学","no":32},{"slug":"sookmyung-womens-university","name":"淑明女子大学","city":"首尔","type":"私立","focus":"全球服务、经营、女子大学","no":33},{"slug":"duksung-womens-university","name":"德成女子大学","city":"首尔","type":"私立","focus":"药学、心理、人文","no":34},{"slug":"seoul-womens-university","name":"首尔女子大学","city":"首尔","type":"私立","focus":"教育、人文、内容","no":35},{"slug":"kwangwoon-university","name":"光云大学","city":"首尔","type":"私立","focus":"电子工程、机器人、IT","no":36},{"slug":"catholic-university-of-korea","name":"加图立大学","city":"富川/首尔","type":"私立","focus":"医学、护理、心理","no":37},{"slug":"korea-aerospace-university","name":"韩国航空大学","city":"高阳","type":"私立","focus":"航空、物流、工程","no":38},{"slug":"korea-maritime-ocean-university","name":"韩国海洋大学","city":"釜山","type":"国立","focus":"海洋、物流、造船","no":39},{"slug":"pukyong-national-university","name":"釜庆大学","city":"釜山","type":"国立","focus":"海洋、水产、工程","no":40},{"slug":"yeungnam-university","name":"岭南大学","city":"庆山","type":"私立","focus":"大邱圈大型私立","no":41},{"slug":"dong-a-university","name":"东亚大学","city":"釜山","type":"私立","focus":"釜山圈私立、经营、法学","no":42},{"slug":"wonkwang-university","name":"圆光大学","city":"益山","type":"私立","focus":"韩医学、保健、人文","no":43},{"slug":"keimyung-university","name":"启明大学","city":"大邱","type":"私立","focus":"艺术、国际化、大邱圈","no":44},{"slug":"university-of-ulsan","name":"蔚山大学","city":"蔚山","type":"私立","focus":"医学、工程、产业连接","no":45},{"slug":"soonchunhyang-university","name":"顺天乡大学","city":"牙山","type":"私立","focus":"医学、保健、国际教育","no":46},{"slug":"handong-global-university","name":"韩东大学","city":"浦项","type":"私立","focus":"英语课程、国际化","no":47},{"slug":"korea-national-university-of-arts","name":"韩国艺术综合学校","city":"首尔","type":"国立特殊","focus":"音乐、舞蹈、戏剧、影视","no":48},{"slug":"seoultech","name":"首尔科学技术大学","city":"首尔","type":"国立","focus":"工程、设计、性价比","no":49},{"slug":"kaist","name":"韩国科学技术院","city":"大田","type":"国立特殊","focus":"科学技术、AI、工程","no":50},{"slug":"cheongju-university","name":"清州大学","city":"清州","type":"私立","focus":"艺术、传媒、商科、工科","no":51},{"slug":"hansei-university","name":"韩世大学","city":"军浦","type":"私立","focus":"艺术、传媒、工科、酒店旅游","no":52},{"slug":"partner-uc6-i6s-pru-kdr-hlz-i1y","name":"首尔艺术大学","city":"安山","type":"私立","focus":"艺术/设计、传媒/影视","no":53},{"slug":"partner-k34-p5j-hlz-i1y","name":"新罗大学","city":"釜山","type":"私立","focus":"美妆/美容、经营/商科、计算机/AI、工科、韩语/教育","no":54},{"slug":"partner-hlz-skx-hlz-i1y","name":"大邱大学","city":"庆山","type":"私立","focus":"美妆/美容、工科、自然科学/生命","no":55},{"slug":"partner-io6-fip-hlz-i1y","name":"庆云大学","city":"龟尾","type":"私立","focus":"艺术/设计、经营/商科、酒店/旅游、工科","no":56},{"slug":"partner-ffg-k34-hlz-i1y","name":"东新大学","city":"罗州","type":"私立","focus":"艺术/设计、工科","no":57},{"slug":"partner-hlz-nj3-hlz-i1y","name":"大真大学","city":"抱川","type":"私立","focus":"经营/商科、韩语/教育、酒店/旅游、艺术/设计","no":58},{"slug":"partner-ldg-gin-hlz-i1y","name":"水原大学","city":"华城","type":"私立","focus":"经营/商科、韩语/教育、酒店/旅游","no":59},{"slug":"partner-io6-k67-hlz-i1y","name":"庆星大学","city":"釜山","type":"私立","focus":"美妆/美容、传媒/影视、计算机/AI、工科、韩语/教育","no":60},{"slug":"partner-lsm-ggn-hlz-i1y","name":"湖南大学","city":"光州","type":"私立","focus":"美妆/美容、艺术/设计、经营/商科、自然科学/生命","no":61},{"slug":"partner-ffg-r5r-hlz-i1y","name":"东西大学","city":"釜山","type":"私立","focus":"美妆/美容、艺术/设计、经营/商科、工科","no":62},{"slug":"partner-hdl-keo-hlz-i1y","name":"培材大学","city":"大田","type":"私立","focus":"艺术/设计、经营/商科、计算机/AI、工科","no":63},{"slug":"partner-gjs-kfy-hlz-i1y","name":"又松大学","city":"大田","type":"私立","focus":"美妆/美容、艺术/设计、传媒/影视、经营/商科、计算机/AI","no":64},{"slug":"partner-nem-lla-pru-kdr-hlz-i1y","name":"百济艺术大学","city":"完州","type":"私立","focus":"艺术/设计、实用音乐、表演、影像","no":65},{"slug":"partner-g21-iji-ho3-i1c-hlz-i1y","name":"光州女子大学","city":"光州","type":"私立","focus":"美妆/美容、艺术/设计、工科、酒店/旅游","no":66},{"slug":"partner-io6-ggn-hlz-i1y","name":"庆南大学","city":"昌原","type":"私立","focus":"艺术/设计、经营/商科、计算机/AI、工科","no":67},{"slug":"partner-g2w-iji-hlz-i1y","name":"全州大学","city":"全州","type":"私立","focus":"艺术/设计、经营/商科、计算机/AI、工科","no":68},{"slug":"partner-kd9-uxo-hlz-i1y","name":"朝鲜大学","city":"光州","type":"私立","focus":"人文/外语","no":69},{"slug":"partner-ggn-smg-hlz-i1y","name":"南部大学","city":"光州","type":"私立","focus":"工科","no":70},{"slug":"partner-i2x-ffg-hlz-i1y","name":"国立安东大学","city":"安东","type":"国立","focus":"经营/商科、工科、酒店/旅游","no":71},{"slug":"partner-ire-to3-hlz-i1y","name":"建阳大学","city":"论山/大田","type":"私立","focus":"艺术/设计、工科","no":72},{"slug":"partner-ffx-smg-hlz-i1y","name":"中部大学","city":"锦山/高阳","type":"私立","focus":"经营/商科、工科、艺术/设计","no":73},{"slug":"partner-lla-iji-r7m-g21-hlz-i1y","name":"济州观光大学","city":"济州","type":"私立","focus":"酒店/旅游、航空服务、观光经营","no":74},{"slug":"partner-fjg-ffg-hlz-i1y","name":"京东大学","city":"杨州/原州/高城","type":"私立","focus":"国际学、护理/保健、酒店旅游、工科/AI","no":75},{"slug":"partner-kfy-lu8-hlz-i1y","name":"松源大学","city":"光州","type":"私立","focus":"工科、韩语/教育","no":76},{"slug":"partner-io6-feo-hlz-i1y","name":"庆一大学","city":"庆山","type":"私立","focus":"计算机/AI、工科","no":77},{"slug":"partner-fs1-u09-hlz-i1y","name":"信韩大学","city":"议政府/东豆川","type":"私立","focus":"传媒/影视、保健、工科、国际教育","no":78},{"slug":"partner-nel-noz-hlz-i1y","name":"白石大学","city":"天安","type":"私立","focus":"经营/商科、人文/外语、艺术/设计、韩语/教育","no":79},{"slug":"partner-glo-iwn-ho3-i1c-hlz-i1y","name":"同德女子大学","city":"首尔","type":"私立","focus":"艺术/设计、传媒/影视","no":80},{"slug":"partner-g30-iji-h6l-o97-hlz-i1y","name":"公州国立大学","city":"公州/天安/礼山","type":"国立","focus":"工科","no":81},{"slug":"partner-g30-iji-hlz-i1y","name":"国立公州大学","city":"公州/天安/礼山","type":"国立","focus":"艺术/设计、工科","no":82},{"slug":"partner-fjg-n7j-hlz-i1y","name":"京畿大学","city":"水原/首尔","type":"私立","focus":"计算机/AI","no":83},{"slug":"partner-gjs-noz-hlz-i1y","name":"又石大学","city":"完州/镇川","type":"私立","focus":"经营/商科、计算机/AI、工科、酒店/旅游","no":84},{"slug":"partner-r5r-fjg-hlz-i1y","name":"西京大学","city":"首尔","type":"私立","focus":"美妆/美容、艺术/设计、传媒/影视","no":85},{"slug":"partner-hlz-n5c-hlz-i1y","name":"大田大学","city":"大田","type":"私立","focus":"人文/外语","no":86},{"slug":"partner-io6-iji-hlz-i1y","name":"庆州大学","city":"庆州","type":"私立","focus":"酒店/旅游、经营/商科、工科、地方应用型专业","no":87},{"slug":"partner-ldk-sez-ff7-tm0-hlz-i1y","name":"永进专门大学","city":"大邱","type":"私立","focus":"艺术/设计、工科","no":88},{"slug":"partner-p7o-i9d-hlz-i1y","name":"国立群山大学","city":"群山","type":"国立","focus":"经营/商科、韩语/教育、酒店/旅游","no":89},{"slug":"partner-u4a-hm1-hlz-i1y","name":"顺天大学","city":"顺天","type":"国立","focus":"经营/商科、韩语/教育","no":90},{"slug":"partner-st8-i9d-hli-h6l-rn1-hlz-i1y","name":"釜山外国语大学","city":"釜山","type":"私立","focus":"韩语/教育","no":91},{"slug":"partner-mlj-h65-hlz-i1y","name":"牧园大学","city":"大田","type":"私立","focus":"美妆/美容、经营/商科、计算机/AI、韩语/教育","no":92},{"slug":"partner-uc6-i6s-p30-glk-pru-kdr-hlz-i1y","name":"首尔综合艺术大学","city":"首尔","type":"艺术实用学校","focus":"表演、音乐、舞蹈、影视、时尚/美容","no":93},{"slug":"partner-vix-fk1-hlz-i1y","name":"龙仁大学","city":"龙仁","type":"私立","focus":"经营/商科、韩语/教育、酒店/旅游、人文/外语","no":94},{"slug":"partner-ul4-fgd-1v-3d-2q-2t-36-hlz-i1y","name":"高丽 Cyber 大学","city":"首尔","type":"私立","focus":"传媒/影视、经营/商科、计算机/AI、工科","no":95},{"slug":"inje-university","name":"仁济大学","city":"金海","type":"私立","focus":"医学、保健、生命科学、工科","no":96}];
-  const majorKeywords = {
-    business: ["\u7ecf\u8425", "\u5546\u79d1", "\u7ecf\u6d4e", "\u7ba1\u7406"],
-    "computer-science": ["AI", "IT", "\u8ba1\u7b97\u673a", "\u673a\u5668\u4eba"],
-    engineering: ["\u5de5\u79d1", "\u5de5\u7a0b", "\u7535\u5b50", "\u534a\u5bfc\u4f53"],
-    media: ["\u4f20\u5a92", "\u5f71\u89c6", "\u7535\u5f71", "\u8868\u6f14"],
-    "art-design": ["\u827a\u672f", "\u8bbe\u8ba1", "\u7f8e\u672f", "\u4f5c\u54c1"],
-    "korean-language": ["\u97e9\u8bed", "\u6559\u80b2", "\u5916\u8bed"],
-    tourism: ["\u9152\u5e97", "\u65c5\u6e38", "\u89c2\u5149"],
-    humanities: ["\u4eba\u6587", "\u5916\u8bed", "\u653f\u6cbb"],
-    science: ["\u81ea\u7136", "\u751f\u547d", "\u533b\u5b66", "\u519c"]
-  };
-  const labels = {
-    stable: "\u8f83\u6709\u5e0c\u671b",
-    match: "\u9002\u5408\u7533\u8bf7",
-    reach: "\u51b2\u523a\u7533\u8bf7",
-    prepare: "\u5148\u8865\u6761\u4ef6"
-  };
-  const defaultValues = {
-    "rec-gpa": "77",
-    "rec-school-tier": "regular",
-    "rec-topik": "4",
-    "rec-english": "ielts60",
-    "rec-gaokao": "not_submitted",
-    "rec-path": "any",
-    "rec-major": "undecided",
-    "rec-material": "matched",
-    "rec-type": "any",
-    "rec-region": "any"
-  };
-  const value = (id, fallback = "") => document.getElementById(id)?.value || fallback;
-  const esc = (v) => String(v ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
-  function tier(school) {
-    if (school.no <= 17) return "T1";
-    if (school.no <= 30) return "T2";
-    if (school.no <= 50) return "T3";
-    if (school.no <= 80) return "T4";
-    return "T5";
-  }
-  function category(index, topik) {
-    if (topik < 3 && index > 3) return labels.prepare;
-    if (index < 3) return labels.stable;
-    if (index < 5) return labels.match;
-    return labels.reach;
-  }
-  function scoreSchool(school, applicant) {
-    let score = 100 - Math.min(school.no, 90) * 0.6;
-    if (applicant.major !== "undecided") {
-      const hits = (majorKeywords[applicant.major] || []).filter((keyword) => school.focus.includes(keyword)).length;
-      score += hits * 18;
-    }
-    if (applicant.type === "national" && (school.type.includes("\u56fd\u7acb") || school.type.includes("\u516c\u7acb"))) score += 18;
-    if (applicant.type === "private" && school.type.includes("\u79c1\u7acb")) score += 18;
-    if (applicant.region === "seoul" && school.city.includes("\u9996\u5c14")) score += 14;
-    if (applicant.region === "regional" && !school.city.includes("\u9996\u5c14")) score += 14;
-    score += Math.max(0, applicant.gpa - 70) * 0.6;
-    score += applicant.topik * 2;
-    return score;
-  }
-  function recommendationResults(applicant) {
-    return universities
-      .filter((school) => applicant.type === "any" || (applicant.type === "national" && (school.type.includes("\u56fd\u7acb") || school.type.includes("\u516c\u7acb"))) || (applicant.type === "private" && school.type.includes("\u79c1\u7acb")))
-      .filter((school) => applicant.region === "any" || (applicant.region === "seoul" && school.city.includes("\u9996\u5c14")) || (applicant.region === "regional" && !school.city.includes("\u9996\u5c14")))
-      .map((school) => ({ ...school, score: scoreSchool(school, applicant) }))
-      .sort((a, b) => b.score - a.score || a.no - b.no)
-      .slice(0, 7);
-  }
-  function renderRecommendations(results, applicant) {
-    if (!results.length) return '<p class="recommendation-result-note">\u6682\u65f6\u6ca1\u6709\u5339\u914d\u7ed3\u679c\uff0c\u8bf7\u653e\u5bbd\u5730\u533a\u6216\u5b66\u6821\u7c7b\u578b\u6761\u4ef6\u3002</p>';
-    return '<h2>AI\u521d\u6b65\u63a8\u8350\u7ed3\u679c</h2>' + results.map((school, index) => {
-      const cat = category(index, applicant.topik);
-      const reason = esc(school.city) + ' / ' + esc(school.type) + ' &middot; ' + esc(cat);
-      return '<article class="recommendation-card">' +
-        '<span class="recommendation-index" aria-label="\u63a8\u8350\u7b2c' + (index + 1) + '\u4f4d">' + (index + 1) + '</span>' +
-        '<div class="recommendation-body">' +
-        '<div class="recommendation-head"><div>' +
-        '<h3><a class="recommendation-school-toggle" href="./universities.html?school=' + encodeURIComponent(school.slug) + '&info=1">' + esc(school.name) + ' <span class="recommendation-school-arrow">\u2192</span></a></h3>' +
-        '<p class="recommendation-meta-inline">' + reason + ' <span class="recommendation-rank">' + tier(school) + '</span></p>' +
-        '</div></div>' +
-        '<p><strong>\u4e13\u4e1a\u65b9\u5411\u5339\u914d\uff1a</strong>' + esc(school.focus) + '</p>' +
-        '<p class="recommendation-result-note">\u516c\u5f00\u6848\u4f8b\u5b58\u5728\u6837\u672c\u504f\u5dee\uff0c\u53ea\u9002\u5408\u505a\u7533\u8bf7\u753b\u50cf\u53c2\u8003\uff0c\u4e0d\u7b49\u4e8e\u5b66\u6821\u5b98\u65b9\u5f55\u53d6\u6982\u7387\u3002</p>' +
-        '</div></article>';
-    }).join('');
-  }
-  function recommend() {
-    const applicant = {
-      gpa: Number(value("rec-gpa", "77")),
-      topik: Number(value("rec-topik", "4")),
-      major: value("rec-major", "undecided"),
-      region: value("rec-region", "any"),
-      type: value("rec-type", "any")
-    };
-    const target = document.getElementById("recommendation-results");
-    if (!target) return;
-    target.classList.add("is-visible");
-    target.innerHTML = renderRecommendations(recommendationResults(applicant), applicant);
-  }
-  function resetRecommendation() {
-    Object.entries(defaultValues).forEach(([id, val]) => {
-      const node = document.getElementById(id);
-      if (node) node.value = val;
-    });
-    const target = document.getElementById("recommendation-results");
-    if (target) {
-      target.classList.remove("is-visible");
-      target.innerHTML = "";
-    }
-  }
-  document.getElementById("recommend-button")?.addEventListener("click", recommend);
-  document.getElementById("reset-recommendation-button")?.addEventListener("click", resetRecommendation);
-})();
+
+        (() => {
+          const universities = [
+            { slug: "seoul-national-university", name: "首尔大学", city: "首尔", type: "国立", focus: "综合研究、理工、人文社科" },
+            { slug: "yonsei-university", name: "延世大学", city: "首尔", type: "私立", focus: "经营、国际学、医学" },
+            { slug: "korea-university", name: "高丽大学", city: "首尔", type: "私立", focus: "经营、传媒、政治经济" },
+            { slug: "sungkyunkwan-university", name: "成均馆大学", city: "首尔/水原", type: "私立", focus: "工科、经营、半导体、AI" },
+            { slug: "hanyang-university", name: "汉阳大学", city: "首尔/ERICA", type: "私立", focus: "工科、创业、实用学科" },
+            { slug: "kyung-hee-university", name: "庆熙大学", city: "首尔/水原", type: "私立", focus: "酒店旅游、国际学、艺术" },
+            { slug: "chung-ang-university", name: "中央大学", city: "首尔/安城", type: "私立", focus: "传媒、电影、表演、艺术科技" },
+            { slug: "ewha-womans-university", name: "梨花女子大学", city: "首尔", type: "私立", focus: "女子名校、国际学、设计、教育" },
+            { slug: "sogang-university", name: "西江大学", city: "首尔", type: "私立", focus: "经营、经济、传媒" },
+            { slug: "hankuk-university-of-foreign-studies", name: "韩国外国语大学", city: "首尔/龙仁", type: "私立", focus: "外语、国际地域、通翻译" },
+            { slug: "dongguk-university", name: "东国大学", city: "首尔", type: "私立", focus: "电影影像、佛教学、AI" },
+            { slug: "konkuk-university", name: "建国大学", city: "首尔", type: "私立", focus: "经营、传媒、房地产、设计" },
+            { slug: "hongik-university", name: "弘益大学", city: "首尔/世宗", type: "私立", focus: "美术、设计、建筑" },
+            { slug: "kookmin-university", name: "国民大学", city: "首尔", type: "私立", focus: "汽车设计、工业设计、AI" },
+            { slug: "sejong-university", name: "世宗大学", city: "首尔", type: "私立", focus: "酒店旅游、动画、AI" },
+            { slug: "soongsil-university", name: "崇实大学", city: "首尔", type: "私立", focus: "IT、计算机、经营" },
+            { slug: "university-of-seoul", name: "首尔市立大学", city: "首尔", type: "公立", focus: "城市行政、低学费、都市研究" },
+            { slug: "pusan-national-university", name: "釜山大学", city: "釜山", type: "国立", focus: "工科、自然科学、国立综合" },
+            { slug: "kyungpook-national-university", name: "庆北大学", city: "大邱", type: "国立", focus: "工科、IT、国立综合" },
+            { slug: "chonnam-national-university", name: "全南大学", city: "光州", type: "国立", focus: "工科、农业生命、医学" },
+            { slug: "chungnam-national-university", name: "忠南大学", city: "大田", type: "国立", focus: "科学技术、国立综合" },
+            { slug: "chungbuk-national-university", name: "忠北大学", city: "清州", type: "国立", focus: "工科、自然科学、国立" },
+            { slug: "jeonbuk-national-university", name: "全北大学", city: "全州", type: "国立", focus: "农生命、工科、国立" },
+            { slug: "kangwon-national-university", name: "江原大学", city: "春川", type: "国立", focus: "自然、森林、兽医" },
+            { slug: "jeju-national-university", name: "济州大学", city: "济州", type: "国立", focus: "旅游、海洋、生态" },
+            { slug: "inha-university", name: "仁荷大学", city: "仁川", type: "私立", focus: "工科、航空、物流" },
+            { slug: "ajou-university", name: "亚洲大学", city: "水原", type: "私立", focus: "工科、医学、经营" },
+            { slug: "gachon-university", name: "嘉泉大学", city: "城南", type: "私立", focus: "医疗、AI、国际学生扩招" },
+            { slug: "dankook-university", name: "檀国大学", city: "龙仁/天安", type: "私立", focus: "艺术、牙医学、内容产业" },
+            { slug: "myongji-university", name: "明知大学", city: "首尔/龙仁", type: "私立", focus: "建筑、人文、艺术" },
+            { slug: "sangmyung-university", name: "祥明大学", city: "首尔/天安", type: "私立", focus: "设计、动画、艺术" },
+            { slug: "sungshin-womens-university", name: "诚信女子大学", city: "首尔", type: "私立", focus: "美妆、设计、女子大学" },
+            { slug: "sookmyung-womens-university", name: "淑明女子大学", city: "首尔", type: "私立", focus: "全球服务、经营、女子大学" },
+            { slug: "duksung-womens-university", name: "德成女子大学", city: "首尔", type: "私立", focus: "药学、心理、人文" },
+            { slug: "seoul-womens-university", name: "首尔女子大学", city: "首尔", type: "私立", focus: "教育、人文、内容" },
+            { slug: "kwangwoon-university", name: "光云大学", city: "首尔", type: "私立", focus: "电子工程、机器人、IT" },
+            { slug: "catholic-university-of-korea", name: "加图立大学", city: "富川/首尔", type: "私立", focus: "医学、护理、心理" },
+            { slug: "korea-aerospace-university", name: "韩国航空大学", city: "高阳", type: "私立", focus: "航空、物流、工程" },
+            { slug: "korea-maritime-ocean-university", name: "韩国海洋大学", city: "釜山", type: "国立", focus: "海洋、物流、造船" },
+            { slug: "pukyong-national-university", name: "釜庆大学", city: "釜山", type: "国立", focus: "海洋、水产、工程" },
+            { slug: "yeungnam-university", name: "岭南大学", city: "庆山", type: "私立", focus: "大邱圈大型私立" },
+            { slug: "dong-a-university", name: "东亚大学", city: "釜山", type: "私立", focus: "釜山圈私立、经营、法学" },
+            { slug: "wonkwang-university", name: "圆光大学", city: "益山", type: "私立", focus: "韩医学、保健、人文" },
+            { slug: "keimyung-university", name: "启明大学", city: "大邱", type: "私立", focus: "艺术、国际化、大邱圈" },
+            { slug: "university-of-ulsan", name: "蔚山大学", city: "蔚山", type: "私立", focus: "医学、工程、产业连接" },
+            { slug: "soonchunhyang-university", name: "顺天乡大学", city: "牙山", type: "私立", focus: "医学、保健、国际教育" },
+            { slug: "handong-global-university", name: "韩东大学", city: "浦项", type: "私立", focus: "英语课程、国际化" },
+            { slug: "korea-national-university-of-arts", name: "韩国艺术综合学校", city: "首尔", type: "国立特殊", focus: "音乐、舞蹈、戏剧、影视" },
+            { slug: "seoultech", name: "首尔科学技术大学", city: "首尔", type: "国立", focus: "工程、设计、性价比" },
+            { slug: "kaist", name: "韩国科学技术院", city: "大田", type: "国立特殊", focus: "科学技术、AI、工程" }
+          ];
+
+          const tierNotes = {
+            "seoul-national-university": "T1",
+            "yonsei-university": "T1",
+            "korea-university": "T1",
+            "sungkyunkwan-university": "T2",
+            "hanyang-university": "T2",
+            "kyung-hee-university": "T2",
+            "chung-ang-university": "T2",
+            "ewha-womans-university": "T2",
+            "sogang-university": "T2",
+            "hankuk-university-of-foreign-studies": "T3",
+            "dongguk-university": "T3",
+            "konkuk-university": "T3",
+            "hongik-university": "T3",
+            "kookmin-university": "T3",
+            "sejong-university": "T2",
+            "soongsil-university": "T3",
+            "university-of-seoul": "T3",
+            "pusan-national-university": "T2",
+            "kyungpook-national-university": "T2",
+            "chonnam-national-university": "T3",
+            "chungnam-national-university": "T3",
+            "chungbuk-national-university": "T3",
+            "jeonbuk-national-university": "T3",
+            "kangwon-national-university": "T4",
+            "jeju-national-university": "T4",
+            "inha-university": "T3",
+            "ajou-university": "T2",
+            "gachon-university": "T3",
+            "dankook-university": "T4",
+            "myongji-university": "T4",
+            "sangmyung-university": "T4",
+            "sungshin-womens-university": "T4",
+            "sookmyung-womens-university": "T3",
+            "duksung-womens-university": "T5",
+            "seoul-womens-university": "T5",
+            "kwangwoon-university": "T4",
+            "catholic-university-of-korea": "T3",
+            "korea-aerospace-university": "T3",
+            "korea-maritime-ocean-university": "T4",
+            "pukyong-national-university": "T4",
+            "yeungnam-university": "T3",
+            "dong-a-university": "T4",
+            "wonkwang-university": "T5",
+            "keimyung-university": "T4",
+            "university-of-ulsan": "T3",
+            "soonchunhyang-university": "T4",
+            "handong-global-university": "T4",
+            "korea-national-university-of-arts": "T2",
+            "seoultech": "T3",
+            "kaist": "T1"
+          };
+
+          const majorKeywords = {
+            business: ["经营", "商", "经济", "贸易", "政经"],
+            "computer-science": ["IT", "AI", "计算机", "软件", "数据", "人工智能", "半导体"],
+            engineering: ["工科", "工程", "电子", "机械", "半导体", "航空", "造船"],
+            media: ["传媒", "电影", "影像", "广告", "内容", "表演"],
+            "art-design": ["艺术", "设计", "美术", "动画", "建筑"],
+            "korean-language": ["韩语", "韩国语", "人文", "教育", "外语"],
+            tourism: ["旅游", "酒店"],
+            humanities: ["人文", "外语", "国际", "教育", "文学", "历史"],
+            science: ["自然", "科学", "生命", "医学", "农业"],
+            undecided: []
+          };
+
+          const schoolTierBonus = { provincial_key: 4, city_key: 3, regular: 0, vocational: -1, unknown: 1 };
+          const rankBonus = { top_5: 5, top_10: 4, top_25: 2, middle: 0, unknown: 1 };
+          const gaokaoBonus = { high: 5, above_tier_one: 4, submitted: 2, not_submitted: 0 };
+          const tierTarget = { T1: 91, T2: 82, T3: 76, T4: 70, T5: 64 };
+          const tierTopikMinimum = { T1: 4, T2: 4, T3: 3, T4: 3, T5: 2 };
+          const recommendationSlatePlan = {
+            stable: { label: "较有希望", count: 3 },
+            match: { label: "适合申请", count: 2 },
+            reach: { label: "冲刺申请", count: 1 },
+            prepare_first: { label: "先补条件", count: 1 }
+          };
+          const defaultSlate = [
+            "pukyong-national-university",
+            "jeonbuk-national-university",
+            "chonnam-national-university",
+            "chungnam-national-university",
+            "chungbuk-national-university",
+            "pusan-national-university",
+            "kyungpook-national-university"
+          ];
+          const defaultVisualOrder = {
+            "pusan-national-university": 1,
+            "jeonbuk-national-university": 2,
+            "pukyong-national-university": 3,
+            "chonnam-national-university": 4,
+            "chungnam-national-university": 5,
+            "chungbuk-national-university": 6,
+            "kyungpook-national-university": 7
+          };
+          const defaultCategories = {
+            "pusan-national-university": "较有希望",
+            "jeonbuk-national-university": "较有希望",
+            "pukyong-national-university": "较有希望",
+            "chonnam-national-university": "适合申请",
+            "chungnam-national-university": "适合申请",
+            "chungbuk-national-university": "冲刺申请",
+            "kyungpook-national-university": "先补条件"
+          };
+          const schoolDetails = {
+            "pusan-national-university": {
+              caseReason: "5个相近案例，常见约GPA 78/100、TOPIK 4级，路径偏直申。",
+              caseSummary: "釜山国立案例偏国际通商、工科、食品营养，性价比较强。",
+              caution: "首尔以外国立大学中的强选项，重视学费且专业匹配的学生可以重点考虑。"
+            },
+            "jeonbuk-national-university": {
+              caseReason: "3个相近案例，常见约GPA 77/100、TOPIK 3级，路径偏语学院过渡。",
+              caseSummary: "全北案例显示普通高中和省重点均可规划，适合重视学费的学生。",
+              caution: "TOPIK 2可作为现实候选，但入学后通常要完成韩语补强课程，面试和学习计划书很重要。"
+            },
+            "pukyong-national-university": {
+              caseReason: "1个相近案例，常见约GPA 70/100、TOPIK 3级，路径偏语学院过渡。",
+              caseSummary: "釜庆案例更偏海洋、水产、工程方向，适合专业目标清楚的学生。",
+              caution: "TOPIK 2学生还差一级，适合列为补到3级后的釜山国立候选。"
+            },
+            "chonnam-national-university": {
+              caseReason: "4个相近案例，常见约GPA 76/100、TOPIK 3级，路径偏直申。",
+              caseSummary: "全南案例集中在工科、农业生命和自然科学方向，地区适应度需要提前确认。",
+              caution: "一般学科按TOPIK 3规划，个别丽水校区学科可看TOPIK 2例外；低TOPIK入学后要补韩语。"
+            },
+            "chungnam-national-university": {
+              caseReason: "2个相近案例，常见约GPA 75/100、TOPIK 3级，路径偏直申。",
+              caseSummary: "忠南适合把大田地区国立作为现实主申或稳妥候选的学生。",
+              caution: "TOPIK 2学生还差一级，补到3级后可作为大田国立候选；面试和学习计划要认真准备。"
+            },
+            "chungbuk-national-university": {
+              caseReason: "2个相近案例，常见约GPA 74/100、TOPIK 3级，路径偏语学院过渡。",
+              caseSummary: "忠北案例偏工科和自然科学，适合预算敏感且愿意接受地方城市的学生。",
+              caution: "目前按TOPIK 3保守规划，具体学科和面试要求仍要核对2026简章。"
+            },
+            "kyungpook-national-university": {
+              caseReason: "2个相近案例，常见约GPA 78/100、TOPIK 4级，路径偏直申。",
+              caseSummary: "庆北属于重点地方国立，工科和IT方向竞争会比一般地方国立更高。",
+              caution: "TOPIK 3是基本线，部分学科要求4级；需要准备部门面试和材料。"
+            }
+          };
+
+          const schoolProfiles = {
+            "pukyong-national-university": {
+              name: "釜庆大学",
+              nameKr: "부경대학교",
+              nameEn: "Pukyong National University",
+              city: "釜山",
+              type: "国立",
+              focus: "海洋、水产、工程",
+              founded: "1996年",
+              tier: "T4",
+              campusImage: "public/campus-images/pukyong-national-university.webp",
+              imagePosition: "center",
+              intro: "釜庆大学位于釜山，成立时间为1996年，是一所国立院校。该校在本项目库中主要用于海洋、水产、工程方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。",
+              logoImage: "public/school-logos/pukyong-national-university.png"
+            },
+            "pusan-national-university": {
+              name: "釜山大学",
+              nameKr: "부산대학교",
+              nameEn: "Pusan National University",
+              city: "釜山",
+              type: "国立",
+              focus: "工科、自然科学、国立综合",
+              founded: "1946年",
+              students: "26,434人",
+              internationalStudents: "外国人 1,134人",
+              tier: "T2",
+              campusImage: "public/campus-images/pusan-national-university.webp",
+              imagePosition: "center",
+              intro: "釜山大学位于釜山，成立时间为1946年，是一所国立院校。该校在本项目库中主要用于工科、自然科学、国立综合方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。",
+              logoImage: "public/school-logos/pusan-national-university.png"
+            },
+            "kangwon-national-university": {
+              name: "江原大学",
+              nameKr: "강원대학교",
+              nameEn: "Kangwon National University",
+              city: "春川",
+              type: "国立",
+              focus: "自然、森林、兽医",
+              founded: "1947年",
+              tier: "T5",
+              campusImage: "public/campus-images/kangwon-national-university.webp",
+              imagePosition: "center",
+              intro: "江原大学位于春川，成立时间为1947年，是一所国立院校。该校在本项目库中主要用于自然、森林、兽医方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。",
+              logoImage: "public/school-logos/kangwon-national-university.png"
+            },
+            "jeonbuk-national-university": {
+              name: "全北大学",
+              nameKr: "전북대학교",
+              nameEn: "Jeonbuk National University",
+              city: "全州",
+              type: "国立",
+              focus: "农生命、工科、国立",
+              founded: "1947年",
+              tier: "T3",
+              campusImage: "public/campus-images/jeonbuk-national-university.webp",
+              imagePosition: "center",
+              intro: "全北大学位于全州，成立时间为1947年，是一所国立院校。该校在本项目库中主要用于农生命、工科、国立方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。",
+              logoImage: "public/school-logos/jeonbuk-national-university.png"
+            },
+            "chungbuk-national-university": {
+              name: "忠北大学",
+              nameKr: "충북대학교",
+              nameEn: "Chungbuk National University",
+              city: "清州",
+              type: "国立",
+              focus: "工科、自然科学、国立",
+              founded: "1951年",
+              tier: "T4",
+              campusImage: "public/campus-images/chungbuk-national-university.webp",
+              imagePosition: "center top",
+              intro: "忠北大学位于清州，成立时间为1951年，是一所国立院校。该校在本项目库中主要用于工科、自然科学、国立方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。",
+              logoImage: "public/school-logos/chungbuk-national-university.png"
+            }
+          };
+
+          const campusImageBySlug = {
+            "chonnam-national-university": "public/campus-images/chonnam-national-university.png",
+            "chung-ang-university": "public/campus-images/chung-ang-university.webp",
+            "chungbuk-national-university": "public/campus-images/chungbuk-national-university.webp",
+            "chungnam-national-university": "public/campus-images/chungnam-national-university.jpg",
+            "ajou-university": "public/campus-images/ajou-university.jpg",
+            "dankook-university": "public/campus-images/dankook-university.webp",
+            "dong-a-university": "public/campus-images/dong-a-university.jpg",
+            "dongguk-university": "public/campus-images/dongguk-university.webp",
+            "duksung-womens-university": "public/campus-images/duksung-womens-university.jpg",
+            "ewha-womans-university": "public/campus-images/ewha-womans-university.webp",
+            "gachon-university": "public/campus-images/gachon-university.webp",
+            "hankuk-university-of-foreign-studies": "public/campus-images/hankuk-university-of-foreign-studies.jpg",
+            "handong-global-university": "public/campus-images/handong-global-university.jpg",
+            "hanyang-university": "public/campus-images/hanyang-university.webp",
+            "hongik-university": "public/campus-images/hongik-university.webp",
+            "inha-university": "public/campus-images/inha-university.webp",
+            "jeju-national-university": "public/campus-images/jeju-national-university.jpg",
+            "jeonbuk-national-university": "public/campus-images/jeonbuk-national-university.webp",
+            "kaist": "public/campus-images/kaist.jpg",
+            "kangwon-national-university": "public/campus-images/kangwon-national-university.webp",
+            "catholic-university-of-korea": "public/campus-images/catholic-university-of-korea.jpg",
+            "keimyung-university": "public/campus-images/keimyung-university.jpg",
+            "konkuk-university": "public/campus-images/konkuk-university.webp",
+            "korea-aerospace-university": "public/campus-images/korea-aerospace-university.webp",
+            "korea-maritime-ocean-university": "public/campus-images/korea-maritime-ocean-university.png",
+            "korea-university": "public/campus-images/korea-university.webp",
+            "kookmin-university": "public/campus-images/kookmin-university.jpg",
+            "kwangwoon-university": "public/campus-images/kwangwoon-university.webp",
+            "kyung-hee-university": "public/campus-images/kyung-hee-university.webp",
+            "kyungpook-national-university": "public/campus-images/kyungpook-national-university.jpg",
+            "myongji-university": "public/campus-images/myongji-university.webp",
+            "pukyong-national-university": "public/campus-images/pukyong-national-university.webp",
+            "pusan-national-university": "public/campus-images/pusan-national-university.webp",
+            "sangmyung-university": "public/campus-images/sangmyung-university.webp",
+            "sejong-university": "public/campus-images/sejong-university.webp",
+            "seoul-national-university": "public/campus-images/seoul-national-university.jpg",
+            "seoul-womens-university": "public/campus-images/seoul-womens-university.webp",
+            "seoultech": "public/campus-images/seoultech.webp",
+            "sogang-university": "public/campus-images/sogang-university.jpg",
+            "soongsil-university": "public/campus-images/soongsil-university.webp",
+            "soonchunhyang-university": "public/campus-images/soonchunhyang-university.jpg",
+            "sookmyung-womens-university": "public/campus-images/sookmyung-womens-university.jpg",
+            "sungkyunkwan-university": "public/campus-images/sungkyunkwan-university.jpg",
+            "sungshin-womens-university": "public/campus-images/sungshin-womens-university.jpg",
+            "korea-national-university-of-arts": "public/campus-images/korea-national-university-of-arts.jpg",
+            "university-of-ulsan": "public/campus-images/university-of-ulsan.jpg",
+            "university-of-seoul": "public/campus-images/university-of-seoul.jpg",
+            "wonkwang-university": "public/campus-images/wonkwang-university.webp",
+            "yeungnam-university": "public/campus-images/yeungnam-university.webp",
+            "yonsei-university": "public/campus-images/yonsei-university.webp"
+          };
+
+          const campusImagePositionBySlug = {
+            "chonnam-national-university": "center 48%",
+            "chungnam-national-university": "center 45%",
+            "ajou-university": "center 47%",
+            "dong-a-university": "center 45%",
+            "hankuk-university-of-foreign-studies": "center 48%",
+            "handong-global-university": "center 48%",
+            "jeju-national-university": "center 48%",
+            "kaist": "center 46%",
+            "catholic-university-of-korea": "center 45%",
+            "keimyung-university": "center 45%",
+            "korea-maritime-ocean-university": "center 50%",
+            "kookmin-university": "center 48%",
+            "kyungpook-national-university": "center 44%",
+            "pusan-national-university": "center 43%",
+            "seoul-national-university": "center 48%",
+            "sogang-university": "center 46%",
+            "soonchunhyang-university": "center 48%",
+            "sookmyung-womens-university": "center 45%",
+            "sungshin-womens-university": "center 46%",
+            "korea-national-university-of-arts": "center 45%",
+            "university-of-ulsan": "center 48%",
+            "university-of-seoul": "center 47%"
+          };
+
+          function schoolFact(founded, students, foreignStudents, officialWebsite) {
+            return {
+              founded: `${founded}年`,
+              students: `${students}人`,
+              internationalStudents: `外国人 ${foreignStudents}人`,
+              officialWebsite
+            };
+          }
+
+          const schoolFactBySlug = {
+            "seoul-national-university": schoolFact("1946", "21,856", "1,383", "https://www.snu.ac.kr"),
+            "yonsei-university": schoolFact("1957", "36,977", "5,362", "https://www.yonsei.ac.kr/"),
+            "korea-university": schoolFact("1905", "37,294", "5,067", "https://www.korea.ac.kr/"),
+            "sungkyunkwan-university": schoolFact("1398", "25,399", "3,911", "https://www.skku.edu/"),
+            "hanyang-university": schoolFact("1939", "37,835", "6,491", "https://www.hanyang.ac.kr/"),
+            "kyung-hee-university": schoolFact("1949", "32,859", "3,535", "https://www.khu.ac.kr/"),
+            "chung-ang-university": schoolFact("1918", "32,069", "4,935", "https://www.cau.ac.kr/"),
+            "ewha-womans-university": schoolFact("1886", "20,145", "2,089", "https://www.ewha.ac.kr/"),
+            "sogang-university": schoolFact("1960", "11,921", "2,021", "https://www.sogang.ac.kr/"),
+            "hankuk-university-of-foreign-studies": schoolFact("1954", "22,693", "2,949", "https://www.hufs.ac.kr/"),
+            "dongguk-university": schoolFact("1906", "28,461", "3,111", "https://www.dongguk.edu/"),
+            "konkuk-university": schoolFact("1931", "33,209", "2,446", "https://www.konkuk.ac.kr/"),
+            "hongik-university": schoolFact("1946", "24,836", "1,480", "https://www.hongik.ac.kr/"),
+            "kookmin-university": schoolFact("1946", "20,428", "1,533", "https://www.kookmin.ac.kr/"),
+            "sejong-university": schoolFact("1940", "17,077", "2,844", "https://www.sejong.ac.kr/"),
+            "soongsil-university": schoolFact("1897", "19,963", "2,479", "https://www.ssu.ac.kr/"),
+            "university-of-seoul": schoolFact("1918", "11,801", "725", "https://www.uos.ac.kr/"),
+            "pusan-national-university": schoolFact("1946", "26,434", "1,134", "https://www.pusan.ac.kr/"),
+            "kyungpook-national-university": schoolFact("1946", "29,489", "1,660", "https://www.knu.ac.kr/"),
+            "chonnam-national-university": schoolFact("1952", "25,568", "1,109", "https://www.jnu.ac.kr/"),
+            "chungnam-national-university": schoolFact("1952", "22,499", "674", "https://www.cnu.ac.kr/"),
+            "chungbuk-national-university": schoolFact("1951", "17,358", "826", "https://www.cbnu.ac.kr/"),
+            "jeonbuk-national-university": schoolFact("1947", "23,561", "1,112", "https://www.jbnu.ac.kr/"),
+            "kangwon-national-university": schoolFact("1947", "29,248", "1,114", "https://www.kangwon.ac.kr/"),
+            "jeju-national-university": schoolFact("1952", "12,891", "331", "https://www.jejunu.ac.kr/"),
+            "inha-university": schoolFact("1954", "24,862", "1,954", "https://www.inha.ac.kr/"),
+            "ajou-university": schoolFact("1973", "13,674", "2,411", "https://www.ajou.ac.kr/"),
+            "gachon-university": schoolFact("1939", "29,323", "4,996", "https://www.gachon.ac.kr/"),
+            "dankook-university": schoolFact("1947", "29,024", "1,103", "https://www.dankook.ac.kr/"),
+            "myongji-university": schoolFact("1948", "18,009", "2,428", "https://www.mju.ac.kr/"),
+            "sangmyung-university": schoolFact("1937", "15,997", "239", "https://www.smu.ac.kr/"),
+            "sungshin-womens-university": schoolFact("1936", "11,438", "890", "https://www.sungshin.ac.kr/"),
+            "sookmyung-womens-university": schoolFact("1906", "11,877", "520", "https://www.sookmyung.ac.kr/"),
+            "duksung-womens-university": schoolFact("1920", "6,567", "571", "https://www.duksung.ac.kr/"),
+            "seoul-womens-university": schoolFact("1960", "9,584", "1,131", "https://www.swu.ac.kr/"),
+            "kwangwoon-university": schoolFact("1934", "11,217", "1,009", "https://www.kw.ac.kr/"),
+            "catholic-university-of-korea": schoolFact("1855", "11,408", "1,674", "https://www.catholic.ac.kr/"),
+            "korea-aerospace-university": schoolFact("1952", "5,866", "194", "https://www.kau.ac.kr/"),
+            "korea-maritime-ocean-university": schoolFact("1945", "7,950", "241", "https://www.kmou.ac.kr/"),
+            "pukyong-national-university": schoolFact("1996", "20,447", "1,115", "https://www.pknu.ac.kr/"),
+            "yeungnam-university": schoolFact("1947", "27,952", "1,439", "https://www.yu.ac.kr/"),
+            "dong-a-university": schoolFact("1946", "24,259", "1,676", "https://www.donga.ac.kr/"),
+            "wonkwang-university": schoolFact("1946", "16,672", "132", "https://www.wku.ac.kr/"),
+            "keimyung-university": schoolFact("1899", "28,615", "3,044", "https://www.kmu.ac.kr/"),
+            "university-of-ulsan": schoolFact("1970", "15,597", "257", "https://www.ulsan.ac.kr/"),
+            "soonchunhyang-university": schoolFact("1978", "14,107", "675", "https://home.sch.ac.kr/"),
+            "handong-global-university": schoolFact("1994", "5,231", "177", "https://www.handong.edu/"),
+            "korea-national-university-of-arts": schoolFact("1993", "3,331", "86", "https://www.karts.ac.kr/"),
+            "seoultech": schoolFact("1910", "13,811", "1,129", "https://www.seoultech.ac.kr/"),
+            "kaist": schoolFact("1971", "5,109", "481", "https://www.kaist.ac.kr/")
+          };
+
+          const schoolLogoBySlug = {
+            "seoul-national-university": "public/school-logos/seoul-national-university.svg",
+            "yonsei-university": "public/school-logos/yonsei-university.png",
+            "korea-university": "public/school-logos/korea-university.png",
+            "sungkyunkwan-university": "public/school-logos/sungkyunkwan-university.svg",
+            "hanyang-university": "public/school-logos/hanyang-university.png",
+            "kyung-hee-university": "public/school-logos/kyung-hee-university.png",
+            "chung-ang-university": "public/school-logos/chung-ang-university.png",
+            "ewha-womans-university": "public/school-logos/ewha-womans-university.png",
+            "sogang-university": "public/school-logos/sogang-university.svg",
+            "hankuk-university-of-foreign-studies": "public/school-logos/hankuk-university-of-foreign-studies.png",
+            "dongguk-university": "public/school-logos/dongguk-university.png",
+            "konkuk-university": "public/school-logos/konkuk-university.png",
+            "hongik-university": "public/school-logos/hongik-university.png",
+            "kookmin-university": "public/school-logos/kookmin-university.png",
+            "sejong-university": "public/school-logos/sejong-university.png",
+            "soongsil-university": "public/school-logos/soongsil-university.png",
+            "university-of-seoul": "public/school-logos/university-of-seoul.svg",
+            "pusan-national-university": "public/school-logos/pusan-national-university.png",
+            "kyungpook-national-university": "public/school-logos/kyungpook-national-university.svg",
+            "chonnam-national-university": "public/school-logos/chonnam-national-university.png",
+            "chungnam-national-university": "public/school-logos/chungnam-national-university.jpg",
+            "chungbuk-national-university": "public/school-logos/chungbuk-national-university.png",
+            "jeonbuk-national-university": "public/school-logos/jeonbuk-national-university.png",
+            "kangwon-national-university": "public/school-logos/kangwon-national-university.png",
+            "jeju-national-university": "public/school-logos/jeju-national-university.svg",
+            "inha-university": "public/school-logos/inha-university.png",
+            "ajou-university": "public/school-logos/ajou-university.png",
+            "gachon-university": "public/school-logos/gachon-university.png",
+            "dankook-university": "public/school-logos/dankook-university.png",
+            "myongji-university": "public/school-logos/myongji-university.png",
+            "sangmyung-university": "public/school-logos/sangmyung-university.png",
+            "sungshin-womens-university": "public/school-logos/sungshin-womens-university.jpg",
+            "sookmyung-womens-university": "public/school-logos/sookmyung-womens-university.png",
+            "duksung-womens-university": "public/school-logos/duksung-womens-university.png",
+            "seoul-womens-university": "public/school-logos/seoul-womens-university.png",
+            "kwangwoon-university": "public/school-logos/kwangwoon-university.png",
+            "catholic-university-of-korea": "public/school-logos/catholic-university-of-korea.svg",
+            "korea-aerospace-university": "public/school-logos/korea-aerospace-university.png",
+            "korea-maritime-ocean-university": "public/school-logos/korea-maritime-ocean-university.png",
+            "pukyong-national-university": "public/school-logos/pukyong-national-university.png",
+            "yeungnam-university": "public/school-logos/yeungnam-university.png",
+            "dong-a-university": "public/school-logos/dong-a-university.png",
+            "wonkwang-university": "public/school-logos/wonkwang-university.png",
+            "keimyung-university": "public/school-logos/keimyung-university.png",
+            "university-of-ulsan": "public/school-logos/university-of-ulsan.png",
+            "soonchunhyang-university": "public/school-logos/soonchunhyang-university.png",
+            "handong-global-university": "public/school-logos/handong-global-university.png",
+            "korea-national-university-of-arts": "public/school-logos/korea-national-university-of-arts.png",
+            "seoultech": "public/school-logos/seoultech.png",
+            "kaist": "public/school-logos/kaist.svg"
+          };
+
+          function value(id, fallback = "") {
+            const field = document.getElementById(id);
+            return field ? field.value : fallback;
+          }
+
+          function htmlEscape(text) {
+            return String(text)
+              .replaceAll("&", "&amp;")
+              .replaceAll("<", "&lt;")
+              .replaceAll(">", "&gt;")
+              .replaceAll('"', "&quot;");
+          }
+
+          function assetUrl(path) {
+            return path ? `./${String(path).replace(/^\.?\//, "")}` : "";
+          }
+
+          function logoUrl(path) {
+            if (!path) return "";
+            return /^https?:\/\//.test(path) ? path : assetUrl(path);
+          }
+
+          function profileFor(school) {
+            const profile = schoolProfiles[school.slug] || {};
+            const fact = schoolFactBySlug[school.slug] || {};
+            return {
+              name: profile.name || school.name,
+              nameKr: profile.nameKr || "",
+              nameEn: profile.nameEn || "",
+              city: profile.city || school.city,
+              type: profile.type || school.type,
+              focus: profile.focus || school.focus,
+              founded: profile.founded || fact.founded || "资料待补",
+              students: profile.students || fact.students || "资料待补",
+              internationalStudents: profile.internationalStudents || fact.internationalStudents || "",
+              officialWebsite: profile.officialWebsite || fact.officialWebsite || "",
+              tier: profile.tier || tierNotes[school.slug] || "T4",
+              campusImage: profile.campusImage || campusImageBySlug[school.slug] || "",
+              imagePosition: campusImagePositionBySlug[school.slug] || profile.imagePosition || "center",
+              intro:
+                profile.intro ||
+                `${school.name}位于${school.city}，是一所${school.type}院校。该校在本项目库中主要用于${school.focus}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`,
+              logoImage: profile.logoImage || schoolLogoBySlug[school.slug] || ""
+            };
+          }
+
+          function renderSchoolInfoPanel(school) {
+            const profile = profileFor(school);
+            const titleLine = [profile.nameKr, profile.nameEn].filter(Boolean).join(" · ");
+            const photo = profile.campusImage
+              ? `<figure class="school-info-photo-frame"><img class="school-info-photo" src="${htmlEscape(assetUrl(profile.campusImage))}" alt="${htmlEscape(
+                  profile.name
+                )}校园" style="object-position:${htmlEscape(profile.imagePosition)}" /></figure>`
+              : "";
+            const logoImage = profile.logoImage;
+            const officialWebsiteLabel = logoImage
+              ? `<img class="school-info-logo" src="${htmlEscape(logoUrl(logoImage))}" alt="${htmlEscape(
+                  profile.name
+                )}校徽" />`
+              : "官网";
+            const officialWebsite = profile.officialWebsite
+              ? `<a class="school-info-link${logoImage ? " school-info-logo-link" : ""}" href="${htmlEscape(
+                  profile.officialWebsite
+                )}" target="_blank" rel="noopener noreferrer">${officialWebsiteLabel}</a>`
+              : `<span>资料待补</span>`;
+
+            return `<section class="school-info-panel${profile.campusImage ? "" : " is-no-photo"}" aria-label="${htmlEscape(profile.name)}学校信息">${photo}<div class="school-info-table"><h4>${htmlEscape(
+              profile.name
+            )}${titleLine ? `<small>${htmlEscape(titleLine)}</small>` : ""}</h4><div class="school-info-cell">学校类型</div><div class="school-info-cell">${htmlEscape(
+              profile.type
+            )}</div><div class="school-info-cell">地理位置</div><div class="school-info-cell">${htmlEscape(
+              profile.city
+            )}</div><div class="school-info-cell">成立时间</div><div class="school-info-cell">${htmlEscape(
+              profile.founded
+            )}</div><div class="school-info-cell">学生数</div><div class="school-info-cell">${htmlEscape(profile.students)}${
+              profile.internationalStudents ? `<small>${htmlEscape(profile.internationalStudents)}</small>` : ""
+            }</div><div class="school-info-cell">参考层级</div><div class="school-info-cell">${htmlEscape(
+              profile.tier
+            )}</div><div class="school-info-cell">学校官网</div><div class="school-info-cell school-info-logo-cell">${officialWebsite}</div></div><div class="school-info-intro"><h4>${htmlEscape(
+              profile.name
+            )}介绍</h4><p>${htmlEscape(profile.intro)}</p><p><strong>重点方向：</strong>${htmlEscape(
+              profile.focus
+            )}</p><em>学校简介用于快速了解合作院校，申请判断仍需结合官方招生简章、项目合同和最新费用说明。</em></div></section>`;
+          }
+
+          function schoolTierRank(school) {
+            return Number((tierNotes[school.slug] || "T4").replace("T", ""));
+          }
+
+          function isDefaultApplicant(applicant) {
+            return (
+              applicant.gpa === 77 &&
+              applicant.schoolTier === "regular" &&
+              applicant.topik === 4 &&
+              applicant.gaokao === "not_submitted" &&
+              applicant.major === "undecided" &&
+              applicant.material === "matched" &&
+              applicant.type === "any" &&
+              applicant.region === "any"
+            );
+          }
+
+          function scoreMajor(focus, major) {
+            if (major === "undecided") return 18;
+            return Math.min(30, (majorKeywords[major] || []).filter((keyword) => focus.includes(keyword)).length * 12);
+          }
+
+          function scoreLanguage(topik, minimum) {
+            if (!minimum) return topik >= 3 ? 14 : 8;
+            if (topik >= minimum + 2) return 20;
+            if (topik >= minimum + 1) return 18;
+            if (topik >= minimum) return 15;
+            if (topik + 1 === minimum) return 8;
+            return 3;
+          }
+
+          function readinessPenalty({ academicGateBlocked, languageGateBlocked, adjustedAcademicGap, languageGap }) {
+            let penalty = 0;
+            if (academicGateBlocked) penalty += 60;
+            if (languageGateBlocked) penalty += 35;
+            if (adjustedAcademicGap < -18) penalty += 35;
+            else if (adjustedAcademicGap < -12) penalty += 22;
+            else if (adjustedAcademicGap < -8) penalty += 12;
+            if (languageGap <= -2) penalty += 30;
+            else if (languageGap === -1) penalty += 12;
+            return penalty;
+          }
+
+          function fitPriority({ academicGateBlocked, languageGateBlocked, adjustedAcademicGap, languageGap }) {
+            if (academicGateBlocked || languageGateBlocked || adjustedAcademicGap < -18 || languageGap <= -2) return 2;
+            if (adjustedAcademicGap < -8 || languageGap < 0) return 1;
+            return 0;
+          }
+
+          function categoryForScore(score, fit) {
+            if (fit === 2) return "先补条件";
+            if (score >= 82) return "较有希望";
+            if (score >= 68) return "适合申请";
+            return "冲刺申请";
+          }
+
+          function caseReasonFor(school) {
+            const detail = schoolDetails[school.slug];
+            if (detail?.caseReason) return detail.caseReason;
+            const summary = window.admissionCaseSummaries?.[school.slug];
+            if (!summary?.representativeCases?.length) return "公开案例不足，建议只作为方向参考。";
+            const gpa = summary.admittedAverageGpa ? `GPA ${Math.round(summary.admittedAverageGpa)}/100` : "GPA需个案核对";
+            const topik = summary.topikDistribution?.[0]?.label || "TOPIK需个案核对";
+            return `${Math.min(summary.caseCount || 1, 5)}个相近案例，常见约${gpa}、${topik}，路径需结合当年简章判断。`;
+          }
+
+          function detailsFor(school) {
+            return (
+              schoolDetails[school.slug] || {
+                caseSummary: `${school.name}案例更适合作为申请画像参考，不能直接换算成录取概率。`,
+                caution: "请以学校最新招生简章为准，重点核对语言、专业材料、面试和奖学金规则。"
+              }
+            );
+          }
+
+          function enrichSchool(school, applicant) {
+            const tier = tierNotes[school.slug] || "T4";
+            const target = tierTarget[tier] || 70;
+            const topikMinimum = tierTopikMinimum[tier] || 3;
+            const academicAdjusted =
+              applicant.gpa - target + schoolTierBonus[applicant.schoolTier] + rankBonus[applicant.rank] + gaokaoBonus[applicant.gaokao];
+            const academicScore = academicAdjusted >= 8 ? 20 : academicAdjusted >= 3 ? 17 : academicAdjusted >= 0 ? 14 : academicAdjusted >= -5 ? 9 : 4;
+            const languageGap = applicant.topik - topikMinimum;
+            const fit = fitPriority({
+              academicGateBlocked: false,
+              languageGateBlocked: languageGap < 0,
+              adjustedAcademicGap: academicAdjusted,
+              languageGap
+            });
+            const rawScore = scoreMajor(school.focus, applicant.major) + scoreLanguage(applicant.topik, topikMinimum) + academicScore + 15;
+            const score = Math.max(0, rawScore - readinessPenalty({ academicGateBlocked: false, languageGateBlocked: languageGap < 0, adjustedAcademicGap: academicAdjusted, languageGap }));
+            const detail = detailsFor(school);
+
+            return {
+              ...school,
+              category: categoryForScore(score, fit),
+              score,
+              fit,
+              academicAdjusted,
+              caseReason: caseReasonFor(school),
+              caseSummary: detail.caseSummary,
+              caution: detail.caution,
+              displayIndex: 0,
+              visualOrder: 0
+            };
+          }
+
+          function buildBalancedSlate(results) {
+            const selected = [];
+            const used = new Set();
+            const slots = Object.entries(recommendationSlatePlan).flatMap(([category, plan]) =>
+              Array.from({ length: plan.count }, () => category)
+            );
+
+            function pickFor(label) {
+              const preferred = results.find((school) => !used.has(school.slug) && school.category === recommendationSlatePlan[label].label);
+              return preferred || results.find((school) => !used.has(school.slug));
+            }
+
+            slots.forEach((label) => {
+              const picked = pickFor(label);
+              if (!picked) return;
+              used.add(picked.slug);
+              selected.push({ ...picked, category: recommendationSlatePlan[label].label });
+            });
+
+            return selected.slice(0, 7);
+          }
+
+          function recommendationResults(applicant) {
+            if (isDefaultApplicant(applicant)) {
+              return defaultSlate
+                .map((slug) => universities.find((school) => school.slug === slug))
+                .filter(Boolean)
+                .map((school) => ({
+                  ...enrichSchool(school, applicant),
+                  category: defaultCategories[school.slug],
+                  displayIndex: defaultVisualOrder[school.slug],
+                  visualOrder: defaultVisualOrder[school.slug]
+                }));
+            }
+
+            const filtered = universities
+              .filter((school) => {
+                if (applicant.type === "national") return school.type.includes("国立") || school.type.includes("公立");
+                if (applicant.type === "private") return school.type.includes("私立");
+                return true;
+              })
+              .filter((school) => {
+                if (applicant.region === "seoul") return school.city.includes("首尔");
+                if (applicant.region === "regional") return !school.city.includes("首尔");
+                return true;
+              })
+              .map((school) => enrichSchool(school, applicant))
+              .sort((a, b) => {
+                const fitCompare = a.fit - b.fit;
+                if (fitCompare !== 0) return fitCompare;
+                return b.score - a.score || schoolTierRank(b) - schoolTierRank(a);
+              });
+
+            return buildBalancedSlate(filtered)
+              .sort((a, b) => schoolTierRank(b) - schoolTierRank(a) || b.score - a.score)
+              .slice(0, 7)
+              .map((school, index) => ({ ...school, displayIndex: index + 1, visualOrder: index + 1 }));
+          }
+
+          function formatAverageGpa(value) {
+            return value ? `${Math.round(value)}/100` : "样本不足";
+          }
+
+          function topSignal(items) {
+            return items?.[0]?.label || "样本不足";
+          }
+
+          function formatPercent(value) {
+            return `${Number(value || 0).toFixed(1).replace(/\.0$/, "")}%`;
+          }
+
+          function highlightItemKey(items) {
+            return (items || []).reduce((best, item) => (!best || item.count > best.count ? item : best), null)?.key;
+          }
+
+          function miniChartLabel(title, text) {
+            if (title === "TOPIK分布") return text.replace(/^TOPIK\s*/, "");
+            if (title === "雅思分布") {
+              const score = text.replace("雅思", "").trim();
+              return /^\d+(?:\.\d+)?$/.test(score) ? `${score}分` : score.replace("雅思", "");
+            }
+            return text;
+          }
+
+          function resultStackColor(label) {
+            if (label.includes("录取")) return "var(--yellow)";
+            if (label.includes("拒绝")) return "#ffffff";
+            return "var(--mint)";
+          }
+
+          function caseTone(resultKey) {
+            if (resultKey === "admitted") return "case-admitted";
+            if (resultKey === "rejected") return "case-rejected";
+            return "case-mixed";
+          }
+
+          function compact(text, maxLength = 54) {
+            const value = String(text || "");
+            return value.length > maxLength ? `${value.slice(0, maxLength - 1)}…` : value;
+          }
+
+          function renderBars(title, items = []) {
+            const highlightedKey = highlightItemKey(items);
+            const caseHighlightColor = "var(--yellow)";
+            const caseBarColor = "#d8d6cf";
+            return `<section class="case-chart"><div class="case-chart-head"><h3>${htmlEscape(title)}</h3><span>↗</span></div><div class="case-bars">${(items || [])
+              .slice(0, 6)
+              .map((item) => {
+                const width = Math.max(Number(item.percent) || 0, item.count > 0 ? 4 : 0);
+                const color = item.key === highlightedKey ? caseHighlightColor : caseBarColor;
+                return `<div class="case-bar-row"><div class="case-bar-meta"><strong>${htmlEscape(
+                  miniChartLabel(title, item.label)
+                )}</strong><span>${item.count} / ${formatPercent(item.percent)}</span></div><div class="case-bar-track"><span style="width:${width}%;background:${color}"></span></div></div>`;
+              })
+              .join("")}</div></section>`;
+          }
+
+          function renderResultStack(items = []) {
+            return `<div class="case-field case-result-field"><span>申请结果</span><div class="case-result-stack">${items
+              .map(
+                (item) =>
+                  `<span style="flex-basis:${item.percent}%;background:${resultStackColor(item.label)}">${
+                    item.percent >= 12 ? `${htmlEscape(item.label)} ${item.count}` : ""
+                  }</span>`
+              )
+              .join("")}</div></div>`;
+          }
+
+          function renderCase(caseItem) {
+            return `<li class="case-snapshot"><div><span class="${caseTone(caseItem.resultKey)}">${htmlEscape(
+              caseItem.result
+            )}</span><span>${htmlEscape(caseItem.entryYear)}</span><span>${htmlEscape(
+              caseItem.topik
+            )}</span><span class="case-gpa">GPA ${htmlEscape(caseItem.gpa)}</span></div><strong>${htmlEscape(caseItem.major)}</strong><p>${htmlEscape(
+              caseItem.highSchoolType
+            )} / ${htmlEscape(compact(caseItem.coreStrength))}</p></li>`;
+          }
+
+          function renderRecommendationCasePanel(schoolSlug, schoolName) {
+            const summary = window.admissionCaseSummaries?.[schoolSlug];
+            if (!summary || summary.caseCount === 0) {
+              return `<section class="recommendation-case-panel" aria-label="${htmlEscape(schoolName)}案例图表"><p>该校公开案例样本不足，建议先核对官方简章。</p></section>`;
+            }
+
+            return `<section class="recommendation-case-panel" aria-label="${htmlEscape(
+              schoolName
+            )}案例图表"><div class="case-summary-row"><div class="case-field"><span>样本量</span><strong class="case-count-value">${
+              summary.caseCount
+            }例</strong></div><div class="case-field"><span>录取人平均GPA</span><strong>${formatAverageGpa(
+              summary.admittedAverageGpa
+            )}</strong></div><div class="case-field"><span>TOPIK 主等级段</span><strong>${htmlEscape(
+              topSignal(summary.topikDistribution)
+            )}</strong></div>${renderResultStack(summary.resultDistribution)}</div><div class="case-charts">${renderBars("TOPIK分布", summary.topikDistribution)}${renderBars(
+              "雅思分布",
+              summary.ieltsDistribution
+            )}${renderBars("高中背景", summary.highSchoolDistribution)}${renderBars("入学年份", summary.yearDistribution)}</div><ul class="case-snapshots">${(
+              summary.representativeCases || []
+            )
+              .map(renderCase)
+              .join("")}</ul><p class="recommendation-result-note">公开案例存在样本偏差，只适合做申请画像参考，不等于学校官方录取概率。</p></section>`;
+          }
+
+          let expandedRecommendationSlug = null;
+          let expandedSchoolInfoSlug = null;
+
+          function renderRecommendations(results) {
+            return `<h2>AI案例推荐结果</h2>${results
+              .map(
+                (school) => `<article class="recommendation-card" style="order: ${school.visualOrder}">
+                      <span class="recommendation-index" aria-label="推荐第${school.displayIndex}位">${school.displayIndex}</span>
+                      <div class="recommendation-body">
+                        <div class="recommendation-head">
+                          <div>
+                            <h3><button class="recommendation-school-toggle" type="button" data-school-slug="${school.slug}" aria-expanded="${expandedRecommendationSlug === school.slug ? "true" : "false"}">${htmlEscape(school.name)}</button><span class="recommendation-rank">${tierNotes[school.slug] || "T4"}</span><span class="recommendation-meta-inline">${school.city} / ${school.type} · <span class="recommendation-confidence">${school.category}</span></span><button class="school-info-toggle" type="button" data-school-info-slug="${school.slug}" aria-expanded="${expandedSchoolInfoSlug === school.slug ? "true" : "false"}">学校介绍</button></h3>
+                          </div>
+                        </div>
+                        <p><strong>专业方向匹配：</strong>${school.focus}</p>
+                        <p><strong>案例参考：</strong><span class="case-reason-detail">${school.caseReason}</span></p>
+                        <p>${htmlEscape(school.caseSummary)}</p>
+                        <p>${htmlEscape(school.caution)}</p>
+                        ${expandedSchoolInfoSlug === school.slug ? renderSchoolInfoPanel(school) : ""}
+                        ${
+                          expandedRecommendationSlug === school.slug
+                            ? renderRecommendationCasePanel(school.slug, school.name)
+                            : expandedSchoolInfoSlug === school.slug
+                              ? ""
+                              : '<p class="recommendation-result-note">公开案例存在样本偏差，只适合做申请画像参考，不等于学校官方录取概率。</p>'
+                        }
+                      </div>
+                    </article>`
+              )
+              .join("")}`;
+          }
+
+          function recommend() {
+            const applicant = {
+              gpa: Number(value("rec-gpa")),
+              schoolTier: value("rec-school-tier", "regular"),
+              rank: value("rec-rank", "top_25"),
+              gaokao: value("rec-gaokao"),
+              topik: Number(value("rec-topik")),
+              major: value("rec-major"),
+              material: value("rec-material"),
+              region: value("rec-region"),
+              budget: value("rec-budget", "medium"),
+              type: value("rec-type")
+            };
+
+            const target = document.getElementById("recommendation-results");
+            target.classList.add("is-visible");
+            target.dataset.lastApplicant = JSON.stringify(applicant);
+            target.innerHTML = renderRecommendations(recommendationResults(applicant));
+          }
+
+          function toggleRecommendationCasePanel(schoolSlug) {
+            const target = document.getElementById("recommendation-results");
+            const applicant = JSON.parse(target.dataset.lastApplicant || "{}");
+            const shouldOpen = expandedRecommendationSlug !== schoolSlug;
+            expandedRecommendationSlug = shouldOpen ? schoolSlug : null;
+            if (shouldOpen) expandedSchoolInfoSlug = null;
+            target.innerHTML = renderRecommendations(recommendationResults(applicant));
+          }
+
+          function toggleSchoolInfoPanel(schoolSlug) {
+            const target = document.getElementById("recommendation-results");
+            const applicant = JSON.parse(target.dataset.lastApplicant || "{}");
+            const shouldOpen = expandedSchoolInfoSlug !== schoolSlug;
+            expandedSchoolInfoSlug = shouldOpen ? schoolSlug : null;
+            if (shouldOpen) expandedRecommendationSlug = null;
+            target.innerHTML = renderRecommendations(recommendationResults(applicant));
+          }
+
+          function resetRecommendation() {
+            const defaults = {
+              "rec-age": "18",
+              "rec-gpa": "77",
+              "rec-school-tier": "regular",
+              "rec-rank": "top_25",
+              "rec-topik": "4",
+              "rec-english": "ielts60",
+              "rec-gaokao": "not_submitted",
+              "rec-major": "undecided",
+              "rec-material": "matched",
+              "rec-region": "any",
+              "rec-budget": "medium",
+              "rec-type": "any"
+            };
+
+            Object.entries(defaults).forEach(([id, defaultValue]) => {
+              const field = document.getElementById(id);
+              if (field) field.value = defaultValue;
+            });
+
+            const target = document.getElementById("recommendation-results");
+            target.classList.remove("is-visible");
+            delete target.dataset.lastApplicant;
+            expandedRecommendationSlug = null;
+            expandedSchoolInfoSlug = null;
+            target.innerHTML = "";
+          }
+
+          document.getElementById("recommend-button").addEventListener("click", recommend);
+          document.getElementById("reset-recommendation-button").addEventListener("click", resetRecommendation);
+          document.getElementById("recommendation-results").addEventListener("click", (event) => {
+            const schoolInfoButton = event.target.closest(".school-info-toggle");
+            if (schoolInfoButton) {
+              toggleSchoolInfoPanel(schoolInfoButton.dataset.schoolInfoSlug);
+              return;
+            }
+
+            const button = event.target.closest(".recommendation-school-toggle");
+            if (!button) return;
+            toggleRecommendationCasePanel(button.dataset.schoolSlug);
+          });
+        })();
       </script>
     </main>
     <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="回到顶部">

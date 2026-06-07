@@ -139,7 +139,6 @@ const shellNavLinks = [
   { file: "application.html", label: "&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;", color: "mint" },
   { file: "topik.html", label: "&#38889;&#35821;(TOPIK)", color: "green", aliases: ["korean-learning.html"] },
   { file: "cost.html", label: "&#30041;&#23398;&#36153;&#29992; <span class=\"nav-suffix\">&#65288;&#22870;&#23398;&#37329;&#65289;</span>", color: "yellow" },
-  { file: "agency-check.html", label: "&#25253;&#32771;&#27969;&#31243;", color: "peach" },
   { file: "exchange-rate.html", label: "&#27719;&#29575;", color: "yellow" }
 ];
 
@@ -340,7 +339,7 @@ function shell({ title, body, extraStyle = "", headerTitle = title, activePath =
           position: absolute;
           top: 2.3rem;
           right: 4rem;
-          width: min(61.5rem, calc(100vw - 13rem));
+          width: min(53rem, calc(100vw - 13rem));
           max-width: none;
           flex-wrap: nowrap;
           justify-content: flex-end;
@@ -359,8 +358,7 @@ function shell({ title, body, extraStyle = "", headerTitle = title, activePath =
         .nav > .pill:nth-child(2) { width: 9.4rem; }
         .nav > .pill:nth-child(3) { width: 10.6rem; }
         .nav > .pill:nth-child(4) { width: 12.4rem; }
-        .nav > .pill:nth-child(5) { width: 8.4rem; }
-        .nav > .pill:nth-child(6) { width: 5.6rem; }
+        .nav > .pill:nth-child(5) { width: 5.6rem; }
       }
 
       @media (max-width: 720px) {
@@ -512,7 +510,7 @@ function shell({ title, body, extraStyle = "", headerTitle = title, activePath =
           position: absolute;
           top: 2.3rem;
           right: 4rem;
-          width: min(61.5rem, calc(100vw - 13rem));
+          width: min(53rem, calc(100vw - 13rem));
           max-width: none;
           flex-wrap: nowrap;
           justify-content: flex-end;
@@ -535,9 +533,7 @@ function shell({ title, body, extraStyle = "", headerTitle = title, activePath =
         .header .nav > .pill:nth-child(4),
         .header .top-nav > .nav-pill:nth-child(4) { width: 12.4rem; }
         .header .nav > .pill:nth-child(5),
-        .header .top-nav > .nav-pill:nth-child(5) { width: 8.4rem; }
-        .header .nav > .pill:nth-child(6),
-        .header .top-nav > .nav-pill:nth-child(6) { width: 5.6rem; }
+        .header .top-nav > .nav-pill:nth-child(5) { width: 5.6rem; }
       }
 
       @media (max-width: 980px) {
@@ -654,7 +650,7 @@ function shell({ title, body, extraStyle = "", headerTitle = title, activePath =
           position: absolute !important;
           top: 50% !important;
           right: 0 !important;
-          width: 61.5rem !important;
+          width: 53rem !important;
           max-width: calc(100vw - 13rem) !important;
           height: 2.35rem !important;
           transform: translateY(-50%) !important;
@@ -692,9 +688,7 @@ function shell({ title, body, extraStyle = "", headerTitle = title, activePath =
         .header .nav > .pill:nth-child(4),
         .header .top-nav > .nav-pill:nth-child(4) { width: 12.4rem !important; }
         .header .nav > .pill:nth-child(5),
-        .header .top-nav > .nav-pill:nth-child(5) { width: 8.4rem !important; }
-        .header .nav > .pill:nth-child(6),
-        .header .top-nav > .nav-pill:nth-child(6) { width: 5.6rem !important; }
+        .header .top-nav > .nav-pill:nth-child(5) { width: 5.6rem !important; }
       }
 
       @media (max-width: 980px) {
@@ -4916,8 +4910,7 @@ const placeholderPages = [
   ["exchange-rate.html", "汇率", "人民币与韩元汇率入口后续会接入实时或定期更新的参考数据。"],
   ["korea-overview.html", "韩国概况", "这里将整理韩国城市、学制、签证、住宿和生活信息。"],
   ["about.html", "关于我们", "韩学罗盘会把官方信息、学校信息、人民币估算和学生经验分层展示。"],
-  ["korean-learning.html", "韩语(TOPIK)", "从零基础到 TOPIK 6 级的学习路线将在这里扩展。"],
-  ["scholarships.html", "奖学金", "政府奖学金、学校奖学金和 TOPIK 等级奖学金将在这里扩展。"]
+  ["korean-learning.html", "韩语(TOPIK)", "从零基础到 TOPIK 6 级的学习路线将在这里扩展。"]
 ];
 
 mkdirSync(root, { recursive: true });

@@ -4,8 +4,7 @@ import {
   Calculator,
   FileCheck2,
   GraduationCap,
-  Route,
-  SearchCheck
+  Route
 } from "lucide-react";
 import Link from "next/link";
 
@@ -41,12 +40,6 @@ const entryVisuals = {
     sticker: "bg-[#a4d4c5] text-ink rotate-[5deg]",
     hover: "hover:bg-[#b7e1d5]",
     action: "\u65f6\u95f4\u7ebf+\u6750\u6599"
-  },
-  "/agency-check": {
-    icon: SearchCheck,
-    sticker: "bg-[#ff6b5a] text-paper rotate-[-6deg]",
-    hover: "hover:bg-[#ff8b7e]",
-    action: "\u81ea\u7533\u5224\u65ad"
   }
 };
 

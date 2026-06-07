@@ -150,15 +150,6 @@ export const homeEntries: HomeEntry[] = [
     sourceType: "pending",
     actionLabel: "查看规划入口",
     status: "planned"
-  },
-  {
-    title: "报考流程",
-    description: "按准备物、选校、申请方式、提交、录取和入韩拆清韩国大学申请顺序。",
-    href: "/agency-check",
-    category: "决策工具",
-    sourceType: "community",
-    actionLabel: "查看规划入口",
-    status: "planned"
   }
 ];
 

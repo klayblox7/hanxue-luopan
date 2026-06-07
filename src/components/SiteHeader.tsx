@@ -11,7 +11,6 @@ const primaryLinks: HeaderLink[] = [
   { href: "/application", label: "\u56fd\u5185+\u97e9\u56fd\u9879\u76ee" },
   { href: "/topik", label: "\u97e9\u8bed(TOPIK)" },
   { href: "/cost", label: "\u7559\u5b66\u8d39\u7528", suffix: " \uff08\u5956\u5b66\u91d1\uff09" },
-  { href: "/agency-check", label: "报考流程" },
   { href: "/exchange-rate", label: "\u6c47\u7387" }
 ];
 
@@ -21,7 +20,6 @@ const shortcutActiveColors: Record<string, string> = {
   "/topik": "bg-[#71d39b]",
   "/cost": "bg-[#ffe07a]",
   "/application": "bg-[#a4d4c5]",
-  "/agency-check": "bg-[#ffb084]",
   "/exchange-rate": "bg-[#ffe07a]"
 };
 
@@ -31,7 +29,6 @@ const shortcutHoverColors: Record<string, string> = {
   "/topik": "hover:bg-[#71d39b] focus:bg-[#71d39b] active:bg-[#71d39b]",
   "/cost": "hover:bg-[#ffe07a] focus:bg-[#ffe07a] active:bg-[#ffe07a]",
   "/application": "hover:bg-[#a4d4c5] focus:bg-[#a4d4c5] active:bg-[#a4d4c5]",
-  "/agency-check": "hover:bg-[#ffb084] focus:bg-[#ffb084] active:bg-[#ffb084]",
   "/exchange-rate": "hover:bg-[#ffe07a] focus:bg-[#ffe07a] active:bg-[#ffe07a]"
 };
 
@@ -61,7 +58,6 @@ function linkClass(href: string, active: boolean, mobile = false) {
       "/application": "md:w-[9.4rem]",
       "/topik": "md:w-[10.6rem]",
       "/cost": "md:w-[12.4rem]",
-      "/agency-check": "md:w-[8.4rem]",
       "/exchange-rate": "md:w-[5.6rem]"
     }[href] ?? "md:w-[8.8rem]";
   const sizeClass = mobile
@@ -109,7 +105,7 @@ export function SiteHeader({ pageTitle }: SiteHeaderProps) {
 
         <div className="hidden min-w-0 justify-self-end md:absolute md:right-6 md:top-[2.3rem] md:block lg:right-16">
           <nav
-            className="flex w-[61.5rem] max-w-[calc(100vw-13rem)] flex-nowrap items-center justify-end gap-2"
+            className="flex w-[53rem] max-w-[calc(100vw-13rem)] flex-nowrap items-center justify-end gap-2"
             aria-label="主导航"
           >
             {desktopLinks.map((item) => {

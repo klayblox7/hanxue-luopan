@@ -1,4 +1,4 @@
-import { ArrowRight, Calculator, FileCheck2, GraduationCap, Route, SearchCheck } from "lucide-react";
+import { ArrowRight, Calculator, FileCheck2, GraduationCap, Route } from "lucide-react";
 import Link from "next/link";
 
 import { AdmissionsRecommender } from "@/components/AdmissionsRecommender";
@@ -40,13 +40,6 @@ const mobileHomeLinks = [
     href: "/application",
     color: "bg-[#a4d4c5]",
     icon: Route
-  },
-  {
-    title: "报考流程",
-    detail: "申请顺序",
-    href: "/agency-check",
-    color: "bg-[#ffb084]",
-    icon: SearchCheck
   },
   {
     title: "汇率",

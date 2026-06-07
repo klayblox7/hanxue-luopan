@@ -45,15 +45,14 @@ describe("home data", () => {
     }
   });
 
-  it("exposes six homepage entries that point to future product routes", () => {
-    expect(homeEntries).toHaveLength(6);
+  it("exposes five homepage entries that point to future product routes", () => {
+    expect(homeEntries).toHaveLength(5);
     expect(homeEntries.map((entry) => entry.href)).toEqual([
       "/universities",
       "/korean-learning",
       "/topik",
       "/cost",
-      "/application",
-      "/agency-check"
+      "/application"
     ]);
     expect(homeEntries[0]).toMatchObject({
       title: "韩国大学库",
