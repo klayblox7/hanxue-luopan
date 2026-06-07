@@ -33,10 +33,10 @@ const universities = [...universitySource.matchAll(/\{\s*no:[\s\S]*?\n\s*\}/g)].
     city: field(block, "city"),
     type: field(block, "type"),
     focus: field(block, "focus"),
-    totalStudents: field(block, "totalStudents") || "\u5f85\u6838\u9a8c",
-    foreignStudents: field(block, "foreignStudents") || "\u5f85\u6838\u9a8c",
-    dormitoryCapacity: field(block, "dormitoryCapacity") || "\u5f85\u6838\u9a8c",
-    dormitoryRate: field(block, "dormitoryRate") || "\u5f85\u6838\u9a8c",
+    totalStudents: field(block, "totalStudents") || "",
+    foreignStudents: field(block, "foreignStudents") || "",
+    dormitoryCapacity: field(block, "dormitoryCapacity") || "",
+    dormitoryRate: field(block, "dormitoryRate") || "",
     updatedAt: field(block, "updatedAt")
   };
 }).filter((university) => university.no > 0);
@@ -139,7 +139,7 @@ const shellNavLinks = [
   { file: "application.html", label: "&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;", color: "mint" },
   { file: "topik.html", label: "&#38889;&#35821;(TOPIK)", color: "green", aliases: ["korean-learning.html"] },
   { file: "cost.html", label: "&#30041;&#23398;&#36153;&#29992; <span class=\"nav-suffix\">&#65288;&#22870;&#23398;&#37329;&#65289;</span>", color: "yellow" },
-  { file: "agency-check.html", label: "&#33258;&#30003; vs &#20013;&#20171;", color: "peach" },
+  { file: "agency-check.html", label: "&#25253;&#32771;&#27969;&#31243;", color: "peach" },
   { file: "exchange-rate.html", label: "&#27719;&#29575;", color: "yellow" }
 ];
 
@@ -1342,8 +1342,8 @@ const topikHtml = shell({
         padding: 0.5rem 1rem;
         border: 1px solid var(--ink);
         border-radius: 0;
-        background: var(--yellow);
-        font-size: clamp(0.8rem, 1.28vw, 1.2rem);
+        background: #fff3ad;
+        font-size: clamp(0.64rem, 1.024vw, 0.96rem);
         font-weight: 900;
         line-height: 1;
       }
@@ -1843,14 +1843,28 @@ const topikHtml = shell({
 
       .score-scale h3 {
         display: flex;
-        align-items: baseline;
+        align-items: center;
         justify-content: space-between;
         gap: 1rem;
         margin: 0;
-        line-height: 1;
+        font-size: 1.24rem;
+        font-weight: 900;
+        line-height: 1.18;
       }
 
       .score-scale h3 > span:first-child {
+        display: inline;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        padding: 0;
+        font-size: inherit;
+        font-weight: 900;
+        line-height: inherit;
+      }
+
+      .score-total {
+        flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -1858,15 +1872,10 @@ const topikHtml = shell({
         border-radius: 999px;
         background: #f1f1ee;
         padding: 0.36rem 0.58rem;
-        font-size: 0.76rem;
-        font-weight: 900;
-        line-height: 1;
-      }
-
-      .score-total {
-        color: #d33a2c;
+        color: var(--ink);
         font-size: 0.78rem;
         font-weight: 900;
+        line-height: 1;
       }
 
       .topik-system-card p {

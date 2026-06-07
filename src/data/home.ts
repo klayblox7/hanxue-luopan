@@ -152,8 +152,8 @@ export const homeEntries: HomeEntry[] = [
     status: "planned"
   },
   {
-    title: "自申 vs 中介",
-    description: "判断自己是否适合自己申请，避免信息不透明。",
+    title: "报考流程",
+    description: "按准备物、选校、申请方式、提交、录取和入韩拆清韩国大学申请顺序。",
     href: "/agency-check",
     category: "决策工具",
     sourceType: "community",

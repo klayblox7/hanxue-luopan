@@ -39,10 +39,10 @@ type SchoolProfile = {
 
 const zones: Zone[] = [
   { key: "seoul", label: "首尔", cities: ["首尔"] },
-  { key: "gyeonggi", label: "京畿道", cities: ["水原", "安城", "龙仁", "城南", "富川", "高阳", "仁川", "ERICA"] },
-  { key: "north", label: "北部", cities: ["春川"] },
-  { key: "central", label: "中部", cities: ["大田", "世宗", "清州", "天安", "牙山"] },
-  { key: "south", label: "南部", cities: ["釜山", "大邱", "光州", "蔚山", "全州", "庆山", "浦项", "益山"] },
+  { key: "gyeonggi", label: "京畿道", cities: ["水原", "安城", "龙仁", "城南", "富川", "高阳", "仁川", "军浦", "安山", "抱川", "华城", "杨州", "议政府", "东豆川", "ERICA"] },
+  { key: "north", label: "北部", cities: ["春川", "原州", "高城"] },
+  { key: "central", label: "中部", cities: ["大田", "世宗", "清州", "天安", "牙山", "公州", "礼山", "论山", "锦山", "镇川"] },
+  { key: "south", label: "南部", cities: ["釜山", "大邱", "光州", "蔚山", "全州", "庆山", "浦项", "益山", "完州", "罗州", "群山", "顺天", "龟尾", "昌原", "金海", "安东", "庆州"] },
   { key: "jeju", label: "济州岛", cities: ["济州"] }
 ];
 
@@ -52,6 +52,7 @@ const tagStyles: Record<string, string> = {
   工科: "bg-[#e5edff]",
   "传媒/影视": "bg-[#dfc8f4]",
   "艺术/设计": "bg-[#f2c6d5]",
+  "美妆/美容": "bg-[#ffd6e7]",
   "韩语/教育": "bg-[#cdebdc]",
   "酒店/旅游": "bg-[#f5d7b8]",
   "人文/外语": "bg-[#fffefb]",
@@ -65,6 +66,7 @@ const caseBarColor = "#d8d6cf";
 const caseHighlightColor = "#ffe07a";
 const typedSchoolProfiles = partnerSchoolProfiles as SchoolProfile[];
 const schoolProfilesBySlug = new Map(typedSchoolProfiles.map((profile) => [profile.slug, profile]));
+const genericPartnerFocus = "\u5408\u4f5c\u9879\u76ee\u76f8\u5173\u4e13\u4e1a";
 
 const supplementalProfilesBySlug: Record<string, Partial<SchoolProfile>> = {
   "seoul-national-university": {
@@ -89,6 +91,7 @@ const tagRules = [
   { label: "工科", keywords: ["理工", "工科", "工程", "半导体", "建筑", "造船", "航空", "机械", "电子", "科学技术", "实用", "海洋", "水产", "产业"] },
   { label: "传媒/影视", keywords: ["传媒", "电影", "表演", "影视", "广告", "动画", "内容", "影像"] },
   { label: "艺术/设计", keywords: ["艺术", "设计", "美术", "音乐", "舞蹈", "戏剧"] },
+  { label: "美妆/美容", keywords: ["美妆", "美容", "美发", "化妆", "化妆品", "彩妆", "护肤", "皮肤美容", "美甲", "K-Beauty", "K뷰티", "뷰티", "미용", "화장품", "메이크업", "헤어", "네일", "피부"] },
   { label: "韩语/教育", keywords: ["韩语", "国语国文", "教育", "师范", "女子名校"] },
   { label: "酒店/旅游", keywords: ["酒店", "旅游", "观光"] },
   { label: "人文/外语", keywords: ["人文", "外语", "国际", "地域", "通翻译", "法学", "心理", "政治", "社科", "佛教", "英语"] },
@@ -149,6 +152,7 @@ function peopleCount(value?: string) {
 function foreignStudentSummary(totalStudents?: string, foreignStudents?: string) {
   const total = peopleCount(totalStudents);
   const foreign = peopleCount(foreignStudents);
+  if (!foreignStudents) return "资料待补";
   if (!total || !foreign) return foreignStudents;
   const percent = ((foreign / total) * 100).toFixed(1).replace(/\.0$/, "");
   return `${foreignStudents}, ${percent}%`;
@@ -162,7 +166,8 @@ function schoolInfoProfile(university: (typeof universities)[number]) {
   const founded = merged.founded || "资料待补";
   const city = merged.city || university.city;
   const type = merged.type || university.type;
-  const focus = merged.focus || university.focus;
+  const hasGenericPartnerFocus = merged.focus === genericPartnerFocus;
+  const focus = hasGenericPartnerFocus ? university.focus : merged.focus || university.focus;
 
   return {
     name: merged.name || university.nameCn,
@@ -182,7 +187,7 @@ function schoolInfoProfile(university: (typeof universities)[number]) {
     campusImage: publicAssetPath(merged.campusImage),
     imagePosition: merged.imagePosition || "center",
     intro:
-      merged.intro ||
+      (!hasGenericPartnerFocus && merged.intro) ||
       `${university.nameCn}位于${city}，成立时间为${founded}，是一所${type}院校。该校在本项目库中主要用于${focus}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`,
     officialUrl: merged.officialUrl || "",
     logoImage: publicAssetPath(merged.logoImage)
@@ -444,21 +449,49 @@ function SchoolInfoPanel({ university }: { university: (typeof universities)[num
   );
 }
 
-function visibleByFilter(university: (typeof universities)[number], filter: string) {
-  const [kind, value] = filter.split(":");
+type DirectoryFilters = {
+  types: string[];
+  zones: string[];
+  tier: string;
+  majors: string[];
+};
+
+const emptyDirectoryFilters: DirectoryFilters = {
+  types: [],
+  zones: [],
+  tier: "",
+  majors: []
+};
+
+function visibleByFilters(university: (typeof universities)[number], filters: DirectoryFilters) {
   const cityZones = zonesForCity(university.city);
-  if (filter === "all" || filter === "region") return true;
-  if (filter === "national") return university.type.includes("国立") || university.type.includes("公立");
-  if (filter === "private") return university.type.includes("私立");
-  if (kind === "zone") return cityZones.includes(value);
-  if (kind === "tier") return tierFor(university.nameCn).tier === value;
-  if (kind === "major") return tagsFor(university.nameCn, university.focus).some((tag) => tag.label === value);
+  const majorTags = tagsFor(university.nameCn, university.focus).map((tag) => tag.label);
+  if (filters.types.length > 0) {
+    const matchesType =
+      (filters.types.includes("national") && (university.type.includes("国立") || university.type.includes("公立"))) ||
+      (filters.types.includes("private") && university.type.includes("私立"));
+    if (!matchesType) return false;
+  }
+  if (filters.zones.length > 0 && !cityZones.some((zone) => filters.zones.includes(zone))) return false;
+  if (filters.tier && tierFor(university.nameCn).tier !== filters.tier) return false;
+  if (filters.majors.length > 0 && !filters.majors.every((major) => majorTags.includes(major))) return false;
   return true;
 }
 
-function filterSort(filter: string) {
+function normalizeSearchText(value: string) {
+  return value.trim().toLocaleLowerCase();
+}
+
+function visibleBySearch(university: (typeof universities)[number], query: string) {
+  const search = normalizeSearchText(query);
+  if (!search) return true;
+
+  return normalizeSearchText([university.nameCn, university.nameKr, university.nameEn, university.slug].join(" ")).includes(search);
+}
+
+function filterSort(filters: DirectoryFilters) {
   return [...universities].sort((a, b) => {
-    if (filter === "region" || filter.startsWith("zone:")) {
+    if (filters.zones.length > 0) {
       const zoneCompare =
         (zoneOrder.get(zonesForCity(a.city)[0]) ?? 999) - (zoneOrder.get(zonesForCity(b.city)[0]) ?? 999);
       if (zoneCompare !== 0) return zoneCompare;
@@ -472,19 +505,48 @@ function filterSort(filter: string) {
   });
 }
 
+function toggleArrayValue(values: string[], value: string) {
+  return values.includes(value) ? values.filter((item) => item !== value) : [...values, value];
+}
+
+function hasNoFilters(filters: DirectoryFilters) {
+  return !filters.types.length && !filters.zones.length && !filters.tier && !filters.majors.length;
+}
+
 type UniversitiesDirectoryProps = {
   actions?: ReactNode;
 };
 
 export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
-  const [filter, setFilter] = useState("all");
+  const [filters, setFilters] = useState<DirectoryFilters>(emptyDirectoryFilters);
+  const [searchQuery, setSearchQuery] = useState("");
   const [expandedPanel, setExpandedPanel] = useState<{ slug: string; type: "case" | "info" } | null>(null);
   const filteredUniversities = useMemo(
-    () => filterSort(filter).filter((university) => visibleByFilter(university, filter)),
-    [filter]
+    () => filterSort(filters).filter((university) => visibleByFilters(university, filters) && visibleBySearch(university, searchQuery)),
+    [filters, searchQuery]
   );
   const togglePanel = (slug: string, type: "case" | "info") => {
     setExpandedPanel((current) => (current?.slug === slug && current.type === type ? null : { slug, type }));
+  };
+  const clearFilters = () => {
+    setFilters(emptyDirectoryFilters);
+    setExpandedPanel(null);
+  };
+  const toggleTypeFilter = (value: string) => {
+    setFilters((current) => ({ ...current, types: toggleArrayValue(current.types, value) }));
+    setExpandedPanel(null);
+  };
+  const toggleZoneFilter = (value: string) => {
+    setFilters((current) => ({ ...current, zones: toggleArrayValue(current.zones, value) }));
+    setExpandedPanel(null);
+  };
+  const toggleTierFilter = (value: string) => {
+    setFilters((current) => ({ ...current, tier: current.tier === value ? "" : value }));
+    setExpandedPanel(null);
+  };
+  const toggleMajorFilter = (value: string) => {
+    setFilters((current) => ({ ...current, majors: toggleArrayValue(current.majors, value) }));
+    setExpandedPanel(null);
   };
 
   const buttons = [
@@ -496,19 +558,19 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
   return (
     <>
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-        <div className="min-w-0">
+        <div className={`min-w-0 ${actions ? "" : "lg:col-span-2"}`}>
           <div className="mt-3 grid gap-2 sm:mt-5" aria-label="大学列表分类">
             <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
               <div className="no-scrollbar -mx-3 flex gap-2 overflow-x-auto px-3 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
                 {buttons.map((button) => (
                   <button
-                    aria-pressed={filter === button.filter}
-                    className="min-h-10 flex-none rounded-full border border-ink bg-surface px-4 py-2 text-sm font-extrabold text-ink aria-pressed:bg-yellow"
+                    aria-pressed={button.filter === "all" ? hasNoFilters(filters) : filters.types.includes(button.filter)}
+                    className="min-h-10 flex-none rounded-full border border-ink bg-surface px-4 py-2 text-sm font-extrabold text-ink aria-pressed:bg-yellow aria-pressed:ring-2 aria-pressed:ring-ink aria-pressed:ring-offset-2 aria-pressed:ring-offset-paper"
                     key={button.filter}
                     type="button"
                     onClick={() => {
-                      setFilter(button.filter);
-                      setExpandedPanel(null);
+                      if (button.filter === "all") clearFilters();
+                      else toggleTypeFilter(button.filter);
                     }}
                   >
                     {button.label}
@@ -516,13 +578,12 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
                 ))}
                 {zones.map((zone) => (
                   <button
-                    aria-pressed={filter === `zone:${zone.key}`}
-                    className="min-h-10 flex-none rounded-full border border-ink bg-surface px-3 py-2 text-xs font-extrabold text-ink aria-pressed:bg-yellow"
+                    aria-pressed={filters.zones.includes(zone.key)}
+                    className="min-h-10 flex-none rounded-full border border-ink bg-surface px-3 py-2 text-xs font-extrabold text-ink aria-pressed:bg-yellow aria-pressed:ring-2 aria-pressed:ring-ink aria-pressed:ring-offset-2 aria-pressed:ring-offset-paper"
                     key={zone.key}
                     type="button"
                     onClick={() => {
-                      setFilter(`zone:${zone.key}`);
-                      setExpandedPanel(null);
+                      toggleZoneFilter(zone.key);
                     }}
                   >
                     {zone.label}
@@ -535,13 +596,12 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
               >
                 {tierFilterLabels.map((tier) => (
                   <button
-                    aria-pressed={filter === `tier:${tier}`}
-                    className="min-h-10 flex-none rounded-full border border-ink bg-[#e6f7f7] px-4 py-2 text-sm font-extrabold text-ink aria-pressed:bg-yellow"
+                    aria-pressed={filters.tier === tier}
+                    className="min-h-10 flex-none rounded-full border border-ink bg-[#e6f7f7] px-4 py-2 text-sm font-extrabold text-ink aria-pressed:bg-yellow aria-pressed:ring-2 aria-pressed:ring-ink aria-pressed:ring-offset-2 aria-pressed:ring-offset-paper"
                     key={tier}
                     type="button"
                     onClick={() => {
-                      setFilter(`tier:${tier}`);
-                      setExpandedPanel(null);
+                      toggleTierFilter(tier);
                     }}
                   >
                     {tier}
@@ -550,28 +610,54 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
               </div>
             </div>
             <div
-              className="no-scrollbar -mx-3 flex gap-2 overflow-x-auto px-3 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
+              className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(12rem,12.775rem)] lg:items-start"
               aria-label="专业方向筛选"
             >
-              {majorFilterLabels.map((label) => (
-                <button
-                  aria-pressed={filter === `major:${label}`}
-                  className={`min-h-10 flex-none rounded-full border border-ink px-3 py-2 text-xs font-extrabold text-ink ${tagStyles[label]} aria-pressed:ring-2 aria-pressed:ring-ink`}
-                  key={label}
-                  type="button"
-                  onClick={() => {
-                    setFilter(`major:${label}`);
+              <div className="no-scrollbar -mx-3 flex gap-2 overflow-x-auto px-3 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+                {majorFilterLabels.map((label) => (
+                  <button
+                    aria-pressed={filters.majors.includes(label)}
+                    className={`min-h-10 flex-none rounded-full border border-ink px-3 py-2 text-xs font-extrabold text-ink ${tagStyles[label]} aria-pressed:ring-2 aria-pressed:ring-ink aria-pressed:ring-offset-2 aria-pressed:ring-offset-paper`}
+                    key={label}
+                    type="button"
+                    onClick={() => {
+                      toggleMajorFilter(label);
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <label className="relative block min-w-0">
+                <span className="sr-only">学校搜索</span>
+                <input
+                  aria-label="学校搜索"
+                  className="h-[2.45rem] w-full rounded-[6px] border border-ink bg-surface px-3 pr-8 text-right text-xs font-normal italic text-ink outline-none placeholder:text-muted focus:ring-1 focus:ring-ink"
+                  type="search"
+                  value={searchQuery}
+                  placeholder="搜索：当前入库韩国96所高校"
+                  style={{ borderWidth: "0.7px" }}
+                  onChange={(event) => {
+                    setSearchQuery(event.target.value);
                     setExpandedPanel(null);
                   }}
-                >
-                  {label}
-                </button>
-              ))}
+                />
+                {searchQuery ? (
+                  <button
+                    aria-label="清空学校搜索"
+                    className="absolute right-1.5 top-1/2 grid size-5 -translate-y-1/2 place-items-center rounded-full border border-ink bg-paper text-[0.68rem] font-black leading-none text-ink hover:bg-yellow"
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setExpandedPanel(null);
+                    }}
+                  >
+                    ×
+                  </button>
+                ) : null}
+              </label>
             </div>
           </div>
-          <p className="mt-3 text-xs font-bold text-muted" aria-live="polite">
-            当前显示 {filteredUniversities.length} 所学校
-          </p>
         </div>
 
         {actions ? <div className="flex justify-end lg:pt-12">{actions}</div> : null}
@@ -639,7 +725,7 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
               <div className="mt-3 grid grid-cols-2 gap-2 border-t border-ink pt-3 text-xs">
                 <span>
                   <b className="block text-sm">学生数</b>
-                  {university.totalStudents}
+                  {university.totalStudents || "资料待补"}
                 </span>
                 <span>
                   <b className="block text-sm">外国学生</b>
@@ -748,7 +834,7 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
                   </td>
                   <td className="px-4 py-4 align-middle">
                     <strong className="block text-[1.003rem] font-black leading-tight text-ink">
-                      {university.totalStudents}
+                      {university.totalStudents || "资料待补"}
                     </strong>
                     <span className="mt-1 block text-[0.744rem] font-normal leading-snug text-ink">
                       ({foreignStudentSummary(university.totalStudents, university.foreignStudents)})

@@ -86,6 +86,28 @@ describe("static home recommender", () => {
     expect(html).toContain("window.admissionCaseSummaries");
   });
 
+  it("marks recommendation school name links with an external arrow", () => {
+    const html = readFileSync("hanxue-luopan-home.html", "utf8");
+    const dom = new JSDOM(html, { runScripts: "dangerously" });
+    const { document } = dom.window;
+
+    document.getElementById("recommend-button")?.click();
+
+    const schoolNames = Array.from(document.querySelectorAll(".recommendation-school-toggle")).map((node) =>
+      node.textContent?.trim()
+    );
+
+    expect(schoolNames.length).toBeGreaterThan(0);
+    expect(schoolNames).toContain("釜山大学 ↗");
+    expect(schoolNames.every((name) => name?.endsWith(" ↗"))).toBe(true);
+
+    const schoolNameArrows = Array.from(document.querySelectorAll(".recommendation-school-arrow"));
+    expect(schoolNameArrows).toHaveLength(schoolNames.length);
+    expect(schoolNameArrows.every((node) => node.textContent?.trim() === "↗")).toBe(true);
+    expect(html).toContain(".recommendation-school-arrow");
+    expect(html).toContain("font-size: 70%");
+  });
+
   it("keeps the inline case panel metrics square and highlights each chart's largest item", () => {
     const html = readFileSync("hanxue-luopan-home.html", "utf8");
 

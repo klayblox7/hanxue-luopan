@@ -11,7 +11,7 @@ const primaryLinks: HeaderLink[] = [
   { href: "/application", label: "\u56fd\u5185+\u97e9\u56fd\u9879\u76ee" },
   { href: "/topik", label: "\u97e9\u8bed(TOPIK)" },
   { href: "/cost", label: "\u7559\u5b66\u8d39\u7528", suffix: " \uff08\u5956\u5b66\u91d1\uff09" },
-  { href: "/agency-check", label: "\u81ea\u7533 vs \u4e2d\u4ecb" },
+  { href: "/agency-check", label: "报考流程" },
   { href: "/exchange-rate", label: "\u6c47\u7387" }
 ];
 

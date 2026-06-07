@@ -1,4 +1,4 @@
-﻿import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 
 const root = new URL("../", import.meta.url);
 const source = readFileSync(new URL("src/data/universities.ts", root), "utf8").replace(/^\uFEFF/, "");
@@ -38,16 +38,16 @@ const universities = [...source.matchAll(/\{\s*no:[\s\S]*?\n\s*\}/g)]
       city: field(block, "city"),
       type: field(block, "type"),
       focus: field(block, "focus"),
-      totalStudents: field(block, "totalStudents") || "\u5f85\u6838\u9a8c",
-      foreignStudents: field(block, "foreignStudents") || "\u5f85\u6838\u9a8c",
-      dormitoryCapacity: field(block, "dormitoryCapacity") || "\u5f85\u6838\u9a8c",
-      dormitoryRate: field(block, "dormitoryRate") || "\u5f85\u6838\u9a8c"
+      totalStudents: field(block, "totalStudents") || "",
+      foreignStudents: field(block, "foreignStudents") || "",
+      dormitoryCapacity: field(block, "dormitoryCapacity") || "",
+      dormitoryRate: field(block, "dormitoryRate") || ""
     };
   })
   .filter((university) => university.no > 0);
 
 const tierProfiles = new Map(
-  [...tierSource.matchAll(/^\s*(\S+):\s*\{\s*tier:\s*"(T[1-5])",\s*note:\s*"([^"]+)"/gm)].map(
+  [...tierSource.matchAll(/^\s*"([^"]+)":\s*\{\s*tier:\s*"(T[1-5])",\s*note:\s*"([^"]+)"/gm)].map(
     ([, nameCn, tier, note]) => [nameCn, [tier, note]]
   )
 );
@@ -55,6 +55,7 @@ const tierProfiles = new Map(
 const partnerProfilesBySlug = new Map(
   partnerSchoolProfiles.filter((profile) => profile.slug).map((profile) => [profile.slug, profile])
 );
+const genericPartnerFocus = "\u5408\u4f5c\u9879\u76ee\u76f8\u5173\u4e13\u4e1a";
 
 function parseStaticHomeStringMap(name) {
   const block = staticHomeSource.match(new RegExp(`const ${name} = \\{([\\s\\S]*?)\\n\\s*\\};`))?.[1] || "";
@@ -80,10 +81,10 @@ for (const [, slug, founded, students, foreignStudents, officialWebsite] of fact
 
 const zones = [
   { key: "seoul", label: "首尔", cities: ["首尔"] },
-  { key: "gyeonggi", label: "京畿/仁川", cities: ["水原", "安城", "龙仁", "城南", "富川", "高阳", "仁川", "ERICA"] },
-  { key: "north", label: "北部", cities: ["春川"] },
-  { key: "central", label: "中部", cities: ["大田", "世宗", "清州", "天安", "牙山"] },
-  { key: "south", label: "南部", cities: ["釜山", "大邱", "光州", "蔚山", "全州", "庆山", "浦项", "益山"] },
+  { key: "gyeonggi", label: "京畿/仁川", cities: ["水原", "安城", "龙仁", "城南", "富川", "高阳", "仁川", "军浦", "安山", "抱川", "华城", "杨州", "议政府", "东豆川", "ERICA"] },
+  { key: "north", label: "北部", cities: ["春川", "原州", "高城"] },
+  { key: "central", label: "中部", cities: ["大田", "世宗", "清州", "天安", "牙山", "公州", "礼山", "论山", "锦山", "镇川"] },
+  { key: "south", label: "南部", cities: ["釜山", "大邱", "光州", "蔚山", "全州", "庆山", "浦项", "益山", "完州", "罗州", "群山", "顺天", "龟尾", "昌原", "金海", "安东", "庆州"] },
   { key: "jeju", label: "济州", cities: ["济州"] }
 ];
 
@@ -93,6 +94,7 @@ const tagClasses = new Map([
   ["工科", "tag-engineering"],
   ["传媒/影视", "tag-media"],
   ["艺术/设计", "tag-art"],
+  ["美妆/美容", "tag-beauty"],
   ["韩语/教育", "tag-korean"],
   ["酒店/旅游", "tag-tourism"],
   ["人文/外语", "tag-humanities"],
@@ -105,6 +107,7 @@ const tagRules = [
   { label: "工科", keywords: ["理工", "工科", "工程", "半导体", "建筑", "造船", "航空", "机械", "电子", "科学技术", "实用", "海洋", "水产", "产业", "电气"] },
   { label: "传媒/影视", keywords: ["传媒", "电影", "表演", "影视", "广告", "动画", "内容", "影像", "媒体"] },
   { label: "艺术/设计", keywords: ["艺术", "设计", "美术", "音乐", "舞蹈", "戏剧", "服装"] },
+  { label: "美妆/美容", keywords: ["美妆", "美容", "美发", "化妆", "化妆品", "彩妆", "护肤", "皮肤美容", "美甲", "K-Beauty", "K뷰티", "뷰티", "미용", "화장품", "메이크업", "헤어", "네일", "피부"] },
   { label: "韩语/教育", keywords: ["韩语", "国语国文", "教育", "师范", "女子名校"] },
   { label: "酒店/旅游", keywords: ["酒店", "旅游", "观光"] },
   { label: "人文/外语", keywords: ["人文", "外语", "国际", "地域", "通翻译", "法学", "心理", "政治", "社科", "佛教", "英语", "日语"] },
@@ -170,7 +173,8 @@ function schoolInfoProfile(university) {
   const partnerProfile = partnerProfilesBySlug.get(university.slug) || {};
   const fact = schoolFactBySlug.get(university.slug) || {};
   const founded = partnerProfile.founded || fact.founded || "资料待补";
-  const focus = partnerProfile.focus || university.focus;
+  const hasGenericPartnerFocus = partnerProfile.focus === genericPartnerFocus;
+  const focus = hasGenericPartnerFocus ? university.focus : partnerProfile.focus || university.focus;
   const city = partnerProfile.city || university.city;
   const type = partnerProfile.type || university.type;
 
@@ -191,7 +195,7 @@ function schoolInfoProfile(university) {
     campusImage: partnerProfile.campusImage || campusImageBySlug.get(university.slug) || "",
     imagePosition: campusImagePositionBySlug.get(university.slug) || partnerProfile.imagePosition || "center",
     intro:
-      partnerProfile.intro ||
+      (!hasGenericPartnerFocus && partnerProfile.intro) ||
       `${university.nameCn}位于${city}，成立时间为${founded}，是一所${type}院校。该校在本项目库中主要用于${focus}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`,
     officialWebsite: partnerProfile.officialUrl || fact.officialWebsite || "",
     logoImage: partnerProfile.logoImage || schoolLogoBySlug.get(university.slug) || ""
@@ -206,6 +210,7 @@ function rowHtml(university) {
     data-order="${university.no}"
     data-school-slug="${escapeHtml(university.slug)}"
     data-school-name="${escapeHtml(university.nameCn)}"
+    data-search-text="${escapeHtml([university.nameCn, university.nameKr, university.nameEn, university.slug].join(" "))}"
     data-type="${escapeHtml(university.type)}"
     data-tier="${escapeHtml(tier)}"
     data-zones="${escapeHtml(cityZones.join(" "))}"
@@ -216,7 +221,7 @@ function rowHtml(university) {
   >
     <td>
       <span class="school-name-line"><button class="university-name university-toggle" type="button" aria-expanded="false">${escapeHtml(university.nameCn)}</button><button class="school-info-toggle" type="button" aria-expanded="false">学校信息</button></span>
-      <span class="school-subtitle">${escapeHtml(university.nameKr)} 路 ${escapeHtml(university.nameEn)}</span>
+      <span class="school-subtitle">${escapeHtml(university.nameKr)} · ${escapeHtml(university.nameEn)}</span>
     </td>
     <td class="tier-cell">
       <strong class="tier-code">${escapeHtml(tier)}</strong>
@@ -500,6 +505,18 @@ const html = `<!doctype html>
       .pill.peach:focus { background: var(--peach); }
       .nav-suffix { font-size: 0.85em; font-style: italic; font-weight: 400; }
 
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
       .wrap {
         width: calc(100% - 25rem);
         margin: 0 auto;
@@ -523,6 +540,10 @@ const html = `<!doctype html>
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: start;
         gap: 1.25rem;
+      }
+
+      .university-toolbox > .category-controls {
+        grid-column: 1 / -1;
       }
 
       h1 {
@@ -552,6 +573,14 @@ const html = `<!doctype html>
         display: grid;
         width: 100%;
         grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 1rem;
+      }
+
+      .filter-bottom-row {
+        display: grid;
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr) minmax(12rem, 12.775rem);
         align-items: start;
         gap: 1rem;
       }
@@ -593,6 +622,75 @@ const html = `<!doctype html>
       .major-filter[aria-pressed="true"] {
         outline: 2px solid var(--ink);
         outline-offset: 2px;
+      }
+
+      .school-search {
+        position: relative;
+        display: block;
+        min-width: 0;
+      }
+
+      .school-search input {
+        width: 100%;
+        height: 2.45rem;
+        border: 0.7px solid var(--ink);
+        border-radius: 6px;
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+        font-size: 0.82rem;
+        font-style: italic;
+        font-weight: 400;
+        padding: 0 2rem 0 0.9rem;
+        text-align: right;
+        outline: none;
+      }
+
+      .school-search input::placeholder {
+        color: var(--muted);
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      .school-search input:focus {
+        border-color: var(--ink);
+        box-shadow: 0 0 0 1px var(--ink);
+      }
+
+      .school-search-clear {
+        position: absolute;
+        top: 50%;
+        right: 0.45rem;
+        display: none;
+        width: 1.15rem;
+        height: 1.15rem;
+        transform: translateY(-50%);
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--paper);
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.68rem;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .school-search-clear.is-visible {
+        display: grid;
+        place-items: center;
+      }
+
+      .school-search-clear:hover,
+      .school-search-clear:focus {
+        background: var(--yellow);
+      }
+
+      .result-count {
+        margin: 0.7rem 0 0;
+        color: var(--muted);
+        font-size: 0.75rem;
+        font-weight: 800;
       }
 
       table {
@@ -735,6 +833,7 @@ const html = `<!doctype html>
       .tag-engineering { background: #e5edff; }
       .tag-media { background: #dfc8f4; }
       .tag-art { background: #f2c6d5; }
+      .tag-beauty { background: #ffd6e7; }
       .tag-korean { background: #cdebdc; }
       .tag-tourism { background: #f5d7b8; }
       .tag-humanities { background: #fffefb; }
@@ -1182,32 +1281,46 @@ const html = `<!doctype html>
 
       @media (max-width: 640px) {
         .category-controls {
-          flex-wrap: nowrap;
-          margin: 0 -0.75rem;
-          overflow-x: auto;
-          padding: 0 0.75rem 0.2rem;
-          -webkit-overflow-scrolling: touch;
-          scrollbar-width: none;
+          display: grid;
+          width: 100%;
+          gap: 0.5rem;
+          margin: 0;
+          overflow: visible;
+          padding: 0;
         }
-        .category-controls::-webkit-scrollbar { display: none; }
         .category-button {
           flex: 0 0 auto;
           min-height: 2.5rem;
         }
         .major-controls {
-          flex: 0 0 auto;
-          width: auto;
+          width: 100%;
           flex-wrap: nowrap;
           padding-top: 0;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
         }
+        .major-controls::-webkit-scrollbar { display: none; }
         .filter-top-row {
-          display: flex;
-          width: auto;
-          flex: 0 0 auto;
+          display: grid;
+          width: 100%;
+          grid-template-columns: minmax(0, 1fr);
           gap: 0.5rem;
         }
         .tier-controls {
           justify-content: flex-start;
+        }
+        .filter-bottom-row {
+          display: grid;
+          width: 100%;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 0.5rem;
+        }
+        .filter-bottom-row .major-controls {
+          width: 100%;
+        }
+        .school-search {
+          width: 100%;
         }
         table,
         tbody,
@@ -1658,7 +1771,7 @@ const html = `<!doctype html>
           <a class="pill mint" href="./application.html">&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;</a>
           <a class="pill green" href="./topik.html">&#38889;&#35821;(TOPIK)</a>
           <a class="pill yellow" href="./cost.html">&#30041;&#23398;&#36153;&#29992; <span class="nav-suffix">&#65288;&#22870;&#23398;&#37329;&#65289;</span></a>
-          <a class="pill peach" href="./agency-check.html">&#33258;&#30003; vs &#20013;&#20171;</a>
+          <a class="pill peach" href="./agency-check.html">&#25253;&#32771;&#27969;&#31243;</a>
           <a class="pill yellow" href="./exchange-rate.html">&#27719;&#29575;</a>
         </nav>
       </div>
@@ -1678,11 +1791,19 @@ const html = `<!doctype html>
               ${tierButtons}
             </div>
           </div>
-          <div class="major-controls" aria-label="专业方向筛选">
-            ${majorButtons}
+          <div class="filter-bottom-row" aria-label="专业方向筛选和学校搜索">
+            <div class="major-controls" aria-label="专业方向筛选">
+              ${majorButtons}
+            </div>
+            <label class="school-search">
+              <span class="sr-only">学校搜索</span>
+              <input id="school-search" type="search" placeholder="搜索：当前入库韩国96所高校" aria-label="学校搜索" autocomplete="off" />
+              <button class="school-search-clear" type="button" aria-label="清空学校搜索">x</button>
+            </label>
           </div>
         </div>
         </div>
+        <p class="result-count" aria-live="polite"><span id="visible-school-count"></span></p>
         <table>
           <colgroup>
             <col style="width: 24.4%" />
@@ -1712,6 +1833,9 @@ const html = `<!doctype html>
           const buttons = Array.from(document.querySelectorAll(".category-button"));
           const rows = Array.from(document.querySelectorAll("tbody tr.university-row"));
           const tbody = document.querySelector("tbody");
+          const searchInput = document.querySelector("#school-search");
+          const searchClear = document.querySelector(".school-search-clear");
+          const visibleCount = document.querySelector("#visible-school-count");
           const caseSummaries = ${JSON.stringify(caseSummaries)};
           const schoolProfiles = ${JSON.stringify(schoolProfiles)};
           const caseBarColor = "#d8d6cf";
@@ -1721,6 +1845,7 @@ const html = `<!doctype html>
           let detailRow = null;
           let expandedSlug = null;
           let expandedDetailType = null;
+          let currentFilter = "all";
 
           function htmlEscape(value) {
             return String(value ?? "")
@@ -1858,6 +1983,16 @@ const html = `<!doctype html>
             return true;
           }
 
+          function normalizeSearchText(value) {
+            return String(value || "").trim().toLocaleLowerCase();
+          }
+
+          function rowMatchesSearch(row) {
+            const query = normalizeSearchText(searchInput?.value);
+            if (!query) return true;
+            return normalizeSearchText(row.dataset.searchText || row.dataset.schoolName || "").includes(query);
+          }
+
           function sortRows(filter) {
             return [...rows].sort((a, b) => {
               if (filter === "region" || filter.startsWith("zone:")) {
@@ -1876,18 +2011,32 @@ const html = `<!doctype html>
 
           function applyFilter(filter) {
             clearDetail();
+            currentFilter = filter;
             buttons.forEach((button) => {
               button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
             });
 
+            let shown = 0;
             sortRows(filter).forEach((row) => {
-              row.hidden = !rowVisible(row, filter);
+              const isVisible = rowVisible(row, filter) && rowMatchesSearch(row);
+              row.hidden = !isVisible;
+              if (isVisible) shown += 1;
               tbody.appendChild(row);
             });
+            if (visibleCount) visibleCount.textContent = "";
+            searchClear?.classList.toggle("is-visible", Boolean(searchInput?.value));
           }
 
           buttons.forEach((button) => {
             button.addEventListener("click", () => applyFilter(button.dataset.filter));
+          });
+
+          searchInput?.addEventListener("input", () => applyFilter(currentFilter));
+          searchClear?.addEventListener("click", () => {
+            if (!searchInput) return;
+            searchInput.value = "";
+            searchInput.focus();
+            applyFilter(currentFilter);
           });
 
           tbody.addEventListener("click", (event) => {

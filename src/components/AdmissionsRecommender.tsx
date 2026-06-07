@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -56,7 +56,7 @@ export function AdmissionsRecommender() {
   const results = useMemo(() => recommendUniversities(applicant), [applicant]);
 
   return (
-    <section className="border-y border-ink bg-paper px-3 py-4 sm:px-6 sm:py-6 lg:px-8" aria-label="韩国大学推荐">
+    <section className="bg-paper px-3 py-4 sm:px-6 sm:py-6 lg:px-8" aria-label="韩国大学推荐">
       <div className="detail-page-container grid gap-3 sm:gap-4">
         <div className="grid gap-4">
           <div className="grid gap-3 rounded-lg border border-ink bg-surface p-3 sm:grid-cols-2 sm:p-4 lg:grid-cols-5">

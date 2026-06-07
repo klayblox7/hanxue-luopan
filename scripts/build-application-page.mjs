@@ -195,7 +195,7 @@ const universityRecords = [...universitySource.matchAll(/\{\s*no:\s*\d+,[\s\S]*?
   .filter((item) => item.slug && item.nameCn);
 
 const tierProfiles = new Map(
-  [...tierSource.matchAll(/^\s*(\S+):\s*\{\s*tier:\s*"(T[1-5])",\s*note:\s*"([^"]+)"/gm)].map(
+  [...tierSource.matchAll(/^\s*"([^"]+)":\s*\{\s*tier:\s*"(T[1-5])",\s*note:\s*"([^"]+)"/gm)].map(
     ([, nameCn, tier, note]) => [nameCn, { tier, note }],
   ),
 );
@@ -658,6 +658,18 @@ const html = `<!doctype html>
       a { color: inherit; text-decoration: none; }
       button, input { font: inherit; }
 
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
       .header {
         position: sticky;
         top: 0;
@@ -813,6 +825,13 @@ const html = `<!doctype html>
         gap: 1rem;
       }
 
+      .filter-bottom-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(12rem, 12.775rem);
+        align-items: start;
+        gap: 1rem;
+      }
+
       .category-controls,
       .major-controls {
         display: flex;
@@ -850,17 +869,29 @@ const html = `<!doctype html>
       .major-filter.major-medical { background: #b7dbc6; }
 
       .search {
-        width: min(24rem, 100%);
-        min-height: 2.45rem;
-        border: 1px solid var(--ink);
-        border-radius: 999px;
+        width: 100%;
+        height: 2.45rem;
+        border: 0.7px solid var(--ink);
+        border-radius: 6px;
         background: var(--surface);
-        padding: 0.55rem 0.95rem;
+        padding: 0 0.9rem;
         color: var(--ink);
-        font-weight: 800;
+        font-size: 0.82rem;
+        font-style: italic;
+        font-weight: 400;
+        outline: none;
       }
 
-      .search::placeholder { color: var(--muted); opacity: 1; }
+      .search::placeholder {
+        color: var(--muted);
+        font-style: italic;
+        font-weight: 400;
+        opacity: 1;
+      }
+      .search:focus {
+        border-color: var(--ink);
+        box-shadow: 0 0 0 1px var(--ink);
+      }
 
       .result-line {
         display: flex;
@@ -874,7 +905,7 @@ const html = `<!doctype html>
 
       table {
         width: 100%;
-        margin-top: 2.04rem;
+        margin-top: 1.632rem;
         border: 1px solid var(--ink);
         border-collapse: collapse;
         background: var(--surface);
@@ -923,20 +954,27 @@ const html = `<!doctype html>
       .school-toggle[aria-expanded="true"] { color: inherit; }
 
       .partner-school-list {
-        display: inline;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
         font-size: 110.4%;
         font-weight: 400;
         line-height: 1.55;
       }
 
       .partner-school-link,
-      .partner-school-name,
-      .partner-separator {
+      .partner-school-name {
         font-weight: 400;
       }
 
       .partner-school-link,
       .partner-school-name {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 0.45rem;
+        row-gap: 0.18rem;
         color: inherit;
         font-family: inherit;
         font-size: inherit;
@@ -958,13 +996,34 @@ const html = `<!doctype html>
         color: inherit;
       }
 
+      .partner-school-link:hover .partner-info-label,
+      .partner-school-link:focus .partner-info-label,
+      .partner-school-link[aria-expanded="true"] .partner-info-label {
+        background: #e2f3cf;
+      }
+
+      .partner-school-link:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 2px;
+      }
+
       .partner-tier {
         font-size: 85%;
         font-weight: 900;
       }
 
-      .partner-city {
-        font-size: 90%;
+      .partner-info-label {
+        display: inline-flex;
+        min-height: 1.25rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #a8aca2;
+        background: #eef8df;
+        color: var(--ink);
+        padding: 0.12rem 0.72rem;
+        font-size: 0.72rem;
+        font-weight: 900;
+        line-height: 1;
       }
 
       .school-subtitle {
@@ -1502,6 +1561,7 @@ const html = `<!doctype html>
         }
         h1 { font-size: 2.35rem; }
         .filter-top-row { grid-template-columns: 1fr; }
+        .filter-bottom-row { grid-template-columns: 1fr; }
         .mode-controls { justify-self: start; }
         .search { width: 100%; }
         .category-controls,
@@ -1941,7 +2001,7 @@ const html = `<!doctype html>
           <a class="pill mint active" href="./application.html">&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;</a>
           <a class="pill green" href="./topik.html">&#38889;&#35821;(TOPIK)</a>
           <a class="pill yellow" href="./cost.html">&#30041;&#23398;&#36153;&#29992; <span class="nav-suffix">&#65288;&#22870;&#23398;&#37329;&#65289;</span></a>
-          <a class="pill peach" href="./agency-check.html">&#33258;&#30003; vs &#20013;&#20171;</a>
+          <a class="pill peach" href="./agency-check.html">&#25253;&#32771;&#27969;&#31243;</a>
           <a class="pill yellow" href="./exchange-rate.html">&#27719;&#29575;</a>
         </nav>
       </div>
@@ -1958,8 +2018,14 @@ const html = `<!doctype html>
             ${modeButtons}
           </div>
         </div>
-        <div class="major-controls" aria-label="major filters">
-          ${majorButtons}
+        <div class="filter-bottom-row">
+          <div class="major-controls" aria-label="major filters">
+            ${majorButtons}
+          </div>
+          <label>
+            <span class="sr-only">学校搜索</span>
+            <input class="search" id="school-search" type="search" placeholder="搜索：当前入库韩国96所高校" aria-label="学校搜索" autocomplete="off" />
+          </label>
         </div>
       </section>
 
@@ -1994,6 +2060,7 @@ const html = `<!doctype html>
         const tbody = document.querySelector("#program-body");
         const buttons = Array.from(document.querySelectorAll(".category-button"));
         const emptyState = document.querySelector("#empty-state");
+        const searchInput = document.querySelector("#school-search");
         let activeFilter = "all";
         let detailRow = null;
         let expandedSlug = null;
@@ -2023,19 +2090,28 @@ const html = `<!doctype html>
           return tags.map((tag) => '<span class="tag ' + (majorClass.get(tag) || "") + '">' + htmlEscape(tag) + '</span>').join("");
         }
 
+        function partnerInfoMarkup() {
+          return '<span class="partner-info-label">学校信息</span>';
+        }
+
+        function partnerNameMarkup(partner) {
+          return htmlEscape(partner.displayName || partner.displayLabel || "\u97e9\u56fd\u5927\u5b66");
+        }
+
         function partnerLabelMarkup(partner) {
-          if (!partner.tier) return htmlEscape(partner.displayLabel || partner.displayName);
-          return '<span class="partner-tier">' + htmlEscape(partner.tier) + '</span> ' + htmlEscape(partner.displayName) + (partner.city ? ' <span class="partner-city">(' + htmlEscape(partner.city) + ')</span>' : '');
+          if (partner.suffix) return htmlEscape(partner.displayLabel || partner.displayName);
+          const label = partnerNameMarkup(partner) + partnerInfoMarkup();
+          if (!partner.tier) return label;
+          return '<span class="partner-tier">' + htmlEscape(partner.tier) + '</span> ' + label;
         }
 
         function partnerMarkup(partners) {
-          return '<span class="partner-school-list">' + (partners || []).map((partner, index) => {
-            const separator = index > 0 && !partner.suffix ? '<span class="partner-separator">、</span>' : "";
+          return '<span class="partner-school-list">' + (partners || []).map((partner) => {
             const label = partnerLabelMarkup(partner);
             if (partner.slug && !partner.suffix) {
-              return separator + '<button class="partner-school-link" type="button" aria-expanded="false" data-school-slug="' + htmlEscape(partner.slug) + '" data-school-name="' + htmlEscape(partner.displayName) + '">' + label + '</button>';
+              return '<button class="partner-school-link" type="button" aria-expanded="false" data-school-slug="' + htmlEscape(partner.slug) + '" data-school-name="' + htmlEscape(partner.displayName) + '">' + label + '</button>';
             }
-            return separator + '<span class="partner-school-name">' + label + '</span>';
+            return '<span class="partner-school-name">' + label + '</span>';
           }).join("") + '</span>';
         }
 
@@ -2308,7 +2384,7 @@ const html = `<!doctype html>
         function renderPanel(program) {
           const partnerNames = (program.koreaPartners || [])
             .map((partner) => (partner.displayName || partner.raw || "\u97E9\u56FD\u5927\u5B66") + (partner.city ? " (" + partner.city + ")" : ""))
-            .join("\u3001") || program.koreaSchools;
+            .join(" ") || program.koreaSchools;
           const field = (name) => program.fields?.[name] || "";
           const sources = (program.sources || []).length
             ? '<div class="source-list">' + program.sources.map((source) => '<a class="source-link" href="' + htmlEscape(source.url) + '" target="_blank" rel="noreferrer">\u6765\u6E90 ' + htmlEscape(source.id) + '</a>').join("") + '</div>'
@@ -2377,6 +2453,16 @@ const html = `<!doctype html>
           return true;
         }
 
+        function normalizeSearchText(value) {
+          return String(value || "").trim().toLocaleLowerCase();
+        }
+
+        function matchesSearch(row) {
+          const query = normalizeSearchText(searchInput?.value);
+          if (!query) return true;
+          return normalizeSearchText(row.dataset.search).includes(query);
+        }
+
         const rows = programs.map((program) => {
           const row = renderRow(program);
           row.querySelector(".school-toggle").addEventListener("click", () => toggleDetail(row, program));
@@ -2397,7 +2483,7 @@ const html = `<!doctype html>
           clearDetail();
           let visible = 0;
           for (const item of rows) {
-            const show = matchesFilter(item.program);
+            const show = matchesFilter(item.program) && matchesSearch(item.row);
             item.row.hidden = !show;
             if (show) visible += 1;
           }
@@ -2411,6 +2497,8 @@ const html = `<!doctype html>
             applyFilters();
           });
         });
+
+        searchInput?.addEventListener("input", applyFilters);
 
         applyFilters();
       })();

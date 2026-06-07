@@ -2,6 +2,7 @@ import { ArrowRight, Calculator, FileCheck2, GraduationCap, Route, SearchCheck }
 import Link from "next/link";
 
 import { AdmissionsRecommender } from "@/components/AdmissionsRecommender";
+import { KoreaStudyMap } from "@/components/KoreaStudyMap";
 import { SiteHeader } from "@/components/SiteHeader";
 import { homeEntries } from "@/data/home";
 
@@ -41,8 +42,8 @@ const mobileHomeLinks = [
     icon: Route
   },
   {
-    title: "自申 vs 中介",
-    detail: "决策工具",
+    title: "报考流程",
+    detail: "申请顺序",
     href: "/agency-check",
     color: "bg-[#ffb084]",
     icon: SearchCheck
@@ -89,6 +90,8 @@ export default function Home() {
       <SiteHeader shortcuts={homeEntries} />
 
       <HomeMobileIndex />
+
+      <KoreaStudyMap />
 
       <AdmissionsRecommender />
 

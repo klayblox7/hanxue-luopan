@@ -1,0 +1,628 @@
+"use client";
+
+import Image from "next/image";
+import { useMemo, useState } from "react";
+
+import { koreaMapRegions, type KoreaMapRegionKey, type KoreaMapRegionShape } from "@/data/korea-map-regions";
+import { universities, type University } from "@/data/universities";
+
+type RegionKey = KoreaMapRegionKey;
+
+type CityCoordinate = {
+  lon: number;
+  lat: number;
+};
+
+type RegionProfile = KoreaMapRegionShape;
+
+type SchoolMarker = {
+  school: University;
+  regionKey: RegionKey;
+  x: number;
+  y: number;
+};
+
+type MarkerCallout = {
+  labelX: number;
+  labelY: number;
+  anchor: "start" | "end";
+};
+
+const mapBounds = {
+  minLon: 124.85,
+  maxLon: 131.25,
+  minLat: 33.0,
+  maxLat: 38.75
+};
+
+const cityCoordinates: Record<string, CityCoordinate> = {
+  "首尔": { lon: 126.978, lat: 37.5665 },
+  "水原": { lon: 127.0286, lat: 37.2636 },
+  "安城": { lon: 127.2798, lat: 37.008 },
+  "安东": { lon: 128.7294, lat: 36.5684 },
+  "安山": { lon: 126.8309, lat: 37.3219 },
+  "抱川": { lon: 127.2003, lat: 37.8949 },
+  "龙仁": { lon: 127.177, lat: 37.2411 },
+  "城南": { lon: 127.1378, lat: 37.42 },
+  "昌原": { lon: 128.6811, lat: 35.2281 },
+  "金海": { lon: 128.8811, lat: 35.2342 },
+  "富川": { lon: 126.766, lat: 37.503 },
+  "高阳": { lon: 126.831, lat: 37.658 },
+  "高城": { lon: 128.4676, lat: 38.3806 },
+  "公州": { lon: 127.119, lat: 36.4467 },
+  "仁川": { lon: 126.7052, lat: 37.4563 },
+  "军浦": { lon: 126.9352, lat: 37.3617 },
+  "锦山": { lon: 127.4889, lat: 36.1089 },
+  "大田": { lon: 127.3845, lat: 36.3504 },
+  "世宗": { lon: 127.289, lat: 36.4801 },
+  "清州": { lon: 127.489, lat: 36.6424 },
+  "天安": { lon: 127.1522, lat: 36.8151 },
+  "牙山": { lon: 126.978, lat: 36.7898 },
+  "礼山": { lon: 126.8447, lat: 36.6826 },
+  "论山": { lon: 127.0987, lat: 36.1872 },
+  "罗州": { lon: 126.7108, lat: 35.0159 },
+  "春川": { lon: 127.7298, lat: 37.8813 },
+  "东豆川": { lon: 127.0607, lat: 37.9037 },
+  "釜山": { lon: 129.0756, lat: 35.1796 },
+  "大邱": { lon: 128.6014, lat: 35.8714 },
+  "光州": { lon: 126.8526, lat: 35.1595 },
+  "蔚山": { lon: 129.3114, lat: 35.5384 },
+  "全州": { lon: 127.148, lat: 35.8242 },
+  "镇川": { lon: 127.4407, lat: 36.8554 },
+  "庆山": { lon: 128.7415, lat: 35.8251 },
+  "庆州": { lon: 129.2247, lat: 35.8562 },
+  "龟尾": { lon: 128.3446, lat: 36.1195 },
+  "群山": { lon: 126.7368, lat: 35.9677 },
+  "华城": { lon: 126.8312, lat: 37.1995 },
+  "浦项": { lon: 129.365, lat: 36.019 },
+  "益山": { lon: 126.9576, lat: 35.9483 },
+  "议政府": { lon: 127.0474, lat: 37.7381 },
+  "杨州": { lon: 127.0458, lat: 37.7853 },
+  "原州": { lon: 127.9202, lat: 37.3422 },
+  "完州": { lon: 127.1621, lat: 35.9047 },
+  "顺天": { lon: 127.4872, lat: 34.9506 },
+  "济州": { lon: 126.5312, lat: 33.4996 },
+  "ERICA": { lon: 126.8312, lat: 37.3219 }
+};
+
+const regions: RegionProfile[] = koreaMapRegions;
+
+const schoolImageBySlug: Record<string, string> = {
+  "ajou-university": "/campus-images/ajou-university.jpg",
+  "catholic-university-of-korea": "/campus-images/catholic-university-of-korea.jpg",
+  "cheongju-university": "/campus-images/cheongju-university.webp",
+  "chonnam-national-university": "/campus-images/chonnam-national-university.png",
+  "chung-ang-university": "/campus-images/chung-ang-university.webp",
+  "chungbuk-national-university": "/campus-images/chungbuk-national-university.webp",
+  "chungnam-national-university": "/campus-images/chungnam-national-university.jpg",
+  "dankook-university": "/campus-images/dankook-university.webp",
+  "dong-a-university": "/campus-images/dong-a-university.jpg",
+  "dongguk-university": "/campus-images/dongguk-university.webp",
+  "duksung-womens-university": "/campus-images/duksung-womens-university.jpg",
+  "ewha-womans-university": "/campus-images/ewha-womans-university.webp",
+  "gachon-university": "/campus-images/gachon-university.webp",
+  "handong-global-university": "/campus-images/handong-global-university.jpg",
+  "hankuk-university-of-foreign-studies": "/campus-images/hankuk-university-of-foreign-studies.jpg",
+  "hansei-university": "/campus-images/hansei-university.webp",
+  "hanyang-university": "/campus-images/hanyang-university.webp",
+  "hongik-university": "/campus-images/hongik-university.webp",
+  "inha-university": "/campus-images/inha-university.webp",
+  "inje-university": "/campus-images/inje-university.jpg",
+  "jeju-national-university": "/campus-images/jeju-national-university.jpg",
+  "jeonbuk-national-university": "/campus-images/jeonbuk-national-university.webp",
+  "kaist": "/campus-images/kaist.jpg",
+  "kangwon-national-university": "/campus-images/kangwon-national-university.webp",
+  "keimyung-university": "/campus-images/keimyung-university.jpg",
+  "konkuk-university": "/campus-images/konkuk-university.webp",
+  "kookmin-university": "/campus-images/kookmin-university.jpg",
+  "korea-aerospace-university": "/campus-images/korea-aerospace-university.webp",
+  "korea-maritime-ocean-university": "/campus-images/korea-maritime-ocean-university.png",
+  "korea-national-university-of-arts": "/campus-images/korea-national-university-of-arts.jpg",
+  "korea-university": "/campus-images/korea-university.webp",
+  "kwangwoon-university": "/campus-images/kwangwoon-university.webp",
+  "kyung-hee-university": "/campus-images/kyung-hee-university.webp",
+  "kyungpook-national-university": "/campus-images/kyungpook-national-university.jpg",
+  "myongji-university": "/campus-images/myongji-university.webp",
+  "partner-ffg-k34-hlz-i1y": "/campus-images/partner-ffg-k34-hlz-i1y.webp",
+  "partner-ffg-r5r-hlz-i1y": "/campus-images/partner-ffg-r5r-hlz-i1y.webp",
+  "partner-ffx-smg-hlz-i1y": "/campus-images/partner-ffx-smg-hlz-i1y.webp",
+  "partner-fjg-ffg-hlz-i1y": "/campus-images/partner-fjg-ffg-hlz-i1y.webp",
+  "partner-fjg-n7j-hlz-i1y": "/campus-images/partner-fjg-n7j-hlz-i1y.webp",
+  "partner-fs1-u09-hlz-i1y": "/campus-images/partner-fs1-u09-hlz-i1y.webp",
+  "partner-g21-iji-ho3-i1c-hlz-i1y": "/campus-images/partner-g21-iji-ho3-i1c-hlz-i1y.webp",
+  "partner-g2w-iji-hlz-i1y": "/campus-images/partner-g2w-iji-hlz-i1y.webp",
+  "partner-g30-iji-h6l-o97-hlz-i1y": "/campus-images/partner-g30-iji-h6l-o97-hlz-i1y.webp",
+  "partner-g30-iji-hlz-i1y": "/campus-images/partner-g30-iji-hlz-i1y.webp",
+  "partner-ggn-smg-hlz-i1y": "/campus-images/partner-ggn-smg-hlz-i1y.webp",
+  "partner-gjs-kfy-hlz-i1y": "/campus-images/partner-gjs-kfy-hlz-i1y.webp",
+  "partner-gjs-noz-hlz-i1y": "/campus-images/partner-gjs-noz-hlz-i1y.webp",
+  "partner-glo-iwn-ho3-i1c-hlz-i1y": "/campus-images/partner-glo-iwn-ho3-i1c-hlz-i1y.webp",
+  "partner-hdl-keo-hlz-i1y": "/campus-images/partner-hdl-keo-hlz-i1y.webp",
+  "partner-hlz-n5c-hlz-i1y": "/campus-images/partner-hlz-n5c-hlz-i1y.webp",
+  "partner-hlz-nj3-hlz-i1y": "/campus-images/partner-hlz-nj3-hlz-i1y.webp",
+  "partner-hlz-skx-hlz-i1y": "/campus-images/partner-hlz-skx-hlz-i1y.webp",
+  "partner-i2x-ffg-hlz-i1y": "/campus-images/partner-i2x-ffg-hlz-i1y.webp",
+  "partner-io6-feo-hlz-i1y": "/campus-images/partner-io6-feo-hlz-i1y.webp",
+  "partner-io6-fip-hlz-i1y": "/campus-images/partner-io6-fip-hlz-i1y.webp",
+  "partner-io6-ggn-hlz-i1y": "/campus-images/partner-io6-ggn-hlz-i1y.webp",
+  "partner-io6-iji-hlz-i1y": "/campus-images/partner-io6-iji-hlz-i1y.webp",
+  "partner-io6-k67-hlz-i1y": "/campus-images/partner-io6-k67-hlz-i1y.webp",
+  "partner-ire-to3-hlz-i1y": "/campus-images/partner-ire-to3-hlz-i1y.webp",
+  "partner-k34-p5j-hlz-i1y": "/campus-images/partner-k34-p5j-hlz-i1y.webp",
+  "partner-kd9-uxo-hlz-i1y": "/campus-images/partner-kd9-uxo-hlz-i1y.webp",
+  "partner-kfy-lu8-hlz-i1y": "/campus-images/partner-kfy-lu8-hlz-i1y.webp",
+  "partner-ldg-gin-hlz-i1y": "/campus-images/partner-ldg-gin-hlz-i1y.webp",
+  "partner-ldk-sez-ff7-tm0-hlz-i1y": "/campus-images/partner-ldk-sez-ff7-tm0-hlz-i1y.webp",
+  "partner-lla-iji-r7m-g21-hlz-i1y": "/campus-images/partner-lla-iji-r7m-g21-hlz-i1y.webp",
+  "partner-lsm-ggn-hlz-i1y": "/campus-images/partner-lsm-ggn-hlz-i1y.webp",
+  "partner-mlj-h65-hlz-i1y": "/campus-images/partner-mlj-h65-hlz-i1y.webp",
+  "partner-nel-noz-hlz-i1y": "/campus-images/partner-nel-noz-hlz-i1y.webp",
+  "partner-nem-lla-pru-kdr-hlz-i1y": "/campus-images/partner-nem-lla-pru-kdr-hlz-i1y.webp",
+  "partner-p7o-i9d-hlz-i1y": "/campus-images/partner-p7o-i9d-hlz-i1y.webp",
+  "partner-r5r-fjg-hlz-i1y": "/campus-images/partner-r5r-fjg-hlz-i1y.webp",
+  "partner-st8-i9d-hli-h6l-rn1-hlz-i1y": "/campus-images/partner-st8-i9d-hli-h6l-rn1-hlz-i1y.webp",
+  "partner-u4a-hm1-hlz-i1y": "/campus-images/partner-u4a-hm1-hlz-i1y.webp",
+  "partner-uc6-i6s-p30-glk-pru-kdr-hlz-i1y": "/campus-images/partner-uc6-i6s-p30-glk-pru-kdr-hlz-i1y.webp",
+  "partner-uc6-i6s-pru-kdr-hlz-i1y": "/campus-images/partner-uc6-i6s-pru-kdr-hlz-i1y.webp",
+  "partner-ul4-fgd-1v-3d-2q-2t-36-hlz-i1y": "/campus-images/partner-ul4-fgd-1v-3d-2q-2t-36-hlz-i1y.webp",
+  "partner-vix-fk1-hlz-i1y": "/campus-images/partner-vix-fk1-hlz-i1y.webp",
+  "pukyong-national-university": "/campus-images/pukyong-national-university.webp",
+  "pusan-national-university": "/campus-images/pusan-national-university.webp",
+  "sangmyung-university": "/campus-images/sangmyung-university.webp",
+  "sejong-university": "/campus-images/sejong-university.webp",
+  "seoul-national-university": "/campus-images/seoul-national-university.jpg",
+  "seoul-womens-university": "/campus-images/seoul-womens-university.webp",
+  "seoultech": "/campus-images/seoultech.webp",
+  "sogang-university": "/campus-images/sogang-university.jpg",
+  "sookmyung-womens-university": "/campus-images/sookmyung-womens-university.jpg",
+  "soonchunhyang-university": "/campus-images/soonchunhyang-university.jpg",
+  "soongsil-university": "/campus-images/soongsil-university.webp",
+  "sungkyunkwan-university": "/campus-images/sungkyunkwan-university.jpg",
+  "sungshin-womens-university": "/campus-images/sungshin-womens-university.jpg",
+  "university-of-seoul": "/campus-images/university-of-seoul.jpg",
+  "university-of-ulsan": "/campus-images/university-of-ulsan.jpg",
+  "wonkwang-university": "/campus-images/wonkwang-university.webp",
+  "yeungnam-university": "/campus-images/yeungnam-university.webp",
+  "yonsei-university": "/campus-images/yonsei-university.webp"
+};
+
+const fallbackSchool = universities.find((school) => school.slug === "yonsei-university") ?? universities[0];
+
+function primaryCity(city: string) {
+  return city.split("/")[0]?.trim() || city;
+}
+
+function regionForSchool(school: University): RegionKey {
+  const city = primaryCity(school.city);
+  return regions.find((region) => region.cities.some((regionCity) => city.includes(regionCity)))?.key ?? "seoul";
+}
+
+function regionByKey(key: RegionKey) {
+  return regions.find((region) => region.key === key) ?? regions[0];
+}
+
+function projectCoordinate(coordinate: CityCoordinate) {
+  return {
+    x: ((coordinate.lon - mapBounds.minLon) / (mapBounds.maxLon - mapBounds.minLon)) * 360,
+    y: ((mapBounds.maxLat - coordinate.lat) / (mapBounds.maxLat - mapBounds.minLat)) * 300
+  };
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function markerOffset(index: number) {
+  if (index === 0) return { x: 0, y: 0 };
+  const angle = index * 2.3999632297;
+  const radius = 6 + Math.sqrt(index) * 2.4;
+  return {
+    x: Math.cos(angle) * radius,
+    y: Math.sin(angle) * radius
+  };
+}
+
+function buildMarkers(): SchoolMarker[] {
+  const cityCounts = new Map<string, number>();
+
+  return universities.map((school) => {
+    const city = primaryCity(school.city);
+    const previous = cityCounts.get(city) ?? 0;
+    cityCounts.set(city, previous + 1);
+    const regionKey = regionForSchool(school);
+    const region = regionByKey(regionKey);
+    const coordinate = cityCoordinates[city] ?? cityCoordinates["首尔"];
+    const projected = projectCoordinate(coordinate);
+    const offset = markerOffset(previous);
+
+    return {
+      school,
+      regionKey,
+      x: clamp(projected.x + offset.x, region.bbox.x + 8, region.bbox.x + region.bbox.width - 8),
+      y: clamp(projected.y + offset.y, region.bbox.y + 8, region.bbox.y + region.bbox.height - 8)
+    };
+  });
+}
+
+function schoolBySlug(slug: string) {
+  return universities.find((school) => school.slug === slug) ?? fallbackSchool;
+}
+
+function schoolCityText(school: University) {
+  return school.city.replace(/\//g, " / ");
+}
+
+function schoolIntro(school: University) {
+  return `${school.nameCn}位于${schoolCityText(school)}，类型为${school.type}。首页地图展示学校所在城市、方向和基础规模，详细招生条件建议进入大学库继续核验。`;
+}
+
+function recommendedScore(school: University) {
+  if (school.no <= 10) return "80分+";
+  if (school.no <= 30) return "75分+";
+  return "70分+";
+}
+
+function recommendedTopik(school: University) {
+  return school.no <= 30 ? "4级以上" : "3~4级";
+}
+
+function schoolTags(school: University) {
+  return school.focus.split(/、|銆/).filter(Boolean).slice(0, 4);
+}
+
+function regionCounts(markers: SchoolMarker[]) {
+  return regions.reduce<Record<RegionKey, number>>((counts, region) => {
+    counts[region.key] = markers.filter((marker) => marker.regionKey === region.key).length;
+    return counts;
+  }, {} as Record<RegionKey, number>);
+}
+
+function detailTransform(region: RegionProfile) {
+  const minWidth = region.key === "seoul" ? 30 : region.key === "jeju" ? 56 : 82;
+  const minHeight = region.key === "seoul" ? 22 : region.key === "jeju" ? 38 : 58;
+  const width = Math.max(region.bbox.width + 18, minWidth);
+  const height = Math.max(region.bbox.height + 14, minHeight);
+  const cx = region.bbox.x + region.bbox.width / 2;
+  const cy = region.bbox.y + region.bbox.height / 2;
+  const x = Math.max(0, Math.min(360 - width, cx - width / 2));
+  const y = Math.max(0, Math.min(300 - height, cy - height / 2));
+  const scale = Math.min(350 / width, 286 / height);
+  const tx = (360 - width * scale) / 2 - x * scale;
+  const ty = (300 - height * scale) / 2 - y * scale;
+  return { scale, tx, ty };
+}
+
+function detailMarkerCallout(marker: SchoolMarker, index: number, region: RegionProfile): MarkerCallout {
+  const rightSide = index % 2 === 0;
+  const lane = Math.floor(index / 2);
+  const labelX = rightSide ? region.bbox.x + region.bbox.width + 8 : region.bbox.x - 8;
+  const labelY = clamp(region.bbox.y + 16 + lane * 13, region.bbox.y + 10, region.bbox.y + region.bbox.height - 8);
+
+  return {
+    labelX: clamp(labelX, 6, 354),
+    labelY: clamp(labelY, 10, 292),
+    anchor: rightSide ? "start" : "end"
+  };
+}
+
+export function KoreaStudyMap() {
+  const markers = useMemo(() => buildMarkers(), []);
+  const counts = useMemo(() => regionCounts(markers), [markers]);
+  const [activeRegionKey, setActiveRegionKey] = useState<RegionKey>("seoul");
+  const [activeSchoolSlug, setActiveSchoolSlug] = useState("yonsei-university");
+  const [hoveredSchoolSlug, setHoveredSchoolSlug] = useState<string | null>(null);
+  const activeRegion = regionByKey(activeRegionKey);
+  const activeSchool = schoolBySlug(activeSchoolSlug);
+  const activeMarkers = markers.filter((marker) => marker.regionKey === activeRegionKey);
+  const hoveredSchool = hoveredSchoolSlug ? schoolBySlug(hoveredSchoolSlug) : null;
+  const markerPreviewSchool = hoveredSchool ?? activeSchool;
+  const detailRegion = activeRegion;
+  const transform = detailTransform(detailRegion);
+  const schoolImageSrc = schoolImageBySlug[activeSchool.slug] ?? schoolImageBySlug["yonsei-university"];
+  const activeTags = schoolTags(activeSchool);
+
+  function chooseRegion(region: RegionProfile) {
+    const firstSchool = markers.find((marker) => marker.regionKey === region.key)?.school ?? activeSchool;
+    setActiveRegionKey(region.key);
+    setActiveSchoolSlug(firstSchool.slug);
+    setHoveredSchoolSlug(null);
+  }
+
+  function chooseSchool(marker: SchoolMarker) {
+    setActiveRegionKey(marker.regionKey);
+    setActiveSchoolSlug(marker.school.slug);
+  }
+
+  return (
+    <section className="bg-paper px-3 py-4 sm:px-6 sm:py-5 lg:px-8" aria-label="韩国留学地图">
+      <div className="detail-page-container grid gap-3 rounded-[10px] border border-ink/40 bg-surface p-4 shadow-data">
+        <div className="hidden">
+          <h1 className="text-2xl font-black leading-none">从地图认识韩国大学</h1>
+          <p className="text-sm font-bold leading-5 text-muted">先选地区，再看学校，快速找到适合你的留学目的地。</p>
+          <span className="w-fit rounded-full border border-ink/40 bg-[#fff7dc] px-3 py-1.5 text-xs font-black">如何使用地图选校?</span>
+        </div>
+        <div className="grid gap-3 lg:grid-cols-3">
+          <article className="rounded-lg border border-ink/20 bg-[#fffaf0] p-3">
+            <div className="hidden">
+              <h2 className="inline-flex items-center gap-2 text-base font-black">
+                <span className="grid size-5 place-items-center rounded-full border border-ink bg-surface text-xs">1</span>
+                选择地区
+              </h2>
+              <span className="rounded-full border border-ink bg-paper px-2 py-1 text-xs font-black">
+                {universities.length} 所学校
+              </span>
+            </div>
+
+            <div className="relative h-96">
+              <svg className="block h-full w-full rounded-lg border border-ink/25 bg-[#fff9ed]" viewBox="0 0 360 300" role="img" aria-label="韩国地区选择地图">
+                <g transform="translate(74 0)">
+                  {regions.map((region) => {
+                    const isActive = region.key === activeRegionKey;
+                    return (
+                      <g
+                        aria-label={`${region.name} 선택`}
+                        className="group cursor-pointer focus:outline-none"
+                        data-region={region.key}
+                        key={region.key}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => chooseRegion(region)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") chooseRegion(region);
+                        }}
+                        style={{ "--region-tone": region.tone } as React.CSSProperties}
+                      >
+                        {region.features.map((feature) => (
+                          <path
+                            className="transition-colors duration-150 group-hover:stroke-ink group-focus:stroke-ink"
+                            d={feature.path}
+                            key={feature.name}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={isActive ? 0.94 : 0.72}
+                            style={{
+                              fill: isActive ? region.tone : `color-mix(in srgb, ${region.tone} 46%, #fffefb)`,
+                              stroke: isActive ? "rgba(10,10,10,.38)" : "rgba(10,10,10,.18)"
+                            }}
+                          />
+                        ))}
+                      </g>
+                    );
+                  })}
+                </g>
+                {regions.map((region) => (
+                  <text
+                    className="pointer-events-none select-none fill-ink text-[1rem] font-black"
+                    key={`${region.key}-count`}
+                    x={region.label.x}
+                    y={region.label.y}
+                    paintOrder="stroke"
+                    stroke="#fffefb"
+                    strokeWidth={3.5}
+                    textAnchor="middle"
+                    transform="translate(74 0)"
+                  >
+                    {counts[region.key]}
+                  </text>
+                ))}
+              </svg>
+              <div className="absolute bottom-3 left-3 top-3 z-10 flex w-28 flex-col gap-1.5 overflow-auto" aria-label="Region quick filters">
+                {regions.map((region) => {
+                  const isActive = region.key === activeRegionKey;
+                  return (
+                    <button
+                      className="inline-flex min-h-7 items-center gap-1.5 rounded-full border border-ink/30 bg-paper/90 px-2 py-1 text-left text-xs font-black transition hover:translate-x-0.5 hover:bg-yellow focus:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                      key={`${region.key}-button`}
+                      type="button"
+                      onClick={() => chooseRegion(region)}
+                    >
+                      <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: region.tone }} aria-hidden="true" />
+                      <span className={isActive ? "underline underline-offset-4" : undefined}>
+                        {region.mapLabel} {counts[region.key]}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </article>
+
+          <article className="rounded-lg border border-ink/20 bg-[#fffaf0] p-3">
+            <div className="hidden">
+              <h2 className="inline-flex items-center gap-2 text-base font-black">
+                <span className="grid size-5 place-items-center rounded-full border border-ink bg-surface text-xs">2</span>
+                {activeRegion.mapLabel}
+              </h2>
+              <span className="min-w-0 truncate rounded-md border border-ink/55 bg-surface px-3 py-1.5 text-xs font-black" data-testid="selected-school-label">
+                {markerPreviewSchool.nameCn}
+              </span>
+              <span className="rounded-full border border-ink px-3 py-1 text-xs font-black" style={{ backgroundColor: activeRegion.tone }}>
+                {activeRegion.name}
+              </span>
+            </div>
+
+            <svg className="block h-96 w-full rounded-lg border border-ink/25 bg-[#fff9ed]" viewBox="0 0 360 300" role="img" aria-label={`${activeRegion.name} 单独地图`}>
+              <g transform={`translate(${transform.tx} ${transform.ty}) scale(${transform.scale})`}>
+                {detailRegion.features.map((feature) => (
+                  <path
+                    d={feature.path}
+                    fill={activeRegion.tone}
+                    key={`${detailRegion.key}-${feature.name}-detail`}
+                    stroke="#0a0a0a"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.45 / transform.scale}
+                  />
+                ))}
+                {activeMarkers.map((marker, index) => {
+                  const isActive = marker.school.slug === activeSchoolSlug;
+                  const callout = detailMarkerCallout(marker, index, activeRegion);
+                  const showCallout = activeRegionKey !== "seoul" && index < 6;
+                  const markerSize = 4 / transform.scale;
+                  const pinSize = 8.4 / transform.scale;
+                  const pinPath = `M ${marker.x} ${marker.y + pinSize * 0.9} C ${marker.x - pinSize * 0.92} ${marker.y} ${marker.x - pinSize * 0.78} ${marker.y - pinSize * 1.08} ${marker.x} ${marker.y - pinSize * 1.08} C ${marker.x + pinSize * 0.78} ${marker.y - pinSize * 1.08} ${marker.x + pinSize * 0.92} ${marker.y} ${marker.x} ${marker.y + pinSize * 0.9} Z`;
+                  const labelWidth = Math.max(34 / transform.scale, marker.school.nameCn.length * 8.6 / transform.scale);
+                  const labelHeight = 15 / transform.scale;
+                  const labelPad = 4 / transform.scale;
+                  const labelCardX = callout.anchor === "start" ? callout.labelX - labelPad : callout.labelX - labelWidth + labelPad;
+                  const labelCardY = callout.labelY - 11 / transform.scale;
+
+                  return (
+                    <g key={marker.school.slug}>
+                      {showCallout ? (
+                        <>
+                          <line
+                            className="pointer-events-none"
+                            x1={marker.x}
+                            y1={marker.y}
+                            x2={callout.anchor === "start" ? callout.labelX - 4 / transform.scale : callout.labelX + 4 / transform.scale}
+                            y2={callout.labelY - 2 / transform.scale}
+                            stroke="rgba(10,10,10,.68)"
+                            strokeLinecap="round"
+                            strokeWidth={0.9 / transform.scale}
+                          />
+                          <rect
+                            className="pointer-events-none"
+                            fill="#fffefb"
+                            height={labelHeight}
+                            rx={2.5 / transform.scale}
+                            stroke="#0a0a0a"
+                            strokeWidth={0.9 / transform.scale}
+                            width={labelWidth}
+                            x={labelCardX}
+                            y={labelCardY}
+                          />
+                          <text
+                            className="pointer-events-none fill-ink font-black"
+                            x={callout.labelX}
+                            y={callout.labelY}
+                            style={{ fontSize: `${7.4 / transform.scale}px` }}
+                            textAnchor={callout.anchor}
+                          >
+                            {marker.school.nameCn}
+                          </text>
+                        </>
+                      ) : null}
+                      {isActive ? (
+                        <path
+                          aria-label={`${marker.school.nameCn} 선택`}
+                          className="cursor-pointer transition-transform hover:scale-110"
+                          d={pinPath}
+                          data-active="true"
+                          data-testid="study-map-marker"
+                          fill="#ffd0d8"
+                          role="button"
+                          stroke="#0a0a0a"
+                          strokeLinejoin="round"
+                          strokeWidth={0.85 / transform.scale}
+                          tabIndex={0}
+                          onClick={() => chooseSchool(marker)}
+                          onMouseEnter={() => setHoveredSchoolSlug(marker.school.slug)}
+                          onMouseLeave={() => setHoveredSchoolSlug(null)}
+                        />
+                      ) : (
+                        <circle
+                          aria-label={`${marker.school.nameCn} 선택`}
+                          className="cursor-pointer transition-transform hover:scale-110"
+                          cx={marker.x}
+                          cy={marker.y}
+                          data-active="false"
+                          data-testid="study-map-marker"
+                          fill="#fff2a8"
+                          r={markerSize}
+                          role="button"
+                          stroke="#0a0a0a"
+                          strokeWidth={0.85 / transform.scale}
+                          tabIndex={0}
+                          onClick={() => chooseSchool(marker)}
+                          onMouseEnter={() => setHoveredSchoolSlug(marker.school.slug)}
+                          onMouseLeave={() => setHoveredSchoolSlug(null)}
+                        />
+                      )}
+                    </g>
+                  );
+                })}
+              </g>
+            </svg>
+
+            <div className="mt-3 flex max-h-20 flex-wrap gap-2 overflow-auto pr-1">
+              {activeMarkers.map((marker) => (
+                <button
+                  className="rounded-full border border-ink bg-surface px-3 py-1.5 text-xs font-black transition hover:-translate-y-0.5 hover:bg-yellow focus:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                  key={marker.school.slug}
+                  style={{ backgroundColor: activeSchoolSlug === marker.school.slug ? activeRegion.tone : "#fffefb" }}
+                  type="button"
+                  onClick={() => chooseSchool(marker)}
+                >
+                  {marker.school.nameCn}
+                </button>
+              ))}
+            </div>
+          </article>
+
+          <article className="rounded-lg border border-ink/20 bg-[#fffaf0] p-3">
+            <div className="hidden">
+              <h2 className="inline-flex items-center gap-2 text-base font-black">
+                <span className="grid size-5 place-items-center rounded-full border border-ink bg-surface text-xs">3</span>
+                学校速览
+              </h2>
+              <span className="rounded-full border border-ink bg-paper px-2 py-1 text-xs font-black">
+                全部 {markers.length} 所
+              </span>
+            </div>
+
+            <div className="grid grid-cols-[4.8rem_minmax(0,1fr)_auto] gap-3 rounded-lg border border-ink/15 bg-surface p-3 shadow-data">
+              <Image
+                className="size-[4.8rem] rounded-lg border border-ink/15 bg-surface object-cover p-0"
+                src={schoolImageSrc}
+                alt={`${activeSchool.nameCn} campus`}
+                width={120}
+                height={120}
+                sizes="5rem"
+              />
+              <div className="min-w-0">
+                  <p className="text-xs font-black text-muted">{activeSchool.nameKr}</p>
+                  <h3 className="text-2xl font-black leading-tight">{activeSchool.nameCn}</h3>
+                  <p className="mt-0.5 text-sm font-bold text-muted">{activeSchool.nameEn}</p>
+              </div>
+              <div className="flex flex-wrap justify-end gap-1.5">
+                <span className="h-fit rounded-full border border-ink/10 bg-[#f5efe2] px-2 py-1 text-xs font-black">{schoolCityText(activeSchool)}</span>
+                <span className="h-fit rounded-full border border-ink/10 bg-[#eef8ee] px-2 py-1 text-xs font-black">{activeSchool.type}</span>
+                <span className="h-fit rounded-full border border-ink/10 bg-[#eef3ff] px-2 py-1 text-xs font-black">{activeRegion.mapLabel}</span>
+              </div>
+
+              <p className="col-span-full text-sm font-normal leading-5">{schoolIntro(activeSchool)}</p>
+
+              <div className="col-span-full grid overflow-hidden rounded-lg border border-ink/10 bg-[#fffaf0] sm:grid-cols-3">
+                <div className="grid gap-1 p-2 text-center">
+                  <span className="text-xs font-bold text-muted">推荐均分</span>
+                  <strong className="text-sm font-black">{recommendedScore(activeSchool)}</strong>
+                </div>
+                <div className="grid gap-1 border-t border-ink/10 p-2 text-center sm:border-l sm:border-t-0">
+                  <span className="text-xs font-bold text-muted">推荐TOPIK</span>
+                  <strong className="text-sm font-black">{recommendedTopik(activeSchool)}</strong>
+                </div>
+                <div className="grid gap-1 border-t border-ink/10 p-2 text-center sm:border-l sm:border-t-0">
+                  <span className="text-xs font-bold text-muted">语言要求</span>
+                  <strong className="text-sm font-black">按项目确认</strong>
+                </div>
+              </div>
+
+              <div className="col-span-full flex flex-wrap gap-1.5">
+                {activeTags.map((tag) => (
+                  <span className="rounded-md border border-ink/10 bg-surface px-2.5 py-1 text-xs font-black" key={tag}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <a className="col-span-full inline-flex min-h-9 items-center justify-center rounded-lg border border-ink/35 bg-yellow text-sm font-black text-ink no-underline" href="/universities">
+                查看详情 →
+              </a>
+              </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}

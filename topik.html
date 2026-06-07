@@ -264,13 +264,15 @@
         padding: 0.5rem 1rem;
         border: 1px solid var(--ink);
         border-radius: 0;
-        background: var(--yellow);
-        font-size: clamp(0.8rem, 1.28vw, 1.2rem);
+        background: #fff3ad;
+        font-size: clamp(0.64rem, 1.024vw, 0.96rem);
         font-weight: 900;
         line-height: 1;
       }
 
       .metric {
+        display: grid;
+        grid-template-rows: auto 1fr;
         border-right: 1px solid var(--ink);
         padding: 0.76rem 1rem;
       }
@@ -288,7 +290,16 @@
       .summary .pill.peach { background: #f1f1ee; }
 
       .metric:last-child { border-right: 0; }
-      .metric strong { display: block; margin-top: 0.76rem; font-size: 1.24rem; line-height: 1; }
+      .metric-line {
+        align-self: center;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
+        transform: translateY(0.25rem);
+      }
+      .metric strong { display: block; font-size: 1.24rem; line-height: 1; }
+      .metric-note { color: var(--muted); font-size: 0.8rem; font-style: italic; font-weight: 500; line-height: 1; white-space: nowrap; }
       .metric p { margin: 0.6rem 0 0; color: var(--muted); font-size: 0.8rem; line-height: 1.45; }
 
       .prep-scale-card {
@@ -321,12 +332,20 @@
       }
 
       .prep-segment {
+        appearance: none;
+        position: relative;
         display: grid;
         align-content: center;
         gap: 0.28rem;
         min-width: 0;
         padding: 0.42rem 0.65rem;
+        border: 0;
         border-right: 1px solid var(--ink);
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        overflow: visible;
+        text-align: left;
       }
 
       .prep-segment:last-child { border-right: 0; }
@@ -334,6 +353,11 @@
       .prep-segment.level-4 { flex-basis: 19%; background: #fff0a6; }
       .prep-segment.level-5 { flex-basis: 31%; background: #f4c6aa; }
       .prep-segment.level-6 { flex-basis: 21.4%; background: #f2aaa1; }
+      .prep-segment:hover { filter: brightness(0.98); }
+      .prep-segment:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: -3px;
+      }
       .prep-main {
         display: flex;
         min-width: 0;
@@ -356,7 +380,28 @@
       }
 
       .prep-segment .months { font-size: 1.06rem; font-weight: 900; line-height: 1; }
-      .prep-segment .words { color: var(--muted); font-size: 0.72rem; line-height: 1.2; }
+      .prep-segment .words {
+        position: absolute;
+        top: calc(100% + 0.34rem);
+        left: 0.65rem;
+        z-index: 5;
+        display: none;
+        align-items: center;
+        min-height: 1.55rem;
+        border: 1px solid var(--ink);
+        border-radius: 0;
+        background: var(--surface);
+        padding: 0.28rem 0.56rem;
+        color: #0a0a0a;
+        font-size: 0.83rem;
+        font-weight: 900;
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+      .prep-segment.level-6 .words { right: 0.65rem; left: auto; }
+      .prep-segment.is-expanded .words {
+        display: inline-flex;
+      }
 
       .prep-axis {
         position: relative;
@@ -444,8 +489,12 @@
       .level-title,
       .level-note {
         font-size: 0.89rem;
-        font-weight: 900;
+        font-weight: 400;
         padding: 0.8rem;
+      }
+
+      .level-tier {
+        font-weight: 900;
       }
 
       .level-axis,
@@ -641,6 +690,11 @@
         border-right: 0;
       }
 
+      .sites-section td:first-child,
+      .sites-section td:nth-child(3) {
+        font-weight: 900;
+      }
+
       .sites-section .summary-title + .table-wrap {
         margin-top: 0;
       }
@@ -752,27 +806,52 @@
       .score-scale {
         border: 1px solid var(--ink);
         background: #fbfbf7;
-        padding: 1.15rem;
       }
 
+      .topik-system-card { padding: 1.15rem; }
+      .score-scale { padding: 1.04rem; }
+
       .topik-system-card h3 {
-        display: block;
-        margin: 0.76rem 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 0;
         font-size: 1.24rem;
         font-weight: 900;
-        line-height: 1;
+        line-height: 1.18;
+        transform: translateY(0.35rem);
       }
 
       .score-scale h3 {
         display: flex;
-        align-items: baseline;
+        align-items: center;
         justify-content: space-between;
         gap: 1rem;
         margin: 0;
-        line-height: 1;
+        font-size: 1.24rem;
+        font-weight: 900;
+        line-height: 1.18;
       }
 
       .score-scale h3 > span:first-child {
+        display: inline;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        padding: 0;
+        font-size: inherit;
+        font-weight: 900;
+        line-height: inherit;
+      }
+
+      .topik-system-card h3 > span:first-child,
+      .score-scale h3 > span:first-child {
+        font-size: 80%;
+      }
+
+      .score-total {
+        flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -780,21 +859,17 @@
         border-radius: 999px;
         background: #f1f1ee;
         padding: 0.36rem 0.58rem;
-        font-size: 0.76rem;
-        font-weight: 900;
-        line-height: 1;
-      }
-
-      .score-total {
-        color: #d33a2c;
+        color: var(--ink);
         font-size: 0.78rem;
         font-weight: 900;
+        line-height: 1;
       }
 
       .topik-system-card p {
         margin: 0.9rem 0 0;
         color: var(--muted);
         font-size: 0.88rem;
+        font-style: italic;
         line-height: 1.65;
       }
 
@@ -803,6 +878,7 @@
         padding: 0.36rem 0.58rem;
         font-size: 0.76rem;
         font-weight: 900;
+        flex-shrink: 0;
       }
       .topik-system-card .pill.yellow { background: #f1f1ee; }
       .topik-system-card .pill.green,
@@ -839,8 +915,10 @@
 
       .exam-unit-grid .head {
         background: #f1f1ee;
-        color: var(--muted);
-        font-size: 0.7rem;
+        color: var(--ink);
+        font-size: 0.8rem;
+        font-weight: 900;
+        line-height: 1.35;
       }
 
       .exam-unit-grid .subject {
@@ -854,6 +932,12 @@
 
       .exam-unit-grid .score {
         background: #d7eee2;
+      }
+
+      .exam-unit-grid .time,
+      .exam-unit-grid .score,
+      .exam-unit-grid span:not(.head):not(.subject):not(.total) {
+        font-weight: 400;
       }
 
       .exam-unit-grid .total {
@@ -894,6 +978,57 @@
         font-weight: 800;
       }
 
+      .apply-table {
+        display: grid;
+        grid-template-columns: 0.65fr 1fr 0.8fr 0.72fr;
+        border: 1px solid var(--ink);
+        margin-top: 1rem;
+        background: #fbfbf7;
+      }
+
+      .apply-table > span {
+        display: flex;
+        min-height: 2.25rem;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border-right: 1px solid var(--ink);
+        border-bottom: 1px solid var(--ink);
+        padding: 0.38rem 0.42rem;
+        font-size: 0.8rem;
+        font-weight: 800;
+        line-height: 1.35;
+        text-align: center;
+      }
+
+      .apply-table > span:nth-child(4n) { border-right: 0; }
+      .apply-table > span:nth-last-child(-n + 4) { border-bottom: 0; }
+      .apply-table .head {
+        justify-content: center;
+        background: #f1f1ee;
+        font-weight: 900;
+      }
+      .apply-table .session {
+        justify-content: center;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .apply-table .ref {
+        display: block;
+        margin-top: 0.32rem;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 400;
+        line-height: 1.625;
+      }
+
+      .apply-table + p {
+        font-size: 0.704rem;
+        line-height: 1.5;
+        text-align: right;
+      }
+
       .score-grid {
         display: grid;
         grid-template-columns: 0.72fr 1fr;
@@ -916,14 +1051,14 @@
       }
 
       .segment {
-        min-height: 3.35rem;
+        min-height: 3.02rem;
         display: flex;
         flex-direction: column;
         gap: 0.22rem;
         align-items: center;
         justify-content: center;
         border-right: 1px solid var(--ink);
-        padding: 0.45rem 0.45rem;
+        padding: 0.4rem 0.45rem;
         text-align: center;
         font-weight: 900;
         line-height: 1.05;
@@ -950,44 +1085,7 @@
       .segment .range {
         color: var(--ink);
         font-size: 0.72rem;
-      }
-
-      .axis {
-        display: grid;
-        margin-top: 0.65rem;
-        color: var(--ink);
-        font-size: 0.73rem;
-        font-weight: 900;
-      }
-
-      .axis span {
-        position: relative;
-      }
-
-      .axis span::before {
-        content: "";
-        position: absolute;
-        top: -0.5rem;
-        left: 0;
-        height: 0.35rem;
-        border-left: 1px solid var(--ink);
-      }
-
-      .axis.topik-i {
-        grid-template-columns: 1.35fr 1fr 1fr;
-      }
-
-      .axis.topik-ii {
-        grid-template-columns: 2fr 0.7fr 0.9fr 0.9fr 1.15fr;
-      }
-
-      .axis span:last-child {
-        text-align: right;
-      }
-
-      .axis span:last-child::before {
-        right: 0;
-        left: auto;
+        font-weight: 400;
       }
 
       .card {
@@ -1560,7 +1658,7 @@
         <a class="pill mint" href="./application.html">&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;</a>
         <a class="pill green active" href="./topik.html">&#38889;&#35821;(TOPIK)</a>
         <a class="pill yellow" href="./cost.html">&#30041;&#23398;&#36153;&#29992; <span class="nav-suffix">&#65288;&#22870;&#23398;&#37329;&#65289;</span></a>
-        <a class="pill peach" href="./agency-check.html">&#33258;&#30003; vs &#20013;&#20171;</a>
+        <a class="pill peach" href="./agency-check.html">&#25253;&#32771;&#27969;&#31243;</a>
         <a class="pill yellow" href="./exchange-rate.html">&#27719;&#29575;</a>
         </nav>
       </div>
@@ -1576,18 +1674,18 @@
     <main class="wrap">
       <h2 class="summary-title topik-anchor" id="prep-time">备考时间对比</h2>
       <section class="summary">
-        <article class="metric"><span class="pill yellow">中国考次</span><strong>每年2次</strong><p>4月、10月纸笔考试</p></article>
-        <article class="metric"><span class="pill yellow">考试费用</span><strong>RMB 400</strong><p>约 ₩76,000</p></article>
+        <article class="metric"><span class="pill yellow">中国考次</span><div class="metric-line"><strong>2次/年</strong><span class="metric-note">(每年4月、10月)</span></div></article>
+        <article class="metric"><span class="pill yellow">考试费用</span><div class="metric-line"><strong>RMB 400</strong></div></article>
         <article class="prep-scale-card">
           <div class="prep-scale-head">
             <span class="pill yellow">零基础目标时间轴</span>
             <em class="prep-scale-note">按目标等级看累计备考时间</em>
           </div>
           <div class="prep-track" aria-label="TOPIK备考累计时间轴">
-            <div class="prep-segment level-3"><div class="prep-main"><strong class="months">6个月</strong><span class="level-badge">3级</span></div><span class="words">约3000词</span></div>
-            <div class="prep-segment level-4"><div class="prep-main"><strong class="months">10个月</strong><span class="level-badge">4级</span></div><span class="words">5000词以上</span></div>
-            <div class="prep-segment level-5"><div class="prep-main"><strong class="months">16.5个月</strong><span class="level-badge">5级</span></div><span class="words">约7000词</span></div>
-            <div class="prep-segment level-6"><div class="prep-main"><strong class="months">21个月</strong><span class="level-badge">6级</span></div><span class="words">10000词以上</span></div>
+            <button class="prep-segment level-3" type="button" aria-expanded="false"><span class="prep-main"><strong class="months">6个月</strong><span class="level-badge">3级</span></span><span class="words">词汇量：约3,000词</span></button>
+            <button class="prep-segment level-4" type="button" aria-expanded="false"><span class="prep-main"><strong class="months">10个月</strong><span class="level-badge">4级</span></span><span class="words">词汇量：5,000词以上</span></button>
+            <button class="prep-segment level-5" type="button" aria-expanded="false"><span class="prep-main"><strong class="months">16.5个月</strong><span class="level-badge">5级</span></span><span class="words">词汇量：约7,000词</span></button>
+            <button class="prep-segment level-6" type="button" aria-expanded="false"><span class="prep-main"><strong class="months">21个月</strong><span class="level-badge">6级</span></span><span class="words">词汇量：10,000词以上</span></button>
           </div>
         </article>
       </section>
@@ -1596,8 +1694,7 @@
         <h2 class="summary-title">考试系统地图</h2>
         <div class="topik-system-grid">
           <article class="topik-system-card">
-            <span class="pill yellow">TOPIK I</span>
-            <h3>1-2级入门考试</h3>
+            <h3><span>1-2级入门考试</span><span class="pill yellow">TOPIK I</span></h3>
             <div class="exam-unit-grid">
               <span class="head">科目</span><span class="head">时间</span><span class="head">题数</span><span class="head">分值</span>
               <span class="subject">听力</span><span class="time">40分钟</span><span>30题</span><span class="score">100分</span>
@@ -1606,8 +1703,7 @@
             </div>
           </article>
           <article class="topik-system-card">
-            <span class="pill green">TOPIK II</span>
-            <h3>3-6级留学主战场</h3>
+            <h3><span>3-6级留学主战场</span><span class="pill green">TOPIK II</span></h3>
             <div class="exam-unit-grid">
               <span class="head">科目</span><span class="head">时间</span><span class="head">题数</span><span class="head">分值</span>
               <span class="subject">听力</span><span class="time">60分钟</span><span>50题</span><span class="score">100分</span>
@@ -1617,13 +1713,13 @@
             </div>
           </article>
           <article class="topik-system-card">
-            <span class="pill mint">IBT / Speaking</span>
-            <h3>机考与口语是补充线</h3>
-            <div class="format-list">
-              <div class="format-item"><strong>IBT</strong><span>机考版，开放地区、题数、分值按当次官方简章确认。</span></div>
-              <div class="format-item"><strong>Speaking</strong><span>口语单独考试，约30分钟，通常用于补充口语能力证明。</span></div>
+            <h3><span>申报时间</span><span class="pill mint">2026 PBT</span></h3>
+            <div class="apply-table" aria-label="2026 TOPIK申报时间表">
+              <span class="head">场次</span><span class="head">申报时间</span><span class="head">考试时间</span><span class="head">出分时间</span>
+              <span class="session">4月</span><span>1/14-1/23</span><span>4/12</span><span>5/29</span>
+              <span class="session">10月</span><span>待公告<small class="ref">2025 7/8-7/17</small></span><span>待公告<small class="ref">2025 10/19</small></span><span>待公告<small class="ref">2025 12/11</small></span>
             </div>
-            <p>这两类不要和普通 PBT TOPIK 等级混看，申请前先确认学校是否接受。</p>
+            <p>中国大陆报名以教育部教育考试院报名网站最终公告为准。</p>
           </article>
         </div>
       </section>
@@ -1638,18 +1734,16 @@
               <div class="segment mint"><span class="level">1级</span><span class="range">80-139</span></div>
               <div class="segment green"><span class="level">2级</span><span class="range">140-200</span></div>
             </div>
-            <div class="axis topik-i"><span>0</span><span>80</span><span>200</span></div>
           </article>
           <article class="score-scale">
             <h3><span>TOPIK II</span><span class="score-total">总分 300</span></h3>
             <div class="scale topik-ii">
               <div class="segment fail"><span class="level">未合格</span><span class="range">0-119</span></div>
-              <div class="segment mint"><span class="level">3级</span><span class="range">120+</span></div>
-              <div class="segment yellow"><span class="level">4级</span><span class="range">150+</span></div>
-              <div class="segment peach"><span class="level">5级</span><span class="range">190+</span></div>
-              <div class="segment pink"><span class="level">6级</span><span class="range">230+</span></div>
+              <div class="segment mint"><span class="level">3级</span><span class="range">120-149</span></div>
+              <div class="segment yellow"><span class="level">4级</span><span class="range">150-189</span></div>
+              <div class="segment peach"><span class="level">5级</span><span class="range">190-229</span></div>
+              <div class="segment pink"><span class="level">6级</span><span class="range">230-300</span></div>
             </div>
-            <div class="axis topik-ii"><span>0</span><span>120</span><span>150</span><span>190</span><span>300</span></div>
           </article>
         </div>
       </section>
@@ -1663,23 +1757,23 @@
               <div class="level-head-note">重点提醒</div>
             </div>
             <div class="level-row">
-              <div class="level-title">(T1) 首尔、延世、高丽、KAIST</div>
+              <div class="level-title"><span class="level-tier">T1</span> 首尔、延世、高丽、KAIST</div>
               <div class="level-cells"><div class="level-cell"><div class="level-box ">2</div></div><div class="level-cell"><div class="level-box ">3</div></div><div class="level-cell"><div class="level-box ">4</div></div><div class="level-cell"><div class="level-box level-red">TOPIK5</div></div><div class="level-cell"><div class="level-box level-red">TOPIK6</div></div></div>
               <div class="level-note">热门专业尽量6</div>
             </div><div class="level-row">
-              <div class="level-title">(T2) 成均馆、汉阳、庆熙、中央、梨花、西江、世宗、釜山、庆北、亚洲等</div>
+              <div class="level-title"><span class="level-tier">T2</span> 成均馆、汉阳、庆熙、中央、梨花、西江、世宗、釜山、庆北、亚洲等</div>
               <div class="level-cells"><div class="level-cell"><div class="level-box ">2</div></div><div class="level-cell"><div class="level-box ">3</div></div><div class="level-cell"><div class="level-box level-peach">TOPIK4</div></div><div class="level-cell"><div class="level-box level-peach">TOPIK5</div></div><div class="level-cell"><div class="level-box ">6</div></div></div>
               <div class="level-note">热门专业建议5</div>
             </div><div class="level-row">
-              <div class="level-title">(T3) 外大、东国、建国、弘益、国民、崇实、市立、仁荷、忠南等</div>
+              <div class="level-title"><span class="level-tier">T3</span> 外大、东国、建国、弘益、国民、崇实、市立、仁荷、忠南等</div>
               <div class="level-cells"><div class="level-cell"><div class="level-box ">2</div></div><div class="level-cell"><div class="level-box level-yellow">TOPIK3</div></div><div class="level-cell"><div class="level-box level-yellow">TOPIK4</div></div><div class="level-cell"><div class="level-box ">5</div></div><div class="level-cell"><div class="level-box ">6</div></div></div>
               <div class="level-note">4级更稳</div>
             </div><div class="level-row">
-              <div class="level-title">(T4) 中坚私立、专业特色院校</div>
+              <div class="level-title"><span class="level-tier">T4</span> 中坚私立、专业特色院校</div>
               <div class="level-cells"><div class="level-cell"><div class="level-box ">2</div></div><div class="level-cell"><div class="level-box level-mint">TOPIK3</div></div><div class="level-cell"><div class="level-box level-mint">TOPIK4</div></div><div class="level-cell"><div class="level-box ">5</div></div><div class="level-cell"><div class="level-box ">6</div></div></div>
               <div class="level-note">建议3-4级</div>
             </div><div class="level-row">
-              <div class="level-title">(T5) 保底友好院校/语学院过渡</div>
+              <div class="level-title"><span class="level-tier">T5</span> 保底友好院校/语学院过渡</div>
               <div class="level-cells"><div class="level-cell"><div class="level-box level-green">TOPIK2</div></div><div class="level-cell"><div class="level-box level-green">TOPIK3</div></div><div class="level-cell"><div class="level-box ">4</div></div><div class="level-cell"><div class="level-box ">5</div></div><div class="level-cell"><div class="level-box ">6</div></div></div>
               <div class="level-note">或语学院结业</div>
             </div>
@@ -1857,5 +1951,18 @@
     <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Back to top">
       <img src="./public/up.gif" alt="" aria-hidden="true" />
     </button>
+    <script>
+      document.querySelectorAll('.prep-segment').forEach((segment) => {
+        segment.addEventListener('click', () => {
+          const isExpanded = !segment.classList.contains('is-expanded');
+          document.querySelectorAll('.prep-segment').forEach((item) => {
+            item.classList.remove('is-expanded');
+            item.setAttribute('aria-expanded', 'false');
+          });
+          segment.classList.toggle('is-expanded', isExpanded);
+          segment.setAttribute('aria-expanded', String(isExpanded));
+        });
+      });
+    </script>
   </body>
 </html>

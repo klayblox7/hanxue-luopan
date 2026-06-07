@@ -10,6 +10,8 @@ backups/
 TOPIK
 .agents/
 .codex/
+.codex-screenshots/
+.tmp-*
 clay/
 spotify/
 .env*

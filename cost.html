@@ -168,8 +168,8 @@
         padding: 0.5rem 1rem;
         border: 1px solid var(--ink);
         border-radius: 0;
-        background: var(--yellow);
-        font-size: clamp(0.8rem, 1.28vw, 1.2rem);
+        background: #fff3ad;
+        font-size: clamp(0.64rem, 1.024vw, 0.96rem);
         font-weight: 900;
         line-height: 1;
       }
@@ -356,11 +356,11 @@
       .pre-cost-amount {
         border-top: 1px solid var(--ink);
         border-bottom: 1px solid var(--ink);
-        background: #f0fbf4;
+        background: #e6f8ef;
         padding: 0.62rem 0.78rem;
       }
       .pre-cost-card.featured .pre-cost-amount {
-        background: #fff1f4;
+        background: #ffe5ec;
       }
       .pre-cost-amount span {
         display: block;
@@ -368,6 +368,48 @@
         font-size: 0.66rem;
         font-weight: 900;
         line-height: 1;
+      }
+      .summary-title.section-title-bar {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        width: 100%;
+        margin: 0 0 0.85rem;
+        padding: 0;
+        overflow: hidden;
+        background: var(--surface);
+        line-height: 1.2;
+      }
+      .section-title-index {
+        align-self: stretch;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 3.25rem;
+        border-right: 1px solid var(--ink);
+        background: var(--yellow);
+        font-size: 0.9rem;
+        font-weight: 950;
+      }
+      .section-title-main {
+        padding: 0.72rem 1rem;
+        font-size: 1.08rem;
+        font-weight: 950;
+      }
+      .section-title-note {
+        padding: 0.72rem 1rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .split .summary-title.section-title-bar {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+      .split .section-title-note {
+        grid-column: 2;
+        padding-top: 0;
+        white-space: normal;
       }
       .pre-cost-amount strong {
         display: block;
@@ -377,6 +419,14 @@
         font-weight: 900;
         line-height: 1;
         white-space: nowrap;
+      }
+      .pre-cost-amount .pre-cost-arrow {
+        display: inline;
+        color: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        vertical-align: baseline;
       }
       .pre-cost-line {
         display: flex;
@@ -478,7 +528,7 @@
       .material-step-band {
         border-top: 1px solid var(--ink);
         border-bottom: 1px solid var(--ink);
-        background: #fff1f4;
+        background: #ffe5ec;
         color: var(--ink);
         padding: 0.8rem 1.15rem;
         font-size: 0.972rem;
@@ -781,80 +831,74 @@
       .comparison-table .scenario-type.green {
         color: var(--ink);
       }
-      .scenario-graph {
+      .budget-card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.9rem;
         margin-top: 1rem;
-        padding: 1.1rem;
+      }
+      .budget-card {
+        display: grid;
+        gap: 0.9rem;
         border: 1px solid var(--ink);
         background: var(--surface);
+        padding: 1.05rem;
       }
-      .scenario-axis,
-      .scenario-row {
+      .budget-card-head {
         display: grid;
-        grid-template-columns: 12rem 1fr 16rem;
-        gap: 1.2rem;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.75rem;
+        align-items: start;
       }
-      .scenario-axis {
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid var(--ink);
-        color: var(--muted);
-        font-size: 0.72rem;
+      .budget-card h3 {
+        margin: 0;
+        font-size: 1.05rem;
         font-weight: 900;
+        line-height: 1.25;
       }
-      .axis-ticks,
-      .range-axis {
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-      }
-      .axis-ticks span:nth-child(n+2):nth-child(-n+4),
-      .range-axis span:nth-child(n+2):nth-child(-n+4) { text-align: center; }
-      .axis-ticks span:last-child,
-      .range-axis span:last-child { text-align: right; }
-      .scenario-row {
-        align-items: center;
-        padding: 1.1rem 0;
-        border-bottom: 1px solid var(--ink);
-      }
-      .scenario-row:last-child { border-bottom: 0; padding-bottom: 0; }
-      .scenario-name h3 { margin: 0; font-size: 1rem; font-weight: 900; }
-      .scenario-name strong { display: block; margin-top: 0.55rem; font-size: 1.55rem; line-height: 1; }
-      .scenario-name p { margin: 0.45rem 0 0; color: var(--muted); font-size: 0.72rem; font-weight: 700; }
-      .scenario-bar { display: grid; gap: 0.35rem; }
-      .range-bar {
-        position: relative;
-        height: 2.5rem;
-        border: 1px solid var(--ink);
-        background: var(--paper);
-      }
-      .range-bar span {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-left: 1px solid var(--ink);
-        border-right: 1px solid var(--ink);
-        background: var(--green);
-        font-size: 0.8rem;
-        font-weight: 900;
+      .budget-card-amount {
+        font-size: 1.85rem;
+        font-weight: 950;
         line-height: 1;
         white-space: nowrap;
       }
-      .range-axis {
+      .budget-card-year {
+        margin-top: 0.35rem;
         color: var(--muted);
-        font-size: 0.68rem;
-        font-weight: 700;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-align: right;
       }
-      .range-axis-mobile { display: none; }
-      .cost-breakdown { display: grid; gap: 0.55rem; font-size: 0.8rem; }
-      .cost-parts {
+      .budget-chip-row {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        border: 1px solid var(--ink);
+        gap: 0.5rem;
       }
-      .cost-parts span { padding: 0.35rem 0.45rem; border-right: 1px solid var(--ink); }
-      .cost-parts span:last-child { border-right: 0; }
-      .cost-breakdown p { margin: 0; color: var(--muted); line-height: 1.45; }
+      .budget-chip {
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        padding: 0.5rem 0.55rem;
+        line-height: 1.25;
+      }
+      .budget-chip b {
+        display: block;
+        margin-bottom: 0.22rem;
+        font-size: 0.76rem;
+      }
+      .budget-chip span {
+        font-size: 0.88rem;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+      .budget-card-note {
+        margin: 0;
+        border-top: 1px solid var(--ink);
+        padding-top: 0.7rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 700;
+        line-height: 1.45;
+      }
 
       .split {
         display: grid;
@@ -985,10 +1029,10 @@
         .comparison-table tbody tr {
           height: auto;
         }
-        .split { grid-template-columns: 1fr; }
-        .scenario-axis { display: none; }
-        .scenario-row { grid-template-columns: 1fr; gap: 0.85rem; }
-        .range-axis-mobile { display: grid; }
+        .split,
+        .budget-card-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
       @media (max-width: 640px) {
@@ -1000,6 +1044,21 @@
         }
         .saving-row { grid-template-columns: 1fr; }
         .saving-row div:not(:last-child) { border-right: 0; border-bottom: 1px solid var(--ink); }
+        .budget-card-head,
+        .budget-chip-row {
+          grid-template-columns: 1fr;
+        }
+        .budget-card-year {
+          text-align: left;
+        }
+        .summary-title.section-title-bar {
+          grid-template-columns: auto minmax(0, 1fr);
+        }
+        .section-title-note {
+          grid-column: 2;
+          padding-top: 0;
+          white-space: normal;
+        }
       }
 
 
@@ -1472,6 +1531,447 @@
         }
       }
 
+
+      /* agency-merge: copied body styles scoped under cost page */
+      .agency-merge {
+        --line: var(--ink);
+        --panel: #f0eee6;
+        --lavender: #b8a4ed;
+        --red-soft: #f4b2aa;
+        --green-soft: #d8f4df;
+        --yellow-soft: #fff3ad;
+        margin-top: 2.5rem;
+      }
+
+.agency-merge .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        border: 1px solid var(--line);
+        margin-top: 1.5rem;
+        background: var(--surface);
+      }
+.agency-merge .metric {
+        min-width: 0;
+        min-height: 8.4rem;
+        border-right: 1px solid var(--line);
+        padding: 0.9rem;
+      }
+.agency-merge .metric:last-child {
+        border-right: 0;
+      }
+.agency-merge .metric small {
+        display: inline-flex;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        padding: 0.3rem 0.5rem;
+        color: var(--muted);
+        font-size: 0.73rem;
+        font-weight: 850;
+        line-height: 1;
+      }
+.agency-merge .metric strong {
+        display: block;
+        margin-top: 0.78rem;
+        font-size: 1.28rem;
+        line-height: 1.08;
+      }
+.agency-merge .metric p {
+        margin: 0.58rem 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+.agency-merge .section {
+        min-width: 0;
+        margin-top: 2rem;
+        scroll-margin-top: 8.8rem;
+      }
+.agency-merge .section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 1rem;
+        align-items: end;
+        margin-bottom: 1rem;
+      }
+.agency-merge h2 {
+        margin: 0;
+        font-size: 1.45rem;
+        line-height: 1.2;
+      }
+.agency-merge .section-kicker {
+        max-width: 70ch;
+        margin: 0.45rem 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+.agency-merge .label {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        background: var(--yellow);
+        padding: 0.5rem 0.8rem;
+        font-size: 0.84rem;
+        font-weight: 900;
+        line-height: 1;
+        white-space: nowrap;
+      }
+.agency-merge .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+.agency-merge .panel-grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+.agency-merge .insight-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border: 1px solid var(--line);
+        background: var(--surface);
+        margin-top: 1.5rem;
+      }
+.agency-merge .insight-panel {
+        min-width: 0;
+        border-right: 1px solid var(--line);
+        padding: 1.15rem;
+      }
+.agency-merge .insight-panel:last-child {
+        border-right: 0;
+      }
+.agency-merge .insight-panel h2 {
+        font-size: 1.28rem;
+      }
+.agency-merge .insight-list {
+        display: grid;
+        gap: 0.85rem;
+        margin-top: 1rem;
+      }
+.agency-merge .insight-item {
+        display: grid;
+        grid-template-columns: 2.2rem minmax(0, 1fr);
+        gap: 0.75rem;
+        align-items: start;
+      }
+.agency-merge .insight-mark {
+        display: grid;
+        width: 2.05rem;
+        height: 2.05rem;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: var(--mint);
+        font-size: 0.85rem;
+        font-weight: 900;
+      }
+.agency-merge .insight-panel:nth-child(2) .insight-mark {
+        background: var(--red-soft);
+      }
+.agency-merge .insight-item strong {
+        display: block;
+        font-size: 1rem;
+        line-height: 1.25;
+      }
+.agency-merge .insight-item p {
+        margin: 0.32rem 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.55;
+      }
+.agency-merge .channel-block {
+        border: 1px solid color-mix(in oklch, var(--lavender) 34%, var(--line));
+        border-radius: 8px;
+        position: relative;
+        margin-top: 5.75rem;
+        background: var(--paper);
+        padding: 1.1rem 1.95rem;
+      }
+.agency-merge .channel-block h2 {
+        display: inline-flex;
+        align-items: center;
+        align-self: flex-start;
+        position: absolute;
+        top: -3.05rem;
+        left: 0;
+        margin: 0;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--ink);
+        border-radius: 0;
+        background: #fff3ad;
+        color: var(--ink);
+        font-size: clamp(0.64rem, 1.024vw, 0.96rem);
+        font-weight: 900;
+        line-height: 1;
+      }
+.agency-merge .channel-showcase {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+        border: 0;
+        border-radius: 8px;
+        margin-top: 0;
+        background: transparent;
+      }
+.agency-merge .channel-card {
+        display: grid;
+        min-height: 9.75rem;
+        min-width: 0;
+        align-content: center;
+        justify-items: center;
+        border: 1px solid color-mix(in oklch, var(--lavender) 46%, transparent);
+        border-radius: 8px;
+        background: var(--paper);
+        padding: 0.9rem;
+        text-align: center;
+      }
+.agency-merge .channel-icon {
+        display: grid;
+        width: 2.65rem;
+        height: 2.65rem;
+        place-items: center;
+        color: oklch(63% 0.19 286);
+      }
+.agency-merge .channel-icon svg, .agency-merge .channel-icon img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+.agency-merge .channel-icon img {
+        object-fit: contain;
+      }
+.agency-merge .channel-card strong {
+        display: block;
+        margin-top: 0.55rem;
+        color: oklch(25% 0.025 265);
+        font-size: 1.05rem;
+        line-height: 1.25;
+      }
+.agency-merge .channel-card p {
+        max-width: 23ch;
+        margin: 0.42rem 0 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+.agency-merge .panel {
+        min-width: 0;
+        border-right: 1px solid var(--line);
+        padding: 1rem;
+      }
+.agency-merge .panel:last-child {
+        border-right: 0;
+      }
+.agency-merge .panel h3 {
+        margin: 0.85rem 0 0;
+        font-size: 1.17rem;
+        line-height: 1.2;
+      }
+.agency-merge .panel p, .agency-merge .panel li {
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.58;
+      }
+.agency-merge .panel p {
+        margin: 0.68rem 0 0;
+      }
+.agency-merge .panel ul {
+        margin: 0.75rem 0 0;
+        padding-left: 1rem;
+      }
+.agency-merge .issue-grid, .agency-merge .reminder-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+.agency-merge .issue, .agency-merge .reminder {
+        min-width: 0;
+        border-right: 1px solid var(--line);
+        padding: 0.95rem;
+      }
+.agency-merge .issue:last-child, .agency-merge .reminder:last-child {
+        border-right: 0;
+      }
+.agency-merge .num {
+        display: grid;
+        width: 2rem;
+        height: 2rem;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: var(--red-soft);
+        font-weight: 900;
+      }
+.agency-merge .issue strong, .agency-merge .reminder strong {
+        display: block;
+        margin-top: 0.75rem;
+        font-size: 0.98rem;
+        line-height: 1.22;
+      }
+.agency-merge .issue p, .agency-merge .reminder p {
+        margin: 0.58rem 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+.agency-merge .timeline {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(10rem, 1fr));
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+.agency-merge .timeline.seven {
+        grid-template-columns: repeat(7, minmax(10rem, 1fr));
+      }
+.agency-merge .step {
+        min-width: 0;
+        border-right: 1px solid var(--line);
+        padding: 0.95rem;
+      }
+.agency-merge .step:last-child {
+        border-right: 0;
+      }
+.agency-merge .step .number {
+        display: grid;
+        width: 2.1rem;
+        height: 2.1rem;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: var(--mint);
+        font-size: 0.9rem;
+        font-weight: 900;
+      }
+.agency-merge .step strong {
+        display: block;
+        margin-top: 0.85rem;
+        font-size: 1rem;
+        line-height: 1.25;
+      }
+.agency-merge .step p, .agency-merge .step small {
+        display: block;
+        margin-top: 0.55rem;
+        color: var(--muted);
+        font-size: 0.8rem;
+        line-height: 1.5;
+      }
+.agency-merge .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.92fr);
+        gap: 1rem;
+        align-items: start;
+      }
+.agency-merge .split > * {
+        min-width: 0;
+      }
+.agency-merge .mini-title {
+        display: inline-flex;
+        margin: 1.1rem 0 0.65rem;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        padding: 0.42rem 0.68rem;
+        font-size: 0.85rem;
+        font-weight: 900;
+      }
+.agency-merge .bar-board {
+        min-width: 0;
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+.agency-merge .bar-row {
+        display: grid;
+        grid-template-columns: 10rem minmax(0, 1fr) 8.2rem;
+        gap: 0.8rem;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        padding: 0.85rem 1rem;
+      }
+.agency-merge .bar-row:last-child {
+        border-bottom: 0;
+      }
+.agency-merge .bar-row strong {
+        font-size: 0.94rem;
+      }
+.agency-merge .bar-track {
+        height: 1.55rem;
+        border: 1px solid var(--line);
+        background:
+          repeating-linear-gradient(
+            90deg,
+            var(--paper),
+            var(--paper) 12.5%,
+            color-mix(in oklch, var(--line) 20%, transparent) 12.5%,
+            color-mix(in oklch, var(--line) 20%, transparent) calc(12.5% + 1px)
+          );
+      }
+.agency-merge .bar-fill {
+        display: grid;
+        height: 100%;
+        place-items: center;
+        border-right: 1px solid var(--line);
+        font-size: 0.72rem;
+        font-weight: 900;
+        line-height: 1;
+        white-space: nowrap;
+      }
+.agency-merge .bar-row span {
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+.agency-merge .table-wrap {
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+.agency-merge table {
+        width: 100%;
+        min-width: 820px;
+        border-collapse: collapse;
+        text-align: left;
+      }
+.agency-merge th, .agency-merge td {
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        padding: 0.72rem 0.78rem;
+        vertical-align: top;
+        font-size: 0.86rem;
+        line-height: 1.5;
+      }
+.agency-merge th {
+        background: var(--pink);
+        font-weight: 900;
+      }
+.agency-merge tr:last-child td {
+        border-bottom: 0;
+      }
+.agency-merge th:last-child, .agency-merge td:last-child {
+        border-right: 0;
+      }
+.agency-merge .note {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        margin: 1rem 0 0;
+        padding: 0.85rem 1rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.65;
+      }
+
+
+      .agency-merge .section:first-child {
+        margin-top: 0;
+      }
+
+      .agency-merge .channel-block:first-child {
+        margin-top: 5.75rem;
+      }
+
     </style>
   </head>
   <body>
@@ -1486,7 +1986,7 @@
         <a class="pill mint" href="./application.html">&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;</a>
         <a class="pill green" href="./topik.html">&#38889;&#35821;(TOPIK)</a>
         <a class="pill yellow active" href="./cost.html">&#30041;&#23398;&#36153;&#29992; <span class="nav-suffix">&#65288;&#22870;&#23398;&#37329;&#65289;</span></a>
-        <a class="pill peach" href="./agency-check.html">&#33258;&#30003; vs &#20013;&#20171;</a>
+        <a class="pill peach" href="./agency-check.html">&#25253;&#32771;&#27969;&#31243;</a>
         <a class="pill yellow" href="./exchange-rate.html">&#27719;&#29575;</a>
         </nav>
       </div>
@@ -1501,7 +2001,7 @@
           <h3>材料认证 / 翻译 / 邮寄</h3>
           <span class="pre-cost-chip">最易漏</span>
         </div>
-        <div class="pre-cost-amount"><strong>约500-3000元</strong></div>
+        <div class="pre-cost-amount"><strong>约500-3000元 <span class="pre-cost-arrow" aria-hidden="true">↗</span></strong></div>
         <div class="pre-cost-line"><p>材料份数、学校要求、是否邮寄都会变。</p></div>
         <small>按材料份数和学校要求浮动。</small>
       </article>
@@ -1571,45 +2071,393 @@
         <section class="section"><h2 class="summary-title">韩国本科留学费用构成分析</h2><div class="cost-analysis-panel"><div class="donut-wrap"><div class="donut-chart" style="background: conic-gradient(#7d98f2 0% 50%, #5cc8a1 50% 75%, #a678f0 75% 90%, #ff9851 90% 95%, #f17878 95% 100%)"><span class="donut-hole"></span></div></div><div class="donut-legend"><table class="donut-table"><thead><tr><th>项目</th><th>比例</th><th>年费用</th></tr></thead><tbody><tr><td><span class="item-cell"><span class="legend-key" style="background:#7d98f2"></span>学费</span></td><td class="value-cell">50%</td><td class="amount-cell">约4-10万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#5cc8a1"></span>住宿费</span></td><td class="value-cell">25%</td><td class="amount-cell">约1-6万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#a678f0"></span>餐饮费</span></td><td class="value-cell">15%</td><td class="amount-cell">约1.2-3万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#ff9851"></span>交通费</span></td><td class="value-cell">5%</td><td class="amount-cell">约0.2-0.6万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#f17878"></span>其他杂费</span></td><td class="value-cell">5%</td><td class="amount-cell">约0.5-1.5万/年</td></tr></tbody></table></div></div></section>
         <section class="section"><h2 class="summary-title">不同场景下的年均总费用对比（人民币）</h2><div class="comparison-panel"><table class="comparison-table"><thead><tr><th>学校类型</th><th>保守预算</th><th>常见预算</th><th>艺术/医学</th></tr></thead><tbody><tr><td class="scenario-type blue">首尔地区私立大学</td><td>14-18万</td><td>15-20万</td><td>16-20万</td></tr><tr><td class="scenario-type purple">首尔地区国立大学</td><td>12-16万</td><td>13-16万</td><td>14-16万</td></tr><tr><td class="scenario-type orange">地方私立大学</td><td>8-13万</td><td>9-14万</td><td>10-15万</td></tr><tr><td class="scenario-type green">地方国立大学</td><td>7-11万</td><td>8-12万</td><td>9-12万</td></tr></tbody></table></div></section>
       </div>
+      <div class="agency-merge">
+        <section class="channel-block" aria-label="三大核心申请渠道">
+                <h2>三大核心申请渠道</h2>
+                <div class="channel-showcase">
+                  <article class="channel-card">
+                    <span class="channel-icon" aria-hidden="true">
+                      <img src="./public/agency-route-icons/university-direct.png" alt="" decoding="async" />
+                    </span>
+                    <strong>韩国高校官方直申</strong>
+                    <p>申请性价比最高，流程透明，但对个人能力要求高。</p>
+                  </article>
+                  <article class="channel-card">
+                    <span class="channel-icon" aria-hidden="true">
+                      <img src="./public/agency-route-icons/language-transition.png" alt="" decoding="async" />
+                    </span>
+                    <strong>语学院过渡申请</strong>
+                    <p>稳妥型过渡路径，将语言学习与本科申请衔接。</p>
+                  </article>
+                  <article class="channel-card">
+                    <span class="channel-icon" aria-hidden="true">
+                      <img src="./public/agency-route-icons/agency-consultant.png" alt="" decoding="async" />
+                    </span>
+                    <strong>专业留学中介</strong>
+                    <p>服务覆盖全流程，适合时间紧、需要系统支持的家庭。</p>
+                  </article>
+                </div>
+              </section>
 
-      <section class="section">
-        <h2 class="summary-title">年度预算场景对比</h2>
-        <div class="scenario-graph"><article class="scenario-row"><div class="scenario-name"><h3>首尔地区私立大学</h3><strong>14-20万</strong><p>人民币 / 年</p></div><div class="scenario-bar"><div class="range-bar"><span style="left:70%;width:30%">14-20万</span></div></div><div class="cost-breakdown"><div class="cost-parts"><span><b>学费</b><br />4-10万</span><span><b>住宿</b><br />1.8-7.2万</span><span><b>生活</b><br />6-9万</span></div><p>艺术/医学、校外单间最贵</p></div></article><article class="scenario-row"><div class="scenario-name"><h3>首尔地区国立大学</h3><strong>12-16万</strong><p>人民币 / 年</p></div><div class="scenario-bar"><div class="range-bar"><span style="left:60%;width:20%">12-16万</span></div></div><div class="cost-breakdown"><div class="cost-parts"><span><b>学费</b><br />3.2-5.5万</span><span><b>住宿</b><br />1.8-3.6万</span><span><b>生活</b><br />6-9万</span></div><p>学费低于同城私立约30%</p></div></article><article class="scenario-row"><div class="scenario-name"><h3>地方私立大学</h3><strong>8-15万</strong><p>人民币 / 年</p></div><div class="scenario-bar"><div class="range-bar"><span style="left:40%;width:35%">8-15万</span></div></div><div class="cost-breakdown"><div class="cost-parts"><span><b>学费</b><br />2.5-6万</span><span><b>住宿</b><br />1.2-2.4万</span><span><b>生活</b><br />4-6万</span></div><p>预算中等，专业选择更灵活</p></div></article><article class="scenario-row"><div class="scenario-name"><h3>地方国立大学</h3><strong>7-12万</strong><p>人民币 / 年</p></div><div class="scenario-bar"><div class="range-bar"><span style="left:35%;width:25%">7-12万</span></div></div><div class="cost-breakdown"><div class="cost-parts"><span><b>学费</b><br />1.8-4.5万</span><span><b>住宿</b><br />1-1.8万</span><span><b>生活</b><br />3.6-6万</span></div><p>预算有限优先看这一类</p></div></article></div>
-      </section>
+              <section class="insight-grid" aria-label="韩国留学适配人群与选择理由">
+                <article class="insight-panel">
+                  <h2>核心学生群体画像</h2>
+                  <div class="insight-list">
+                    <div class="insight-item">
+                      <span class="insight-mark">1</span>
+                      <div>
+                        <strong>学业水平中上游的务实派</strong>
+                        <p>高中均分72-82分，高考成绩一本线上下，追求更高国际排名的院校。</p>
+                      </div>
+                    </div>
+                    <div class="insight-item">
+                      <span class="insight-mark">2</span>
+                      <div>
+                        <strong>追求高性价比的普通家庭</strong>
+                        <p>年均总费用8-12万元人民币，约为欧美的1/3-1/2，成本可控。</p>
+                      </div>
+                    </div>
+                    <div class="insight-item">
+                      <span class="insight-mark">3</span>
+                      <div>
+                        <strong>语言能力突出的复合型学生</strong>
+                        <p>具备韩语学习能力，形成“语言+专业”的双重竞争力。</p>
+                      </div>
+                    </div>
+                    <div class="insight-item">
+                      <span class="insight-mark">4</span>
+                      <div>
+                        <strong>文化与产业导向的目标型学生</strong>
+                        <p>对韩国文化或优势产业（半导体、AI、传媒）有浓厚兴趣。</p>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+                <article class="insight-panel">
+                  <h2>选择韩国而非欧美的原因</h2>
+                  <div class="insight-list">
+                    <div class="insight-item">
+                      <span class="insight-mark">1</span>
+                      <div>
+                        <strong>成本优势不可替代</strong>
+                        <p>费用仅为欧美国家的三分之一左右，适合预算有限但重视排名的家庭。</p>
+                      </div>
+                    </div>
+                    <div class="insight-item">
+                      <span class="insight-mark">2</span>
+                      <div>
+                        <strong>院校学历高匹配度</strong>
+                        <p>SKY联盟等名校国际排名与国内中上游985相当，学历认可度较高。</p>
+                      </div>
+                    </div>
+                    <div class="insight-item">
+                      <span class="insight-mark">3</span>
+                      <div>
+                        <strong>申请门槛适配性</strong>
+                        <p>语言要求相对灵活，申请体系更具包容性，可选择直申或过渡路线。</p>
+                      </div>
+                    </div>
+                    <div class="insight-item">
+                      <span class="insight-mark">4</span>
+                      <div>
+                        <strong>文化与就业双重支撑</strong>
+                        <p>文化相近，中韩产业协同创造更多实习与就业机会。</p>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </section>
 
-      <section class="section split">
-        <div>
-          <h2 class="summary-title">典型案例费用构成</h2>
-          <div class="composition"><article class="composition-card"><div class="composition-head"><h3>地方国立理工</h3><strong>约8万</strong></div><div class="stack-bar"><span class="yellow" style="width:37.5%" title="学费 3万"></span><span class="mint" style="width:15%" title="住宿 1.2万"></span><span class="green" style="width:37.5%" title="生活 3万"></span><span class="pink" style="width:10%" title="其他 0.8万"></span></div><div class="legend"><span>学费 3万</span><span>住宿 1.2万</span><span>生活 3万</span><span>其他 0.8万</span></div></article><article class="composition-card"><div class="composition-head"><h3>首尔私立社科</h3><strong>约15万</strong></div><div class="stack-bar"><span class="yellow" style="width:33.33333333333333%" title="学费 5万"></span><span class="mint" style="width:24.000000000000004%" title="住宿 3.6万"></span><span class="green" style="width:36.00000000000001%" title="生活 5.4万"></span><span class="pink" style="width:6.666666666666667%" title="其他 1万"></span></div><div class="legend"><span>学费 5万</span><span>住宿 3.6万</span><span>生活 5.4万</span><span>其他 1万</span></div></article><article class="composition-card"><div class="composition-head"><h3>首尔私立艺术</h3><strong>约20万</strong></div><div class="stack-bar"><span class="yellow" style="width:40%" title="学费 8万"></span><span class="mint" style="width:25%" title="住宿 5万"></span><span class="green" style="width:30%" title="生活 6万"></span><span class="pink" style="width:5%" title="其他 1万"></span></div><div class="legend"><span>学费 8万</span><span>住宿 5万</span><span>生活 6万</span><span>其他 1万</span></div></article>
-          </div>
-        </div>
-        <div>
-          <h2 class="summary-title">前期一次性准备费</h2>
-          <div class="table-wrap"><table><thead><tr><th>项目</th><th>参考费用</th><th>说明</th></tr></thead><tbody><tr><td>语言培训</td><td class="strong">3000-15000元</td><td>线上更低，线下小班更高；语学院一年可达5-8万。</td></tr><tr><td>TOPIK考试</td><td class="strong">400-800元</td><td>国内报名费400元/次，多数学生考1-2次。</td></tr><tr><td>申请服务</td><td class="strong">0-10000元+</td><td>自申可为0；主流机构约3000-8000元。</td></tr><tr><td>材料/签证/体检</td><td class="strong">约1500-5000元</td><td>公证认证、申请费、护照、D-2签证、体检等。</td></tr><tr><td>机票与保险</td><td class="strong">约1500-5000元</td><td>平峰直飞1000-2000元；健康保险约400元/月。</td></tr></tbody></table></div>
-        </div>
-      </section>
+              <section class="metric-grid" aria-label="核心指标">
+                <article class="metric"><small>可省</small><strong>1-3万元</strong><p>省的是服务费。</p></article>
+                <article class="metric"><small>耗时</small><strong>约600小时</strong><p>直申要自己跟。</p></article>
+                <article class="metric"><small>语言</small><strong>TOPIK 4+</strong><p>能读官网更稳。</p></article>
+                <article class="metric"><small>中介费</small><strong>0.8-3万元</strong><p>项目不同价不同。</p></article>
+                <article class="metric"><small>认证</small><strong>约3个月</strong><p>提前准备。</p></article>
+                <article class="metric"><small>红线</small><strong>保录取</strong><p>看到就警惕。</p></article>
+              </section>
 
-      <section class="section">
-        <h2 class="summary-title">每月生活成本速查</h2>
-        <div class="table-wrap"><table><thead><tr><th>项目</th><th>首尔地区/月</th><th>地方城市/月</th><th>怎么判断</th></tr></thead><tbody><tr><td class="strong">校内宿舍</td><td>首尔 2000-4000</td><td>地方 1000-2500</td><td class="muted">优先申请，通常最稳</td></tr><tr><td class="strong">校外单间</td><td>首尔 3000-6000</td><td>地方 1500-3000</td><td class="muted">需准备保证金</td></tr><tr><td class="strong">合租</td><td>首尔 1500-3000</td><td>地方 800-1500</td><td class="muted">可比单间低约30%</td></tr><tr><td class="strong">餐饮</td><td>首尔 1800-3000</td><td>地方 1200-2000</td><td class="muted">食堂/做饭最省</td></tr><tr><td class="strong">交通</td><td>首尔 300-500</td><td>地方 200-300</td><td class="muted">住得近可接近0</td></tr><tr><td class="strong">杂费</td><td>首尔 1000-2000</td><td>地方 500-1500</td><td class="muted">含社交、购物、通讯等</td></tr></tbody></table></div>
-      </section>
+              <section class="section" id="core">
+                <div class="section-head">
+                  <div>
+                    <h2>直申 vs 中介</h2>
+                    <p class="section-kicker">只看最关键差异。</p>
+                  </div>
+                  <span class="label">核心判断</span>
+                </div>
 
-      <section class="section split">
-        <div>
-          <h2 class="summary-title">降低成本优先级</h2>
-          <article class="saving-row"><div><strong>奖学金</strong></div><div><strong>25-50%</strong></div><div class="muted">TOPIK、成绩、申请材料一起准备；优秀者可冲全免。</div></article><article class="saving-row"><div><strong>住宿</strong></div><div><strong>约30%</strong></div><div class="muted">校内宿舍或合租优先，避开热门学区。</div></article><article class="saving-row"><div><strong>餐饮</strong></div><div><strong>约50%</strong></div><div class="muted">校内食堂比校外餐馆便宜，做饭还能再降。</div></article><article class="saving-row"><div><strong>消费</strong></div><div><strong>约20%</strong></div><div class="muted">量贩店、传统市场、学生折扣比临时购买更稳。</div></article><article class="saving-row"><div><strong>兼职</strong></div><div><strong>10-15h/周</strong></div><div class="muted">先办许可，别影响出勤、成绩和奖学金。</div></article>
-        </div>
-        <div>
-          <h2 class="summary-title">按预算选路线</h2>
-          <div class="table-wrap" style="margin-top:0">
-            <article class="route-card"><div class="budget">7-10万</div><div class="route-body"><strong>地方国立大学</strong><p class="muted">预算有限；先看宿舍、奖学金和地方城市。</p></div></article><article class="route-card"><div class="budget">10-14万</div><div class="route-body"><strong>地方私立/首尔国立</strong><p class="muted">预算适中；兼顾专业、排名和生活成本。</p></div></article><article class="route-card"><div class="budget">14-20万</div><div class="route-body"><strong>首尔顶尖私立</strong><p class="muted">预算充足；热门专业、艺术类需额外留余量。</p></div></article>
-          </div>
-        </div>
-      </section>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>比较维度</th>
+                        <th>直申 DIY</th>
+                        <th>中介申请</th>
+                        <th>判断重点</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>费用</td>
+                        <td>省服务费。</td>
+                        <td>多付服务费。</td>
+                        <td>第三方费用都要另算。</td>
+                      </tr>
+                      <tr>
+                        <td>信息</td>
+                        <td>直接看官网。</td>
+                        <td>顾问整理。</td>
+                        <td>最终都要回官网复核。</td>
+                      </tr>
+                      <tr>
+                        <td>语言</td>
+                        <td>TOPIK 4+更稳。</td>
+                        <td>可辅助解读。</td>
+                        <td>关键内容仍要本人确认。</td>
+                      </tr>
+                      <tr>
+                        <td>时间</td>
+                        <td>自己全程盯。</td>
+                        <td>流程可托管。</td>
+                        <td>忙就选支持。</td>
+                      </tr>
+                      <tr>
+                        <td>材料</td>
+                        <td>自己学自己查。</td>
+                        <td>有人复核。</td>
+                        <td>易错环节最值钱。</td>
+                      </tr>
+                      <tr>
+                        <td>风险</td>
+                        <td>怕漏材料。</td>
+                        <td>怕合同坑。</td>
+                        <td>账号、费用、退款写清。</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
 
-      <p class="muted" style="margin-top:3rem;border-top:1px solid var(--ink);padding-top:1.25rem;line-height:1.8;font-size:0.9rem">
-        说明：本页由《2025年韩国本科留学费用研究报告（基于100+真实案例）》压缩整理。费用均为人民币估算，学校政策、专业、汇率和个人消费会造成浮动，最终以学校官方学费表、宿舍通知和签证/保险要求为准。
-      </p>
+              <section class="section" id="path">
+                <div class="section-head">
+                  <div>
+                    <h2>怎么选路径</h2>
+                    <p class="section-kicker">按自己情况对号入座。</p>
+                  </div>
+                  <span class="label">快速判断</span>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>判断条件</th>
+                        <th>适合直申</th>
+                        <th>适合中介</th>
+                        <th>选择提示</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>语言</td>
+                        <td>TOPIK 4+。</td>
+                        <td>语言有限。</td>
+                        <td>看不懂官网就别硬直申。</td>
+                      </tr>
+                      <tr>
+                        <td>时间</td>
+                        <td>时间充足。</td>
+                        <td>高三很忙。</td>
+                        <td>没空跟进就找人帮。</td>
+                      </tr>
+                      <tr>
+                        <td>经验</td>
+                        <td>会查流程。</td>
+                        <td>第一次申请。</td>
+                        <td>新手建议找复核。</td>
+                      </tr>
+                      <tr>
+                        <td>目标</td>
+                        <td>目标稳妥。</td>
+                        <td>冲名校。</td>
+                        <td>越冲刺越要精修。</td>
+                      </tr>
+                      <tr>
+                        <td>预算</td>
+                        <td>想省钱。</td>
+                        <td>愿买服务。</td>
+                        <td>算清总成本。</td>
+                      </tr>
+                      <tr>
+                        <td>特殊</td>
+                        <td>普通路线。</td>
+                        <td>艺术/跨专业。</td>
+                        <td>复杂情况找专业支持。</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="section" id="diy">
+                <div class="section-head">
+                  <div>
+                    <h2>直申流程</h2>
+                    <p class="section-kicker">记住顺序，不要混路线。</p>
+                  </div>
+                  <span class="label">路线卡</span>
+                </div>
+
+                <div class="panel-grid three">
+                  <article class="panel">
+                    <span class="pill mint">语学院直申</span>
+                    <h3>先学语言</h3>
+                    <p>零基础友好。</p>
+                    <div class="timeline" aria-label="语学院直申流程">
+                      <article class="step"><span class="number">1</span><strong>选校</strong><small>先定城市</small></article>
+                      <article class="step"><span class="number">2</span><strong>材料</strong><small>提前准备</small></article>
+                      <article class="step"><span class="number">3</span><strong>网申</strong><small>官网提交</small></article>
+                      <article class="step"><span class="number">4</span><strong>录取</strong><small>看缴费</small></article>
+                      <article class="step"><span class="number">5</span><strong>签证</strong><small>办入境</small></article>
+                    </div>
+                  </article>
+                  <article class="panel">
+                    <span class="pill lavender">本科/插班直申</span>
+                    <h3>TOPIK 3-4起</h3>
+                    <p>适合目标明确。</p>
+                    <div class="timeline" aria-label="本科插班直申流程">
+                      <article class="step"><span class="number">1</span><strong>定位</strong><small>冲稳保</small></article>
+                      <article class="step"><span class="number">2</span><strong>认证</strong><small>学历材料</small></article>
+                      <article class="step"><span class="number">3</span><strong>网申</strong><small>上传缴费</small></article>
+                      <article class="step"><span class="number">4</span><strong>面试</strong><small>补件复核</small></article>
+                      <article class="step"><span class="number">5</span><strong>签证</strong><small>D-2</small></article>
+                    </div>
+                  </article>
+                  <article class="panel">
+                    <span class="pill peach">硕博直申</span>
+                    <h3>套磁关键</h3>
+                    <p>导师匹配最重要。</p>
+                    <div class="timeline" aria-label="硕博直申流程">
+                      <article class="step"><span class="number">1</span><strong>套磁</strong><small>找教授</small></article>
+                      <article class="step"><span class="number">2</span><strong>计划</strong><small>研究方向</small></article>
+                      <article class="step"><span class="number">3</span><strong>提交</strong><small>网申材料</small></article>
+                      <article class="step"><span class="number">4</span><strong>考核</strong><small>面试/笔试</small></article>
+                      <article class="step"><span class="number">5</span><strong>签证</strong><small>行前</small></article>
+                    </div>
+                  </article>
+                </div>
+              </section>
+
+              <section class="section" id="agency">
+                <div class="section-head">
+                  <div>
+                    <h2>中介流程</h2>
+                    <p class="section-kicker">靠谱中介必须透明。</p>
+                  </div>
+                  <span class="label">7步</span>
+                </div>
+
+                <div class="timeline seven" aria-label="中介申请标准流程">
+                  <article class="step"><span class="number">1</span><strong>咨询</strong><p>先评估。</p></article>
+                  <article class="step"><span class="number">2</span><strong>签约</strong><p>写清费用。</p></article>
+                  <article class="step"><span class="number">3</span><strong>选校</strong><p>冲稳保。</p></article>
+                  <article class="step"><span class="number">4</span><strong>材料</strong><p>翻译认证。</p></article>
+                  <article class="step"><span class="number">5</span><strong>文书</strong><p>修改复核。</p></article>
+                  <article class="step"><span class="number">6</span><strong>网申</strong><p>同步进度。</p></article>
+                  <article class="step"><span class="number">7</span><strong>签证</strong><p>行前准备。</p></article>
+                </div>
+              </section>
+
+              <section class="section" id="agency-checklist">
+                <div class="section-head">
+                  <div>
+                    <h2>怎么筛中介</h2>
+                    <p class="section-kicker">别听口头承诺，只看证据。</p>
+                  </div>
+                  <span class="label">检查清单</span>
+                </div>
+
+                <div class="issue-grid" aria-label="中介筛选标准">
+                  <article class="issue"><span class="num">1</span><strong>查资质</strong><p>公司与口碑。</p></article>
+                  <article class="issue"><span class="num">2</span><strong>看能力</strong><p>韩国专项经验。</p></article>
+                  <article class="issue"><span class="num">3</span><strong>看流程</strong><p>进度可追踪。</p></article>
+                  <article class="issue"><span class="num">4</span><strong>看案例</strong><p>要同背景案例。</p></article>
+                  <article class="issue"><span class="num">5</span><strong>看合同</strong><p>拒绝保录取。</p></article>
+                </div>
+              </section>
+
+              <section class="section" id="fees">
+                <div class="section-head">
+                  <div>
+                    <h2>费用边界</h2>
+                    <p class="section-kicker">服务费 ≠ 全部费用。</p>
+                  </div>
+                  <span class="label">先算清</span>
+                </div>
+
+                <div class="split">
+                  <div>
+                    <div class="mini-title">服务费</div>
+                    <div class="bar-board" aria-label="主流服务费区间">
+                      <div class="bar-row"><strong>语学院申请</strong><div class="bar-track"><div class="bar-fill mint" style="width: 50%">0.8-1.5w</div></div><span>8,000-15,000元</span></div>
+                      <div class="bar-row"><strong>本科/硕士</strong><div class="bar-track"><div class="bar-fill yellow" style="width: 100%">1-3w</div></div><span>10,000-30,000元</span></div>
+                      <div class="bar-row"><strong>艺术/英语</strong><div class="bar-track"><div class="bar-fill lavender" style="width: 82%">加收</div></div><span>另看合同</span></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="mini-title">第三方费用</div>
+                    <div class="bar-board" aria-label="第三方费用">
+                      <div class="bar-row"><strong>院校申请费</strong><div class="bar-track"><div class="bar-fill green" style="width: 60%">300-900</div></div><span>元/所</span></div>
+                      <div class="bar-row"><strong>公证认证费</strong><div class="bar-track"><div class="bar-fill yellow" style="width: 50%">200-500</div></div><span>元/份</span></div>
+                      <div class="bar-row"><strong>签证/体检</strong><div class="bar-track"><div class="bar-fill peach" style="width: 50%">另付</div></div><span>按实际</span></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="section" id="success">
+                <div class="section-head">
+                  <div>
+                    <h2>成功率参考</h2>
+                    <p class="section-kicker">仅作路线判断，不是录取承诺。</p>
+                  </div>
+                  <span class="label">参考图</span>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr><th>院校类型</th><th>直申</th><th>中介</th><th>重点</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>SKY等</td><td><div class="bar-track"><div class="bar-fill lavender" style="width: 25%">25%</div></div></td><td><div class="bar-track"><div class="bar-fill mint" style="width: 55%">55%</div></div></td><td>重文书/面试。</td></tr>
+                      <tr><td>KAIST等</td><td><div class="bar-track"><div class="bar-fill lavender" style="width: 30%">30%</div></div></td><td><div class="bar-track"><div class="bar-fill mint" style="width: 60%">60%</div></div></td><td>重专业匹配。</td></tr>
+                      <tr><td>普通私立</td><td><div class="bar-track"><div class="bar-fill lavender" style="width: 55%">55%</div></div></td><td><div class="bar-track"><div class="bar-fill mint" style="width: 75%">75%</div></div></td><td>重材料完整。</td></tr>
+                      <tr><td>普通国立</td><td><div class="bar-track"><div class="bar-fill lavender" style="width: 60%">60%</div></div></td><td><div class="bar-track"><div class="bar-fill mint" style="width: 80%">80%</div></div></td><td>定位合理就稳。</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="note">数据只作参考，不能当保证。</p>
+              </section>
+
+              <section class="section" id="reminders">
+                <div class="section-head">
+                  <div>
+                    <h2>重要提醒</h2>
+                    <p class="section-kicker">提交前再看一遍。</p>
+                  </div>
+                  <span class="label">别踩坑</span>
+                </div>
+
+                <div class="reminder-grid">
+                  <article class="reminder"><span class="num">1</span><strong>认证提前</strong><p>预留约3个月。</p></article>
+                  <article class="reminder"><span class="num">2</span><strong>材料复核</strong><p>小错也会补件。</p></article>
+                  <article class="reminder"><span class="num">3</span><strong>硕博套磁</strong><p>先联系教授。</p></article>
+                  <article class="reminder"><span class="num">4</span><strong>拒绝保录</strong><p>承诺越满越危险。</p></article>
+                  <article class="reminder"><span class="num">5</span><strong>官网为准</strong><p>最后回官网核对。</p></article>
+                </div>
+              </section>
+      </div>
     </main>
     <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Back to top">
       <img src="./public/up.gif" alt="" aria-hidden="true" />
