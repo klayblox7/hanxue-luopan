@@ -620,7 +620,7 @@ export function KoreaStudyMap() {
                           cy={marker.y}
                           data-active="false"
                           data-testid="study-map-marker"
-                          fill="#7c3aed"
+                          fill="#8f57ef"
                           r={markerSize}
                           role="button"
                           stroke="#0a0a0a"
