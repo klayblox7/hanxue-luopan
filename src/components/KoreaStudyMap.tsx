@@ -7,6 +7,7 @@ import { getAdmissionCaseSummary, type DistributionItem } from "@/data/admission
 import { koreaMapRegions, type KoreaMapRegionKey, type KoreaMapRegionShape } from "@/data/korea-map-regions";
 import { universityAddresses } from "@/data/universityAddresses";
 import { universityTuitionsRmb } from "@/data/universityTuitions";
+import { getUniversityTier } from "@/data/universityTiers";
 import { universities, type University } from "@/data/universities";
 
 type RegionKey = KoreaMapRegionKey;
@@ -325,6 +326,18 @@ function regionCounts(markers: SchoolMarker[]) {
   }, {} as Record<RegionKey, number>);
 }
 
+function tierRank(school: University) {
+  return Number(getUniversityTier(school.nameCn).replace("T", "")) || 5;
+}
+
+function schoolMenuLabel(school: University) {
+  return `${getUniversityTier(school.nameCn)} ${school.nameCn}`;
+}
+
+function sortMarkersByTier(markers: SchoolMarker[]) {
+  return [...markers].sort((a, b) => tierRank(a.school) - tierRank(b.school) || a.school.no - b.school.no);
+}
+
 function detailTransform(region: RegionProfile) {
   const minWidth = region.key === "seoul" ? 30 : region.key === "jeju" ? 56 : 82;
   const minHeight = region.key === "seoul" ? 22 : region.key === "jeju" ? 38 : 58;
@@ -363,6 +376,7 @@ export function KoreaStudyMap() {
   const activeRegion = regionByKey(activeRegionKey);
   const activeSchool = schoolBySlug(activeSchoolSlug);
   const activeMarkers = markers.filter((marker) => marker.regionKey === activeRegionKey);
+  const sortedActiveMarkers = useMemo(() => sortMarkersByTier(activeMarkers), [activeMarkers]);
   const activeMarker = markers.find((marker) => marker.school.slug === activeSchoolSlug);
   const hoveredSchool = hoveredSchoolSlug ? schoolBySlug(hoveredSchoolSlug) : null;
   const markerPreviewSchool = hoveredSchool ?? activeSchool;
@@ -624,7 +638,7 @@ export function KoreaStudyMap() {
             </svg>
 
             <div className="mt-3 flex max-h-20 flex-wrap gap-2 overflow-auto pr-1">
-              {activeMarkers.map((marker) => (
+              {sortedActiveMarkers.map((marker) => (
                 <button
                   className="rounded-full border border-ink bg-surface px-3 py-1.5 text-xs font-black transition hover:-translate-y-0.5 hover:bg-yellow focus:outline-none focus-visible:ring-2 focus-visible:ring-ink"
                   key={marker.school.slug}
@@ -632,7 +646,7 @@ export function KoreaStudyMap() {
                   type="button"
                   onClick={() => chooseSchool(marker)}
                 >
-                  {marker.school.nameCn}
+                  {schoolMenuLabel(marker.school)}
                 </button>
               ))}
             </div>
