@@ -3,7 +3,10 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
+import { getAdmissionCaseSummary, type DistributionItem } from "@/data/admissionCases";
 import { koreaMapRegions, type KoreaMapRegionKey, type KoreaMapRegionShape } from "@/data/korea-map-regions";
+import { universityAddresses } from "@/data/universityAddresses";
+import { universityTuitionsRmb } from "@/data/universityTuitions";
 import { universities, type University } from "@/data/universities";
 
 type RegionKey = KoreaMapRegionKey;
@@ -252,22 +255,67 @@ function schoolCityText(school: University) {
   return school.city.replace(/\//g, " / ");
 }
 
-function schoolIntro(school: University) {
-  return `${school.nameCn}位于${schoolCityText(school)}，类型为${school.type}。首页地图展示学校所在城市、方向和基础规模，详细招生条件建议进入大学库继续核验。`;
+function normalizeSchoolAddress(address: string) {
+  return address.replace(/^.*?\u9053\s+/, "");
 }
 
-function recommendedScore(school: University) {
+function schoolAddress(school: University) {
+  const address = universityAddresses[school.slug] ?? `${schoolCityText(school)} 地址待补`;
+  return normalizeSchoolAddress(address);
+}
+
+function fallbackRecommendedScore(school: University) {
   if (school.no <= 10) return "80分+";
   if (school.no <= 30) return "75分+";
   return "70分+";
 }
 
-function recommendedTopik(school: University) {
-  return school.no <= 30 ? "4级以上" : "3~4级";
+function fallbackRecommendedTopik(school: University) {
+  return school.type.includes("国立") ? "4级以上" : "3~4级";
+}
+
+function fallbackTuitionRange(school: University) {
+  if (school.type.includes("国立") || school.type.includes("公立")) return "约 7,900~12,500 RMB/学期";
+  return "约 11,500~22,000 RMB/学期";
+}
+
+function topikLevel(item: DistributionItem) {
+  const match = item.label.match(/TOPIK\s*(\d)级/);
+  return match ? Number(match[1]) : null;
+}
+
+function admissionTopikText(distribution: DistributionItem[], fallback: string) {
+  const levels = distribution.map(topikLevel).filter((level): level is number => typeof level === "number");
+  if (!levels.length) return fallback;
+
+  const mainItem = distribution
+    .filter((item) => topikLevel(item) !== null)
+    .sort((a, b) => b.count - a.count)[0];
+  const main = topikLevel(mainItem) ?? levels[0];
+  const min = Math.min(...levels);
+  const max = Math.max(...levels);
+
+  return min === max ? `${main}级为主` : `${min}~${max}级（${main}级为主）`;
+}
+
+function isSpecificMajor(item: DistributionItem) {
+  return !/未披露|未注明|公开案例/.test(item.label);
 }
 
 function schoolTags(school: University) {
   return school.focus.split(/、|銆/).filter(Boolean).slice(0, 4);
+}
+
+function studyInfoFacts(school: University) {
+  const summary = getAdmissionCaseSummary(school.slug);
+  const majors = summary.majorDistribution.filter(isSpecificMajor).slice(0, 3).map((item) => item.label);
+
+  return {
+    score: summary.admittedAverageGpa ? `录取均分 ${summary.admittedAverageGpa}分` : fallbackRecommendedScore(school),
+    topik: admissionTopikText(summary.topikDistribution, fallbackRecommendedTopik(school)),
+    tuition: universityTuitionsRmb[school.slug] ?? fallbackTuitionRange(school),
+    tags: majors.length ? majors : schoolTags(school).slice(0, 3)
+  };
 }
 
 function regionCounts(markers: SchoolMarker[]) {
@@ -286,7 +334,8 @@ function detailTransform(region: RegionProfile) {
   const cy = region.bbox.y + region.bbox.height / 2;
   const x = Math.max(0, Math.min(360 - width, cx - width / 2));
   const y = Math.max(0, Math.min(300 - height, cy - height / 2));
-  const scale = Math.min(350 / width, 286 / height);
+  const baseScale = Math.min(350 / width, 286 / height);
+  const scale = baseScale * (region.key === "jeju" ? 0.8 : 1);
   const tx = (360 - width * scale) / 2 - x * scale;
   const ty = (300 - height * scale) / 2 - y * scale;
   return { scale, tx, ty };
@@ -314,12 +363,13 @@ export function KoreaStudyMap() {
   const activeRegion = regionByKey(activeRegionKey);
   const activeSchool = schoolBySlug(activeSchoolSlug);
   const activeMarkers = markers.filter((marker) => marker.regionKey === activeRegionKey);
+  const activeMarker = markers.find((marker) => marker.school.slug === activeSchoolSlug);
   const hoveredSchool = hoveredSchoolSlug ? schoolBySlug(hoveredSchoolSlug) : null;
   const markerPreviewSchool = hoveredSchool ?? activeSchool;
   const detailRegion = activeRegion;
   const transform = detailTransform(detailRegion);
   const schoolImageSrc = schoolImageBySlug[activeSchool.slug] ?? schoolImageBySlug["yonsei-university"];
-  const activeTags = schoolTags(activeSchool);
+  const activeFacts = studyInfoFacts(activeSchool);
 
   function chooseRegion(region: RegionProfile) {
     const firstSchool = markers.find((marker) => marker.regionKey === region.key)?.school ?? activeSchool;
@@ -389,6 +439,23 @@ export function KoreaStudyMap() {
                       </g>
                     );
                   })}
+                  {activeMarker ? (
+                    <g aria-hidden="true" className="pointer-events-none">
+                      <path
+                        d={`M ${activeMarker.x} ${activeMarker.y + 8.1} C ${activeMarker.x - 8.3} ${activeMarker.y} ${activeMarker.x - 7} ${
+                          activeMarker.y - 9.7
+                        } ${activeMarker.x} ${activeMarker.y - 9.7} C ${activeMarker.x + 7} ${activeMarker.y - 9.7} ${activeMarker.x + 8.3} ${
+                          activeMarker.y
+                        } ${activeMarker.x} ${activeMarker.y + 8.1} Z`}
+                        fill="#b91c1c"
+                        filter="drop-shadow(0 5px 7px rgba(10, 10, 10, 0.28))"
+                        stroke="#7f1d1d"
+                        strokeLinejoin="round"
+                        strokeWidth={1.15}
+                      />
+                      <circle cx={activeMarker.x} cy={activeMarker.y - 3.7} fill="#fffefb" r={3.8} />
+                    </g>
+                  ) : null}
                 </g>
                 {regions.map((region) => (
                   <text
@@ -458,7 +525,7 @@ export function KoreaStudyMap() {
                   const isActive = marker.school.slug === activeSchoolSlug;
                   const callout = detailMarkerCallout(marker, index, activeRegion);
                   const showCallout = activeRegionKey !== "seoul" && index < 6;
-                  const markerSize = 4 / transform.scale;
+                  const markerSize = 5 / transform.scale;
                   const pinSize = 8.4 / transform.scale;
                   const pinPath = `M ${marker.x} ${marker.y + pinSize * 0.9} C ${marker.x - pinSize * 0.92} ${marker.y} ${marker.x - pinSize * 0.78} ${marker.y - pinSize * 1.08} ${marker.x} ${marker.y - pinSize * 1.08} C ${marker.x + pinSize * 0.78} ${marker.y - pinSize * 1.08} ${marker.x + pinSize * 0.92} ${marker.y} ${marker.x} ${marker.y + pinSize * 0.9} Z`;
                   const labelWidth = Math.max(34 / transform.scale, marker.school.nameCn.length * 8.6 / transform.scale);
@@ -504,15 +571,16 @@ export function KoreaStudyMap() {
                         </>
                       ) : null}
                       {isActive ? (
+                        <>
                         <path
                           aria-label={`${marker.school.nameCn} 선택`}
                           className="cursor-pointer transition-transform hover:scale-110"
                           d={pinPath}
                           data-active="true"
                           data-testid="study-map-marker"
-                          fill="#ffd0d8"
+                          fill="#b91c1c"
                           role="button"
-                          stroke="#0a0a0a"
+                          stroke="#7f1d1d"
                           strokeLinejoin="round"
                           strokeWidth={0.85 / transform.scale}
                           tabIndex={0}
@@ -520,6 +588,16 @@ export function KoreaStudyMap() {
                           onMouseEnter={() => setHoveredSchoolSlug(marker.school.slug)}
                           onMouseLeave={() => setHoveredSchoolSlug(null)}
                         />
+                        <circle
+                          className="pointer-events-none"
+                          cx={marker.x}
+                          cy={marker.y - pinSize * 0.32}
+                          fill="#fffefb"
+                          r={pinSize * 0.34}
+                          stroke="#7f1d1d"
+                          strokeWidth={0.18 / transform.scale}
+                        />
+                        </>
                       ) : (
                         <circle
                           aria-label={`${marker.school.nameCn} 선택`}
@@ -528,7 +606,7 @@ export function KoreaStudyMap() {
                           cy={marker.y}
                           data-active="false"
                           data-testid="study-map-marker"
-                          fill="#fff2a8"
+                          fill="#7c3aed"
                           r={markerSize}
                           role="button"
                           stroke="#0a0a0a"
@@ -580,44 +658,41 @@ export function KoreaStudyMap() {
                 height={120}
                 sizes="5rem"
               />
-              <div className="min-w-0">
-                  <p className="text-xs font-black text-muted">{activeSchool.nameKr}</p>
-                  <h3 className="text-2xl font-black leading-tight">{activeSchool.nameCn}</h3>
-                  <p className="mt-0.5 text-sm font-bold text-muted">{activeSchool.nameEn}</p>
+              <div className="min-w-0 space-y-[0.374rem]">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-2xl font-black leading-[1.188]">{activeSchool.nameCn}</h3>
+                  <span className="border border-[#b6cda7] bg-[#eef8df] px-3 py-1 text-xs font-black leading-[1.1]">学校信息</span>
+                </div>
+                <p className="text-[0.83rem] font-normal italic leading-[1.375] text-muted">{schoolAddress(activeSchool)}</p>
+                <p className="text-xs font-black leading-[1.1] text-muted">{activeSchool.nameKr} · {activeSchool.nameEn}</p>
               </div>
               <div className="flex flex-wrap justify-end gap-1.5">
-                <span className="h-fit rounded-full border border-ink/10 bg-[#f5efe2] px-2 py-1 text-xs font-black">{schoolCityText(activeSchool)}</span>
-                <span className="h-fit rounded-full border border-ink/10 bg-[#eef8ee] px-2 py-1 text-xs font-black">{activeSchool.type}</span>
-                <span className="h-fit rounded-full border border-ink/10 bg-[#eef3ff] px-2 py-1 text-xs font-black">{activeRegion.mapLabel}</span>
+                <span className="h-fit rounded-full border border-ink/10 bg-[#f5efe2] px-2 py-1 text-xs font-black leading-[1.1]">{schoolCityText(activeSchool)}</span>
+                <span className="h-fit rounded-full border border-ink/10 bg-[#eef8ee] px-2 py-1 text-xs font-black leading-[1.1]">{activeSchool.type}</span>
+                <span className="h-fit rounded-full border border-ink/10 bg-[#eef3ff] px-2 py-1 text-xs font-black leading-[1.1]">{activeRegion.mapLabel}</span>
               </div>
 
-              <p className="col-span-full text-sm font-normal leading-5">{schoolIntro(activeSchool)}</p>
-
-              <div className="col-span-full grid overflow-hidden rounded-lg border border-ink/10 bg-[#fffaf0] sm:grid-cols-3">
-                <div className="grid gap-1 p-2 text-center">
-                  <span className="text-xs font-bold text-muted">推荐均分</span>
-                  <strong className="text-sm font-black">{recommendedScore(activeSchool)}</strong>
+              <div className="col-span-full overflow-hidden rounded-lg border border-ink/10 bg-surface">
+                <div className="grid grid-cols-[7.225rem_minmax(0,1fr)] border-b border-ink/10 last:border-b-0">
+                  <div className="bg-[#fffaf0] px-4 py-3 text-[0.79rem] font-bold">参考GPA分数</div>
+                  <div className="px-4 py-3 text-[0.79rem] font-normal">{activeFacts.score}</div>
                 </div>
-                <div className="grid gap-1 border-t border-ink/10 p-2 text-center sm:border-l sm:border-t-0">
-                  <span className="text-xs font-bold text-muted">推荐TOPIK</span>
-                  <strong className="text-sm font-black">{recommendedTopik(activeSchool)}</strong>
+                <div className="grid grid-cols-[7.225rem_minmax(0,1fr)] border-b border-ink/10">
+                  <div className="bg-[#fffaf0] px-4 py-3 text-[0.79rem] font-bold">TOPIK要求</div>
+                  <div className="px-4 py-3 text-[0.79rem] font-normal">{activeFacts.topik}</div>
                 </div>
-                <div className="grid gap-1 border-t border-ink/10 p-2 text-center sm:border-l sm:border-t-0">
-                  <span className="text-xs font-bold text-muted">语言要求</span>
-                  <strong className="text-sm font-black">按项目确认</strong>
+                <div className="grid grid-cols-[7.225rem_minmax(0,1fr)] border-b border-ink/10">
+                  <div className="bg-[#fffaf0] px-4 py-3 text-[0.79rem] font-bold">学费范围</div>
+                  <div className="px-4 py-3 text-[0.79rem] font-normal">{activeFacts.tuition}</div>
                 </div>
-              </div>
-
-              <div className="col-span-full flex flex-wrap gap-1.5">
-                {activeTags.map((tag) => (
-                  <span className="rounded-md border border-ink/10 bg-surface px-2.5 py-1 text-xs font-black" key={tag}>
-                    {tag}
-                  </span>
-                ))}
+                <div className="grid grid-cols-[7.225rem_minmax(0,1fr)]">
+                  <div className="bg-[#fffaf0] px-4 py-3 text-[0.79rem] font-bold">热门专业</div>
+                  <div className="px-4 py-3 text-[0.79rem] font-normal">{activeFacts.tags.join("、")}</div>
+                </div>
               </div>
 
               <a className="col-span-full inline-flex min-h-9 items-center justify-center rounded-lg border border-ink/35 bg-yellow text-sm font-black text-ink no-underline" href="/universities">
-                查看详情 →
+                报考详情 →
               </a>
               </div>
           </article>
