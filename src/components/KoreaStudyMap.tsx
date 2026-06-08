@@ -524,17 +524,22 @@ export function KoreaStudyMap() {
 
             <svg className="block h-96 w-full rounded-lg border border-ink/25 bg-[#fff9ed]" viewBox="0 0 360 300" role="img" aria-label={`${activeRegion.name} 单独地图`}>
               <g transform={`translate(${transform.tx} ${transform.ty}) scale(${transform.scale})`}>
-                {detailRegion.features.map((feature) => (
-                  <path
-                    d={feature.path}
-                    fill={activeRegion.tone}
-                    key={`${detailRegion.key}-${feature.name}-detail`}
-                    stroke="#0a0a0a"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.45 / transform.scale}
-                  />
-                ))}
+                {detailRegion.features.map((feature) => {
+                  const isContextRegion = detailRegion.key === "gyeongbuk" && feature.name === "Daegu";
+
+                  return (
+                    <path
+                      d={feature.path}
+                      fill={isContextRegion ? "rgba(255, 254, 251, 0.68)" : activeRegion.tone}
+                      key={`${detailRegion.key}-${feature.name}-detail`}
+                      stroke={isContextRegion ? "rgba(10,10,10,.62)" : "#0a0a0a"}
+                      strokeDasharray={isContextRegion ? `${4 / transform.scale} ${3 / transform.scale}` : undefined}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.45 / transform.scale}
+                    />
+                  );
+                })}
                 {activeMarkers.map((marker, index) => {
                   const isActive = marker.school.slug === activeSchoolSlug;
                   const callout = detailMarkerCallout(marker, index, activeRegion);
