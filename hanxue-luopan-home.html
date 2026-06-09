@@ -3936,12 +3936,74 @@
                     .join("")}</ul><p class="recommendation-result-note">公开案例存在样本偏差，只适合做申请画像参考，不等于学校官方录取概率。</p></section>`;
                 }
 
+                function assetUrl(path) {
+                  return path ? `./${String(path).replace(/^\.?\//, "")}` : "";
+                }
+
+                function candidateImageHtml({ className, slug, folder, exts, alt, style = "" }) {
+                  const candidates = exts.map((ext) => assetUrl(`${folder}/${slug}.${ext}`));
+                  const encoded = htmlEscape(JSON.stringify(candidates));
+                  const onError =
+                    "const list=JSON.parse(this.dataset.candidates||'[]');const next=(Number(this.dataset.candidateIndex||0)+1);if(next<list.length){this.dataset.candidateIndex=String(next);this.src=list[next];}else{this.onerror=null;this.closest('figure')?.remove();this.remove();}";
+                  return `<img class="${htmlEscape(className)}" src="${htmlEscape(candidates[0])}" data-candidates="${encoded}" data-candidate-index="0" alt="${htmlEscape(alt)}"${style ? ` style="${htmlEscape(style)}"` : ""} onerror="${htmlEscape(onError)}" />`;
+                }
+
+                function profileFor(school) {
+                  const tier = tierFor(school);
+                  const studentCount = school.totalStudents || "资料待补";
+                  const foreignCount = school.foreignStudents || "";
+                  return {
+                    name: school.name || school.nameCn || school.nameEn || "",
+                    nameKr: school.nameKr || "",
+                    nameEn: school.nameEn || "",
+                    city: school.city || "资料待补",
+                    type: school.type || "资料待补",
+                    focus: school.focus || "综合类专业",
+                    founded: school.updatedAt ? `${school.updatedAt} 更新` : "资料待补",
+                    students: studentCount,
+                    internationalStudents: foreignCount ? `外国人 ${foreignCount}` : "",
+                    tier,
+                    imagePosition: "center",
+                    intro: `${school.name || school.nameCn}位于${school.city || "韩国"}，是一所${school.type || "韩国"}院校。该校在本项目库中主要用于${school.focus || "综合类专业"}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`,
+                  };
+                }
+
                 function renderSchoolInfoPanel(school) {
-                  return `<section class="school-info-panel" aria-label="${htmlEscape(school.name)}学校信息">
-                    <div class="case-field"><strong>学校概况</strong><span>${htmlEscape(school.nameKr || school.nameEn || school.name)}</span></div>
-                    <div class="case-field"><strong>城市 / 类型</strong><span>${htmlEscape(school.city)} / ${htmlEscape(school.type)}</span></div>
-                    <div class="case-field"><strong>方向参考</strong><span>${htmlEscape(school.focus || "综合类专业")}</span></div>
-                  </section>`;
+                  const profile = profileFor(school);
+                  const titleLine = [profile.nameKr, profile.nameEn].filter(Boolean).join(" · ");
+                  const photo = `<figure class="school-info-photo-frame">${candidateImageHtml({
+                    className: "school-info-photo",
+                    slug: school.slug,
+                    folder: "public/campus-images",
+                    exts: ["webp", "jpg", "png", "svg"],
+                    alt: `${profile.name}校园`,
+                    style: `object-position:${profile.imagePosition}`,
+                  })}</figure>`;
+                  const logo = candidateImageHtml({
+                    className: "school-info-logo",
+                    slug: school.slug,
+                    folder: "public/school-logos",
+                    exts: ["png", "jpg", "svg", "webp"],
+                    alt: `${profile.name}校徽`,
+                  });
+
+                  return `<section class="school-info-panel" aria-label="${htmlEscape(profile.name)}学校信息">${photo}<div class="school-info-table"><h4>${htmlEscape(
+                    profile.name
+                  )}${titleLine ? `<small>${htmlEscape(titleLine)}</small>` : ""}</h4><div class="school-info-cell">学校类型</div><div class="school-info-cell">${htmlEscape(
+                    profile.type
+                  )}</div><div class="school-info-cell">地理位置</div><div class="school-info-cell">${htmlEscape(
+                    profile.city
+                  )}</div><div class="school-info-cell">资料状态</div><div class="school-info-cell">${htmlEscape(
+                    profile.founded
+                  )}</div><div class="school-info-cell">学生数</div><div class="school-info-cell">${htmlEscape(profile.students)}${
+                    profile.internationalStudents ? `<small>${htmlEscape(profile.internationalStudents)}</small>` : ""
+                  }</div><div class="school-info-cell">参考层级</div><div class="school-info-cell">${htmlEscape(
+                    profile.tier
+                  )}</div><div class="school-info-cell">学校标识</div><div class="school-info-cell school-info-logo-cell"><span class="school-info-link school-info-logo-link">${logo}</span></div></div><div class="school-info-intro"><h4>${htmlEscape(
+                    profile.name
+                  )}介绍</h4><p>${htmlEscape(profile.intro)}</p><p><strong>重点方向：</strong>${htmlEscape(
+                    profile.focus
+                  )}</p><em>学校简介用于快速了解合作院校，申请判断仍需结合官方招生简章、项目合同和最新费用说明。</em></div></section>`;
                 }
 
                 let expandedRecommendationSlug = null;
