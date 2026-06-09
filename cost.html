@@ -831,6 +831,112 @@
       .comparison-table .scenario-type.green {
         color: var(--ink);
       }
+      .apply-compare-section {
+        margin-top: 1rem;
+        margin-bottom: 1.15rem;
+      }
+      .apply-compare-title {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 0 0.75rem;
+        border: 1px solid var(--ink);
+        background: #fff3ad;
+        padding: 0.45rem 0.9rem;
+        color: var(--ink);
+        font-size: 1.02rem;
+        font-weight: 900;
+        line-height: 1;
+      }
+      .apply-compare-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        border: 1px solid var(--ink);
+        border-radius: 8px;
+        background: var(--surface);
+        padding: 1rem;
+      }
+      .apply-compare-card {
+        min-width: 0;
+        border: 1px solid color-mix(in oklch, var(--lavender) 46%, var(--line));
+        border-radius: 8px;
+        padding: 1rem 1.15rem;
+      }
+      .apply-compare-card.diy {
+        background: color-mix(in oklch, var(--lavender) 16%, var(--surface));
+      }
+      .apply-compare-card.agency {
+        background: color-mix(in oklch, var(--mint) 18%, var(--surface));
+        border-color: color-mix(in oklch, var(--mint) 52%, var(--line));
+      }
+      .apply-compare-head {
+        display: flex;
+        align-items: center;
+        gap: 0.95rem;
+        margin-bottom: 0.95rem;
+      }
+      .apply-compare-icon {
+        display: inline-grid;
+        width: 4rem;
+        height: 4rem;
+        place-items: center;
+        flex: 0 0 auto;
+        overflow: hidden;
+        border: 1px solid var(--ink);
+        border-radius: 6px;
+        background: var(--surface);
+      }
+      .apply-compare-icon img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.18);
+      }
+      .apply-compare-card h3 {
+        margin: 0;
+        color: var(--ink);
+        font-size: 1.32rem;
+        font-weight: 900;
+        line-height: 1.1;
+      }
+      .apply-compare-list {
+        display: grid;
+        gap: 0.45rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .apply-compare-list li {
+        display: grid;
+        grid-template-columns: 1.15rem minmax(0, 1fr);
+        gap: 0.5rem;
+        align-items: start;
+        color: oklch(35% 0.02 265);
+        font-size: 0.94rem;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+      .apply-compare-mark {
+        display: inline-grid;
+        width: 1.15rem;
+        height: 1.15rem;
+        place-items: center;
+        border-radius: 999px;
+        color: var(--surface);
+        font-size: 0.72rem;
+        font-weight: 900;
+        line-height: 1;
+      }
+      .apply-compare-mark.good {
+        background: oklch(61% 0.17 286);
+      }
+      .agency .apply-compare-mark.good {
+        background: oklch(62% 0.14 180);
+      }
+      .apply-compare-mark.risk {
+        background: oklch(69% 0.14 24);
+      }
       .budget-card-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1021,6 +1127,9 @@
         .cost-analysis-panel,
         .comparison-panel {
           height: auto;
+        }
+        .apply-compare-grid {
+          grid-template-columns: 1fr;
         }
         .comparison-table {
           height: auto;
@@ -2109,6 +2218,37 @@
         <section class="section"><h2 class="summary-title">韩国本科留学费用构成分析</h2><div class="cost-analysis-panel"><div class="donut-wrap"><div class="donut-chart" style="background: conic-gradient(#7d98f2 0% 50%, #5cc8a1 50% 75%, #a678f0 75% 90%, #ff9851 90% 95%, #f17878 95% 100%)"><span class="donut-hole"></span></div></div><div class="donut-legend"><table class="donut-table"><thead><tr><th>项目</th><th>比例</th><th>年费用</th></tr></thead><tbody><tr><td><span class="item-cell"><span class="legend-key" style="background:#7d98f2"></span>学费</span></td><td class="value-cell">50%</td><td class="amount-cell">约4-10万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#5cc8a1"></span>住宿费</span></td><td class="value-cell">25%</td><td class="amount-cell">约1-6万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#a678f0"></span>餐饮费</span></td><td class="value-cell">15%</td><td class="amount-cell">约1.2-3万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#ff9851"></span>交通费</span></td><td class="value-cell">5%</td><td class="amount-cell">约0.2-0.6万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#f17878"></span>其他杂费</span></td><td class="value-cell">5%</td><td class="amount-cell">约0.5-1.5万/年</td></tr></tbody></table></div></div></section>
         <section class="section"><h2 class="summary-title">不同场景下的年均总费用对比（人民币）</h2><div class="comparison-panel"><table class="comparison-table"><thead><tr><th>学校类型</th><th>保守预算</th><th>常见预算</th><th>艺术/医学</th></tr></thead><tbody><tr><td class="scenario-type blue">首尔地区私立大学</td><td>14-18万</td><td>15-20万</td><td>16-20万</td></tr><tr><td class="scenario-type purple">首尔地区国立大学</td><td>12-16万</td><td>13-16万</td><td>14-16万</td></tr><tr><td class="scenario-type orange">地方私立大学</td><td>8-13万</td><td>9-14万</td><td>10-15万</td></tr><tr><td class="scenario-type green">地方国立大学</td><td>7-11万</td><td>8-12万</td><td>9-12万</td></tr></tbody></table></div></section>
       </div>
+      <section class="apply-compare-section" aria-label="直申 vs 中介申请 核心差异">
+        <h2 class="apply-compare-title">直申 vs 中介申请 核心差异</h2>
+        <div class="apply-compare-grid">
+          <article class="apply-compare-card diy">
+            <div class="apply-compare-head">
+              <span class="apply-compare-icon" aria-hidden="true"><img src="./public/agency-route-icons/diy-application-imagegen.png" alt="" decoding="async" /></span>
+              <h3>直申（DIY）</h3>
+            </div>
+            <ul class="apply-compare-list">
+              <li><span class="apply-compare-mark good">+</span><span>节省中介服务费（10,000-30,000元）</span></li>
+              <li><span class="apply-compare-mark good">+</span><span>直接获取院校官方信息</span></li>
+              <li><span class="apply-compare-mark risk">!</span><span>要求韩语能力（TOPIK 4级+）</span></li>
+              <li><span class="apply-compare-mark risk">!</span><span>耗时较长（平均600小时）</span></li>
+              <li><span class="apply-compare-mark risk">!</span><span>需自行承担所有风险</span></li>
+            </ul>
+          </article>
+          <article class="apply-compare-card agency">
+            <div class="apply-compare-head">
+              <span class="apply-compare-icon" aria-hidden="true"><img src="./public/agency-route-icons/agency-application-imagegen.png" alt="" decoding="async" /></span>
+              <h3>中介申请</h3>
+            </div>
+            <ul class="apply-compare-list">
+              <li><span class="apply-compare-mark good">+</span><span>全流程托管，节省时间</span></li>
+              <li><span class="apply-compare-mark good">+</span><span>提供文书、面试专业辅导</span></li>
+              <li><span class="apply-compare-mark good">+</span><span>经验丰富，规避申请陷阱</span></li>
+              <li><span class="apply-compare-mark risk">!</span><span>需支付服务费</span></li>
+              <li><span class="apply-compare-mark risk">!</span><span>需甄别机构资质与服务质量</span></li>
+            </ul>
+          </article>
+        </div>
+      </section>
       <div class="agency-merge">
         <section class="insight-grid" aria-label="韩国留学适配人群与选择理由">
                 <article class="insight-panel">
