@@ -530,7 +530,7 @@ export function KoreaStudyMap() {
                   return (
                     <path
                       d={feature.path}
-                      fill={isContextRegion ? "rgba(255, 254, 251, 0.68)" : activeRegion.tone}
+                      fill={isContextRegion ? "rgba(255, 224, 122, 0.38)" : activeRegion.tone}
                       key={`${detailRegion.key}-${feature.name}-detail`}
                       stroke={isContextRegion ? "rgba(10,10,10,.62)" : "#0a0a0a"}
                       strokeDasharray={isContextRegion ? `${4 / transform.scale} ${3 / transform.scale}` : undefined}
@@ -540,6 +540,20 @@ export function KoreaStudyMap() {
                     />
                   );
                 })}
+                {detailRegion.key === "gyeongbuk" ? (
+                  <text
+                    fill="rgba(10,10,10,.58)"
+                    fontSize={3.7 / transform.scale}
+                    fontStyle="italic"
+                    fontWeight={800}
+                    pointerEvents="none"
+                    textAnchor="middle"
+                    x={207.8}
+                    y={157.2}
+                  >
+                    {"\u5927\u90b1"}
+                  </text>
+                ) : null}
                 {activeMarkers.map((marker, index) => {
                   const isActive = marker.school.slug === activeSchoolSlug;
                   const callout = detailMarkerCallout(marker, index, activeRegion);
