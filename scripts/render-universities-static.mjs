@@ -220,7 +220,7 @@ function rowHtml(university) {
     data-dormitory-rate="${escapeHtml(university.dormitoryRate)}"
   >
     <td>
-      <span class="school-name-line"><button class="university-name university-toggle" type="button" aria-expanded="false">${escapeHtml(university.nameCn)}</button><button class="school-info-toggle" type="button" aria-expanded="false">学校信息</button></span>
+      <span class="school-name-line"><button class="university-name university-toggle" type="button" aria-expanded="false">${escapeHtml(university.nameCn)}<span class="university-name-arrow" aria-hidden="true">↗</span></button><button class="school-info-toggle" type="button" aria-expanded="false">学校信息</button></span>
       <span class="school-subtitle">${escapeHtml(university.nameKr)} · ${escapeHtml(university.nameEn)}</span>
     </td>
     <td class="tier-cell">
@@ -749,6 +749,15 @@ const html = `<!doctype html>
       .university-toggle:hover,
       .university-toggle[aria-expanded="true"] {
         text-decoration: underline;
+      }
+
+      .university-name-arrow {
+        display: inline-block;
+        margin-left: 0.05em;
+        font-size: 0.7em;
+        font-weight: 400;
+        line-height: 1;
+        vertical-align: middle;
       }
 
       .school-name-line {

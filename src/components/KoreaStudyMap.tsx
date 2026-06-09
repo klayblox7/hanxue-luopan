@@ -89,6 +89,105 @@ const cityCoordinates: Record<string, CityCoordinate> = {
   "ERICA": { lon: 126.8312, lat: 37.3219 }
 };
 
+const schoolCoordinates: Record<string, CityCoordinate> = {
+  "ajou-university": { lon: 127.0453782, lat: 37.2830024 },
+  "catholic-university-of-korea": { lon: 126.8010856, lat: 37.4866889 },
+  "cheongju-university": { lon: 127.4994307, lat: 36.6600782 },
+  "chonnam-national-university": { lon: 126.9068927, lat: 35.1769099 },
+  "chung-ang-university": { lon: 126.9570000, lat: 37.5051000 },
+  "chungbuk-national-university": { lon: 127.4538403, lat: 36.6281688 },
+  "chungnam-national-university": { lon: 127.3448387, lat: 36.3698790 },
+  "dankook-university": { lon: 127.1289665, lat: 37.3192880 },
+  "dong-a-university": { lon: 128.9672222, lat: 35.1163889 },
+  "dongguk-university": { lon: 126.9994886, lat: 37.5582383 },
+  "duksung-womens-university": { lon: 127.0166691, lat: 37.6513775 },
+  "ewha-womans-university": { lon: 126.9468925, lat: 37.5643371 },
+  "gachon-university": { lon: 127.1337775, lat: 37.4527980 },
+  "handong-global-university": { lon: 129.3886111, lat: 36.1031270 },
+  "hankuk-university-of-foreign-studies": { lon: 127.0598000, lat: 37.5973000 },
+  "hansei-university": { lon: 126.9537350, lat: 37.3440950 },
+  "hanyang-university": { lon: 127.0470893, lat: 37.5569876 },
+  "hongik-university": { lon: 126.9254349, lat: 37.5503552 },
+  "inha-university": { lon: 126.6534446, lat: 37.4494431 },
+  "inje-university": { lon: 128.9020135, lat: 35.2500610 },
+  "jeju-national-university": { lon: 126.5619516, lat: 33.4551212 },
+  "jeonbuk-national-university": { lon: 127.1337209, lat: 35.8466752 },
+  "kaist": { lon: 127.3625250, lat: 36.3696991 },
+  "kangwon-national-university": { lon: 127.7447487, lat: 37.8672582 },
+  "keimyung-university": { lon: 128.4849417, lat: 35.8567134 },
+  "konkuk-university": { lon: 127.0771149, lat: 37.5418470 },
+  "kookmin-university": { lon: 126.9964154, lat: 37.6114792 },
+  "korea-aerospace-university": { lon: 126.8653933, lat: 37.6003073 },
+  "korea-maritime-ocean-university": { lon: 129.0891449, lat: 35.0761704 },
+  "korea-national-university-of-arts": { lon: 127.0568000, lat: 37.6040000 },
+  "korea-university": { lon: 127.0323927, lat: 37.5880378 },
+  "kwangwoon-university": { lon: 127.0597566, lat: 37.6197648 },
+  "kyung-hee-university": { lon: 127.0519867, lat: 37.5971213 },
+  "kyungpook-national-university": { lon: 128.6108553, lat: 35.8905697 },
+  "myongji-university": { lon: 126.9227731, lat: 37.5796109 },
+  "partner-ffg-k34-hlz-i1y": { lon: 126.7188837, lat: 35.0491912 },
+  "partner-ffg-r5r-hlz-i1y": { lon: 129.0100780, lat: 35.1445519 },
+  "partner-ffx-smg-hlz-i1y": { lon: 127.4489726, lat: 36.1923189 },
+  "partner-fjg-ffg-hlz-i1y": { lon: 127.0705118, lat: 37.8107535 },
+  "partner-fjg-n7j-hlz-i1y": { lon: 127.0365609, lat: 37.3013910 },
+  "partner-fs1-u09-hlz-i1y": { lon: 127.0445209, lat: 37.7090404 },
+  "partner-g21-iji-ho3-i1c-hlz-i1y": { lon: 126.7974759, lat: 35.1636239 },
+  "partner-g2w-iji-hlz-i1y": { lon: 127.0895180, lat: 35.8127648 },
+  "partner-g30-iji-h6l-o97-hlz-i1y": { lon: 127.1401671, lat: 36.4682808 },
+  "partner-g30-iji-hlz-i1y": { lon: 127.1401671, lat: 36.4682808 },
+  "partner-ggn-smg-hlz-i1y": { lon: 126.8402985, lat: 35.2064503 },
+  "partner-gjs-kfy-hlz-i1y": { lon: 127.4529350, lat: 36.3352732 },
+  "partner-gjs-noz-hlz-i1y": { lon: 127.0659136, lat: 35.9121128 },
+  "partner-glo-iwn-ho3-i1c-hlz-i1y": { lon: 127.0435000, lat: 37.6068000 },
+  "partner-hdl-keo-hlz-i1y": { lon: 127.3662000, lat: 36.3206000 },
+  "partner-hlz-n5c-hlz-i1y": { lon: 127.4603521, lat: 36.3354252 },
+  "partner-hlz-nj3-hlz-i1y": { lon: 127.1564210, lat: 37.8717581 },
+  "partner-hlz-skx-hlz-i1y": { lon: 128.8471795, lat: 35.9025671 },
+  "partner-i2x-ffg-hlz-i1y": { lon: 128.7963000, lat: 36.5424000 },
+  "partner-io6-feo-hlz-i1y": { lon: 128.8011067, lat: 35.9077641 },
+  "partner-io6-fip-hlz-i1y": { lon: 128.4669655, lat: 36.1676137 },
+  "partner-io6-ggn-hlz-i1y": { lon: 128.5531977, lat: 35.1815818 },
+  "partner-io6-iji-hlz-i1y": { lon: 129.1617152, lat: 35.8296967 },
+  "partner-io6-k67-hlz-i1y": { lon: 129.0980524, lat: 35.1406608 },
+  "partner-ire-to3-hlz-i1y": { lon: 127.1105990, lat: 36.1823158 },
+  "partner-k34-p5j-hlz-i1y": { lon: 128.9972808, lat: 35.1672024 },
+  "partner-kd9-uxo-hlz-i1y": { lon: 126.9303491, lat: 35.1412134 },
+  "partner-kfy-lu8-hlz-i1y": { lon: 126.8744808, lat: 35.1085836 },
+  "partner-ldg-gin-hlz-i1y": { lon: 126.9757751, lat: 37.2100359 },
+  "partner-ldk-sez-ff7-tm0-hlz-i1y": { lon: 128.6219329, lat: 35.8959778 },
+  "partner-lla-iji-r7m-g21-hlz-i1y": { lon: 126.4346020, lat: 33.4483838 },
+  "partner-lsm-ggn-hlz-i1y": { lon: 126.7600432, lat: 35.1515516 },
+  "partner-mlj-h65-hlz-i1y": { lon: 127.3390860, lat: 36.3246693 },
+  "partner-nel-noz-hlz-i1y": { lon: 127.1850643, lat: 36.8397504 },
+  "partner-nem-lla-pru-kdr-hlz-i1y": { lon: 127.1264399, lat: 35.9955466 },
+  "partner-p7o-i9d-hlz-i1y": { lon: 126.6802365, lat: 35.9456011 },
+  "partner-r5r-fjg-hlz-i1y": { lon: 127.0128587, lat: 37.6149469 },
+  "partner-st8-i9d-hli-h6l-rn1-hlz-i1y": { lon: 129.0795592, lat: 35.2670628 },
+  "partner-u4a-hm1-hlz-i1y": { lon: 127.4794081, lat: 34.9696591 },
+  "partner-uc6-i6s-p30-glk-pru-kdr-hlz-i1y": { lon: 127.0280000, lat: 37.4875000 },
+  "partner-uc6-i6s-pru-kdr-hlz-i1y": { lon: 126.8371411, lat: 37.3332253 },
+  "partner-ul4-fgd-1v-3d-2q-2t-36-hlz-i1y": { lon: 126.9860000, lat: 37.5770000 },
+  "partner-vix-fk1-hlz-i1y": { lon: 127.1677464, lat: 37.2263944 },
+  "pukyong-national-university": { lon: 129.1052466, lat: 35.1342725 },
+  "pusan-national-university": { lon: 129.0784068, lat: 35.2343498 },
+  "sangmyung-university": { lon: 126.9548314, lat: 37.6025021 },
+  "sejong-university": { lon: 127.0746074, lat: 37.5508480 },
+  "seoul-national-university": { lon: 126.9527000, lat: 37.4599000 },
+  "seoul-womens-university": { lon: 127.0905308, lat: 37.6282981 },
+  "seoultech": { lon: 127.0794648, lat: 37.6324414 },
+  "sogang-university": { lon: 126.9409875, lat: 37.5520909 },
+  "sookmyung-womens-university": { lon: 126.9652336, lat: 37.5442933 },
+  "soonchunhyang-university": { lon: 126.9316341, lat: 36.7699880 },
+  "soongsil-university": { lon: 126.9567202, lat: 37.4962989 },
+  "sungkyunkwan-university": { lon: 126.9906264, lat: 37.5870459 },
+  "sungshin-womens-university": { lon: 127.0222074, lat: 37.5913559 },
+  "university-of-seoul": { lon: 127.0591856, lat: 37.5830387 },
+  "university-of-ulsan": { lon: 129.2567134, lat: 35.5442371 },
+  "wonkwang-university": { lon: 126.9591018, lat: 35.9687790 },
+  "yeungnam-university": { lon: 128.7572223, lat: 35.8280220 },
+  "yonsei-university": { lon: 126.9368000, lat: 37.5658000 }
+};
+
 const regions: RegionProfile[] = koreaMapRegions;
 
 const schoolImageBySlug: Record<string, string> = {
@@ -235,7 +334,7 @@ function buildMarkers(): SchoolMarker[] {
     cityCounts.set(city, previous + 1);
     const regionKey = regionForSchool(school);
     const region = regionByKey(regionKey);
-    const coordinate = cityCoordinates[city] ?? cityCoordinates["首尔"];
+    const coordinate = schoolCoordinates[school.slug] ?? cityCoordinates[city] ?? cityCoordinates["首尔"];
     const projected = projectCoordinate(coordinate);
     const offset = markerOffset(previous);
 
@@ -278,6 +377,12 @@ function fallbackRecommendedTopik(school: University) {
 function fallbackTuitionRange(school: University) {
   if (school.type.includes("国立") || school.type.includes("公立")) return "约 7,900~12,500 RMB/学期";
   return "约 11,500~22,000 RMB/学期";
+}
+
+function schoolTypeBadgeClass(type: string) {
+  if (type.includes("私立")) return "bg-[#ffd0d8] border-[#ff6b5a]/25";
+  if (type.includes("国立") || type.includes("公立")) return "bg-[#cfe8ff] border-blue-500/25";
+  return "bg-[#eef8ee] border-ink/10";
 }
 
 function topikLevel(item: DistributionItem) {
@@ -682,7 +787,7 @@ export function KoreaStudyMap() {
               </div>
               <div className="flex flex-wrap justify-end gap-1.5">
                 <span className="h-fit rounded-full border border-ink/10 bg-[#f5efe2] px-2 py-1 text-xs font-black leading-[1.1]">{schoolCityText(activeSchool)}</span>
-                <span className="h-fit rounded-full border border-ink/10 bg-[#eef8ee] px-2 py-1 text-xs font-black leading-[1.1]">{activeSchool.type}</span>
+                <span className={`h-fit rounded-full border px-2 py-1 text-xs font-black leading-[1.1] ${schoolTypeBadgeClass(activeSchool.type)}`}>{activeSchool.type}</span>
                 <span className="h-fit rounded-full border border-ink/10 bg-[#eef3ff] px-2 py-1 text-xs font-black leading-[1.1]">{activeRegion.mapLabel}</span>
               </div>
 

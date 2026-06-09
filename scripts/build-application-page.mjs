@@ -953,6 +953,15 @@ const html = `<!doctype html>
       .school-toggle:hover,
       .school-toggle[aria-expanded="true"] { color: inherit; }
 
+      .school-toggle-arrow {
+        display: inline-block;
+        margin-left: 0.05em;
+        font-size: 70%;
+        font-weight: 400;
+        line-height: 1;
+        vertical-align: middle;
+      }
+
       .partner-school-list {
         display: flex;
         flex-direction: column;
@@ -2055,7 +2064,11 @@ const html = `<!doctype html>
         const buttons = Array.from(document.querySelectorAll(".category-button"));
         const emptyState = document.querySelector("#empty-state");
         const searchInput = document.querySelector("#school-search");
-        let activeFilter = "all";
+        const activeFilters = {
+          regions: new Set(),
+          modes: new Set(),
+          majors: new Set()
+        };
         let detailRow = null;
         let expandedSlug = null;
 
@@ -2367,7 +2380,7 @@ const html = `<!doctype html>
           tr.dataset.majors = program.majorTags.join(" ");
           tr.dataset.search = [program.chinaSchool, program.koreaSchools, partnerSearch, program.mode, program.region, program.section, program.majorTags.join(" "), Object.values(program.fields).join(" ")].join(" ").toLowerCase();
           tr.innerHTML =
-            '<td data-label="中国学校"><button class="school-toggle" type="button" aria-expanded="false">' + htmlEscape(program.chinaSchool) + '</button></td>' +
+            '<td data-label="中国学校"><button class="school-toggle" type="button" aria-expanded="false">' + htmlEscape(program.chinaSchool) + '<span class="school-toggle-arrow" aria-hidden="true">↗</span></button></td>' +
             '<td data-label="地区">' + htmlEscape(program.region) + '</td>' +
             '<td data-label="韩国合作学校">' + partnerMarkup(program.koreaPartners) + '</td>' +
             '<td data-label="模式"><span class="mode-badge">' + htmlEscape(program.mode) + '</span></td>' +
@@ -2438,13 +2451,47 @@ const html = `<!doctype html>
           row.after(detailRow);
         }
 
+        function hasActiveFilters() {
+          return activeFilters.regions.size > 0 || activeFilters.modes.size > 0 || activeFilters.majors.size > 0;
+        }
+
         function matchesFilter(program) {
-          const [kind, value] = activeFilter.split(":");
-          if (activeFilter === "all") return true;
-          if (kind === "mode") return program.mode === value;
-          if (kind === "region") return program.region === value;
-          if (kind === "major") return program.majorTags.includes(value);
+          if (!hasActiveFilters()) return true;
+          if (activeFilters.regions.size > 0 && !activeFilters.regions.has(program.region)) return false;
+          if (activeFilters.modes.size > 0 && !activeFilters.modes.has(program.mode)) return false;
+          if (activeFilters.majors.size > 0) {
+            const matchesMajor = program.majorTags.some((tag) => activeFilters.majors.has(tag));
+            if (!matchesMajor) return false;
+          }
           return true;
+        }
+
+        function updateFilterButtons() {
+          buttons.forEach((button) => {
+            const filter = button.dataset.filter || "all";
+            const [kind, value] = filter.split(":");
+            const isPressed =
+              filter === "all"
+                ? !hasActiveFilters()
+                : (kind === "region" && activeFilters.regions.has(value)) ||
+                  (kind === "mode" && activeFilters.modes.has(value)) ||
+                  (kind === "major" && activeFilters.majors.has(value));
+            button.setAttribute("aria-pressed", String(isPressed));
+          });
+        }
+
+        function toggleFilter(filter) {
+          if (filter === "all") {
+            activeFilters.regions.clear();
+            activeFilters.modes.clear();
+            activeFilters.majors.clear();
+            return;
+          }
+          const [kind, value] = filter.split(":");
+          const target =
+            kind === "region" ? activeFilters.regions : kind === "mode" ? activeFilters.modes : kind === "major" ? activeFilters.majors : null;
+          if (!target) return;
+          target.has(value) ? target.delete(value) : target.add(value);
         }
 
         function normalizeSearchText(value) {
@@ -2475,6 +2522,7 @@ const html = `<!doctype html>
 
         function applyFilters() {
           clearDetail();
+          updateFilterButtons();
           let visible = 0;
           for (const item of rows) {
             const show = matchesFilter(item.program) && matchesSearch(item.row);
@@ -2486,8 +2534,7 @@ const html = `<!doctype html>
 
         buttons.forEach((button) => {
           button.addEventListener("click", () => {
-            activeFilter = button.dataset.filter;
-            buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+            toggleFilter(button.dataset.filter || "all");
             applyFilters();
           });
         });

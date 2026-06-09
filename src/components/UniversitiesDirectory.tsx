@@ -689,6 +689,19 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
                       onClick={() => togglePanel(university.slug, "case")}
                     >
                       {university.nameCn}
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          display: "inline-block",
+                          fontSize: "70%",
+                          fontWeight: 400,
+                          lineHeight: 1,
+                          marginLeft: "0.05em",
+                          verticalAlign: "middle"
+                        }}
+                      >
+                        ↗
+                      </span>
                     </button>
                     <button
                       aria-expanded={expandedPanel?.slug === university.slug && expandedPanel.type === "info"}
@@ -793,6 +806,19 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
                         onClick={() => togglePanel(university.slug, "case")}
                       >
                         {university.nameCn}
+                        <span
+                          aria-hidden="true"
+                          style={{
+                            display: "inline-block",
+                            fontSize: "70%",
+                            fontWeight: 400,
+                            lineHeight: 1,
+                            marginLeft: "0.05em",
+                            verticalAlign: "middle"
+                          }}
+                        >
+                          ↗
+                        </span>
                       </button>
                       <button
                         aria-expanded={expandedPanel?.slug === university.slug && expandedPanel.type === "info"}
