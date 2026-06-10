@@ -2,59 +2,98 @@ import { readFileSync } from "node:fs";
 
 import { JSDOM } from "jsdom";
 
+const readCostPage = () => {
+  const html = readFileSync("cost.html", "utf8");
+  const dom = new JSDOM(html);
+
+  return { html, document: dom.window.document };
+};
+
 describe("static cost page", () => {
-  it("uses numbered section title bars for the lower cost sections", () => {
-    const html = readFileSync("cost.html", "utf8");
-    const dom = new JSDOM(html);
-    const { document } = dom.window;
+  it("renders a compact one-page budget planner before the application appendix", () => {
+    const { html, document } = readCostPage();
 
-    const sectionTitleBars = Array.from(document.querySelectorAll(".section-title-bar"));
+    expect(document.querySelector('link[href="./header-unified.css"]')).not.toBeNull();
+    expect(document.querySelector(".budget-planner")).not.toBeNull();
+    expect(document.querySelector("#budget-result-total")?.textContent).toContain("万");
+    expect(document.querySelectorAll("[data-planner-field]")).toHaveLength(6);
+    expect(document.querySelector(".data-table-wrap")).not.toBeNull();
+    expect(document.querySelector(".profile-grid")).not.toBeNull();
+    expect(document.querySelector(".priority-grid")).not.toBeNull();
 
-    expect(sectionTitleBars).toHaveLength(3);
-    expect(sectionTitleBars[0].textContent).toContain("01");
-    expect(sectionTitleBars[0].textContent).toContain("\u5178\u578b\u6848\u4f8b\u8d39\u7528\u6784\u6210");
-    expect(sectionTitleBars[1].textContent).toContain("02");
-    expect(sectionTitleBars[1].textContent).toContain("\u524d\u671f\u4e00\u6b21\u6027\u51c6\u5907\u8d39");
-    expect(sectionTitleBars[2].textContent).toContain("03");
-    expect(sectionTitleBars[2].textContent).toContain("\u6bcf\u6708\u751f\u6d3b\u6210\u672c\u901f\u67e5");
-    expect(html).toContain(".summary-title.section-title-bar");
+    const plannerIndex = html.indexOf('class="budget-planner"');
+    const appendixIndex = html.indexOf('class="section legacy-appendix"');
+
+    expect(document.querySelector(".legacy-appendix")).not.toBeNull();
+    expect(plannerIndex).toBeGreaterThanOrEqual(0);
+    expect(appendixIndex).toBeGreaterThan(plannerIndex);
   });
 
-  it("renders the annual budget comparison as readable budget cards", () => {
-    const html = readFileSync("cost.html", "utf8");
-    const dom = new JSDOM(html);
-    const { document } = dom.window;
+  it("uses a complete shared header geometry for every nav pill", () => {
+    const css = readFileSync("header-unified.css", "utf8");
 
-    const annualBudgetTitle = "\u5e74\u5ea6\u9884\u7b97\u573a\u666f\u5bf9\u6bd4";
-    const section = Array.from(document.querySelectorAll("section.section")).find((candidate) =>
-      candidate.querySelector(".summary-title")?.textContent?.includes(annualBudgetTitle)
-    );
-
-    expect(section?.querySelector(".budget-card-grid")).not.toBeNull();
-    expect(section?.querySelector(".scenario-graph")).toBeNull();
-    expect(section?.querySelector(".range-bar")).toBeNull();
-
-    const cards = Array.from(section?.querySelectorAll(".budget-card") ?? []);
-    expect(cards).toHaveLength(4);
-    expect(cards[0].querySelector(".budget-card-amount")?.textContent?.trim()).toBe("14-20\u4e07");
-    expect(cards[0].querySelectorAll(".budget-chip")).toHaveLength(3);
+    expect(css).toContain(".header .nav > .pill");
+    expect(css).toContain("height: 2.35rem");
+    expect(css).toContain(".header .nav > .pill:nth-child(1)");
+    expect(css).toContain("width: 10.4rem");
+    expect(css).toContain(".header .nav > .pill:nth-child(2)");
+    expect(css).toContain("width: 11.4rem");
+    expect(css).toContain(".header .nav > .pill:nth-child(3)");
+    expect(css).toContain("width: 9.4rem");
+    expect(css).toContain(".header .nav > .pill:nth-child(4)");
+    expect(css).toContain("width: 12.4rem");
+    expect(css).toContain(".header .nav > .pill:nth-child(5)");
+    expect(css).toContain("width: 10.6rem");
   });
 
-  it("marks the featured pre-departure material cost with a smaller external arrow", () => {
-    const html = readFileSync("cost.html", "utf8");
-    const dom = new JSDOM(html);
-    const { document } = dom.window;
+  it("keeps source-backed data visible and labeled", () => {
+    const { html, document } = readCostPage();
 
-    const featuredAmount = document.querySelector(".pre-cost-card.featured .pre-cost-amount strong");
-    const arrow = featuredAmount?.querySelector(".pre-cost-arrow");
+    const sourceRows = Array.from(document.querySelectorAll(".source-row"));
 
-    expect(featuredAmount?.textContent?.trim()).toContain("约500-3000元 ↗");
-    expect(arrow?.textContent?.trim()).toBe("↗");
-    expect(html).toContain(".pre-cost-amount .pre-cost-arrow");
-    expect(html).toContain("color: inherit");
-    expect(html).toContain("font-size: inherit");
-    expect(html).toContain("font-weight: inherit");
-    expect(html).toContain("vertical-align: baseline");
-    expect(html).not.toContain(".pre-cost-arrow {\n        display: inline-block;\n        font-size: 70%");
+    expect(sourceRows.length).toBeGreaterThanOrEqual(8);
+    expect(document.querySelectorAll(".source-badge.official").length).toBeGreaterThanOrEqual(5);
+    expect(document.querySelectorAll(".source-badge.estimate").length).toBeGreaterThanOrEqual(2);
+    expect(html).toContain("studyinkorea.go.kr");
+    expect(html).toContain("oia.korea.ac.kr");
+    expect(html).toContain("oga.snu.ac.kr");
+    expect(html).toContain("topik.neea.cn");
+  });
+
+  it("renders compressed reference profiles and calculator script", () => {
+    const { html, document } = readCostPage();
+
+    const profiles = Array.from(document.querySelectorAll(".profile-card"));
+
+    expect(profiles).toHaveLength(3);
+    expect(document.querySelectorAll(".stack-segment").length).toBeGreaterThanOrEqual(12);
+    expect(html).toContain("function renderBudget()");
+    expect(html).toContain("const sourceCurrencyRate");
+  });
+
+  it("keeps the original application and agency material at the bottom", () => {
+    const { document } = readCostPage();
+
+    const appendix = document.querySelector(".legacy-appendix");
+    const appendixHtml = appendix?.innerHTML ?? "";
+    const original = appendix?.querySelector(".legacy-original");
+
+    expect(appendix).not.toBeNull();
+    expect(original).not.toBeNull();
+    expect(original?.querySelector(".channel-block")).not.toBeNull();
+    expect(original?.querySelectorAll(".pre-cost-card")).toHaveLength(4);
+    expect(original?.querySelector(".donut-chart")).not.toBeNull();
+    expect(original?.querySelectorAll(".apply-compare-card")).toHaveLength(2);
+    expect(original?.querySelectorAll(".insight-panel")).toHaveLength(2);
+    expect(original?.querySelectorAll(".metric")).toHaveLength(6);
+    expect(original?.querySelector("#diy")).not.toBeNull();
+    expect(original?.querySelector("#agency")).not.toBeNull();
+    expect(original?.querySelector("#agency-checklist")).not.toBeNull();
+    expect(original?.querySelector("#success")).not.toBeNull();
+    expect(original?.querySelector(".timeline.seven")).not.toBeNull();
+    expect(original?.querySelector(".issue-grid")).not.toBeNull();
+    expect(original?.querySelector(".reminder-grid")).not.toBeNull();
+    expect(appendixHtml).toContain("TOPIK 4+");
+    expect(appendixHtml).toContain("0.8-3");
   });
 });
