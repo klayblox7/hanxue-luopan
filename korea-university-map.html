@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&#38889;&#22269;&#22823;&#23398;&#22320;&#22270;&#65372;&#38889;&#23398;&#32599;&#30424;</title>
+    <style>
+      :root {
+        --paper: #fbfbf8;
+        --surface: #fffefb;
+        --ink: #0a0a0a;
+        --yellow: #ffe07a;
+        --mint: #a4d4c5;
+        --pink: #ffd0d8;
+        --green: #71d39b;
+        --lavender: #b8a4ed;
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        min-height: 100%;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "Malgun Gothic", system-ui, sans-serif;
+        scrollbar-gutter: stable;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background: var(--paper);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(10, 10, 10, 0.28);
+        background: var(--surface);
+      }
+
+      .header-inner {
+        position: relative;
+        height: 7.05rem;
+        padding: 1rem 4rem;
+      }
+
+      .logo {
+        position: absolute;
+        left: 4rem;
+        top: 1rem;
+        width: 6.5rem;
+        height: 5rem;
+        object-fit: contain;
+      }
+
+      .header-title {
+        position: absolute;
+        left: 12.5rem;
+        top: 50%;
+        max-width: calc(100vw - 72rem);
+        transform: translateY(-50%);
+        overflow: hidden;
+        font-size: clamp(1.11rem, 1.92vw, 2.1rem);
+        font-weight: 900;
+        line-height: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .nav {
+        position: absolute;
+        top: 50%;
+        right: 4rem;
+        display: flex;
+        width: 60rem;
+        max-width: calc(100vw - 13rem);
+        height: 2.35rem;
+        transform: translateY(-50%);
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.5rem;
+      }
+
+      .pill {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        height: 2.35rem;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0;
+        background: var(--surface);
+        font-size: 0.95rem;
+        font-weight: 800;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .pill:nth-child(1) { width: 10.4rem; }
+      .pill:nth-child(2) { width: 11.4rem; }
+      .pill:nth-child(3) { width: 9.4rem; }
+      .pill:nth-child(4) { width: 10.6rem; }
+      .pill:nth-child(5) { width: 12.4rem; }
+
+      .pill.lavender.active,
+      .pill.lavender:hover,
+      .pill.lavender:focus { background: var(--lavender); }
+      .pill.pink:hover,
+      .pill.pink:focus { background: var(--pink); }
+      .pill.mint:hover,
+      .pill.mint:focus { background: var(--mint); }
+      .pill.green:hover,
+      .pill.green:focus { background: var(--green); }
+      .pill.yellow:hover,
+      .pill.yellow:focus { background: var(--yellow); }
+
+      .nav-suffix {
+        font-size: 0.85em;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      .blank-page {
+        min-height: calc(100vh - 7.05rem);
+      }
+
+      @media (max-width: 980px) {
+        .header-inner {
+          height: 9.25rem;
+          padding: 0.85rem 1rem;
+        }
+
+        .logo {
+          left: 1rem;
+          top: 0.85rem;
+          width: 4.9rem;
+          height: 3.75rem;
+        }
+
+        .header-title {
+          left: 6.75rem;
+          max-width: calc(100vw - 8rem);
+          font-size: 0.69rem;
+        }
+
+        .nav {
+          top: auto;
+          right: auto;
+          bottom: 0.45rem;
+          left: 0;
+          width: 100%;
+          max-width: none;
+          transform: none;
+          justify-content: flex-start;
+          overflow-x: auto;
+          padding: 0.25rem 1rem 0.15rem;
+          scrollbar-width: none;
+        }
+
+        .nav::-webkit-scrollbar { display: none; }
+
+        .pill {
+          width: auto !important;
+          padding: 0 0.72rem;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="./header-unified.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-inner">
+        <a href="./hanxue-luopan-home.html" aria-label="&#38889;&#23398;&#32599;&#30424;">
+          <img class="logo" src="./public/korea-link-logo.gif" alt="&#38889;&#23398;&#32599;&#30424;" />
+        </a>
+        <div class="header-title">&#38889;&#22269;&#22823;&#23398;&#22320;&#22270;</div>
+        <nav class="nav" aria-label="main navigation">
+          <a class="pill lavender active" href="./korea-university-map.html">&#38889;&#22269;&#22823;&#23398;&#22320;&#22270;</a>
+          <a class="pill pink" href="./universities.html">&#38889;&#22269;&#22823;&#23398;&#24211; <span class="nav-suffix">&#65288;&#30452;&#21319;&#65289;</span></a>
+          <a class="pill mint" href="./application.html">&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;</a>
+          <a class="pill green" href="./topik.html">&#38889;&#35821;(TOPIK)</a>
+          <a class="pill yellow" href="./cost.html">&#30041;&#23398;&#36153;&#29992; <span class="nav-suffix">&#65288;&#22870;&#23398;&#37329;&#65289;</span></a>
+        </nav>
+      </div>
+    </header>
+    <main class="blank-page" aria-label="&#38889;&#22269;&#22823;&#23398;&#22320;&#22270;"></main>
+  </body>
+</html>
