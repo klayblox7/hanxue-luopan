@@ -179,7 +179,7 @@
       .recommender {
         border-top: 0;
         border-bottom: 0;
-        padding: 1.23rem 0 2rem;
+        padding: 1.23rem 0 1.4rem;
       }
 
       .recommender-inner {
@@ -1745,7 +1745,7 @@
       }
       .home-banner {
         width: calc(100% - 25rem);
-        margin: 2.35rem auto 0.85rem;
+        margin: 1.645rem auto 0.85rem;
       }
 
       .home-banner-frame {
@@ -2321,7 +2321,6 @@
                       if (!expanded) body.insertAdjacentHTML("beforeend", casePanel(toggle.dataset.schoolSlug));
                     });
                   });
-                  resultsEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
                 }
 
                 button.addEventListener("click", renderRecommendations);
@@ -2863,12 +2862,11 @@
                 function recommendAiCases() {
                   const applicant = currentApplicant();
                   const results = recommendationResults(applicant);
-                  expandedRecommendationSlug = results[0]?.slug || null;
+                  expandedRecommendationSlug = null;
                   expandedSchoolInfoSlug = null;
                   resultsEl.classList.add("is-visible");
                   resultsEl.dataset.lastApplicant = JSON.stringify(applicant);
                   resultsEl.innerHTML = renderRecommendations(results);
-                  resultsEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
                 }
 
                 function rerenderFromStoredApplicant() {
@@ -2962,7 +2960,7 @@
 
       <section class="home-banner" aria-label="Korea University Link banner">
         <button class="home-banner-frame" type="button" data-banner-open aria-label="Open banner image">
-          <img class="home-banner-image is-active" src="./public/home-banner-1.png" alt="Korea university application guide banner" data-banner-image />
+          <img class="home-banner-image is-active" src="./public/home-banner-1b.png" alt="Korea university application guide banner" data-banner-image />
           <img class="home-banner-image" src="./public/home-banner-2.jpg" alt="Korea study abroad suitability banner" data-banner-image />
           <span class="home-banner-dots" aria-hidden="true">
             <span class="home-banner-dot is-active" data-banner-dot></span>
@@ -2982,7 +2980,7 @@
     <div class="image-viewer" data-image-viewer aria-hidden="true">
       <button class="image-viewer-close" type="button" data-viewer-close aria-label="Close image viewer">X</button>
       <div class="image-viewer-stage" data-viewer-stage>
-        <img class="image-viewer-image" src="./public/home-banner-1.png" alt="" data-viewer-image />
+        <img class="image-viewer-image" src="./public/home-banner-1b.png" alt="" data-viewer-image />
       </div>
     </div>
     <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="鍥炲埌椤堕儴">
