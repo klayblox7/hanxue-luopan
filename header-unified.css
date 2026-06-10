@@ -33,6 +33,24 @@
     object-fit: contain !important;
   }
 
+  .header .header-title {
+    position: absolute !important;
+    left: 8.5rem !important;
+    top: calc(100% - 1.85rem) !important;
+    bottom: auto !important;
+    width: calc(100vw - 18rem) !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    transform: translateY(-50%) !important;
+    overflow: hidden !important;
+    padding-left: 0 !important;
+    font-size: clamp(0.944rem, 1.632vw, 1.785rem) !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
   .site-header .top-nav,
   .header .nav,
   .header .top-nav {
@@ -51,5 +69,17 @@
     margin: 0 !important;
     padding: 0 !important;
     overflow: visible !important;
+  }
+
+  .site-header .top-nav > .nav-pill:nth-child(4),
+  .header .nav > .pill:nth-child(4),
+  .header .top-nav > .nav-pill:nth-child(4) {
+    width: 12.4rem !important;
+  }
+
+  .site-header .top-nav > .nav-pill:nth-child(5),
+  .header .nav > .pill:nth-child(5),
+  .header .top-nav > .nav-pill:nth-child(5) {
+    width: 10.6rem !important;
   }
 }
