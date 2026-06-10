@@ -148,102 +148,50 @@
       }
 
       .wrap {
-        width: calc(100% - 25rem);
+        width: min(calc(100% - 25rem), 101rem);
         margin: 0 auto;
         padding: 1.15rem 0 4rem;
       }
 
       .hero {
         display: grid;
-        grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
-        gap: 1.25rem;
+        grid-template-columns: 1fr;
+        gap: 0;
         align-items: stretch;
       }
 
-      .hero-copy {
-        display: grid;
-        align-content: space-between;
-        min-height: 18rem;
-        border: 1px solid var(--line);
-        background: var(--surface);
-        padding: 1.4rem;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        width: fit-content;
-        border: 1px solid var(--line);
-        background: var(--mint);
-        padding: 0.35rem 0.55rem;
-        font-size: 0.76rem;
-        font-weight: 950;
-        line-height: 1;
-      }
-
-      h1 {
-        max-width: 14ch;
-        margin: 1.35rem 0 0;
-        font-size: clamp(2.6rem, 6.2vw, 5.6rem);
-        font-weight: 950;
-        line-height: 0.93;
-        letter-spacing: 0;
-      }
-
-      .lead {
-        max-width: 50rem;
-        margin: 1rem 0 0;
-        color: var(--muted);
-        font-size: 1rem;
-        font-weight: 650;
-        line-height: 1.75;
-      }
-
-      .hero-facts {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0;
-        margin-top: 1.6rem;
-        border: 1px solid var(--line);
-        background: #ffffff;
-      }
-
-      .hero-fact {
-        min-width: 0;
-        border-right: 1px solid var(--line);
-        padding: 0.85rem;
-      }
-
-      .hero-fact:last-child {
-        border-right: 0;
-      }
-
-      .hero-fact span {
-        display: block;
-        color: var(--muted);
-        font-size: 0.7rem;
-        font-weight: 850;
-      }
-
-      .hero-fact strong {
-        display: block;
-        margin-top: 0.5rem;
-        font-size: 1.08rem;
-        font-weight: 950;
-        line-height: 1.05;
-      }
-
       .budget-planner {
-        border: 1px solid var(--line);
-        background: var(--surface);
+        box-sizing: border-box;
+        border: 1px solid rgba(10, 10, 10, 0.42);
+        background: #ffffff;
+        padding: 0;
       }
 
-      .planner-head,
+      .budget-meta-line {
+        margin: 0.72rem 0 1.05rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 850;
+        line-height: 1.55;
+      }
+
+      .budget-meta-line b {
+        color: var(--ink);
+        font-weight: 950;
+      }
+
       .section-head {
         display: grid;
         grid-template-columns: auto minmax(0, 1fr) auto;
         align-items: center;
         border-bottom: 1px solid var(--line);
         background: #ffffff;
+      }
+
+      .planner-head {
+        display: block;
+        border-bottom: 1px solid rgba(10, 10, 10, 0.42);
+        background: var(--yellow);
       }
 
       .section-index {
@@ -266,6 +214,19 @@
         line-height: 1.2;
       }
 
+      .planner-head h2 {
+        padding: 0.74rem 1.45rem;
+        font-size: 1.34rem;
+        line-height: 1.15;
+      }
+
+      .planner-head .section-index {
+        align-self: center;
+        min-width: 2.3rem;
+        min-height: 2.3rem;
+        border: 1px solid rgba(10, 10, 10, 0.42);
+      }
+
       .section-note {
         padding: 0.78rem 1rem;
         color: var(--muted);
@@ -275,48 +236,56 @@
       }
 
       .planner-body {
+        box-sizing: border-box;
         display: grid;
-        grid-template-columns: minmax(16rem, 0.82fr) minmax(18rem, 1fr);
-        gap: 0;
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+        padding: 1rem 1rem 0.95rem;
       }
 
       .planner-form {
+        box-sizing: border-box;
         display: grid;
-        gap: 0;
-        border-right: 1px solid var(--line);
+        grid-auto-flow: row;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-template-rows: none;
+        align-self: start;
+        gap: 0.75rem;
       }
 
       .field {
         display: grid;
-        grid-template-columns: 6.2rem minmax(0, 1fr);
-        align-items: center;
-        border-bottom: 1px solid var(--line);
-        min-height: 3.2rem;
+        gap: 0.3rem;
+        min-height: 0;
+        font-size: 0.85rem;
+        font-weight: 800;
       }
 
-      .field:last-child {
+      .field:nth-child(-n + 3) {
+        border-right: 0;
+      }
+
+      .field:nth-child(3),
+      .field:nth-child(6) {
         border-bottom: 0;
       }
 
       .field label {
-        align-self: stretch;
-        display: flex;
-        align-items: center;
-        border-right: 1px solid var(--line);
-        background: #f1f1ee;
-        padding: 0.75rem;
-        font-size: 0.8rem;
-        font-weight: 950;
+        display: block;
+        padding: 0;
+        background: transparent;
+        font: inherit;
       }
 
       .field select {
+        box-sizing: border-box;
         width: 100%;
-        min-height: 3.2rem;
-        border: 0;
-        background: #ffffff;
+        min-height: 2.35rem;
+        border: 1px solid rgba(10, 10, 10, 0.42);
+        background: var(--paper);
         color: var(--ink);
-        padding: 0 0.8rem;
-        font-weight: 850;
+        padding: 0.55rem 0.65rem;
+        font: inherit;
         outline: none;
       }
 
@@ -325,79 +294,180 @@
       }
 
       .result-panel {
+        box-sizing: border-box;
         display: grid;
-        grid-template-rows: auto auto 1fr;
+        grid-template-columns: 1fr;
+        align-self: stretch;
+        gap: 0;
         min-width: 0;
       }
 
-      .result-total {
+      .result-panel > * {
+        min-width: 0;
+      }
+
+      .budget-summary {
+        box-sizing: border-box;
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.65rem;
-        align-items: end;
-        border-bottom: 1px solid var(--line);
-        background: #e6f8ef;
-        padding: 1rem;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 0.45rem 0.8rem;
+        border: 1px solid rgba(10, 10, 10, 0.42);
+        border-bottom: 0;
+        background: var(--paper);
+        padding: 0.68rem 0.82rem;
       }
 
-      .result-total span {
-        display: block;
+      .graph-eyebrow {
+        color: var(--muted);
         font-size: 0.74rem;
-        font-weight: 950;
+        font-weight: 900;
+        line-height: 1.3;
       }
 
-      .result-total strong {
-        display: block;
-        margin-top: 0.38rem;
-        font-size: clamp(2rem, 4vw, 3rem);
+      .budget-summary small {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 850;
+        line-height: 1.35;
+      }
+
+      .budget-table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        border: 1px solid rgba(10, 10, 10, 0.42);
+        background: var(--paper);
+      }
+
+      .budget-table th,
+      .budget-table td {
+        border: 1px solid rgba(10, 10, 10, 0.34);
+        padding: 0.56rem 0.66rem;
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      .budget-table thead th {
+        background: #f1f0ec;
+        color: var(--muted);
+        font-size: 0.72rem;
         font-weight: 950;
-        line-height: 0.95;
+        line-height: 1.2;
+      }
+
+      .budget-table th:first-child {
+        width: 8.2rem;
+      }
+
+      .budget-table th:nth-child(2) {
+        width: 14.2rem;
+      }
+
+      .budget-table th:nth-child(4) {
+        width: 22rem;
+      }
+
+      .budget-row-label {
+        color: var(--ink);
+        font-size: 0.86rem;
+        font-weight: 950;
+        line-height: 1.25;
+      }
+
+      .result-amount-row {
+        display: inline-flex;
+        min-width: 0;
+        align-items: baseline;
+        gap: 0.32rem;
+        max-width: 100%;
+      }
+
+      .result-amount-row strong,
+      .budget-value strong {
+        color: var(--ink);
+        font-size: 1.26rem;
+        font-weight: 950;
+        line-height: 1.05;
         white-space: nowrap;
       }
 
-      .result-total small {
+      .result-amount-row.total strong {
+        font-size: clamp(1.35rem, 1.55vw, 1.78rem);
+        letter-spacing: 0;
+      }
+
+      .result-period {
+        color: var(--ink);
+        font-size: 0.84rem;
+        font-weight: 950;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .chart-track {
+        position: relative;
+        height: 1rem;
+        border: 1px solid rgba(10, 10, 10, 0.42);
+        background: rgba(244, 242, 236, 0.84);
+        overflow: hidden;
+      }
+
+      .total-range-track {
+        height: 1.08rem;
+      }
+
+      .chart-track::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(
+          90deg,
+          transparent 0,
+          transparent calc(25% - 1px),
+          rgba(10, 10, 10, 0.18) calc(25% - 1px),
+          rgba(10, 10, 10, 0.18) 25%,
+          transparent 25%,
+          transparent calc(50% - 1px),
+          rgba(10, 10, 10, 0.18) calc(50% - 1px),
+          rgba(10, 10, 10, 0.18) 50%,
+          transparent 50%,
+          transparent calc(75% - 1px),
+          rgba(10, 10, 10, 0.18) calc(75% - 1px),
+          rgba(10, 10, 10, 0.18) 75%,
+          transparent 75%
+        );
+        pointer-events: none;
+      }
+
+      .chart-fill {
+        display: block;
+        width: 18%;
+        height: 100%;
+        border-right: 1px solid rgba(10, 10, 10, 0.42);
+        transition: width 220ms ease-out;
+      }
+
+      .chart-fill.monthly {
+        background: #a6d4c7;
+      }
+
+      .chart-fill.tuition {
+        background: var(--yellow);
+      }
+
+      .chart-fill.setup {
+        background: var(--pink);
+      }
+
+      .chart-fill.total {
+        background: var(--green);
+      }
+
+      .budget-rule {
         color: var(--muted);
         font-size: 0.76rem;
         font-weight: 800;
         line-height: 1.45;
-        text-align: left;
-      }
-
-      .result-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        border-bottom: 1px solid var(--line);
-      }
-
-      .result-cell {
-        border-right: 1px solid var(--line);
-        padding: 0.86rem;
-      }
-
-      .result-cell:last-child {
-        border-right: 0;
-      }
-
-      .result-cell span {
-        display: block;
-        color: var(--muted);
-        font-size: 0.7rem;
-        font-weight: 850;
-      }
-
-      .result-cell strong {
-        display: block;
-        margin-top: 0.45rem;
-        font-size: 1.2rem;
-        font-weight: 950;
-        line-height: 1;
-      }
-
-      .result-stack {
-        display: grid;
-        align-content: start;
-        gap: 0.8rem;
-        padding: 1rem;
       }
 
       .stack {
@@ -438,36 +508,6 @@
 
       .setup {
         background: var(--pink);
-      }
-
-      .result-advice {
-        display: grid;
-        gap: 0.45rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .result-advice li {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        gap: 0.6rem;
-        align-items: start;
-        font-size: 0.84rem;
-        font-weight: 750;
-        line-height: 1.55;
-      }
-
-      .result-advice b {
-        display: inline-flex;
-        min-width: 2.2rem;
-        justify-content: center;
-        border: 1px solid var(--line);
-        background: #ffffff;
-        padding: 0.12rem 0.34rem;
-        font-size: 0.7rem;
-        font-weight: 950;
-        line-height: 1.25;
       }
 
       .section {
@@ -541,77 +581,6 @@
 
       .source-badge.estimate {
         background: var(--peach);
-      }
-
-      .profile-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0;
-      }
-
-      .profile-card {
-        display: grid;
-        align-content: start;
-        gap: 0.9rem;
-        border-right: 1px solid var(--line);
-        padding: 1rem;
-      }
-
-      .profile-card:last-child {
-        border-right: 0;
-      }
-
-      .profile-card h3 {
-        margin: 0;
-        font-size: 1.18rem;
-        font-weight: 950;
-        line-height: 1.2;
-      }
-
-      .profile-card .range {
-        display: inline-flex;
-        width: fit-content;
-        border: 1px solid var(--line);
-        background: var(--yellow);
-        padding: 0.35rem 0.55rem;
-        font-size: 1.2rem;
-        font-weight: 950;
-        line-height: 1;
-      }
-
-      .profile-card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.84rem;
-        font-weight: 700;
-        line-height: 1.6;
-      }
-
-      .profile-list {
-        display: grid;
-        gap: 0.38rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .profile-list li {
-        display: grid;
-        grid-template-columns: 4rem minmax(0, 1fr);
-        border: 1px solid var(--line);
-        background: #ffffff;
-        font-size: 0.78rem;
-        font-weight: 850;
-      }
-
-      .profile-list span {
-        border-right: 1px solid var(--line);
-        background: #f1f1ee;
-        padding: 0.38rem 0.45rem;
-      }
-
-      .profile-list strong {
-        padding: 0.38rem 0.45rem;
       }
 
       .priority-grid {
@@ -943,6 +912,15 @@
         line-height: 1.7;
       }
 
+      .footer-source-note {
+        margin: 1.2rem 0 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-style: italic;
+        font-weight: 500;
+        line-height: 1.7;
+      }
+
       .back-to-top-button {
         position: fixed;
         right: 1.25rem;
@@ -975,22 +953,17 @@
         }
 
         .planner-form {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           border-right: 0;
-          border-bottom: 1px solid var(--line);
+          border-bottom: 0;
         }
 
-        .profile-grid,
-        .priority-grid {
+        .result-panel {
           grid-template-columns: 1fr;
         }
 
-        .profile-card {
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
-        }
-
-        .profile-card:last-child {
-          border-bottom: 0;
+        .priority-grid {
+          grid-template-columns: 1fr;
         }
 
         .boundary {
@@ -1071,31 +1044,6 @@
           padding-top: 4.2rem;
         }
 
-        .hero-copy {
-          min-height: 0;
-          padding: 1rem;
-        }
-
-        h1 {
-          font-size: 2.6rem;
-        }
-
-        .hero-facts,
-        .result-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .hero-fact,
-        .result-cell {
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
-        }
-
-        .hero-fact:last-child,
-        .result-cell:last-child {
-          border-bottom: 0;
-        }
-
         .planner-head,
         .section-head {
           grid-template-columns: auto minmax(0, 1fr);
@@ -1107,13 +1055,74 @@
           white-space: normal;
         }
 
+        .planner-form {
+          grid-auto-flow: row;
+          grid-template-columns: 1fr;
+          grid-template-rows: none;
+        }
+
         .field {
           grid-template-columns: 1fr;
         }
 
+        .field:nth-child(3) {
+          border-bottom: 0;
+        }
+
+        .field:last-child {
+          border-bottom: 0;
+        }
+
         .field label {
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
+          border: 0;
+        }
+
+        .budget-summary {
+          grid-template-columns: 1fr;
+        }
+
+        .budget-table,
+        .budget-table tbody,
+        .budget-table tr,
+        .budget-table th,
+        .budget-table td {
+          display: block;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .budget-table thead {
+          display: none;
+        }
+
+        .budget-table tr {
+          padding: 0.72rem;
+          border-top: 1px solid rgba(10, 10, 10, 0.34);
+        }
+
+        .budget-table tr:first-child {
+          border-top: 0;
+        }
+
+        .budget-table th,
+        .budget-table td {
+          border: 0;
+          padding: 0;
+        }
+
+        .budget-value,
+        .budget-visual,
+        .budget-rule {
+          margin-top: 0.48rem;
+        }
+
+        .result-amount-row {
+          flex-wrap: wrap;
+        }
+
+        .result-amount-row.total strong {
+          font-size: clamp(1.55rem, 8vw, 2rem);
+          white-space: normal;
         }
 
         .priority-list li {
@@ -3430,26 +3439,9 @@
 
     <main class="wrap">
       <section class="hero" aria-label="韩国留学预算总览">
-        <div class="hero-copy">
-          <div>
-            <span class="eyebrow">2026 预算口径</span>
-            <h1>韩国留学预算，一页算清</h1>
-            <p class="lead">
-              不把费用页做成申请手册。先输入城市、学校、专业、住宿、申请方式和奖学金假设，再用官方学费、学校生活费、语学院费用和保险数据给出人民币区间。所有结果都是估算，最终仍要回学校官网和最新简章核对。
-            </p>
-          </div>
-          <div class="hero-facts" aria-label="本页数据口径">
-            <div class="hero-fact"><span>汇率口径</span><strong>1万韩元≈44.5元</strong></div>
-            <div class="hero-fact"><span>更新时间</span><strong>2026-06-10</strong></div>
-            <div class="hero-fact"><span>页面目标</span><strong>预算判断，不做录取承诺</strong></div>
-          </div>
-        </div>
-
         <section class="budget-planner" aria-label="留学费用快速估算">
           <div class="planner-head">
-            <span class="section-index">01</span>
-            <h2>输入条件，直接估算</h2>
-            <span class="section-note">第一年总预算，含出发前现金</span>
+            <h2>韩国留学费用估算</h2>
           </div>
           <div class="planner-body">
             <form class="planner-form" id="budget-form">
@@ -3502,187 +3494,62 @@
             </form>
 
             <div class="result-panel">
-              <div class="result-total">
-                <div>
-                  <span>预计第一年总预算</span>
-                  <strong id="budget-result-total">7.8-10.5万</strong>
-                </div>
+              <div class="budget-summary">
+                <span class="graph-eyebrow">预算图表</span>
                 <small id="budget-result-context">地方国公立，人文社科，宿舍，DIY，无奖学金假设</small>
               </div>
-              <div class="result-grid">
-                <div class="result-cell"><span>在韩每月现金</span><strong id="budget-result-monthly">0.42-0.62万</strong></div>
-                <div class="result-cell"><span>净学费估算</span><strong id="budget-result-tuition">1.7-2.4万</strong></div>
-                <div class="result-cell"><span>出发前现金</span><strong id="budget-result-setup">0.25-0.7万</strong></div>
-              </div>
-              <div class="result-stack">
-                <div class="stack" id="budget-stack" aria-label="第一年预算构成">
-                  <span class="stack-segment tuition" style="width: 26%">学费</span>
-                  <span class="stack-segment housing" style="width: 21%">住宿</span>
-                  <span class="stack-segment living" style="width: 43%">生活</span>
-                  <span class="stack-segment setup" style="width: 10%">前期</span>
-                </div>
-                <ul class="result-advice" id="budget-advice">
-                  <li><b>底线</b><span>预算有限时，先固定地方国公立、宿舍、DIY三个条件。</span></li>
-                  <li><b>风险</b><span>首尔单间、艺术医学、申请服务会把第一年现金压力明显拉高。</span></li>
-                  <li><b>复核</b><span>本页只做人民币估算，具体学校以最新招生简章、宿舍通知和缴费单为准。</span></li>
-                </ul>
-              </div>
+              <table class="budget-table" aria-label="预算估算图表">
+                <thead>
+                  <tr>
+                    <th scope="col">项目</th>
+                    <th scope="col">估算金额</th>
+                    <th scope="col">可视化</th>
+                    <th scope="col">计算规则</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th class="budget-row-label" scope="row">第一年总预算</th>
+                    <td class="budget-value">
+                      <span class="result-amount-row total">
+                        <strong id="budget-result-total">7.8-10.5万</strong>
+                        <span class="result-period">/年 (预估)</span>
+                      </span>
+                    </td>
+                    <td class="budget-visual"><div class="chart-track total-range-track" aria-hidden="true"><span class="chart-fill total" id="budget-bar-total"></span></div></td>
+                    <td class="budget-rule" id="budget-rule-total">学费 + 住宿12个月 + 生活12个月 + 出发前现金</td>
+                  </tr>
+                  <tr>
+                    <th class="budget-row-label" scope="row">在韩每月现金</th>
+                    <td class="budget-value"><strong id="budget-result-monthly">0.42-0.62万</strong></td>
+                    <td class="budget-visual"><div class="chart-track" aria-hidden="true"><span class="chart-fill monthly" id="budget-bar-monthly"></span></div></td>
+                    <td class="budget-rule" id="budget-rule-monthly">住宿 + 生活费 + 国民健康保险</td>
+                  </tr>
+                  <tr>
+                    <th class="budget-row-label" scope="row">净学费估算</th>
+                    <td class="budget-value"><strong id="budget-result-tuition">1.7-2.4万</strong></td>
+                    <td class="budget-visual"><div class="chart-track" aria-hidden="true"><span class="chart-fill tuition" id="budget-bar-tuition"></span></div></td>
+                    <td class="budget-rule" id="budget-rule-tuition">专业学费 × 学校/城市系数 × 奖学金假设</td>
+                  </tr>
+                  <tr>
+                    <th class="budget-row-label" scope="row">出发前现金</th>
+                    <td class="budget-value"><strong id="budget-result-setup">0.25-0.7万</strong></td>
+                    <td class="budget-visual"><div class="chart-track" aria-hidden="true"><span class="chart-fill setup" id="budget-bar-setup"></span></div></td>
+                    <td class="budget-rule" id="budget-rule-setup">签证、材料、TOPIK、服务费等出发前支出</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
       </section>
-
-      <section class="section" aria-label="官方数据底座">
-        <div class="section-head">
-          <span class="section-index">02</span>
-          <h2>官方数据底座</h2>
-          <span class="section-note">先看数据来源，再看页面结论</span>
-        </div>
-        <div class="data-table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>口径</th>
-                <th>本页采用的数字</th>
-                <th>为什么可信</th>
-                <th>来源</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="source-row">
-                <td><span class="source-badge official">官方</span><strong>本科年学费均值</strong></td>
-                <td>全国平均约 682万韩元；国公立约 427万韩元；私立约 763万韩元。</td>
-                <td>NIIED 的 Study in Korea 汇总 Academy Info 数据，适合做全国层面的预算底座。</td>
-                <td><a href="https://www.studyinkorea.go.kr/ko/plan/abroadExpenses.do" target="_blank" rel="noreferrer">studyinkorea.go.kr</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge official">官方</span><strong>专业学费差异</strong></td>
-                <td>人文社科约 600万；理工约 728万；艺术体育约 783万；医学约 984万韩元/年。</td>
-                <td>同一学校类型下，专业是拉开学费的核心变量，所以计算器按专业调整。</td>
-                <td><a href="https://www.studyinkorea.go.kr/ko/plan/abroadExpenses.do" target="_blank" rel="noreferrer">Study in Korea</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge official">学校</span><strong>首尔私立样本</strong></td>
-                <td>高丽大学 2026 每学期，人文约 580万，自然约 670万，工科约 770万，艺术约 780万韩元。</td>
-                <td>用顶尖私立的官方招生页面校准“首尔私立”上沿。</td>
-                <td><a href="https://oia.korea.ac.kr/oia/under/Tuition.do" target="_blank" rel="noreferrer">oia.korea.ac.kr</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge official">学校</span><strong>语学院样本 A</strong></td>
-                <td>延世 KLI 2026，报名费 12万韩元，学费 202万韩元/学期。</td>
-                <td>适合估算“先读语学堂”的现金压力。</td>
-                <td><a href="https://www.yskli.com/course.php?mid=E01_02" target="_blank" rel="noreferrer">yskli.com</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge official">学校</span><strong>语学院样本 B</strong></td>
-                <td>釜山大学 2025 正规韩国语课程，140万韩元/学期，含入学金、教材、文化活动等。</td>
-                <td>地方国立语学院常低于首尔热门校，适合做下沿参考。</td>
-                <td><a href="https://international.pusan.ac.kr/international/15206/subview.do" target="_blank" rel="noreferrer">pusan.ac.kr</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge official">官方</span><strong>健康保险</strong></td>
-                <td>留学生自动加入 NHIS。SNU OGA 公布 2025 留学生月缴 76,390 韩元。</td>
-                <td>保险是每月固定现金流，本页把它放入在韩月支出。</td>
-                <td><a href="https://oga.snu.ac.kr/national-health-insurance" target="_blank" rel="noreferrer">oga.snu.ac.kr</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge official">官方</span><strong>TOPIK入口</strong></td>
-                <td>中国大陆 TOPIK 由教育部教育考试院报名系统承办，网上报名和缴费。公开报道费用常见为 400元/人。</td>
-                <td>考试费不大，但重考会影响前期预算和申请节奏。</td>
-                <td><a href="https://topik.neea.cn/" target="_blank" rel="noreferrer">topik.neea.cn</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge estimate">估算</span><strong>首尔生活费</strong></td>
-                <td>高丽大学生活费表中，宿舍双人约 40.2万韩元/月，校外押金另算，餐饮、交通、手机、娱乐等按月列示。</td>
-                <td>生活费受个人习惯影响大，本页只给保守区间，不做精确承诺。</td>
-                <td><a href="https://gsc.korea.ac.kr/usr/service/student_life.do" target="_blank" rel="noreferrer">gsc.korea.ac.kr</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge estimate">估算</span><strong>汇率折算</strong></td>
-                <td>2026-06-10 附近，公开汇率约 1韩元=0.00445人民币，即 1万韩元≈44.5元。</td>
-                <td>银行购汇和跨境付款会有点差，本页统一用估算汇率方便比较。</td>
-                <td><a href="https://www.forbes.com/advisor/money-transfer/currency-converter/krw-cny/" target="_blank" rel="noreferrer">Forbes KRW/CNY</a></td>
-              </tr>
-              <tr class="source-row">
-                <td><span class="source-badge official">官方</span><strong>奖学金区间</strong></td>
-                <td>Study in Korea 提到多数大学按成绩提供 30%-100% 学费减免；高丽大学本科奖学金含全免、50%、65%、30%等档位。</td>
-                <td>奖学金不能默认获得，所以计算器把它做成可切换假设。</td>
-                <td><a href="https://gsc.korea.ac.kr/usr/international/scolarships.do" target="_blank" rel="noreferrer">Korea University GSC</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <details class="source-summary">
-          <summary>本页怎么处理“不确定数据”</summary>
-          <p>
-            学费、保险、TOPIK入口、语学院样本用官方或学校页面。生活费、汇率、服务费和材料费受个人行为、付款日期、地区和机构合同影响，统一标为估算。页面只提供决策区间，不替代学校缴费单、宿舍通知、签证要求或银行实时汇率。
-          </p>
-        </details>
-      </section>
-
-      <section class="section" aria-label="三类预算画像">
-        <div class="section-head">
-          <span class="section-index">03</span>
-          <h2>三类预算画像</h2>
-          <span class="section-note">把抽象数字压成可比较的学生情境</span>
-        </div>
-        <div class="profile-grid">
-          <article class="profile-card">
-            <h3>地方国立理工</h3>
-            <span class="range">7-10万/年</span>
-            <div class="stack" aria-label="地方国立理工预算构成">
-              <span class="stack-segment tuition" style="width: 28%">学费</span>
-              <span class="stack-segment housing" style="width: 18%">住宿</span>
-              <span class="stack-segment living" style="width: 44%">生活</span>
-              <span class="stack-segment setup" style="width: 10%">前期</span>
-            </div>
-            <ul class="profile-list">
-              <li><span>适合</span><strong>预算敏感，能接受地方城市</strong></li>
-              <li><span>关键</span><strong>宿舍、奖学金、TOPIK提前规划</strong></li>
-              <li><span>风险</span><strong>专业选择面和城市偏好要取舍</strong></li>
-            </ul>
-            <p>这是“先把预算压住”的路线。真正省钱的不是少吃少用，而是从城市、学校性质和住宿开始控制。</p>
-          </article>
-
-          <article class="profile-card">
-            <h3>首尔私立社科</h3>
-            <span class="range">12-16万/年</span>
-            <div class="stack" aria-label="首尔私立社科预算构成">
-              <span class="stack-segment tuition" style="width: 38%">学费</span>
-              <span class="stack-segment housing" style="width: 22%">住宿</span>
-              <span class="stack-segment living" style="width: 31%">生活</span>
-              <span class="stack-segment setup" style="width: 9%">前期</span>
-            </div>
-            <ul class="profile-list">
-              <li><span>适合</span><strong>想要首尔资源和中上游私立</strong></li>
-              <li><span>关键</span><strong>学费减免、合租、控制申请服务费</strong></li>
-              <li><span>风险</span><strong>校外单间会快速推高月预算</strong></li>
-            </ul>
-            <p>这是多数家庭最容易进入的主流区间。预算看起来够，但住宿和服务费一放松，第一年会明显超支。</p>
-          </article>
-
-          <article class="profile-card">
-            <h3>首尔私立艺术</h3>
-            <span class="range">16-22万/年</span>
-            <div class="stack" aria-label="首尔私立艺术预算构成">
-              <span class="stack-segment tuition" style="width: 45%">学费</span>
-              <span class="stack-segment housing" style="width: 23%">住宿</span>
-              <span class="stack-segment living" style="width: 23%">生活</span>
-              <span class="stack-segment setup" style="width: 9%">前期</span>
-            </div>
-            <ul class="profile-list">
-              <li><span>适合</span><strong>目标强，能承受作品集和学费上沿</strong></li>
-              <li><span>关键</span><strong>先查学院学费，不用全校均值替代</strong></li>
-              <li><span>风险</span><strong>作品集、材料、面试和住宿同时加价</strong></li>
-            </ul>
-            <p>艺术和医学不能用普通社科预算套。先把学费上沿和一次性成本算进去，再判断家庭现金流。</p>
-          </article>
-        </div>
-      </section>
+      <p class="budget-meta-line">
+        <b>汇率口径</b> 1万韩元≈44.5元 ｜ <b>更新时间</b> 2026-06-10 ｜ <b>页面目标</b> 预算判断，不做录取承诺 ｜ <b>预算口径</b> 第一年总预算，含出发前现金
+      </p>
 
       <section class="section" aria-label="降低成本优先级">
         <div class="section-head">
-          <span class="section-index">04</span>
+          <span class="section-index">02</span>
           <h2>降低成本优先级</h2>
           <span class="section-note">一页里保留真正能改变预算的动作</span>
         </div>
@@ -3706,7 +3573,7 @@
 
       <section class="section legacy-appendix" aria-label="&#21407;&#39029;&#38754;&#30003;&#35831;&#36164;&#26009;&#24402;&#26723;">
         <div class="section-head">
-          <span class="section-index">05</span>
+          <span class="section-index">03</span>
           <h2>&#21407;&#39029;&#38754;&#20869;&#23481;&#65306;&#30003;&#35831;&#19982;&#20013;&#20171;&#21442;&#32771;</h2>
           <span class="section-note">&#20445;&#30041;&#21407;&#39029;&#38754;&#30340;&#20869;&#23481;&#12289;&#21345;&#29255;&#12289;&#22270;&#34920;&#12289;&#27604;&#36739;&#34920;&#21644;&#27969;&#31243;&#26679;&#24335;</span>
         </div>
@@ -3816,15 +3683,15 @@
               </div>
 
               <div class="pre-cost-footer">
-                <p class="pre-cost-note">口径：这里是出发前现金预算，不含第一年正式大学学费和韩国生活费。韩元折算按近期 1万韩元≈45-50元人民币粗估，最终以银行汇率和学校最新简章为准。</p>
+                <p class="pre-cost-note">口径：这里是出发前现金预算，不含第一年正式大学学费和韩国生活费。韩元折算按 1万韩元≈44.5元人民币粗估，最终以银行汇率和学校最新简章为准。</p>
                 <div class="pre-cost-sources"><a href="https://www.topik.go.kr/" rel="noreferrer" target="_blank">TOPIK官网</a><a href="https://www.yskli.com/course.php?mid=E01_02" rel="noreferrer" target="_blank">延世KLI费用</a><a href="https://oia.yonsei.ac.kr/intstd/admission.asp" rel="noreferrer" target="_blank">延世申请费</a></div>
               </div>
             </div>
           </section>
 
                 <div class="cost-visual-grid">
-                  <section class="section"><h2 class="summary-title">韩国本科留学费用构成分析</h2><div class="cost-analysis-panel"><div class="donut-wrap"><div class="donut-chart" style="background: conic-gradient(#7d98f2 0% 50%, #5cc8a1 50% 75%, #a678f0 75% 90%, #ff9851 90% 95%, #f17878 95% 100%)"><span class="donut-hole"></span></div></div><div class="donut-legend"><table class="donut-table"><thead><tr><th>项目</th><th>比例</th><th>年费用</th></tr></thead><tbody><tr><td><span class="item-cell"><span class="legend-key" style="background:#7d98f2"></span>学费</span></td><td class="value-cell">50%</td><td class="amount-cell">约4-10万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#5cc8a1"></span>住宿费</span></td><td class="value-cell">25%</td><td class="amount-cell">约1-6万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#a678f0"></span>餐饮费</span></td><td class="value-cell">15%</td><td class="amount-cell">约1.2-3万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#ff9851"></span>交通费</span></td><td class="value-cell">5%</td><td class="amount-cell">约0.2-0.6万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#f17878"></span>其他杂费</span></td><td class="value-cell">5%</td><td class="amount-cell">约0.5-1.5万/年</td></tr></tbody></table></div></div></section>
-                  <section class="section"><h2 class="summary-title">不同场景下的年均总费用对比（人民币）</h2><div class="comparison-panel"><table class="comparison-table"><thead><tr><th>学校类型</th><th>保守预算</th><th>常见预算</th><th>艺术/医学</th></tr></thead><tbody><tr><td class="scenario-type blue">首尔地区私立大学</td><td>14-18万</td><td>15-20万</td><td>16-20万</td></tr><tr><td class="scenario-type purple">首尔地区国立大学</td><td>12-16万</td><td>13-16万</td><td>14-16万</td></tr><tr><td class="scenario-type orange">地方私立大学</td><td>8-13万</td><td>9-14万</td><td>10-15万</td></tr><tr><td class="scenario-type green">地方国立大学</td><td>7-11万</td><td>8-12万</td><td>9-12万</td></tr></tbody></table></div></section>
+                  <section class="section"><h2 class="summary-title">韩国本科留学费用构成分析</h2><div class="cost-analysis-panel"><div class="donut-wrap"><div class="donut-chart" style="background: conic-gradient(#7d98f2 0% 38%, #5cc8a1 38% 66%, #a678f0 66% 88%, #ff9851 88% 96%, #f17878 96% 100%)"><span class="donut-hole"></span></div></div><div class="donut-legend"><table class="donut-table"><thead><tr><th>项目</th><th>比例</th><th>年费用</th></tr></thead><tbody><tr><td><span class="item-cell"><span class="legend-key" style="background:#7d98f2"></span>学费</span></td><td class="value-cell">约25-45%</td><td class="amount-cell">约2-7万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#5cc8a1"></span>住宿费</span></td><td class="value-cell">约20-35%</td><td class="amount-cell">约1-7万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#a678f0"></span>生活费</span></td><td class="value-cell">约20-30%</td><td class="amount-cell">约2.7-5.5万/年</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#ff9851"></span>前期现金</span></td><td class="value-cell">约5-15%</td><td class="amount-cell">约0.25-2.6万</td></tr><tr><td><span class="item-cell"><span class="legend-key" style="background:#f17878"></span>额外缓冲</span></td><td class="value-cell">按需</td><td class="amount-cell">艺术材料等另算</td></tr></tbody></table></div></div></section>
+                  <section class="section"><h2 class="summary-title">不同场景下的年均总费用对比（人民币）</h2><div class="comparison-panel"><table class="comparison-table"><thead><tr><th>学校类型</th><th>保守预算</th><th>常见预算</th><th>艺术/医学</th></tr></thead><tbody><tr><td class="scenario-type blue">首尔地区私立大学</td><td>10-14万</td><td>12-18万</td><td>12.5-22万</td></tr><tr><td class="scenario-type purple">首尔地区国立大学</td><td>8-12万</td><td>10-15万</td><td>11-18万</td></tr><tr><td class="scenario-type orange">地方私立大学</td><td>8-13万</td><td>9-15万</td><td>10-17万</td></tr><tr><td class="scenario-type green">地方国立大学</td><td>6-9万</td><td>7-11万</td><td>8-13万</td></tr></tbody></table></div></section>
                 </div>
                 <section class="apply-compare-section" aria-label="直申 vs 中介申请 核心差异">
                   <h2 class="apply-compare-title">直申 vs 中介申请 核心差异</h2>
@@ -4253,6 +4120,9 @@
       <p class="footer-note">
         说明：本页为人民币估算工具，不构成收费承诺。学费按韩国官方/学校公开数据折算，生活费按公开学生生活费样本和地区经验压缩为区间，申请服务费和材料费按常见支出做估算。付款前请重新核对目标学校官网、宿舍通知、签证材料要求、保险缴费单和银行实时汇率。
       </p>
+      <p class="footer-source-note">
+        数据来源简表：Study in Korea / Academy Info、高丽大学 2026 学期学费、韩国语学院公开页面、NHIS/SNU OGA、TOPIK 报名入口、高丽大学生活费样本、公开 KRW/CNY 汇率，以及学校奖学金页面。
+      </p>
     </main>
 
     <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Back to top">
@@ -4275,6 +4145,13 @@
         engineering: 7277200,
         arts: 7828200,
         medicine: 9843400
+      };
+
+      const seoulPrivateTuitionHighKrw = {
+        humanities: 5800000 * 2,
+        engineering: 7700000 * 2,
+        arts: 7800000 * 2,
+        medicine: 0
       };
 
       const schoolFactor = {
@@ -4318,8 +4195,14 @@
       const monthlyEl = document.querySelector("#budget-result-monthly");
       const tuitionEl = document.querySelector("#budget-result-tuition");
       const setupEl = document.querySelector("#budget-result-setup");
-      const stackEl = document.querySelector("#budget-stack");
-      const adviceEl = document.querySelector("#budget-advice");
+      const totalBarEl = document.querySelector("#budget-bar-total");
+      const monthlyBarEl = document.querySelector("#budget-bar-monthly");
+      const tuitionBarEl = document.querySelector("#budget-bar-tuition");
+      const setupBarEl = document.querySelector("#budget-bar-setup");
+      const totalRuleEl = document.querySelector("#budget-rule-total");
+      const monthlyRuleEl = document.querySelector("#budget-rule-monthly");
+      const tuitionRuleEl = document.querySelector("#budget-rule-tuition");
+      const setupRuleEl = document.querySelector("#budget-rule-setup");
 
       function wan(value) {
         return (value / 10000).toFixed(value >= 100000 ? 1 : 2).replace(/\.0$/, "");
@@ -4333,8 +4216,9 @@
         return document.querySelector(`#${id}`).value;
       }
 
-      function clampPercent(value) {
-        return `${Math.max(8, Math.round(value))}%`;
+      function chartWidth(value, max) {
+        if (!max) return "12%";
+        return `${Math.max(12, Math.min(100, Math.round((value / max) * 100)))}%`;
       }
 
       function renderBudget() {
@@ -4346,8 +4230,12 @@
         const scholarshipRate = Number(getValue("scholarship"));
 
         const tuitionBase = majorTuitionKrw[major] * schoolFactor[school] * cityFactor[city] * sourceCurrencyRate;
+        const tuitionHighBase =
+          city === "seoul" && school === "private"
+            ? Math.max(tuitionBase * 1.12, seoulPrivateTuitionHighKrw[major] * sourceCurrencyRate)
+            : tuitionBase * 1.12;
         const tuitionLow = tuitionBase * 0.92 * (1 - scholarshipRate);
-        const tuitionHigh = tuitionBase * 1.12 * (1 - scholarshipRate);
+        const tuitionHigh = tuitionHighBase * (1 - scholarshipRate);
         const housingRange = housingMonthly[city][housing];
         const livingRange = livingMonthly[city];
         const monthlyLow = housingRange[0] + livingRange[0] + insuranceMonthly;
@@ -4360,46 +4248,25 @@
         const annualLivingHigh = (livingRange[1] + insuranceMonthly) * 12;
         const totalLow = tuitionLow + annualHousingLow + annualLivingLow + setupRange[0];
         const totalHigh = tuitionHigh + annualHousingHigh + annualLivingHigh + setupRange[1];
-        const midTotal = (totalLow + totalHigh) / 2;
 
         totalEl.textContent = rangeWan([totalLow, totalHigh]);
         contextEl.textContent = `${fieldLabels.city[city]}${fieldLabels.school[school]}，${fieldLabels.major[major]}，${fieldLabels.housing[housing]}，${fieldLabels.route[route]}，${scholarshipRate ? `假设减免${Math.round(scholarshipRate * 100)}%` : "无奖学金假设"}`;
         monthlyEl.textContent = rangeWan([monthlyLow, monthlyHigh]);
         tuitionEl.textContent = rangeWan([tuitionLow, tuitionHigh]);
         setupEl.textContent = rangeWan(setupRange);
+        totalRuleEl.textContent = `净学费 + ${fieldLabels.housing[housing]}12个月 + 生活/保险12个月 + ${fieldLabels.route[route]}前期现金`;
+        monthlyRuleEl.textContent = `${fieldLabels.housing[housing]}月预算 + ${fieldLabels.city[city]}生活费 + NHIS保险`;
+        tuitionRuleEl.textContent = `${fieldLabels.major[major]}基准学费 × ${fieldLabels.school[school]} × ${fieldLabels.city[city]}${scholarshipRate ? ` × 减免${Math.round(scholarshipRate * 100)}%` : "，未扣奖学金"}`;
+        setupRuleEl.textContent =
+          route === "assisted"
+            ? "含申请服务费、签证材料、TOPIK、快递和公证等前期现金"
+            : "DIY口径，仅保留签证材料、TOPIK、快递和公证等前期现金";
 
-        const segments = [
-          ["tuition", "学费", (tuitionLow + tuitionHigh) / 2],
-          ["housing", "住宿", (annualHousingLow + annualHousingHigh) / 2],
-          ["living", "生活", (annualLivingLow + annualLivingHigh) / 2],
-          ["setup", "前期", (setupRange[0] + setupRange[1]) / 2]
-        ];
-
-        stackEl.innerHTML = segments
-          .map(([className, label, value]) => `<span class="stack-segment ${className}" style="width:${clampPercent((value / midTotal) * 100)}">${label}</span>`)
-          .join("");
-
-        const risk =
-          city === "seoul" && housing === "studio"
-            ? "首尔单间是当前组合里最容易超支的点，建议先查宿舍和合租。"
-            : major === "arts" || major === "medicine"
-              ? "当前专业学费上沿较高，先查学院学费表，不要只看学校均值。"
-              : route === "assisted"
-                ? "申请服务费要和学校申请费、材料费、签证费拆开看。"
-                : "当前组合的最大变量通常是奖学金和住宿是否稳定。";
-
-        const baseline =
-          totalHigh <= 100000
-            ? "这个组合属于预算友好型，重点是别让住宿和重考费用外溢。"
-            : totalHigh <= 160000
-              ? "这个组合属于主流家庭预算区间，需要留出1-2万缓冲。"
-              : "这个组合属于高现金压力区间，建议先做奖学金和住宿备选方案。";
-
-        adviceEl.innerHTML = [
-          `<li><b>底线</b><span>${baseline}</span></li>`,
-          `<li><b>风险</b><span>${risk}</span></li>`,
-          `<li><b>复核</b><span>付款前核对目标学校官网、宿舍通知、签证材料和银行汇率。</span></li>`
-        ].join("");
+        const chartMax = Math.max(monthlyHigh, tuitionHigh, setupRange[1]);
+        totalBarEl.style.width = chartWidth((totalLow + totalHigh) / 2, totalHigh);
+        monthlyBarEl.style.width = chartWidth((monthlyLow + monthlyHigh) / 2, chartMax);
+        tuitionBarEl.style.width = chartWidth((tuitionLow + tuitionHigh) / 2, chartMax);
+        setupBarEl.style.width = chartWidth((setupRange[0] + setupRange[1]) / 2, chartMax);
       }
 
       document.querySelectorAll("[data-planner-field]").forEach((field) => {
