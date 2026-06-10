@@ -1376,11 +1376,117 @@
         }
       }
 
+      body:not(.application-entry-preview-ready) .application-entry-preview {
+        display: none;
+      }
+
+      .application-entry-preview {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        padding: 5.6rem 4vw 4rem;
+        background: rgba(10, 10, 10, 0.78);
+        cursor: pointer;
+      }
+
+      .application-entry-preview[hidden] {
+        display: none;
+      }
+
+      .application-entry-preview img {
+        display: block;
+        width: auto;
+        max-width: min(82vw, 98rem);
+        max-height: 68vh;
+        object-fit: contain;
+        user-select: none;
+        touch-action: none;
+        cursor: grab;
+        transform: translate(var(--preview-x, 0px), var(--preview-y, 0px)) scale(var(--preview-scale, 1));
+        transform-origin: center center;
+        transition: transform 160ms ease;
+        will-change: transform;
+      }
+
+      .application-entry-preview.is-dragging img {
+        cursor: grabbing;
+        transition: none;
+      }
+
+      .application-entry-preview-close {
+        position: fixed;
+        top: 3.5rem;
+        right: 3.5rem;
+        width: 3.4rem;
+        height: 3.4rem;
+        border: 0;
+        border-radius: 999px;
+        background: #f8f8f5;
+        color: #0a0a0a;
+        font-size: 1.6rem;
+        font-weight: 800;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .application-entry-preview-snooze {
+        position: fixed;
+        right: 9.25rem;
+        bottom: 4.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        min-height: 2.3rem;
+        padding: 0.45rem 0.85rem;
+        border: 1px solid rgba(248, 248, 245, 0.58);
+        border-radius: 0.5rem;
+        background: rgba(248, 248, 245, 0.92);
+        color: #2f2f2f;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .application-entry-preview-snooze input {
+        width: 1rem;
+        height: 1rem;
+        margin: 0;
+        accent-color: #6cc800;
+      }
+
+      @media (max-width: 720px) {
+        .application-entry-preview {
+          padding: 5rem 1rem 4.5rem;
+        }
+
+        .application-entry-preview img {
+          max-width: 92vw;
+          max-height: 62vh;
+        }
+
+        .application-entry-preview-close {
+          top: 1.2rem;
+          right: 1.2rem;
+          width: 3rem;
+          height: 3rem;
+        }
+
+        .application-entry-preview-snooze {
+          right: 1rem;
+          bottom: 1.2rem;
+        }
+      }
+
     </style>
     <link rel="stylesheet" href="./header-unified.css" />
-
   </head>
   <body>
+    <div class="application-entry-preview" id="application-entry-preview" role="dialog" aria-modal="true" aria-label="Project preview" hidden>
+      <button class="application-entry-preview-close" type="button" aria-label="Close">x</button>
+      <img src="./public/application-entry-preview.png" alt="Project preview" />
+    </div>
     <header class="header">
       <div class="header-inner">
         <a href="./hanxue-luopan-home.html" aria-label="韩学罗盘">
@@ -1955,5 +2061,139 @@
     <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Back to top">
       <img src="./public/top.webp" alt="" aria-hidden="true" />
     </button>
+    <script>
+      (() => {
+        const preview = document.getElementById("application-entry-preview");
+        if (!preview) return;
+
+        const previewImage = preview.querySelector("img");
+        const previewClose = preview.querySelector(".application-entry-preview-close");
+        const previewSnoozeKey = "koreaUniversityLinkApplicationPreviewHiddenDate";
+        const getTodayKey = () => {
+          const now = new Date();
+          const year = now.getFullYear();
+          const month = String(now.getMonth() + 1).padStart(2, "0");
+          const day = String(now.getDate()).padStart(2, "0");
+          return `${year}-${month}-${day}`;
+        };
+        const todayKey = getTodayKey();
+        const getSnoozeDate = () => {
+          try {
+            return localStorage.getItem(previewSnoozeKey) || "";
+          } catch (error) {
+            return "";
+          }
+        };
+        const setSnoozeDate = (value) => {
+          try {
+            if (value) {
+              localStorage.setItem(previewSnoozeKey, value);
+            } else {
+              localStorage.removeItem(previewSnoozeKey);
+            }
+          } catch (error) {
+            // Ignore storage failures in file:// or private browsing contexts.
+          }
+        };
+
+        if (getSnoozeDate() === todayKey) {
+          preview.hidden = true;
+          return;
+        }
+
+        const snoozeLabel = document.createElement("label");
+        const snoozeCheckbox = document.createElement("input");
+        const snoozeText = document.createElement("span");
+        snoozeLabel.className = "application-entry-preview-snooze";
+        snoozeCheckbox.type = "checkbox";
+        snoozeCheckbox.id = "application-entry-preview-snooze";
+        snoozeText.textContent = String.fromCharCode(20170, 22825, 19981, 20877, 26174, 31034);
+        snoozeLabel.append(snoozeCheckbox, snoozeText);
+        preview.appendChild(snoozeLabel);
+
+        let previewScale = 1;
+        let previewX = 0;
+        let previewY = 0;
+        let dragPointerId = null;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let dragOriginX = 0;
+        let dragOriginY = 0;
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+        const updatePreviewTransform = () => {
+          preview.style.setProperty("--preview-scale", String(previewScale));
+          preview.style.setProperty("--preview-x", `${previewX}px`);
+          preview.style.setProperty("--preview-y", `${previewY}px`);
+        };
+        const resetPreviewTransform = () => {
+          previewScale = 1;
+          previewX = 0;
+          previewY = 0;
+          updatePreviewTransform();
+        };
+        const closePreview = () => {
+          preview.hidden = true;
+          preview.classList.remove("is-dragging");
+          resetPreviewTransform();
+          document.removeEventListener("keydown", handlePreviewKeydown);
+        };
+        function handlePreviewKeydown(event) {
+          if (event.key === "Escape" && !preview.hidden) closePreview();
+        }
+
+        snoozeCheckbox.addEventListener("change", () => {
+          setSnoozeDate(snoozeCheckbox.checked ? todayKey : "");
+        });
+
+        preview.addEventListener("click", (event) => {
+          if (event.target === preview || event.target.closest(".application-entry-preview-close")) {
+            closePreview();
+          }
+        });
+        previewClose?.addEventListener("click", closePreview);
+
+        previewImage?.addEventListener("wheel", (event) => {
+          event.preventDefault();
+          const zoomStep = event.deltaY < 0 ? 0.12 : -0.12;
+          previewScale = clamp(Math.round((previewScale + zoomStep) * 100) / 100, 0.5, 3);
+          updatePreviewTransform();
+        }, { passive: false });
+
+        previewImage?.addEventListener("pointerdown", (event) => {
+          if (event.button !== 0) return;
+          dragPointerId = event.pointerId;
+          dragStartX = event.clientX;
+          dragStartY = event.clientY;
+          dragOriginX = previewX;
+          dragOriginY = previewY;
+          preview.classList.add("is-dragging");
+          previewImage.setPointerCapture(event.pointerId);
+        });
+
+        previewImage?.addEventListener("pointermove", (event) => {
+          if (dragPointerId !== event.pointerId) return;
+          previewX = dragOriginX + event.clientX - dragStartX;
+          previewY = dragOriginY + event.clientY - dragStartY;
+          updatePreviewTransform();
+        });
+
+        const stopDrag = (event) => {
+          if (dragPointerId !== event.pointerId) return;
+          dragPointerId = null;
+          preview.classList.remove("is-dragging");
+          if (previewImage.hasPointerCapture(event.pointerId)) {
+            previewImage.releasePointerCapture(event.pointerId);
+          }
+        };
+        previewImage?.addEventListener("pointerup", stopDrag);
+        previewImage?.addEventListener("pointercancel", stopDrag);
+
+        resetPreviewTransform();
+        preview.hidden = false;
+        document.body.classList.add("application-entry-preview-ready");
+        document.addEventListener("keydown", handlePreviewKeydown);
+      })();
+    </script>
   </body>
 </html>
