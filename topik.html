@@ -115,9 +115,6 @@
       .pill.mint.active,
       .pill.mint:hover,
       .pill.mint:focus { background: var(--mint); }
-      .pill.lavender.active,
-      .pill.lavender:hover,
-      .pill.lavender:focus { background: var(--lavender); }
       .pill.peach.active,
       .pill.peach:hover,
       .pill.peach:focus { background: var(--peach); }
@@ -1103,6 +1100,856 @@
       .flow li { display: flex; gap: 0.75rem; align-items: center; border: 1px solid var(--ink); background: var(--surface); padding: 0.75rem; font-weight: 800; }
       .flow span { display: inline-flex; width: 2rem; height: 2rem; align-items: center; justify-content: center; border-radius: 999px; background: var(--ink); color: var(--paper); font-weight: 900; }
 
+      .decision-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.24fr) minmax(19rem, 0.76fr);
+        gap: 2.25rem;
+        border-top: 1px solid var(--ink);
+        border-bottom: 1px solid var(--ink);
+        padding: 2.35rem 0 1.9rem;
+      }
+
+      .hero-kicker,
+      .section-kicker {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .decision-hero h1 {
+        max-width: 68rem;
+        margin: 0.65rem 0 0;
+        font-size: clamp(3rem, 5vw, 4.65rem);
+        line-height: 0.95;
+      }
+
+      .decision-hero h1 span {
+        display: block;
+      }
+
+      .decision-hero .lead {
+        max-width: 52rem;
+      }
+
+      .data-date {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        border: 1px solid var(--ink);
+        background: var(--mint);
+        padding: 0.45rem 0.75rem;
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+
+      .hero-snapshot {
+        align-self: end;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .snapshot-row {
+        display: grid;
+        grid-template-columns: 8.5rem 1fr;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .snapshot-row:last-child {
+        border-bottom: 0;
+      }
+
+      .snapshot-row span,
+      .snapshot-row strong {
+        padding: 0.8rem 0.9rem;
+      }
+
+      .snapshot-row span {
+        border-right: 1px solid var(--ink);
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .snapshot-row strong {
+        font-size: 1rem;
+        line-height: 1.35;
+      }
+
+      .decision-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border: 1px solid var(--ink);
+        border-top: 0;
+        background: var(--surface);
+      }
+
+      .decision-strip article {
+        min-height: 7.2rem;
+        border-right: 1px solid var(--ink);
+        padding: 0.95rem;
+      }
+
+      .decision-strip article:last-child {
+        border-right: 0;
+      }
+
+      .decision-strip strong {
+        display: block;
+        font-size: 1.35rem;
+        line-height: 1;
+      }
+
+      .decision-strip p {
+        margin: 0.55rem 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+
+      .decision-section {
+        margin-top: 2.4rem;
+      }
+
+      .decision-section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1rem;
+        border-top: 1px solid var(--ink);
+        padding-top: 1.55rem;
+      }
+
+      .decision-section-head h2 {
+        margin: 0.35rem 0 0;
+        font-size: clamp(1.9rem, 3.1vw, 3rem);
+        line-height: 1;
+      }
+
+      .decision-section-head p {
+        max-width: 35rem;
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.7;
+      }
+
+      .topik-planner {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        border: 1px solid var(--ink);
+        background: #ffffff;
+        padding: 0;
+      }
+
+      .planner-panel-title {
+        border-bottom: 1px solid var(--ink);
+        background: #c9f6df;
+        padding: 0.72rem 1.55rem 0.68rem;
+        color: var(--ink);
+        font-size: 1.65rem;
+        font-weight: 900;
+        line-height: 1.12;
+      }
+
+      .planner-form {
+        display: grid;
+        grid-template-columns: repeat(24, minmax(0, 1fr));
+        gap: 1.1rem 1.25rem;
+        border: 0;
+        background: #ffffff;
+        padding: 1.45rem 1.35rem 1.15rem;
+      }
+
+      .planner-field {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-content: start;
+        align-items: stretch;
+        gap: 0.3rem;
+        min-height: 0;
+        border: 0;
+        padding: 0;
+      }
+
+      .planner-field:nth-of-type(1) {
+        grid-column: 1 / 5;
+      }
+
+      .planner-field:nth-of-type(2) {
+        grid-column: 5 / 11;
+      }
+
+      .planner-field:nth-of-type(3) {
+        grid-column: 11 / 17;
+      }
+
+      .planner-field:nth-of-type(4) {
+        grid-column: 17 / 22;
+      }
+
+      .field-copy {
+        display: block;
+        min-height: 0;
+        min-width: 0;
+        border: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      .planner-field label {
+        color: var(--ink);
+        font-size: 0.85rem;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .field-help {
+        display: none;
+      }
+
+      .planner-field select {
+        width: 100%;
+        height: auto;
+        min-height: 2.55rem;
+        border: 1px solid var(--ink);
+        border-radius: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: inherit;
+        font-size: 0.94rem;
+        font-weight: 800;
+        line-height: 1.25;
+        padding: 0.55rem 0.65rem;
+      }
+
+      .planner-field:nth-of-type(2n) select {
+        border-right: 1px solid var(--ink);
+      }
+
+      .planner-field select:focus-visible,
+      .source-row a:focus-visible,
+      .resource-pill:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 2px;
+      }
+
+      .planner-control-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        grid-column: 22 / 25;
+        grid-row: 1;
+        background: transparent;
+        padding: calc(0.85rem * 1.35 + 0.3rem) 0 0;
+      }
+
+      .planner-run-button {
+        display: inline-flex;
+        width: fit-content;
+        min-height: 2.55rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(10, 10, 10, 0.34);
+        border-radius: 8px;
+        background: var(--yellow);
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.82rem;
+        font-weight: 900;
+        line-height: 1;
+        padding: 0.45rem 1rem;
+        box-shadow: inset 0 -2px 0 rgba(10, 10, 10, 0.08);
+        white-space: nowrap;
+      }
+
+      .planner-run-button:hover {
+        background: #fff3ad;
+      }
+
+      .planner-run-button:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 2px;
+      }
+
+      .planner-output {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        align-content: start;
+        border: 1px solid var(--ink);
+        background: #ffffff;
+        margin: 0 1.35rem 1.35rem;
+      }
+
+      .planner-output[hidden] {
+        display: none;
+      }
+
+      .planner-status-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.38rem;
+        margin-top: 0.65rem;
+      }
+
+      .planner-status-line span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.32rem;
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        padding: 0.3rem 0.48rem;
+        color: var(--ink);
+        font-size: 0.68rem;
+        font-weight: 900;
+        line-height: 1.2;
+      }
+
+      .planner-status-line b {
+        font-size: 0.74rem;
+      }
+
+      .planner-result-main {
+        border-right: 1px solid var(--ink);
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid var(--ink);
+        background: #ffffff;
+      }
+
+      .planner-result-main > span {
+        display: inline-flex;
+        border: 1px solid var(--ink);
+        background: var(--yellow);
+        padding: 0.3rem 0.52rem;
+        font-size: 0.72rem;
+        font-weight: 900;
+      }
+
+      .planner-result-main strong {
+        display: block;
+        margin-top: 0.55rem;
+        font-size: clamp(1.65rem, 2.75vw, 2.5rem);
+        line-height: 0.95;
+      }
+
+      .planner-result-main p {
+        margin: 0.55rem 0 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .planner-meaning b,
+      .planner-basis b,
+      .planner-actions b {
+        color: var(--ink);
+      }
+
+      .planner-explain-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--ink);
+        background: #ffffff;
+      }
+
+      .planner-basis,
+      .planner-actions {
+        min-height: 7rem;
+        padding: 0.78rem 1rem;
+      }
+
+      .planner-basis {
+        border-right: 1px solid var(--ink);
+      }
+
+      .planner-basis p {
+        margin: 0.45rem 0 0;
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .planner-actions ol {
+        margin: 0.45rem 0 0;
+        padding-left: 1.05rem;
+        color: var(--ink);
+        font-size: 0.76rem;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .adjustment-card {
+        display: grid;
+        gap: 0.45rem;
+        border-right: 1px solid var(--ink);
+        background: #ffffff;
+        padding: 0.72rem 1rem;
+      }
+
+      .adjustment-card span {
+        display: inline-flex;
+        width: fit-content;
+        border: 1px solid var(--ink);
+        background: var(--pink);
+        padding: 0.26rem 0.48rem;
+        font-size: 0.7rem;
+        font-weight: 900;
+      }
+
+      .adjustment-card p {
+        max-width: 52rem;
+        margin: 0;
+        color: var(--ink);
+        font-size: 0.78rem;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .planner-result-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        background: #ffffff;
+      }
+
+      .planner-result-grid div {
+        min-height: 4.6rem;
+        border-right: 1px solid var(--ink);
+        padding: 0.68rem 0.8rem;
+      }
+
+      .planner-result-grid div:last-child {
+        border-right: 0;
+      }
+
+      .planner-result-grid span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.66rem;
+        font-weight: 900;
+      }
+
+      .planner-result-grid strong {
+        display: block;
+        margin-top: 0.32rem;
+        font-size: 1.02rem;
+        line-height: 1.2;
+      }
+
+      .study-hours-model {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .hours-model-board {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .hour-table {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-right: 1px solid var(--ink);
+      }
+
+      .hour-row {
+        display: grid;
+        min-height: 7.2rem;
+        align-content: start;
+        gap: 0.5rem;
+        border-right: 1px solid var(--ink);
+        border-bottom: 1px solid var(--ink);
+        padding: 0.9rem;
+      }
+
+      .hour-row:nth-child(3n) {
+        border-right: 0;
+      }
+
+      .hour-row:nth-last-child(-n + 3) {
+        border-bottom: 0;
+      }
+
+      .hour-row strong {
+        font-size: 1rem;
+        line-height: 1.2;
+      }
+
+      .hour-row span,
+      .student-row span {
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .hour-row p,
+      .student-row p,
+      .model-caveat {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.55;
+      }
+
+      .student-time-table {
+        display: grid;
+      }
+
+      .student-row {
+        display: grid;
+        grid-template-columns: 6.2rem minmax(0, 1fr);
+        gap: 0.5rem 0.8rem;
+        border-bottom: 1px solid var(--ink);
+        padding: 0.82rem 1rem;
+      }
+
+      .student-row:last-child {
+        border-bottom: 0;
+      }
+
+      .student-row strong {
+        font-size: 0.96rem;
+        line-height: 1.25;
+      }
+
+      .student-row p {
+        grid-column: 2;
+      }
+
+      .model-caveat {
+        max-width: 58rem;
+        border: 1px solid var(--ink);
+        background: #f7f5ed;
+        padding: 0.85rem 1rem;
+      }
+
+      .sources-panel {
+        display: grid;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        gap: 1.2rem;
+      }
+
+      .rules-board {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .rules-board h3,
+      .source-board h3 {
+        margin: 0;
+        border-bottom: 1px solid var(--ink);
+        background: #f1f1ee;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+      }
+
+      .source-update-date {
+        margin: 0;
+        border-bottom: 1px solid var(--ink);
+        background: #f7f5ed;
+        padding: 0.7rem 1rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .score-ladder {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        padding: 1rem;
+        gap: 0.45rem;
+      }
+
+      .score-ladder span {
+        display: grid;
+        min-height: 4.9rem;
+        place-items: center;
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        font-size: 0.82rem;
+        font-weight: 900;
+        line-height: 1.25;
+        text-align: center;
+      }
+
+      .rule-list {
+        display: grid;
+        gap: 0;
+        border-top: 1px solid var(--ink);
+      }
+
+      .rule-list div {
+        display: grid;
+        grid-template-columns: 8.2rem 1fr;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .rule-list div:last-child {
+        border-bottom: 0;
+      }
+
+      .rule-list span,
+      .rule-list strong {
+        padding: 0.75rem 0.9rem;
+        line-height: 1.5;
+      }
+
+      .rule-list span {
+        border-right: 1px solid var(--ink);
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .rule-list strong {
+        font-size: 0.9rem;
+      }
+
+      .source-board {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .source-row {
+        display: grid;
+        grid-template-columns: 5.8rem minmax(0, 1fr);
+        gap: 0.8rem;
+        border-bottom: 1px solid var(--ink);
+        padding: 0.82rem 1rem;
+      }
+
+      .source-row:last-child {
+        border-bottom: 0;
+      }
+
+      .source-badge {
+        display: inline-flex;
+        width: fit-content;
+        height: 1.65rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0 0.62rem;
+        font-size: 0.72rem;
+        font-weight: 900;
+      }
+
+      .source-badge.official { background: var(--green); }
+      .source-badge.school { background: var(--lavender); }
+      .source-badge.reference { background: var(--peach); }
+
+      .source-row a {
+        font-weight: 900;
+        text-decoration: underline;
+        text-underline-offset: 0.18rem;
+      }
+
+      .source-row p {
+        margin: 0.28rem 0 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.55;
+      }
+
+      .roadmap-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .roadmap-card {
+        min-height: 13.5rem;
+        border-right: 1px solid var(--ink);
+        padding: 1rem;
+      }
+
+      .roadmap-card:last-child {
+        border-right: 0;
+      }
+
+      .roadmap-card strong {
+        display: inline-flex;
+        border: 1px solid var(--ink);
+        background: var(--yellow);
+        padding: 0.4rem 0.6rem;
+        font-size: 0.84rem;
+      }
+
+      .roadmap-card h3 {
+        margin: 0.9rem 0 0;
+        font-size: 1.45rem;
+        line-height: 1.05;
+      }
+
+      .roadmap-card p,
+      .match-note,
+      .resource-note {
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.65;
+      }
+
+      .roadmap-card ul {
+        margin: 0.85rem 0 0;
+        padding-left: 1.1rem;
+        font-size: 0.86rem;
+        font-weight: 800;
+        line-height: 1.6;
+      }
+
+      .application-match {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.52fr);
+        gap: 1.2rem;
+      }
+
+      .match-table,
+      .resource-chooser {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+      }
+
+      .match-row {
+        display: grid;
+        grid-template-columns: 5rem minmax(0, 1fr) 9rem 10rem;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .match-row:last-child {
+        border-bottom: 0;
+      }
+
+      .match-row.head {
+        background: #f1f1ee;
+        font-size: 0.8rem;
+        font-weight: 900;
+      }
+
+      .match-row span {
+        border-right: 1px solid var(--ink);
+        padding: 0.8rem 0.9rem;
+        font-size: 0.86rem;
+        line-height: 1.5;
+      }
+
+      .match-row span:last-child {
+        border-right: 0;
+      }
+
+      .match-row strong {
+        font-size: 1rem;
+      }
+
+      .focus-board {
+        border: 1px solid var(--ink);
+        background: #fff4c7;
+        padding: 1rem;
+      }
+
+      .focus-board h3 {
+        margin: 0;
+        font-size: 1.3rem;
+      }
+
+      .focus-board p {
+        margin: 0.8rem 0 0;
+        line-height: 1.65;
+      }
+
+      .resource-chooser {
+        display: grid;
+        grid-template-columns: 0.55fr 1fr;
+      }
+
+      .resource-intro {
+        border-right: 1px solid var(--ink);
+        padding: 1rem;
+      }
+
+      .resource-intro h3 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .resource-picks {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .resource-pick {
+        min-height: 11.5rem;
+        border-right: 1px solid var(--ink);
+        padding: 1rem;
+      }
+
+      .resource-pick:last-child {
+        border-right: 0;
+      }
+
+      .resource-pick h4 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .resource-pick p {
+        margin: 0.65rem 0 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.55;
+      }
+
+      .resource-pill {
+        display: inline-flex;
+        margin-top: 0.9rem;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--mint);
+        padding: 0.38rem 0.62rem;
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .legacy-topik-appendix {
+        margin-top: 3rem;
+        border-top: 2px solid var(--ink);
+        padding-top: 1.4rem;
+      }
+
+      .legacy-appendix-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 1rem;
+        align-items: end;
+        margin-bottom: 1.25rem;
+      }
+
+      .legacy-appendix-head h2 {
+        margin: 0.35rem 0 0;
+        font-size: clamp(1.9rem, 3vw, 2.8rem);
+        line-height: 1;
+      }
+
+      .legacy-appendix-head p {
+        max-width: 42rem;
+        margin: 0.65rem 0 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .legacy-original {
+        display: block;
+      }
+
       @media (max-width: 980px) {
         .page-guide {
           left: 1rem;
@@ -1113,6 +1960,105 @@
         .hero, .split, .time-row { grid-template-columns: 1fr; }
         .resource-section-head { grid-template-columns: 1fr; }
         .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .decision-hero,
+        .topik-planner,
+        .sources-panel,
+        .hours-model-board,
+        .application-match,
+        .resource-chooser {
+          grid-template-columns: 1fr;
+        }
+        .hour-table {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          border-right: 0;
+          border-bottom: 1px solid var(--ink);
+        }
+        .hour-row:nth-child(3n) {
+          border-right: 1px solid var(--ink);
+        }
+        .hour-row:nth-child(2n) {
+          border-right: 0;
+        }
+        .hour-row:nth-last-child(-n + 3) {
+          border-bottom: 1px solid var(--ink);
+        }
+        .hour-row:nth-last-child(-n + 2) {
+          border-bottom: 0;
+        }
+        .planner-form {
+          border: 0;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-auto-rows: auto;
+        }
+        .planner-field {
+          display: grid;
+          grid-template-columns: 1fr;
+          align-content: start;
+          align-items: stretch;
+          gap: 0.3rem;
+          min-height: 0;
+          border-bottom: 0;
+          padding: 0;
+        }
+        .planner-field:nth-of-type(1),
+        .planner-field:nth-of-type(2),
+        .planner-field:nth-of-type(3),
+        .planner-field:nth-of-type(4) {
+          grid-column: auto;
+          grid-row: auto;
+        }
+        .field-copy {
+          display: block;
+          min-height: 0;
+          border: 0;
+          background: transparent;
+          padding: 0;
+        }
+        .planner-field select {
+          height: auto;
+          min-height: 2.55rem;
+          border: 1px solid var(--ink);
+          background: var(--paper);
+          padding: 0.55rem 0.65rem;
+        }
+        .planner-field:nth-of-type(2n) select {
+          border-right: 1px solid var(--ink);
+        }
+        .planner-control-row {
+          grid-column: 1 / -1;
+          grid-row: auto;
+          justify-content: stretch;
+          padding-top: 0;
+        }
+        .planner-run-button {
+          width: 100%;
+        }
+        .planner-output {
+          grid-template-columns: 1fr;
+        }
+        .planner-result-main,
+        .adjustment-card {
+          border-right: 0;
+        }
+        .decision-strip,
+        .roadmap-grid,
+        .resource-picks {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .decision-strip article,
+        .roadmap-card,
+        .resource-pick {
+          border-bottom: 1px solid var(--ink);
+        }
+        .decision-strip article:nth-child(2n),
+        .roadmap-card:nth-child(2n),
+        .resource-pick:nth-child(2n) {
+          border-right: 0;
+        }
+        .resource-intro {
+          border-right: 0;
+          border-bottom: 1px solid var(--ink);
+        }
         .prep-scale-card {
           grid-column: 1 / -1;
           border-top: 1px solid var(--ink);
@@ -1123,6 +2069,34 @@
       }
 
       @media (max-width: 640px) {
+        .header {
+          padding: 0.75rem 1rem;
+        }
+        .header-inner {
+          min-height: 0;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 0.65rem 0.8rem;
+        }
+        .logo {
+          width: 4.4rem;
+          height: 3.5rem;
+        }
+        .header-title {
+          min-width: 0;
+          padding-left: 0;
+          font-size: 1rem;
+          line-height: 1.12;
+          white-space: normal;
+        }
+        .nav {
+          grid-column: 1 / -1;
+          max-width: none;
+          justify-content: flex-start;
+        }
+        .pill {
+          padding: 0.42rem 0.62rem;
+          font-size: 0.82rem;
+        }
         .page-guide {
           position: sticky;
           top: 8.75rem;
@@ -1141,6 +2115,79 @@
         .page-guide a {
           flex: 0 0 auto;
           white-space: nowrap;
+        }
+        .decision-section-head {
+          display: grid;
+          grid-template-columns: 1fr;
+          align-items: start;
+          gap: 0.8rem;
+        }
+        .decision-section-head h2 {
+          font-size: 2.35rem;
+        }
+        .decision-section-head p {
+          max-width: none;
+        }
+        .decision-hero h1 {
+          font-size: 2.45rem;
+        }
+        .decision-strip,
+        .planner-form,
+        .planner-result-grid,
+        .planner-explain-grid,
+        .score-ladder,
+        .hour-table,
+        .roadmap-grid,
+        .resource-picks {
+          grid-template-columns: 1fr;
+        }
+        .snapshot-row,
+        .rule-list div,
+        .source-row,
+        .match-row,
+        .legacy-appendix-head {
+          grid-template-columns: 1fr;
+        }
+        .snapshot-row span,
+        .rule-list span,
+        .match-row span {
+          border-right: 0;
+          border-bottom: 1px solid var(--ink);
+        }
+        .decision-strip article,
+        .roadmap-card,
+        .resource-pick,
+        .hour-row,
+        .planner-result-grid div,
+        .planner-basis {
+          border-right: 0;
+          border-bottom: 1px solid var(--ink);
+        }
+        .hour-row:nth-child(2n),
+        .hour-row:nth-child(3n) {
+          border-right: 0;
+        }
+        .hour-row:nth-last-child(-n + 2) {
+          border-bottom: 1px solid var(--ink);
+        }
+        .hour-row:last-child {
+          border-bottom: 0;
+        }
+        .decision-strip article:last-child,
+        .roadmap-card:last-child,
+        .resource-pick:last-child,
+        .planner-result-grid div:last-child {
+          border-bottom: 0;
+        }
+        .student-row,
+        .student-row p {
+          grid-template-columns: 1fr;
+          grid-column: auto;
+        }
+        .planner-field {
+          grid-template-columns: 1fr;
+          grid-column: auto;
+          border-right: 0;
         }
         .topik-anchor {
           scroll-margin-top: 17rem;
@@ -1345,7 +2392,7 @@
         .back-to-top-button {
           right: 0.75rem;
           bottom: calc(0.75rem + env(safe-area-inset-bottom));
-          width: 4.08rem;
+          width: 3.35rem;
         }
       }
 
@@ -1646,9 +2693,69 @@
         }
       }
 
+      @media (max-width: 640px) {
+        .header {
+          height: auto !important;
+          min-height: 0 !important;
+          padding: 0.75rem 1rem 0.85rem !important;
+        }
+        .header .header-inner {
+          position: relative !important;
+          display: grid !important;
+          height: auto !important;
+          min-height: 0 !important;
+          grid-template-columns: 4.4rem minmax(0, 1fr) !important;
+          gap: 0.65rem 0.8rem !important;
+        }
+        .header .logo,
+        .header img.logo {
+          position: static !important;
+          width: 4.4rem !important;
+          height: 3.5rem !important;
+        }
+        .header .header-title {
+          position: static !important;
+          width: auto !important;
+          transform: none !important;
+          overflow: visible !important;
+          font-size: 1rem !important;
+          line-height: 1.12 !important;
+          white-space: normal !important;
+        }
+        .header .nav,
+        .header .top-nav {
+          position: static !important;
+          grid-column: 1 / -1 !important;
+          display: grid !important;
+          width: 100% !important;
+          height: auto !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 0.45rem !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: visible !important;
+        }
+        .header .nav > .pill,
+        .header .top-nav > .nav-pill,
+        .header .nav > .pill:nth-child(1),
+        .header .nav > .pill:nth-child(2),
+        .header .nav > .pill:nth-child(3),
+        .header .nav > .pill:nth-child(4),
+        .header .nav > .pill:nth-child(5) {
+          width: auto !important;
+          min-width: 0 !important;
+          height: auto !important;
+          min-height: 2.35rem !important;
+          padding: 0.45rem 0.5rem !important;
+          font-size: 0.82rem !important;
+          line-height: 1.15 !important;
+          text-align: center !important;
+          white-space: normal !important;
+        }
+      }
+
     </style>
     <link rel="stylesheet" href="./header-unified.css" />
-
   </head>
   <body>
     <header class="header">
@@ -1668,14 +2775,270 @@
       </div>
     </header>
     <nav class="page-guide" aria-label="TOPIK页面导航">
-      <a href="#prep-time">备考时间对比</a>
-      <a href="#exam-map">考试系统地图</a>
-      <a href="#score-levels">分数怎么变成等级</a>
-      <a href="#undergrad-plan">本科申请TOPIK规划</a>
-      <a href="#resources">网课与教材资源</a>
-      <a href="#test-sites">中国地区考点速查</a>
+      <a href="#planner">目标倒推</a>
+      <a href="#official-data">官方数据</a>
+      <a href="#roadmap">备考路线</a>
+      <a href="#application-match">申请匹配</a>
+      <a href="#resource-chooser">资料选择</a>
+      <a href="#legacy-topik-appendix">原资料区</a>
     </nav>
     <main class="wrap">
+      <section class="decision-section topik-anchor" id="planner">
+        <section class="topik-planner" aria-label="TOPIK目标倒推工具">
+          <div class="planner-panel-title">AI TOPIK 规划</div>
+          <form class="planner-form">
+            <div class="planner-field">
+              <div class="field-copy">
+                <label for="topik-current">现在水平</label>
+                <p class="field-help">算你从现在到目标等级还缺多少学习量。</p>
+              </div>
+              <select id="topik-current" data-topik-field="current">
+                <option value="0" selected>0基础 / 刚学发音</option>
+                <option value="1">TOPIK 1 附近</option>
+                <option value="2">TOPIK 2 附近</option>
+                <option value="3">TOPIK 3 附近</option>
+                <option value="4">TOPIK 4 附近</option>
+                <option value="5">TOPIK 5 附近</option>
+              </select>
+            </div>
+            <div class="planner-field">
+              <div class="field-copy">
+                <label for="topik-tier">目标学校</label>
+                <p class="field-help">学校档位会决定建议的安全等级，不只是最低门槛。</p>
+              </div>
+              <select id="topik-tier" data-topik-field="tier">
+                <option value="t1" selected>T1 SKY/成均馆/汉阳/KAIST</option>
+                <option value="t2">T2 庆熙/中央/梨花/西江/釜山等</option>
+                <option value="t3">T3 外大/东国/建国/国民等</option>
+                <option value="t4">T4 中坚私立/特色院校</option>
+                <option value="t5">T5 保底/语学院过渡</option>
+              </select>
+            </div>
+            <div class="planner-field">
+              <div class="field-copy">
+                <label for="topik-season">入学季</label>
+                <p class="field-help">这里按材料截止前需要拿到成绩来保守估算。</p>
+              </div>
+              <select id="topik-season" data-topik-field="season">
+                <option value="3">2026年9月入学（约3个月准备窗）</option>
+                <option value="9" selected>2027年3月入学（约9个月准备窗）</option>
+                <option value="15">2027年9月入学（约15个月准备窗）</option>
+                <option value="21">2028年3月入学（约21个月准备窗）</option>
+              </select>
+            </div>
+            <div class="planner-field">
+              <div class="field-copy">
+                <label for="topik-hours">每周时间</label>
+                <p class="field-help">用高中生可持续的每周投入，和目标所需时间做对比。</p>
+              </div>
+              <select id="topik-hours" data-topik-field="hours">
+                <option value="6">高中保守：每周6小时</option>
+                <option value="9" selected>高中日常：每周9小时</option>
+                <option value="14">高中积极：每周14小时</option>
+                <option value="20">假期集中：每周20小时</option>
+                <option value="28">全力冲刺：每周28小时</option>
+              </select>
+            </div>
+            <div class="planner-control-row">
+              <button class="planner-run-button" type="button" data-planner-run>生成推荐</button>
+            </div>
+          </form>
+          <aside class="planner-output" aria-live="polite" hidden>
+            <div class="planner-result-main">
+              <span>现实性判断</span>
+              <strong data-planner-target>建议调整到T3/T4</strong>
+              <p class="planner-meaning"><b>判断：</b><span data-planner-meaning>0基础、T1、9个月、每周9小时：更接近TOPIK3，T1安全线偏高。</span></p>
+              <div class="planner-status-line" aria-label="学习量对比">
+                <span>目标需要 <b data-target-hours>约900小时</b></span>
+                <span>可用时间 <b data-available-hours>约351小时</b></span>
+                <span>缺口 <b data-hour-gap>约549小时</b></span>
+              </div>
+            </div>
+            <div class="planner-explain-grid">
+              <div class="planner-basis">
+                <b>根据什么算</b>
+                <p data-planner-basis>TOPIK5约900小时；当前可用约351小时，缺口约549小时。</p>
+              </div>
+              <div class="planner-actions">
+                <b>接下来做什么</b>
+                <ol>
+                  <li data-planner-action-1>坚持T1：每周约24小时，或延期。</li>
+                  <li data-planner-action-2>不延期：T3/T4主申，T2冲刺。</li>
+                  <li data-planner-action-3>先排TOPIK II写作和报名时间。</li>
+                </ol>
+              </div>
+            </div>
+            <div class="adjustment-card">
+              <span>建议调整</span>
+              <p data-adjustment-copy>当前组合不适合T1主申。建议T3/T4主申，T2冲刺；T1留给延期或加时方案。</p>
+            </div>
+            <div class="planner-result-grid">
+              <div><span>原目标安全线</span><strong data-planner-exam>TOPIK 5</strong></div>
+              <div><span>每周需要</span><strong data-planner-risk data-required-weekly>约24小时/周</strong></div>
+              <div><span>现实可达</span><strong data-planner-next data-realistic-tier>TOPIK 3 / T3-T4</strong></div>
+            </div>
+          </aside>
+        </section>
+      </section>
+
+      <section class="decision-section study-hours-model topik-anchor" id="study-hours">
+        <div class="decision-section-head">
+          <div>
+            <p class="section-kicker">02 / HOURS</p>
+            <h2>把“几级”换成小时数</h2>
+          </div>
+          <p>TOPIK没有官方统一学习小时表，所以这里用CEFR公开学习量作为底座，再按TOPIK II写作和应试训练做保守换算。它的作用不是预测分数，而是判断目标是否压得过紧。</p>
+        </div>
+        <div class="hours-model-board">
+          <div class="hour-table" aria-label="从0基础到TOPIK各级的规划学习量">
+            <div class="hour-row"><span>zero to level 1</span><strong>TOPIK1约100小时</strong><p>发音、基础句型、日常词汇，能进入TOPIK I真题。</p></div>
+            <div class="hour-row"><span>zero to level 2</span><strong>TOPIK2约200小时</strong><p>初级语法基本闭环，听读能稳定通过TOPIK I。</p></div>
+            <div class="hour-row"><span>zero to level 3</span><strong>TOPIK3约350小时</strong><p>进入TOPIK II，阅读速度和中级语法开始成为瓶颈。</p></div>
+            <div class="hour-row"><span>zero to level 4</span><strong>TOPIK4约600小时</strong><p>多数本科申请的常见安全线，需要系统真题和写作训练。</p></div>
+            <div class="hour-row"><span>zero to level 5</span><strong>TOPIK5约900小时</strong><p>T1/T2热门专业更稳的竞争线，写作54题需要长期批改。</p></div>
+            <div class="hour-row"><span>zero to level 6</span><strong>TOPIK6约1200小时</strong><p>奖学金、热门专业和高竞争材料的加分项，不宜短期硬冲。</p></div>
+          </div>
+          <div class="student-time-table" aria-label="高中生TOPIK每周投入假设">
+            <div class="student-row"><span>高中保守</span><strong>每周6小时</strong><p>每天0.5-0.8小时，适合校内任务重、只能保持不断线的学生。</p></div>
+            <div class="student-row"><span>高中日常</span><strong>每周9小时</strong><p>每天0.8-1.3小时，比较适合作为长期可持续的默认估算。</p></div>
+            <div class="student-row"><span>高中积极</span><strong>每周14小时</strong><p>平日每天约1.5小时，周末集中补写作和真题。</p></div>
+            <div class="student-row"><span>假期集中</span><strong>每周20小时</strong><p>需要假期或较强自律，适合考前2-4个月强化。</p></div>
+            <div class="student-row"><span>全力冲刺</span><strong>每周28小时</strong><p>接近专项备考，不适合长期和高强度高中课业并行。</p></div>
+          </div>
+        </div>
+        <p class="model-caveat">高中生时间为规划假设：它参考了公开语言学习小时资料和中学生课业负担背景，但个人学校作息、基础、记忆效率、是否有老师批改写作都会改变结果。页面只把“不现实的目标”提前暴露出来。</p>
+      </section>
+
+      <section class="decision-section sources-panel topik-anchor" id="official-data">
+        <div class="rules-board">
+          <h3>考试规则压缩版</h3>
+          <div class="score-ladder" aria-label="TOPIK等级分数线">
+            <span>TOPIK I<br>1级 80+</span>
+            <span>TOPIK I<br>2级 140+</span>
+            <span>TOPIK II<br>3级 120+</span>
+            <span>TOPIK II<br>4级 150+</span>
+            <span>TOPIK II<br>5级 190+</span>
+            <span>TOPIK II<br>6级 230+</span>
+          </div>
+          <div class="rule-list">
+            <div><span>分数线</span><strong>80 / 140 / 120 / 150 / 190 / 230，按总分判级。</strong></div>
+            <div><span>考试结构</span><strong>TOPIK I为听力+阅读；TOPIK II为听力+写作+阅读，写作单独拉开差距。</strong></div>
+            <div><span>出分使用</span><strong>成绩通常在官方页面查询和打印，学校材料提交日期要单独核对。</strong></div>
+            <div><span>中国考点</span><strong>报名、考点、准考证、考生须知以 NEEA 报名页为准。</strong></div>
+          </div>
+        </div>
+        <div class="source-board">
+          <h3>来源和可信度</h3>
+          <p class="source-update-date">数据校对：2026-06-10</p>
+          <div class="source-row">
+            <span class="source-badge official">官方</span>
+            <div><a href="https://register.topik.go.kr/tmpNotice.do" target="_blank" rel="noreferrer">TOPIK 官方通知</a><p>用于确认年度实施公告、系统通知、成绩和证书相关说明。</p></div>
+          </div>
+          <div class="source-row">
+            <span class="source-badge official">官方</span>
+            <div><a href="https://topik.neea.cn/" target="_blank" rel="noreferrer">NEEA 中国大陆报名页</a><p>用于确认大陆报名入口、报名步骤、考点信息、考生须知和当次通知。</p></div>
+          </div>
+          <div class="source-row">
+            <span class="source-badge official">官方</span>
+            <div><a href="https://www.topik-hk.org/eng/detail.asp" target="_blank" rel="noreferrer">TOPIK Hong Kong 考试说明</a><p>公开列出等级分数线、考试时间结构和 TOPIK II 写作评价要求。</p></div>
+          </div>
+          <div class="source-row">
+            <span class="source-badge official">官方</span>
+            <div><a href="https://www.iksi.or.kr/lms/main/about.do" target="_blank" rel="noreferrer">Online King Sejong Institute</a><p>官方免费在线韩语学习服务，适合作为0基础和初中级主线资源。</p></div>
+          </div>
+          <div class="source-row">
+            <span class="source-badge official">官方</span>
+            <div><a href="https://www.iksi.or.kr/lms/main/curriculum.do" target="_blank" rel="noreferrer">世宗学堂在线课程体系</a><p>课程覆盖入门、初级、中级和特殊目的韩语，可用于补基础。</p></div>
+          </div>
+          <div class="source-row">
+            <span class="source-badge official">官方</span>
+            <div><a href="https://www.iksi.or.kr/lms/main/lectureType.do" target="_blank" rel="noreferrer">世宗学堂在线授课类型</a><p>公开说明入门课程常见5周、初级到高级课程常见10周，可作为学习节奏参考。</p></div>
+          </div>
+          <div class="source-row">
+            <span class="source-badge reference">参考</span>
+            <div><a href="https://support.cambridgeenglish.org/hc/en-gb/articles/202838506-Guided-learning-hours" target="_blank" rel="noreferrer">Cambridge English 学习小时说明</a><p>用于建立“语言等级提升需要大量引导学习小时”的底层假设，TOPIK小时表为本页保守换算。</p></div>
+          </div>
+          <div class="source-row">
+            <span class="source-badge reference">参考</span>
+            <div><a href="https://www.chinadaily.com.cn/china/2015-11/26/content_22520832.htm" target="_blank" rel="noreferrer">中国学生课业时间背景</a><p>用于提醒高中生课后可支配时间有限，本页每日投入是规划假设，不是每个人的真实日程。</p></div>
+          </div>
+          <div class="source-row">
+            <span class="source-badge school">学校</span>
+            <div><a href="./universities.html">目标大学库</a><p>录取语言要求会因学校、专业、年份改变，最终以各校招生简章为准。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="decision-section topik-anchor" id="roadmap">
+        <div class="decision-section-head">
+          <div>
+            <p class="section-kicker">02 / ROADMAP</p>
+            <h2>按目标级别拆成四条路线</h2>
+          </div>
+          <p>不再把所有资料堆在一起。每条路线只保留当前阶段最该做的动作。</p>
+        </div>
+        <div class="roadmap-grid">
+          <article class="roadmap-card"><strong>0到3级</strong><h3>先能稳定读懂题</h3><p>适合零基础、语学院过渡和T5保底。</p><ul><li>发音和基础语法完整过一遍</li><li>1500-3000词先求熟</li><li>听读短题每天限时</li></ul></article>
+          <article class="roadmap-card"><strong>3到4级</strong><h3>本科申请最低线</h3><p>适合T2/T3/T4大多数普通专业的起步目标。</p><ul><li>进入 TOPIK II 真题</li><li>阅读速度和错题归类</li><li>写作51/52题先稳分</li></ul></article>
+          <article class="roadmap-card"><strong>4到5级</strong><h3>让申请更有余量</h3><p>适合热门专业、奖学金和T2以上学校。</p><ul><li>听力长题和阅读长文提速</li><li>写作53题图表表达</li><li>每两周一套完整模考</li></ul></article>
+          <article class="roadmap-card"><strong>5到6级</strong><h3>冲刺高竞争力</h3><p>适合T1、奖学金、传媒经营等竞争专业。</p><ul><li>54题长文结构训练</li><li>抽象主题词汇积累</li><li>按官方评分维度复盘</li></ul></article>
+        </div>
+      </section>
+
+      <section class="decision-section application-match topik-anchor" id="application-match">
+        <div>
+          <div class="decision-section-head">
+            <div>
+              <p class="section-kicker">03 / ADMISSION MATCH</p>
+              <h2>把学校层级转成TOPIK目标</h2>
+            </div>
+          </div>
+          <div class="match-table">
+            <div class="match-row head"><span>层级</span><span>代表目标</span><span>最低线</span><span>更稳目标</span></div>
+            <div class="match-row"><span><strong>T1</strong></span><span>首尔、延世、高丽、成均馆、汉阳、KAIST等</span><span>TOPIK 5</span><span>TOPIK 6</span></div>
+            <div class="match-row"><span><strong>T2</strong></span><span>庆熙、中央、梨花、西江、釜山等</span><span>TOPIK 4</span><span>TOPIK 5</span></div>
+            <div class="match-row"><span><strong>T3</strong></span><span>外大、东国、建国、弘益、国民、崇实、市立、仁荷、忠南等</span><span>TOPIK 3</span><span>TOPIK 4</span></div>
+            <div class="match-row"><span><strong>T4</strong></span><span>中坚私立、专业特色院校</span><span>TOPIK 3</span><span>TOPIK 4</span></div>
+            <div class="match-row"><span><strong>T5</strong></span><span>保底友好院校、语学院过渡路线</span><span>TOPIK 2</span><span>TOPIK 3</span></div>
+          </div>
+        </div>
+        <aside class="focus-board">
+          <h3>该删掉的焦虑</h3>
+          <p>资料不是越多越安全。TOPIK页面最该帮用户做的，是把“我该考几级、什么时候报名、写作要不要补课”变成可以执行的判断。</p>
+          <p class="match-note">这里的层级是规划用，不是录取承诺。最终语言线要回到学校、专业和当年招生简章。</p>
+        </aside>
+      </section>
+
+      <section class="decision-section topik-anchor" id="resource-chooser">
+        <div class="decision-section-head">
+          <div>
+            <p class="section-kicker">04 / RESOURCE CHOICE</p>
+            <h2>资料只保留三类，避免堆成清单</h2>
+          </div>
+        </div>
+        <div class="resource-chooser">
+          <div class="resource-intro">
+            <h3>选择顺序</h3>
+            <p class="resource-note">先主线学习，再真题限时，最后补写作反馈。付费课只在时间短、写作弱、缺少反馈时才值得优先考虑。</p>
+          </div>
+          <div class="resource-picks">
+            <article class="resource-pick"><h4>官方/免费主线</h4><p>世宗学堂、公开课、系统教材。负责从0到3/4级的基础稳定。</p><a class="resource-pill" href="https://www.iksi.or.kr/lms/main/about.do" target="_blank" rel="noreferrer">看官方课程</a></article>
+            <article class="resource-pick"><h4>真题和模考</h4><p>从目标考试前3个月开始，按完整考试时间做题，比碎片刷题更有效。</p><a class="resource-pill" href="#legacy-topik-appendix">看原资料表</a></article>
+            <article class="resource-pick"><h4>写作反馈</h4><p>TOPIK II 4级以上，写作是最大分水岭。需要批改、模板纠偏和限时练习。</p><a class="resource-pill" href="#score-levels">看写作规则</a></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="legacy-topik-appendix topik-anchor" id="legacy-topik-appendix" aria-labelledby="legacy-topik-heading">
+        <div class="legacy-appendix-head">
+          <div>
+            <p class="section-kicker">APPENDIX / ORIGINAL PAGE</p>
+            <h2 id="legacy-topik-heading">原页面资料存档</h2>
+            <p>下面保留原来的备考时间、考试系统、等级分数、网课教材和中国考点资料。内容和原有表格/卡片样式继续保留，作为详细查阅区。</p>
+          </div>
+          <a class="pill yellow" href="#planner">回到规划工具</a>
+        </div>
+        <div class="legacy-original">
       <h2 class="summary-title topik-anchor" id="prep-time">备考时间对比</h2>
       <section class="summary">
         <article class="metric"><span class="pill yellow">中国考次</span><div class="metric-line"><strong>2次/年</strong><span class="metric-note">(每年4月、10月)</span></div></article>
@@ -1761,11 +3124,11 @@
               <div class="level-head-note">重点提醒</div>
             </div>
             <div class="level-row">
-              <div class="level-title"><span class="level-tier">T1</span> 首尔、延世、高丽、KAIST</div>
+              <div class="level-title"><span class="level-tier">T1</span> 首尔、延世、高丽、成均馆、汉阳、KAIST</div>
               <div class="level-cells"><div class="level-cell"><div class="level-box ">2</div></div><div class="level-cell"><div class="level-box ">3</div></div><div class="level-cell"><div class="level-box ">4</div></div><div class="level-cell"><div class="level-box level-red">TOPIK5</div></div><div class="level-cell"><div class="level-box level-red">TOPIK6</div></div></div>
               <div class="level-note">热门专业尽量6</div>
             </div><div class="level-row">
-              <div class="level-title"><span class="level-tier">T2</span> 成均馆、汉阳、庆熙、中央、梨花、西江、世宗、釜山、庆北、亚洲等</div>
+              <div class="level-title"><span class="level-tier">T2</span> 庆熙、中央、梨花、西江、世宗、釜山、庆北、亚洲等</div>
               <div class="level-cells"><div class="level-cell"><div class="level-box ">2</div></div><div class="level-cell"><div class="level-box ">3</div></div><div class="level-cell"><div class="level-box level-peach">TOPIK4</div></div><div class="level-cell"><div class="level-box level-peach">TOPIK5</div></div><div class="level-cell"><div class="level-box ">6</div></div></div>
               <div class="level-note">热门专业建议5</div>
             </div><div class="level-row">
@@ -1951,6 +3314,8 @@
   </table></div>
       </section>
 
+        </div>
+      </section>
     </main>
     <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Back to top">
       <img src="./public/up.gif" alt="" aria-hidden="true" />
@@ -1967,6 +3332,180 @@
           segment.setAttribute('aria-expanded', String(isExpanded));
         });
       });
+
+      const planner = document.querySelector('.topik-planner');
+      if (planner) {
+        const form = planner.querySelector('.planner-form');
+        const runButton = planner.querySelector('[data-planner-run]');
+        const outputNode = planner.querySelector('.planner-output');
+        const fields = {
+          current: planner.querySelector('[data-topik-field="current"]'),
+          tier: planner.querySelector('[data-topik-field="tier"]'),
+          season: planner.querySelector('[data-topik-field="season"]'),
+          hours: planner.querySelector('[data-topik-field="hours"]')
+        };
+        const targetNode = planner.querySelector('[data-planner-target]');
+        const meaningNode = planner.querySelector('[data-planner-meaning]');
+        const basisNode = planner.querySelector('[data-planner-basis]');
+        const actionOneNode = planner.querySelector('[data-planner-action-1]');
+        const actionTwoNode = planner.querySelector('[data-planner-action-2]');
+        const actionThreeNode = planner.querySelector('[data-planner-action-3]');
+        const examNode = planner.querySelector('[data-planner-exam]');
+        const riskNode = planner.querySelector('[data-planner-risk]');
+        const nextNode = planner.querySelector('[data-planner-next]');
+        const targetHoursNode = planner.querySelector('[data-target-hours]');
+        const availableHoursNode = planner.querySelector('[data-available-hours]');
+        const hourGapNode = planner.querySelector('[data-hour-gap]');
+        const adjustmentNode = planner.querySelector('[data-adjustment-copy]');
+
+        const tierMap = {
+          t1: { target: 5, stretch: 6, label: 'T1', name: 'SKY/成均馆/汉阳/KAIST', safe: 'T1主申通常要把TOPIK5当安全线，热门专业再看TOPIK6。' },
+          t2: { target: 4, stretch: 5, label: 'T2', name: '庆熙/中央/梨花/西江/釜山等', safe: 'T2建议先保TOPIK4，热门专业或奖学金再冲TOPIK5。' },
+          t3: { target: 3, stretch: 4, label: 'T3', name: '外大/东国/建国/国民等', safe: 'T3可先把TOPIK3当起点，TOPIK4会明显更稳。' },
+          t4: { target: 3, stretch: 4, label: 'T4', name: '中坚私立/特色院校', safe: 'T4先保TOPIK3，再按专业要求决定是否冲TOPIK4。' },
+          t5: { target: 2, stretch: 3, label: 'T5', name: '保底/语学院过渡', safe: 'T5可同时准备语学院或校内语言课程过渡。' }
+        };
+        const levelHours = { 0: 0, 1: 100, 2: 200, 3: 350, 4: 600, 5: 900, 6: 1200 };
+        const timeProfiles = {
+          6: { label: '高中保守', daily: '每天0.5-0.8小时' },
+          9: { label: '高中日常', daily: '每天0.8-1.3小时' },
+          14: { label: '高中积极', daily: '每天约1.5小时' },
+          20: { label: '假期集中', daily: '每天约3小时' },
+          28: { label: '全力冲刺', daily: '每天约4小时' }
+        };
+        const realisticByLevel = (level) => {
+          if (level >= 5) {
+            return {
+              label: 'T1目标可保留',
+              tier: 'TOPIK 5+ / T1可保留',
+              copy: '时间量够T1安全线；写作54题和专业热度另算。'
+            };
+          }
+          if (level >= 4) {
+            return {
+              label: 'T2/T3更稳',
+              tier: 'TOPIK 4 / T2-T3',
+              copy: '更适合T2/T3主申；T1做冲刺或延期方案。'
+            };
+          }
+          if (level >= 3) {
+            return {
+              label: '建议调整到T3/T4',
+              tier: 'TOPIK 3 / T3-T4',
+              copy: '当前不适合T1主申。建议T3/T4主申，T2冲刺。'
+            };
+          }
+          if (level >= 2) {
+            return {
+              label: '先保T5或语学院',
+              tier: 'TOPIK 2 / T5-语学院',
+              copy: '先保TOPIK I，再考虑语学院、校内语言课或延期。'
+            };
+          }
+          return {
+            label: '先延期或打基础',
+            tier: 'TOPIK 1以下 / 先打基础',
+            copy: '先别绑定本科主申档位，优先补发音、语法和听读。'
+          };
+        };
+        const findAchievableLevel = (hours) => {
+          let level = 0;
+          Object.keys(levelHours).forEach((key) => {
+            const nextLevel = Number(key);
+            if (levelHours[nextLevel] <= hours) {
+              level = nextLevel;
+            }
+          });
+          return level;
+        };
+        const formatHours = (hours) => `约${Math.round(hours)}小时`;
+        const formatWeekly = (hours) => {
+          if (!Number.isFinite(hours)) return '无法计算';
+          return `约${Math.ceil(hours)}小时/周`;
+        };
+
+        const renderPlanner = () => {
+          const current = Number(fields.current.value);
+          const tier = tierMap[fields.tier.value];
+          const monthsAvailable = Number(fields.season.value);
+          const weeklyHours = Number(fields.hours.value);
+          const profile = timeProfiles[weeklyHours];
+          const target = Math.max(tier.target, current >= tier.target ? current : tier.target);
+          const currentHours = levelHours[current] || 0;
+          const targetHours = levelHours[target] || 0;
+          const remainingHours = Math.max(0, targetHours - currentHours);
+          const weeksAvailable = Math.max(1, monthsAvailable * 4.33);
+          const availableHours = Math.round(weeklyHours * weeksAvailable);
+          const totalReachableHours = currentHours + availableHours;
+          const gapHours = Math.max(0, targetHours - totalReachableHours);
+          const requiredWeekly = remainingHours / weeksAvailable;
+          const achievableLevel = findAchievableLevel(totalReachableHours);
+          const realistic = realisticByLevel(achievableLevel);
+          const examType = target <= 2 ? 'TOPIK I' : 'TOPIK II';
+          const risk =
+            remainingHours === 0 ? '已达安全线' :
+            requiredWeekly <= weeklyHours ? '可执行' :
+            requiredWeekly <= weeklyHours * 1.35 ? '偏紧' :
+            requiredWeekly <= 22 ? '高风险' :
+            '不现实';
+          const currentLabel = current === 0 ? '0基础' : `TOPIK ${current}附近`;
+          const targetLine = `TOPIK ${target}`;
+          const reachableLine = achievableLevel === 0 ? 'TOPIK 1以下' : `TOPIK ${achievableLevel}`;
+          const requiredLine = formatWeekly(requiredWeekly);
+          const insistAction =
+            remainingHours === 0 ? '先确认成绩有效期和学校认可。' :
+            requiredWeekly > weeklyHours ? `坚持${tier.label}：每周提到${requiredLine}，或延期。` :
+            `保持${profile.label}节奏，提前模考和报名。`;
+          const adjustAction =
+            achievableLevel >= tier.target ? `可保留${tier.label}，TOPIK ${tier.stretch}做冲刺。` :
+            `更现实：${realistic.tier}；原${tier.label}做冲刺。`;
+          const writingAction =
+            target >= 5 ? '每周固定一篇54题并批改。' :
+            target >= 4 ? '先做51-53题写作诊断。' :
+            '先稳TOPIK I听读正确率。';
+
+          targetNode.textContent = realistic.label;
+          examNode.textContent = `${targetLine}（${examType}）`;
+          riskNode.textContent = requiredLine;
+          nextNode.textContent = realistic.tier;
+          targetHoursNode.textContent = formatHours(targetHours);
+          availableHoursNode.textContent = formatHours(availableHours);
+          hourGapNode.textContent = formatHours(gapHours);
+          adjustmentNode.textContent = realistic.copy;
+          meaningNode.textContent =
+            `${profile.label}（${profile.daily}），约${monthsAvailable}个月可用${availableHours}小时；更接近${reachableLine}。`;
+          basisNode.textContent =
+            `${tier.label}安全线${targetLine}约${targetHours}小时；当前${currentLabel}，还差${remainingHours}小时，每周需${requiredLine}。`;
+          actionOneNode.textContent = insistAction;
+          actionTwoNode.textContent = adjustAction;
+          actionThreeNode.textContent = `${writingAction}再核对报名和材料截止。`;
+          if (runButton) {
+            runButton.textContent = '已生成推荐';
+            runButton.dataset.state = 'ready';
+          }
+          if (outputNode) {
+            outputNode.hidden = false;
+          }
+        };
+
+        Object.values(fields).forEach((field) => {
+          field.addEventListener('change', () => {
+            if (runButton) {
+              runButton.textContent = outputNode && !outputNode.hidden ? '更新推荐' : '生成推荐';
+              runButton.dataset.state = 'pending';
+            }
+          });
+        });
+        if (runButton) {
+          runButton.addEventListener('click', renderPlanner);
+        }
+        if (form) {
+          form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            renderPlanner();
+          });
+        }
+      }
     </script>
   </body>
 </html>
