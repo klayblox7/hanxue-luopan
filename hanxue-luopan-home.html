@@ -179,7 +179,7 @@
       .recommender {
         border-top: 0;
         border-bottom: 0;
-        padding: 1.23rem 0 1.4rem;
+        padding: 3.05rem 0 1.4rem;
       }
 
       .recommender-inner {
@@ -260,6 +260,11 @@
         cursor: pointer;
       }
 
+      .recommend-button:disabled {
+        cursor: wait;
+        opacity: 0.72;
+      }
+
       .reset-button {
         display: inline-flex;
         width: fit-content;
@@ -324,6 +329,41 @@
         margin: 0;
         font-size: 1.15rem;
         line-height: 1.2;
+      }
+
+      .recommendation-loading {
+        display: flex;
+        align-items: center;
+        gap: 0.72rem;
+        border: 1px solid rgba(10, 10, 10, 0.42);
+        background: #fffefb;
+        padding: 0.9rem 1rem;
+        font-size: 0.88rem;
+        font-weight: 900;
+        line-height: 1.35;
+      }
+
+      .recommendation-loading-spinner {
+        width: 1.25rem;
+        height: 1.25rem;
+        flex: 0 0 1.25rem;
+        border: 3px solid rgba(10, 10, 10, 0.18);
+        border-top-color: #0a0a0a;
+        border-radius: 999px;
+        animation: recommendation-loading-spin 0.72s linear infinite;
+      }
+
+      .recommendation-loading span:last-child {
+        color: #6a6a6a;
+        font-size: 0.78rem;
+        font-style: italic;
+        font-weight: 500;
+      }
+
+      @keyframes recommendation-loading-spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       .recommendation-card {
@@ -395,9 +435,9 @@
 
       .recommendation-school-arrow {
         display: inline-block;
-        font-size: 70%;
+        font-size: 75%;
         line-height: 1;
-        vertical-align: 0.12em;
+        vertical-align: text-bottom;
       }
 
       .recommendation-rank {
@@ -1798,6 +1838,41 @@
         background: var(--yellow);
       }
 
+      .home-banner-nav {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: 2;
+        display: grid;
+        width: 4.6rem;
+        place-items: center;
+        border: 0;
+        background: transparent;
+        color: rgba(10, 10, 10, 0);
+        cursor: pointer;
+        font-size: 2rem;
+        font-weight: 900;
+        line-height: 1;
+        transition:
+          color 160ms ease,
+          background-color 160ms ease;
+      }
+
+      .home-banner-nav:hover,
+      .home-banner-nav:focus-visible {
+        background: rgba(248, 248, 245, 0.18);
+        color: rgba(10, 10, 10, 0.58);
+        outline: none;
+      }
+
+      .home-banner-nav.prev {
+        left: 0;
+      }
+
+      .home-banner-nav.next {
+        right: 0;
+      }
+
       .image-viewer {
         position: fixed;
         inset: 0;
@@ -1814,12 +1889,8 @@
         position: absolute;
         inset: 0;
         overflow: hidden;
-        cursor: grab;
+        cursor: default;
         touch-action: none;
-      }
-
-      .image-viewer-stage.is-dragging {
-        cursor: grabbing;
       }
 
       .image-viewer-image {
@@ -1833,8 +1904,13 @@
         transform: translate(-50%, -50%) translate(var(--pan-x, 0px), var(--pan-y, 0px)) scale(var(--zoom, 1));
         transform-origin: center center;
         user-select: none;
+        cursor: grab;
         -webkit-user-drag: none;
         will-change: transform;
+      }
+
+      .image-viewer-stage.is-dragging .image-viewer-image {
+        cursor: grabbing;
       }
 
       .image-viewer-close {
@@ -2296,7 +2372,7 @@
                             <div class="recommendation-head">
                               <h3>
                                 <button class="recommendation-school-toggle" type="button" aria-expanded="false" data-school-slug="${safeHtml(school.slug)}">
-                                  ${safeHtml(school.nameCn)}<span class="recommendation-school-arrow">↗</span>
+                                  ${safeHtml(school.nameCn)} <span class="recommendation-school-arrow">↗</span>
                                 </button>
                                 <span class="recommendation-rank">T${item.rank}</span>
                                 <span class="recommendation-meta-inline">${safeHtml(school.city)} / ${safeHtml(school.type)} · <span class="recommendation-confidence">${safeHtml(confidence)}</span></span>
@@ -2818,6 +2894,7 @@
 
                 let expandedRecommendationSlug = null;
                 let expandedSchoolInfoSlug = null;
+                let recommendationLoadingTimer = null;
 
                 function renderRecommendations(results) {
                   return `<h2>AI案例推荐结果</h2>${results
@@ -2826,7 +2903,7 @@
                       <div class="recommendation-body">
                         <div class="recommendation-head">
                           <div>
-                            <h3><button class="recommendation-school-toggle" type="button" data-school-slug="${htmlEscape(school.slug)}" aria-expanded="${expandedRecommendationSlug === school.slug ? "true" : "false"}">${htmlEscape(school.name)}</button><span class="recommendation-rank">${htmlEscape(tierFor(school))}</span><span class="recommendation-meta-inline">${htmlEscape(school.city)} / ${htmlEscape(school.type)} · <span class="recommendation-confidence">${htmlEscape(school.category)}</span></span><button class="school-info-toggle" type="button" data-school-info-slug="${htmlEscape(school.slug)}" aria-expanded="${expandedSchoolInfoSlug === school.slug ? "true" : "false"}">学校信息</button></h3>
+                            <h3><button class="recommendation-school-toggle" type="button" data-school-slug="${htmlEscape(school.slug)}" aria-expanded="${expandedRecommendationSlug === school.slug ? "true" : "false"}">${htmlEscape(school.name)} <span class="recommendation-school-arrow">↗</span></button><span class="recommendation-rank">${htmlEscape(tierFor(school))}</span><span class="recommendation-meta-inline">${htmlEscape(school.city)} / ${htmlEscape(school.type)} · <span class="recommendation-confidence">${htmlEscape(school.category)}</span></span><button class="school-info-toggle" type="button" data-school-info-slug="${htmlEscape(school.slug)}" aria-expanded="${expandedSchoolInfoSlug === school.slug ? "true" : "false"}">学校信息</button></h3>
                           </div>
                         </div>
                         <p><strong>专业方向匹配：</strong>${htmlEscape(school.focus)}</p>
@@ -2846,6 +2923,10 @@
                     .join("")}`;
                 }
 
+                function renderRecommendationLoading() {
+                  return `<div class="recommendation-loading" role="status"><span class="recommendation-loading-spinner" aria-hidden="true"></span><div>AI正在分析公开录取案例<span>正在匹配分数、TOPIK、专业和地区条件，请稍等...</span></div></div>`;
+                }
+
                 function currentApplicant() {
                   return {
                     gpa: Number(value("rec-gpa")),
@@ -2861,12 +2942,21 @@
 
                 function recommendAiCases() {
                   const applicant = currentApplicant();
-                  const results = recommendationResults(applicant);
+                  window.clearTimeout(recommendationLoadingTimer);
                   expandedRecommendationSlug = null;
                   expandedSchoolInfoSlug = null;
                   resultsEl.classList.add("is-visible");
-                  resultsEl.dataset.lastApplicant = JSON.stringify(applicant);
-                  resultsEl.innerHTML = renderRecommendations(results);
+                  resultsEl.setAttribute("aria-busy", "true");
+                  resultsEl.innerHTML = renderRecommendationLoading();
+                  button.disabled = true;
+                  recommendationLoadingTimer = window.setTimeout(() => {
+                    const results = recommendationResults(applicant);
+                    resultsEl.dataset.lastApplicant = JSON.stringify(applicant);
+                    resultsEl.innerHTML = renderRecommendations(results);
+                    resultsEl.removeAttribute("aria-busy");
+                    button.disabled = false;
+                    recommendationLoadingTimer = null;
+                  }, 1500);
                 }
 
                 function rerenderFromStoredApplicant() {
@@ -2875,9 +2965,13 @@
                 }
 
                 function resetAiCases() {
+                  window.clearTimeout(recommendationLoadingTimer);
+                  recommendationLoadingTimer = null;
+                  button.disabled = false;
                   expandedRecommendationSlug = null;
                   expandedSchoolInfoSlug = null;
                   delete resultsEl.dataset.lastApplicant;
+                  resultsEl.removeAttribute("aria-busy");
                   resultsEl.classList.remove("is-visible");
                   resultsEl.innerHTML = "";
                 }
@@ -2959,14 +3053,16 @@
       </section>
 
       <section class="home-banner" aria-label="Korea University Link banner">
-        <button class="home-banner-frame" type="button" data-banner-open aria-label="Open banner image">
+        <div class="home-banner-frame" data-banner-open role="button" tabindex="0" aria-label="Open banner image">
           <img class="home-banner-image is-active" src="./public/home-banner-1b.png" alt="Korea university application guide banner" data-banner-image />
-          <img class="home-banner-image" src="./public/home-banner-2.jpg" alt="Korea study abroad suitability banner" data-banner-image />
+          <img class="home-banner-image" src="./public/home-banner-1c.jpg" alt="Korea study abroad suitability banner" data-banner-image />
+          <button class="home-banner-nav prev" type="button" data-banner-prev aria-label="Previous banner">&#8249;</button>
+          <button class="home-banner-nav next" type="button" data-banner-next aria-label="Next banner">&#8250;</button>
           <span class="home-banner-dots" aria-hidden="true">
             <span class="home-banner-dot is-active" data-banner-dot></span>
             <span class="home-banner-dot" data-banner-dot></span>
           </span>
-        </button>
+        </div>
       </section>
 
       <footer class="footer">
@@ -2991,12 +3087,14 @@
         const bannerImages = Array.from(document.querySelectorAll("[data-banner-image]"));
         const bannerDots = Array.from(document.querySelectorAll("[data-banner-dot]"));
         const bannerButton = document.querySelector("[data-banner-open]");
+        const prevButton = document.querySelector("[data-banner-prev]");
+        const nextButton = document.querySelector("[data-banner-next]");
         const viewer = document.querySelector("[data-image-viewer]");
         const viewerStage = document.querySelector("[data-viewer-stage]");
         const viewerImage = document.querySelector("[data-viewer-image]");
         const closeButton = document.querySelector("[data-viewer-close]");
 
-        if (!bannerImages.length || !bannerButton || !viewer || !viewerStage || !viewerImage || !closeButton) return;
+        if (!bannerImages.length || !bannerButton || !prevButton || !nextButton || !viewer || !viewerStage || !viewerImage || !closeButton) return;
 
         let activeIndex = 0;
         let zoom = 1;
@@ -3011,6 +3109,11 @@
         const renderBanner = () => {
           bannerImages.forEach((image, index) => image.classList.toggle("is-active", index === activeIndex));
           bannerDots.forEach((dot, index) => dot.classList.toggle("is-active", index === activeIndex));
+        };
+
+        const showBanner = (direction) => {
+          activeIndex = (activeIndex + direction + bannerImages.length) % bannerImages.length;
+          renderBanner();
         };
 
         const setViewerTransform = () => {
@@ -3044,15 +3147,36 @@
           viewerStage.classList.remove("is-dragging");
         };
 
+        const isPointInsideViewerImage = (event) => {
+          const rect = viewerImage.getBoundingClientRect();
+          return event.clientX >= rect.left &&
+            event.clientX <= rect.right &&
+            event.clientY >= rect.top &&
+            event.clientY <= rect.bottom;
+        };
+
         window.setInterval(() => {
-          activeIndex = (activeIndex + 1) % bannerImages.length;
-          renderBanner();
+          showBanner(1);
         }, 5000);
 
         bannerButton.addEventListener("click", openViewer);
+        bannerButton.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openViewer();
+          }
+        });
+        prevButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          showBanner(-1);
+        });
+        nextButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          showBanner(1);
+        });
         closeButton.addEventListener("click", closeViewer);
         viewer.addEventListener("click", (event) => {
-          if (event.target === viewer) closeViewer();
+          if ((event.target === viewer || event.target === viewerStage) && !isPointInsideViewerImage(event)) closeViewer();
         });
         document.addEventListener("keydown", (event) => {
           if (event.key === "Escape" && viewer.classList.contains("is-open")) closeViewer();
@@ -3068,6 +3192,7 @@
 
         viewerStage.addEventListener("pointerdown", (event) => {
           if (event.button !== 0) return;
+          if (!isPointInsideViewerImage(event)) return;
           isDragging = true;
           dragStartX = event.clientX;
           dragStartY = event.clientY;
