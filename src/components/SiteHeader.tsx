@@ -77,9 +77,9 @@ export function SiteHeader({ pageTitle }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-ink bg-paper px-3 py-2 sm:px-6 md:relative md:px-6 lg:px-16 lg:py-4">
       <div className="mx-auto flex max-w-[92rem] items-center gap-3 md:grid md:min-h-16 md:max-w-none md:grid-cols-[6.5rem_minmax(0,1fr)_auto] md:gap-4 lg:min-h-20">
-        <Link className="flex shrink-0 items-center" href="/" aria-label="Hanxue Luopan">
+        <Link className="flex shrink-0 items-center" href="/" aria-label="KOREA UNIVERSITY LINK">
           <Image
-            alt="韩学罗盘"
+            alt="KOREA UNIVERSITY LINK"
             className="block h-12 w-[4.9rem] object-contain sm:h-16 sm:w-[5.25rem] lg:h-20 lg:w-[6.5rem]"
             height={178}
             priority
@@ -91,7 +91,7 @@ export function SiteHeader({ pageTitle }: SiteHeaderProps) {
 
         <div className="min-w-0 flex-1 md:hidden">
           <p className="truncate text-[0.7875rem] font-black leading-none text-ink">
-            {pageTitle ?? "韩学罗盘"}
+            {pageTitle ?? "KOREA UNIVERSITY LINK"}
           </p>
         </div>
 

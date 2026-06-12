@@ -1,4 +1,4 @@
-# Hanxue Luopan Design Context
+# KOREA UNIVERSITY LINK Design Context
 
 ## Visual Register
 

@@ -38,6 +38,10 @@ describe("static TOPIK page", () => {
     expect(html).toContain("min-height: 2.55rem;\n        align-items: center;");
     expect(html).toContain("box-shadow: inset 0 -2px 0 rgba(10, 10, 10, 0.08);");
     expect(html).toContain("margin: 0 1.35rem 1.35rem;");
+    expect(html).toContain("word-break: keep-all;");
+    expect(html).toContain("overflow-wrap: anywhere;");
+    expect(html).toContain("font-size: clamp(1.45rem, 2.1vw, 2.18rem);");
+    expect(html).toContain("min-height: 5.2rem;");
     expect(html).toContain(".planner-field {\n        display: grid;");
     expect(html).toContain(".planner-explain-grid {\n        display: grid;");
     expect(html).toContain(".adjustment-card {\n        display: grid;");
@@ -151,5 +155,28 @@ describe("static TOPIK page", () => {
 
     expect(output?.hasAttribute("hidden")).toBe(false);
     expect(runButton?.textContent).toContain("\u5df2\u751f\u6210\u63a8\u8350");
+  });
+
+  it("keeps generated planner copy compact enough for the result table", () => {
+    const html = readFileSync("topik.html", "utf8");
+    const dom = new JSDOM(html, { runScripts: "dangerously" });
+    const { document } = dom.window;
+
+    (document.querySelector("[data-planner-run]") as HTMLButtonElement | null)?.click();
+
+    const compactCopyLimits = [
+      ["[data-planner-meaning]", 38],
+      ["[data-planner-basis]", 40],
+      ["[data-planner-action-1]", 24],
+      ["[data-planner-action-2]", 24],
+      ["[data-planner-action-3]", 24],
+      ["[data-adjustment-copy]", 34]
+    ] as const;
+
+    compactCopyLimits.forEach(([selector, maxLength]) => {
+      const text = document.querySelector(selector)?.textContent?.trim() ?? "";
+      expect(text.length).toBeLessThanOrEqual(maxLength);
+    });
+    expect(html).not.toContain("\u518d\u6838\u5bf9\u62a5\u540d\u548c\u6750\u6599\u622a\u6b62");
   });
 });

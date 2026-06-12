@@ -102,7 +102,7 @@
         border: 1px solid var(--ink);
         border-radius: 999px;
         padding: 0.45rem 0.72rem;
-        background: #ffffff;
+        background: transparent;
         font-size: 0.95rem;
         font-weight: 850;
         line-height: 1;
@@ -150,7 +150,7 @@
       .wrap {
         width: min(calc(100% - 25rem), 101rem);
         margin: 0 auto;
-        padding: 1.15rem 0 4rem;
+        padding: 4.25rem 0 4rem;
       }
 
       .hero {
@@ -161,23 +161,60 @@
       }
 
       .budget-planner {
+        position: relative;
         box-sizing: border-box;
-        border: 1px solid rgba(10, 10, 10, 0.42);
+        min-height: 20.05rem;
+        overflow: hidden;
+        border: 1px solid rgba(10, 10, 10, 0.48);
+        border-radius: 0;
         background: #ffffff;
         padding: 0;
+        box-shadow: none;
       }
 
       .budget-meta-line {
-        margin: 0.72rem 0 1.05rem;
-        color: var(--muted);
-        font-size: 0.9rem;
-        font-weight: 850;
-        line-height: 1.55;
+        position: absolute;
+        top: -2.15rem;
+        right: 0;
+        z-index: 2;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.75rem;
+        align-items: center;
+        margin: 0;
+        color: #5f6673;
+        font-size: 0.81rem;
+        font-weight: 650;
+        line-height: 1.45;
       }
 
       .budget-meta-line b {
-        color: var(--ink);
-        font-weight: 950;
+        margin-right: 0.32rem;
+        color: #1f2937;
+        font-weight: 900;
+      }
+
+      .budget-meta-item {
+        display: inline-flex;
+        min-width: 0;
+        align-items: center;
+        gap: 0.45rem;
+        white-space: nowrap;
+      }
+
+      .budget-meta-icon {
+        display: inline-grid;
+        width: 1.25rem;
+        height: 1.25rem;
+        flex: 0 0 auto;
+        place-items: center;
+        color: #596273;
+      }
+
+      .budget-meta-icon svg {
+        width: 100%;
+        height: 100%;
+        stroke: currentColor;
       }
 
       .section-head {
@@ -189,9 +226,22 @@
       }
 
       .planner-head {
-        display: block;
-        border-bottom: 1px solid rgba(10, 10, 10, 0.42);
-        background: var(--yellow);
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 2.4rem;
+        align-items: center;
+        border-bottom: 0;
+        background: transparent;
+        padding: 4.2rem 17.5rem 1.15rem 3rem;
+      }
+
+      .planner-heading {
+        display: grid;
+        gap: 0.86rem;
+        max-width: none;
+        min-width: 0;
       }
 
       .section-index {
@@ -215,9 +265,96 @@
       }
 
       .planner-head h2 {
-        padding: 0.74rem 1.45rem;
-        font-size: 1.34rem;
-        line-height: 1.15;
+        padding: 0;
+        color: #101217;
+        font-size: 2.7rem;
+        font-weight: 900;
+        letter-spacing: 0;
+        line-height: 1;
+      }
+
+      .planner-head p {
+        display: block;
+        max-width: none;
+        margin: 0;
+        padding-bottom: 0;
+        color: #596170;
+        font-size: 0.855rem;
+        font-weight: 500;
+        line-height: 1.6;
+      }
+
+      .planner-head p::before {
+        content: none;
+      }
+
+      .planner-actions {
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1.6rem;
+        white-space: nowrap;
+      }
+
+      .budget-reset-button,
+      .budget-run-button {
+        display: inline-flex;
+        width: 8.2rem;
+        min-height: 3.35rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(10, 10, 10, 0.18);
+        border-radius: 8px;
+        color: #0a0a0a;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.9rem;
+        font-weight: 900;
+        line-height: 1.2;
+        box-shadow: inset 0 -2px 0 rgba(10, 10, 10, 0.08);
+        white-space: nowrap;
+      }
+
+      .budget-reset-button {
+        background: #d9ded6;
+      }
+
+      .budget-run-button {
+        background: #ffe68f;
+      }
+
+      .budget-reset-button:hover {
+        background: #e4e7e1;
+      }
+
+      .budget-run-button:hover {
+        background: #fff0b7;
+      }
+
+      .budget-run-button:focus-visible {
+        outline: 3px solid rgba(202, 169, 73, 0.35);
+        outline-offset: 2px;
+      }
+
+      .budget-reset-button:focus-visible {
+        outline: 3px solid rgba(116, 200, 182, 0.3);
+        outline-offset: 2px;
+      }
+
+      .planner-visual {
+        position: absolute;
+        z-index: 0;
+        top: 5.35rem;
+        right: 1rem;
+        width: min(17.82rem, 18.45%);
+        height: 10.98rem;
+        pointer-events: none;
+      }
+
+      .planner-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
       }
 
       .planner-head .section-index {
@@ -236,11 +373,13 @@
       }
 
       .planner-body {
+        position: relative;
+        z-index: 1;
         box-sizing: border-box;
         display: grid;
         grid-template-columns: 1fr;
-        gap: 0.85rem;
-        padding: 1rem 1rem 0.95rem;
+        gap: 7.2rem;
+        padding: 1rem 17.5rem 3.12rem 3rem;
       }
 
       .planner-form {
@@ -250,15 +389,16 @@
         grid-template-columns: repeat(6, minmax(0, 1fr));
         grid-template-rows: none;
         align-self: start;
-        gap: 0.75rem;
+        gap: 1.45rem;
       }
 
       .field {
         display: grid;
-        gap: 0.3rem;
+        gap: 0.48rem;
         min-height: 0;
-        font-size: 0.85rem;
-        font-weight: 800;
+        color: #1f2937;
+        font-size: 0.855rem;
+        font-weight: 850;
       }
 
       .field:nth-child(-n + 3) {
@@ -280,96 +420,183 @@
       .field select {
         box-sizing: border-box;
         width: 100%;
-        min-height: 2.35rem;
-        border: 1px solid rgba(10, 10, 10, 0.42);
-        background: var(--paper);
-        color: var(--ink);
-        padding: 0.55rem 0.65rem;
+        min-height: 2.85rem;
+        border: 1px solid rgba(10, 10, 10, 0.38);
+        border-radius: 0;
+        background: #fffefb;
+        color: #111827;
+        padding: 0.44rem 0.92rem;
         font: inherit;
+        font-size: 0.9rem;
+        font-weight: 850;
         outline: none;
+        box-shadow: none;
       }
 
       .field select:focus-visible {
-        box-shadow: inset 0 0 0 2px var(--ink);
+        border-color: var(--ink);
+        box-shadow: inset 0 0 0 1px var(--ink);
       }
 
       .result-panel {
+        position: relative;
         box-sizing: border-box;
         display: grid;
         grid-template-columns: 1fr;
         align-self: stretch;
         gap: 0;
         min-width: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
+        width: calc(100% + 14.4rem);
+      }
+
+      .budget-loading {
+        box-sizing: border-box;
+        display: flex;
+        width: calc(100% + 14.4rem);
+        align-items: center;
+        gap: 0.72rem;
+        border: 1px solid rgba(10, 10, 10, 0.42);
+        background: #fffefb;
+        padding: 0.9rem 1rem;
+        color: #0a0a0a;
+        font-size: 0.88rem;
+        font-weight: 900;
+        line-height: 1.35;
+      }
+
+      .budget-loading-spinner {
+        width: 1.25rem;
+        height: 1.25rem;
+        flex: 0 0 1.25rem;
+        border: 3px solid rgba(10, 10, 10, 0.18);
+        border-top-color: #0a0a0a;
+        border-radius: 999px;
+        animation: budget-loading-spin 0.72s linear infinite;
+      }
+
+      .budget-loading span:last-child {
+        color: #6a6a6a;
+        font-size: 0.78rem;
+        font-style: italic;
+        font-weight: 500;
+      }
+
+      @keyframes budget-loading-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .result-panel::before {
+        content: "";
+        position: absolute;
+        top: -3.6rem;
+        left: 0;
+        right: 0;
+        border-top: 1px solid rgba(10, 10, 10, 0.48);
       }
 
       .result-panel > * {
         min-width: 0;
       }
 
+      .budget-loading[hidden],
+      .result-panel[hidden],
+      .budget-meta-line[hidden] {
+        display: none;
+      }
+
       .budget-summary {
         box-sizing: border-box;
         display: grid;
         grid-template-columns: auto minmax(0, 1fr);
-        gap: 0.45rem 0.8rem;
-        border: 1px solid rgba(10, 10, 10, 0.42);
-        border-bottom: 0;
+        gap: 0.6rem 0.95rem;
+        align-items: center;
+        border: 0;
+        border-bottom: 1px solid rgba(10, 10, 10, 0.32);
         background: var(--paper);
-        padding: 0.68rem 0.82rem;
+        padding: 0.72rem 0.92rem;
       }
 
       .graph-eyebrow {
-        color: var(--muted);
-        font-size: 0.74rem;
+        border: 1px solid rgba(10, 10, 10, 0.34);
+        border-radius: 0;
+        background: var(--mint);
+        color: var(--ink);
+        padding: 0.42rem 0.62rem;
+        font-size: 0.774rem;
         font-weight: 900;
         line-height: 1.3;
       }
 
       .budget-summary small {
-        color: var(--muted);
-        font-size: 0.78rem;
-        font-weight: 850;
+        color: #5f6673;
+        font-size: 0.81rem;
+        font-weight: 650;
         line-height: 1.35;
       }
 
       .budget-table {
         width: 100%;
         table-layout: fixed;
-        border-collapse: collapse;
         border: 1px solid rgba(10, 10, 10, 0.42);
-        background: var(--paper);
+        border-collapse: collapse;
+        border-radius: 0;
+        background: #ffffff;
       }
 
       .budget-table th,
       .budget-table td {
-        border: 1px solid rgba(10, 10, 10, 0.34);
-        padding: 0.56rem 0.66rem;
+        border: 1px solid rgba(10, 10, 10, 0.24);
+        padding: 0.78rem 1.1rem;
+        background: #ffffff;
         text-align: left;
         vertical-align: middle;
       }
 
+      .budget-table tbody tr:nth-child(even) th,
+      .budget-table tbody tr:nth-child(even) td {
+        background: #f7f7f4;
+      }
+
       .budget-table thead th {
         background: #f1f0ec;
-        color: var(--muted);
-        font-size: 0.72rem;
-        font-weight: 950;
+        color: #0a0a0a;
+        font-size: 1.026rem;
+        font-weight: 850;
         line-height: 1.2;
+        text-align: center;
       }
 
       .budget-table th:first-child {
-        width: 8.2rem;
+        width: 18.333%;
       }
 
       .budget-table th:nth-child(2) {
-        width: 14.2rem;
+        width: 18.333%;
+      }
+
+      .budget-table th:nth-child(3) {
+        width: 18.333%;
       }
 
       .budget-table th:nth-child(4) {
-        width: 22rem;
+        width: 45%;
+      }
+
+      .budget-table th:nth-child(-n + 3),
+      .budget-table td:nth-child(-n + 3) {
+        text-align: center;
       }
 
       .budget-row-label {
-        color: var(--ink);
-        font-size: 0.86rem;
+        color: #0f172a;
+        font-size: 0.911rem;
         font-weight: 950;
         line-height: 1.25;
       }
@@ -384,36 +611,64 @@
 
       .result-amount-row strong,
       .budget-value strong {
-        color: var(--ink);
-        font-size: 1.26rem;
-        font-weight: 950;
-        line-height: 1.05;
+        color: #111827;
+        font-size: 0.911rem;
+        font-weight: 900;
+        line-height: 1.25;
         white-space: nowrap;
       }
 
       .result-amount-row.total strong {
-        font-size: clamp(1.35rem, 1.55vw, 1.78rem);
+        font-size: 0.911rem;
         letter-spacing: 0;
       }
 
+      .budget-value .result-amount-row.total strong,
+      .budget-value .result-amount-row.total .result-period {
+        color: #b91c1c;
+      }
+
       .result-period {
-        color: var(--ink);
-        font-size: 0.84rem;
+        color: #111827;
+        font-size: 0.911rem;
         font-weight: 950;
-        line-height: 1;
+        line-height: 1.25;
+        white-space: nowrap;
+      }
+
+      .budget-value .result-period {
+        color: #111827;
+      }
+
+      .budget-krw strong {
+        color: #111827;
+        font-size: 0.911rem;
+        font-weight: 900;
+        line-height: 1.25;
         white-space: nowrap;
       }
 
       .chart-track {
         position: relative;
         height: 1rem;
-        border: 1px solid rgba(10, 10, 10, 0.42);
-        background: rgba(244, 242, 236, 0.84);
         overflow: hidden;
+        border: 1px solid rgba(10, 10, 10, 0.38);
+        border-radius: 0;
+        background: rgba(244, 242, 236, 0.84);
+        box-shadow: none;
+      }
+
+      .budget-visual {
+        min-width: 18rem;
+      }
+
+      .budget-visual .chart-track {
+        max-width: 31rem;
       }
 
       .total-range-track {
-        height: 1.08rem;
+        height: 1rem;
+        overflow: hidden;
       }
 
       .chart-track::after {
@@ -424,16 +679,16 @@
           90deg,
           transparent 0,
           transparent calc(25% - 1px),
-          rgba(10, 10, 10, 0.18) calc(25% - 1px),
-          rgba(10, 10, 10, 0.18) 25%,
+          rgba(10, 10, 10, 0.14) calc(25% - 1px),
+          rgba(10, 10, 10, 0.14) 25%,
           transparent 25%,
           transparent calc(50% - 1px),
-          rgba(10, 10, 10, 0.18) calc(50% - 1px),
-          rgba(10, 10, 10, 0.18) 50%,
+          rgba(10, 10, 10, 0.14) calc(50% - 1px),
+          rgba(10, 10, 10, 0.14) 50%,
           transparent 50%,
           transparent calc(75% - 1px),
-          rgba(10, 10, 10, 0.18) calc(75% - 1px),
-          rgba(10, 10, 10, 0.18) 75%,
+          rgba(10, 10, 10, 0.14) calc(75% - 1px),
+          rgba(10, 10, 10, 0.14) 75%,
           transparent 75%
         );
         pointer-events: none;
@@ -443,7 +698,8 @@
         display: block;
         width: 18%;
         height: 100%;
-        border-right: 1px solid rgba(10, 10, 10, 0.42);
+        border-right: 1px solid rgba(10, 10, 10, 0.28);
+        border-radius: 0;
         transition: width 220ms ease-out;
       }
 
@@ -464,10 +720,23 @@
       }
 
       .budget-rule {
-        color: var(--muted);
-        font-size: 0.76rem;
-        font-weight: 800;
+        color: #0f172a;
+        font-size: 0.911rem;
+        font-weight: 400;
         line-height: 1.45;
+      }
+
+      .budget-average-note {
+        width: 45%;
+        box-sizing: border-box;
+        margin: 0 auto 0 55%;
+        padding: 0.55rem 0 0 1.1rem;
+        color: #7a7f89;
+        font-size: 0.81rem;
+        font-style: italic;
+        font-weight: 500;
+        line-height: 1.4;
+        text-align: right;
       }
 
       .stack {
@@ -684,6 +953,7 @@
 
       .legacy-appendix {
         margin-top: 1.75rem;
+        border: 0;
         background:
           linear-gradient(135deg, rgba(255, 224, 122, 0.24), transparent 34%),
           linear-gradient(315deg, rgba(164, 212, 197, 0.24), transparent 36%),
@@ -950,6 +1220,15 @@
 
         .planner-body {
           grid-template-columns: 1fr;
+          padding-right: 3rem;
+        }
+
+        .planner-head {
+          padding-right: 3rem;
+        }
+
+        .planner-visual {
+          display: none;
         }
 
         .planner-form {
@@ -958,8 +1237,14 @@
           border-bottom: 0;
         }
 
+        .budget-meta-line {
+          justify-content: flex-end;
+        }
+
+        .budget-loading,
         .result-panel {
           grid-template-columns: 1fr;
+          width: auto;
         }
 
         .priority-grid {
@@ -1044,9 +1329,41 @@
           padding-top: 4.2rem;
         }
 
+        .budget-planner {
+          min-height: 0;
+          border-radius: 0;
+          padding: 0;
+        }
+
         .planner-head,
         .section-head {
           grid-template-columns: auto minmax(0, 1fr);
+        }
+
+        .planner-head {
+          grid-template-columns: 1fr;
+          gap: 0.8rem;
+          padding: 1.25rem 0.8rem 0.95rem;
+        }
+
+        .planner-head h2 {
+          font-size: 1.908rem;
+        }
+
+        .planner-head p {
+          font-size: 0.792rem;
+        }
+
+        .planner-actions {
+          width: 100%;
+          gap: 0.8rem;
+        }
+
+        .budget-reset-button,
+        .budget-run-button {
+          flex: 1 1 0;
+          width: auto;
+          min-height: 2.85rem;
         }
 
         .section-note {
@@ -1059,6 +1376,11 @@
           grid-auto-flow: row;
           grid-template-columns: 1fr;
           grid-template-rows: none;
+          gap: 0.9rem;
+        }
+
+        .planner-body {
+          padding: 1rem 0.8rem 3.12rem;
         }
 
         .field {
@@ -1081,6 +1403,17 @@
           grid-template-columns: 1fr;
         }
 
+        .budget-meta-line {
+          position: static;
+          justify-content: flex-start;
+          gap: 0.75rem;
+          margin-bottom: 0.65rem;
+        }
+
+        .budget-meta-item {
+          white-space: normal;
+        }
+
         .budget-table,
         .budget-table tbody,
         .budget-table tr,
@@ -1096,8 +1429,8 @@
         }
 
         .budget-table tr {
-          padding: 0.72rem;
-          border-top: 1px solid rgba(10, 10, 10, 0.34);
+          padding: 0.9rem;
+          border-top: 1px solid rgba(10, 10, 10, 0.24);
         }
 
         .budget-table tr:first-child {
@@ -1116,13 +1449,17 @@
           margin-top: 0.48rem;
         }
 
+        .budget-visual {
+          min-width: 0;
+        }
+
         .result-amount-row {
           flex-wrap: wrap;
         }
 
         .result-amount-row.total strong {
-          font-size: clamp(1.55rem, 8vw, 2rem);
-          white-space: normal;
+          font-size: 1.08rem;
+          white-space: nowrap;
         }
 
         .priority-list li {
@@ -1177,8 +1514,8 @@
             .legacy-appendix .legacy-original * { box-sizing: border-box; }
 
             .legacy-appendix .legacy-original {
-              overflow-y: scroll;
-              scrollbar-gutter: stable;
+              overflow-y: visible;
+              scrollbar-gutter: auto;
             }
 
             .legacy-appendix .legacy-original {
@@ -1333,7 +1670,7 @@
             }
 
             .legacy-appendix .legacy-original .section.pre-cost-section {
-              margin-top: 0.9375rem;
+              margin-top: 2.8125rem;
               margin-bottom: 2rem;
             }
             .legacy-appendix .legacy-original .pre-cost-panel {
@@ -1834,8 +2171,8 @@
               align-items: center;
               gap: 1.75rem;
               height: 100%;
-              border: 1px solid var(--ink);
-              border-radius: 8px;
+              border: 0;
+              border-radius: 0;
               background: var(--surface);
               padding: 1.25rem;
             }
@@ -1931,8 +2268,8 @@
               display: flex;
               flex: 1;
               overflow-x: hidden;
-              border: 1px solid var(--ink);
-              border-radius: 8px;
+              border: 0;
+              border-radius: 0;
               background: #ffffff;
               padding: 1rem;
               color: var(--ink);
@@ -3049,8 +3386,8 @@
               line-height: 1.35;
             }
       .legacy-appendix .legacy-original .agency-merge .channel-block {
-              border: 1px solid color-mix(in oklch, var(--lavender) 34%, var(--line));
-              border-radius: 8px;
+              border: 0;
+              border-radius: 0;
               position: relative;
               margin-top: 5.75rem;
               background: var(--paper);
@@ -3186,13 +3523,13 @@
             }
       .legacy-appendix .legacy-original .agency-merge .timeline {
               display: grid;
-              grid-template-columns: repeat(5, minmax(10rem, 1fr));
+              grid-template-columns: repeat(5, minmax(0, 1fr));
               overflow-x: auto;
               border: 1px solid var(--line);
               background: var(--surface);
             }
       .legacy-appendix .legacy-original .agency-merge .timeline.seven {
-              grid-template-columns: repeat(7, minmax(10rem, 1fr));
+              grid-template-columns: repeat(7, minmax(0, 1fr));
             }
       .legacy-appendix .legacy-original .agency-merge .step {
               min-width: 0;
@@ -3416,6 +3753,807 @@
         }
       }
 
+      /* Application-route reference layout */
+      .legacy-appendix {
+        width: 100%;
+        max-width: none;
+        margin: 4.25rem 0 0 50%;
+        transform: translateX(-50%);
+        border: 1px solid color-mix(in oklch, var(--line) 72%, transparent);
+        background: var(--surface);
+        padding: 4.1rem 3.25rem 4.6rem;
+      }
+
+      .legacy-appendix .legacy-original {
+        background: transparent;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge.channel-top {
+        margin: 0;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge.channel-top .channel-block,
+      .legacy-appendix .legacy-original .agency-merge.channel-top .channel-block:first-child {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-block h2 {
+        display: block;
+        position: static;
+        width: fit-content;
+        margin: 0 0 2.05rem;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--ink);
+        font-size: clamp(2rem, 2.42vw, 3.15rem);
+        font-weight: 950;
+        line-height: 1.08;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-showcase {
+        gap: 1.9rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge.channel-top .channel-card,
+      .legacy-appendix .legacy-original .agency-merge .channel-card {
+        min-height: 12.9rem;
+        border-color: color-mix(in oklch, var(--lavender) 40%, var(--surface));
+        background: var(--paper);
+        padding: 1.7rem 1.35rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-icon {
+        width: 3.25rem;
+        height: 3.25rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-card strong {
+        margin-top: 1rem;
+        font-size: 1.4rem;
+        line-height: 1.22;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-card p {
+        max-width: 28ch;
+        margin-top: 0.65rem;
+        font-size: 1.07rem;
+        line-height: 1.45;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-section {
+        margin-top: 3.15rem;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-title {
+        display: block;
+        width: fit-content;
+        margin: 0 0 2.25rem;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--ink);
+        font-size: clamp(2rem, 2.38vw, 3rem);
+        font-weight: 950;
+        line-height: 1.1;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.75rem;
+        align-items: stretch;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-card,
+      .legacy-appendix .legacy-original .insight-panel {
+        grid-template-columns: 1fr;
+        align-content: start;
+        gap: 1rem;
+        min-height: 13.2rem;
+        border-color: color-mix(in oklch, var(--lavender) 40%, var(--surface));
+        border-radius: 8px;
+        background: var(--paper);
+        padding: 1rem;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-head,
+      .legacy-appendix .legacy-original .insight-identity {
+        display: grid;
+        min-height: 7.85rem;
+        align-content: center;
+        justify-items: center;
+        gap: 0.72rem;
+        border: 1px solid color-mix(in oklch, var(--lavender) 36%, var(--surface));
+        border-radius: 8px;
+        background: #fffefb;
+        padding: 1rem 0.9rem;
+        text-align: center;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-icon,
+      .legacy-appendix .legacy-original .insight-icon {
+        width: 4.25rem;
+        height: 4.25rem;
+        border-color: color-mix(in oklch, var(--lavender) 34%, var(--surface));
+        background: color-mix(in oklch, var(--lavender) 11%, var(--surface));
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-card h3,
+      .legacy-appendix .legacy-original .insight-panel h2 {
+        margin: 0;
+        padding: 0;
+        color: var(--ink);
+        font-size: 1.28rem;
+        font-weight: 950;
+        line-height: 1.18;
+        text-align: center;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-table,
+      .legacy-appendix .legacy-original .insight-table {
+        border: 0;
+        border-left: 0;
+        background: transparent;
+        color: #30343b;
+        font-size: 0.92rem;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-table th,
+      .legacy-appendix .legacy-original .apply-compare-table td,
+      .legacy-appendix .legacy-original .insight-table th,
+      .legacy-appendix .legacy-original .insight-table td {
+        border: 0;
+        border-bottom: 1px solid color-mix(in oklch, var(--line) 9%, transparent);
+        background: transparent;
+        padding: 0.55rem 0.78rem;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-table tr:last-child th,
+      .legacy-appendix .legacy-original .apply-compare-table tr:last-child td,
+      .legacy-appendix .legacy-original .insight-table tr:last-child th,
+      .legacy-appendix .legacy-original .insight-table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-table tbody tr:nth-child(odd) th,
+      .legacy-appendix .legacy-original .apply-compare-table tbody tr:nth-child(odd) td,
+      .legacy-appendix .legacy-original .apply-compare-table tbody tr:nth-child(even) th,
+      .legacy-appendix .legacy-original .apply-compare-table tbody tr:nth-child(even) td,
+      .legacy-appendix .legacy-original .insight-table tbody tr:nth-child(odd) th,
+      .legacy-appendix .legacy-original .insight-table tbody tr:nth-child(odd) td,
+      .legacy-appendix .legacy-original .insight-table tbody tr:nth-child(even) th,
+      .legacy-appendix .legacy-original .insight-table tbody tr:nth-child(even) td {
+        background: transparent;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-table th,
+      .legacy-appendix .legacy-original .insight-table th {
+        width: 5.35rem;
+        color: var(--ink);
+        font-weight: 900;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-table td,
+      .legacy-appendix .legacy-original .insight-table td {
+        color: #42454c;
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 1.45;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-type {
+        color: var(--ink);
+        gap: 0.45rem;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-mark {
+        width: 1.25rem;
+        height: 1.25rem;
+        font-size: 0;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-mark.good::before {
+        content: "\2713";
+        font-size: 0.68rem;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-mark.risk::before {
+        content: "!";
+        font-size: 0.78rem;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-mark.good {
+        background: oklch(61% 0.16 286);
+      }
+
+      .legacy-appendix .legacy-original .agency .apply-compare-mark.good {
+        background: oklch(61% 0.12 180);
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-mark.risk {
+        background: oklch(68% 0.14 24);
+      }
+
+      .legacy-appendix .legacy-original .insight-mark {
+        min-width: 3.35rem;
+        height: 1.65rem;
+        border: 0;
+        background: color-mix(in oklch, var(--mint) 55%, var(--surface));
+        color: #087266;
+        font-size: 0.76rem;
+      }
+
+      .legacy-appendix .legacy-original .choice .insight-mark {
+        background: color-mix(in oklch, var(--mint) 55%, var(--surface));
+        color: #087266;
+      }
+
+      .legacy-appendix .legacy-original .insight-table strong {
+        font-size: 0.98rem;
+        font-weight: 950;
+      }
+
+      .legacy-appendix .legacy-original .insight-table p {
+        margin-top: 0.15rem;
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+
+      .legacy-appendix .legacy-original .insight-grid {
+        margin-top: 2rem;
+        margin-bottom: 0;
+      }
+
+      .legacy-appendix .legacy-original .insight-grid[hidden],
+      .legacy-appendix .legacy-original .insight-panel[hidden] {
+        display: none !important;
+      }
+
+      .legacy-appendix .legacy-original #core,
+      .legacy-appendix .legacy-original #path,
+      .legacy-appendix .legacy-original #fees,
+      .legacy-appendix .legacy-original #success {
+        display: none !important;
+      }
+
+      .legacy-appendix .legacy-original .metric-grid,
+      .legacy-appendix .legacy-original #diy,
+      .legacy-appendix .legacy-original #agency,
+      .legacy-appendix .legacy-original #agency-checklist,
+      .legacy-appendix .legacy-original #reminders {
+        display: none !important;
+      }
+
+      /* Unified lower-page system, inspired by PostHog's restrained product UI. */
+      .legacy-appendix {
+        --lower-bg: #ffffff;
+        --lower-surface: #fbfbf6;
+        --lower-card: #fbfbf6;
+        --lower-ink: #23251d;
+        --lower-muted: #606257;
+        --lower-line: #c9cabe;
+        --lower-soft: #e4e6da;
+        --lower-accent: #f7a501;
+        --lower-accent-dark: #7a4b00;
+        --lower-green: #188a65;
+        --lower-red: #c44736;
+        --lower-mint: #d9eee4;
+        --lower-shadow: 0 1px 0 rgba(35, 37, 29, 0.08);
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      .legacy-appendix .legacy-original {
+        color: var(--lower-ink);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge.channel-top {
+        margin-bottom: 1.56rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-block h2,
+      .legacy-appendix .legacy-original .apply-compare-title,
+      .legacy-appendix .legacy-original .summary-title,
+      .legacy-appendix .legacy-original .agency-merge h2 {
+        color: var(--lower-ink);
+        font-weight: 850;
+        letter-spacing: 0;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-block h2,
+      .legacy-appendix .legacy-original .apply-compare-title {
+        display: inline-flex;
+        align-items: center;
+        align-self: flex-start;
+        width: fit-content;
+        margin: 0 0 1rem;
+        border: 1px solid var(--lower-ink);
+        border-radius: 5px;
+        background: #fff3ad;
+        padding: 0.5rem 1rem;
+        color: var(--lower-ink);
+        font-size: clamp(0.64rem, 1.024vw, 0.96rem);
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .legacy-appendix .legacy-original .summary-title {
+        display: inline-flex;
+        align-items: center;
+        align-self: flex-start;
+        gap: 0;
+        margin: 0 0 1rem;
+        border: 1px solid var(--lower-ink);
+        border-radius: 5px;
+        background: #fff3ad;
+        padding: 0.5rem 1rem;
+        color: var(--lower-ink);
+        font-size: clamp(0.64rem, 1.024vw, 0.96rem);
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .section-head h2::before {
+        content: "";
+        display: inline-block;
+        width: 0.56rem;
+        height: 0.56rem;
+        border-radius: 999px;
+        background: var(--lower-accent);
+        box-shadow: 0 0 0 0.28rem rgba(247, 165, 1, 0.16);
+        vertical-align: middle;
+      }
+
+      .legacy-appendix .legacy-original .summary-title::before {
+        content: none;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .section-head h2 {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.62rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .section,
+      .legacy-appendix .legacy-original .pre-cost-section,
+      .legacy-appendix .legacy-original .cost-visual-grid > .section,
+      .legacy-appendix .legacy-original .apply-compare-section {
+        border: 0;
+        background: transparent;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .section {
+        margin-top: 2.35rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .section-head {
+        align-items: center;
+        border: 0;
+        background: transparent;
+        margin-bottom: 0.82rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .section-head h2 {
+        font-size: 1.08rem;
+        font-weight: 850;
+        line-height: 1.22;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .section-kicker,
+      .legacy-appendix .legacy-original .agency-merge .panel p,
+      .legacy-appendix .legacy-original .agency-merge .panel li,
+      .legacy-appendix .legacy-original .agency-merge .step p,
+      .legacy-appendix .legacy-original .agency-merge .step small,
+      .legacy-appendix .legacy-original .agency-merge .issue p,
+      .legacy-appendix .legacy-original .agency-merge .reminder p {
+        color: var(--lower-muted);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .label,
+      .legacy-appendix .legacy-original .pre-cost-chip,
+      .legacy-appendix .legacy-original .agency-merge .pill,
+      .legacy-appendix .legacy-original .agency-merge .metric small {
+        border: 1px solid color-mix(in oklch, var(--lower-accent) 36%, var(--lower-line));
+        border-radius: 999px;
+        background: #fff3c2;
+        color: var(--lower-accent-dark);
+        box-shadow: none;
+        font-size: 0.78rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-showcase,
+      .legacy-appendix .legacy-original .pre-cost-cards,
+      .legacy-appendix .legacy-original .cost-visual-grid,
+      .legacy-appendix .legacy-original .apply-compare-grid,
+      .legacy-appendix .legacy-original .agency-merge .metric-grid,
+      .legacy-appendix .legacy-original .agency-merge .panel-grid,
+      .legacy-appendix .legacy-original .agency-merge .issue-grid,
+      .legacy-appendix .legacy-original .agency-merge .reminder-grid,
+      .legacy-appendix .legacy-original .agency-merge .timeline {
+        gap: 1rem;
+        border: 0;
+        background: transparent;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge.channel-top .channel-card,
+      .legacy-appendix .legacy-original .agency-merge .channel-card,
+      .legacy-appendix .legacy-original .pre-cost-card,
+      .legacy-appendix .legacy-original .cost-visual-grid > .section,
+      .legacy-appendix .legacy-original .apply-compare-card,
+      .legacy-appendix .legacy-original .insight-panel,
+      .legacy-appendix .legacy-original .agency-merge .metric,
+      .legacy-appendix .legacy-original .agency-merge .panel,
+      .legacy-appendix .legacy-original .agency-merge .step,
+      .legacy-appendix .legacy-original .agency-merge .issue,
+      .legacy-appendix .legacy-original .agency-merge .reminder,
+      .legacy-appendix .legacy-original .material-step {
+        border: 1px solid var(--lower-line);
+        border-radius: 6px;
+        background: var(--lower-card);
+        box-shadow: var(--lower-shadow);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge.channel-top .channel-card,
+      .legacy-appendix .legacy-original .agency-merge .channel-card {
+        min-height: 10.48rem;
+        padding: 1.44rem 1.12rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-icon {
+        width: 2.85rem;
+        height: 2.85rem;
+        color: var(--lower-accent-dark);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-card strong {
+        color: var(--lower-ink);
+        font-size: 1.12rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .channel-card p {
+        color: var(--lower-muted);
+        font-size: 0.9rem;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-card h3,
+      .legacy-appendix .legacy-original .apply-compare-card h3,
+      .legacy-appendix .legacy-original .insight-panel h2,
+      .legacy-appendix .legacy-original .agency-merge .panel h3,
+      .legacy-appendix .legacy-original .agency-merge .step strong,
+      .legacy-appendix .legacy-original .agency-merge .issue strong,
+      .legacy-appendix .legacy-original .agency-merge .reminder strong,
+      .legacy-appendix .legacy-original .agency-merge .metric strong {
+        color: var(--lower-ink);
+        font-weight: 850;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-card h3,
+      .legacy-appendix .legacy-original .apply-compare-card h3,
+      .legacy-appendix .legacy-original .insight-panel h2,
+      .legacy-appendix .legacy-original .agency-merge .panel h3 {
+        font-size: 1rem;
+        line-height: 1.28;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-amount strong,
+      .legacy-appendix .legacy-original .agency-merge .metric strong {
+        font-size: 1.05rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .step strong,
+      .legacy-appendix .legacy-original .agency-merge .issue strong,
+      .legacy-appendix .legacy-original .agency-merge .reminder strong {
+        font-size: 0.94rem;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-section {
+        margin-top: 2.8125rem;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-panel {
+        border: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-card {
+        min-height: 0;
+        padding: 1.12rem;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-card.featured {
+        border-color: color-mix(in oklch, var(--lower-accent) 42%, var(--lower-line));
+        background: #fff8dd;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-card.featured::after {
+        background: var(--lower-accent);
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-card h3,
+      .legacy-appendix .legacy-original .pre-cost-amount strong {
+        color: var(--lower-ink);
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-card p,
+      .legacy-appendix .legacy-original .pre-cost-card small,
+      .legacy-appendix .legacy-original .pre-cost-note {
+        color: var(--lower-muted);
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-footer {
+        border: 1px solid var(--lower-line);
+        border-radius: 6px;
+        background: var(--lower-surface);
+        padding: 1rem 1.1rem;
+      }
+
+      .legacy-appendix .legacy-original .pre-cost-sources a {
+        border-color: var(--lower-line);
+        background: var(--lower-card);
+        color: var(--lower-accent-dark);
+      }
+
+      .legacy-appendix .legacy-original .material-focus {
+        border: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      .legacy-appendix .legacy-original .material-focus::before {
+        display: none;
+      }
+
+      .legacy-appendix .legacy-original .material-step {
+        border-bottom: 1px solid var(--lower-line);
+        padding: 1rem;
+      }
+
+      .legacy-appendix .legacy-original .cost-visual-grid > .section {
+        gap: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
+      }
+
+      .legacy-appendix .legacy-original .cost-analysis-panel,
+      .legacy-appendix .legacy-original .comparison-panel {
+        flex: 1;
+        border: 1px solid var(--lower-line);
+        border-radius: 0;
+        background: var(--lower-card);
+        padding: 1.12rem;
+        box-shadow: var(--lower-shadow);
+      }
+
+      .legacy-appendix .legacy-original .donut-chart {
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.52);
+      }
+
+      .legacy-appendix .legacy-original .donut-hole {
+        background: var(--lower-card);
+      }
+
+      .legacy-appendix .legacy-original .donut-table,
+      .legacy-appendix .legacy-original .comparison-table,
+      .legacy-appendix .legacy-original .apply-compare-table,
+      .legacy-appendix .legacy-original .insight-table,
+      .legacy-appendix .legacy-original .agency-merge table {
+        border: 0;
+        background: transparent;
+      }
+
+      .legacy-appendix .legacy-original .donut-table th,
+      .legacy-appendix .legacy-original .donut-table td,
+      .legacy-appendix .legacy-original .comparison-table th,
+      .legacy-appendix .legacy-original .comparison-table td,
+      .legacy-appendix .legacy-original .apply-compare-table th,
+      .legacy-appendix .legacy-original .apply-compare-table td,
+      .legacy-appendix .legacy-original .insight-table th,
+      .legacy-appendix .legacy-original .insight-table td,
+      .legacy-appendix .legacy-original .agency-merge th,
+      .legacy-appendix .legacy-original .agency-merge td {
+        border-color: var(--lower-line);
+      }
+
+      .legacy-appendix .legacy-original .donut-table th,
+      .legacy-appendix .legacy-original .comparison-table thead th,
+      .legacy-appendix .legacy-original .agency-merge th {
+        background: #fff3c2;
+        color: var(--lower-accent-dark);
+      }
+
+      .legacy-appendix .legacy-original .comparison-table tbody tr:nth-child(even) td,
+      .legacy-appendix .legacy-original .donut-table tbody tr:nth-child(even) td {
+        background: rgba(228, 230, 218, 0.34);
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-card,
+      .legacy-appendix .legacy-original .insight-panel {
+        background: var(--lower-card);
+        padding: 1rem;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-head,
+      .legacy-appendix .legacy-original .insight-identity {
+        border-color: var(--lower-line);
+        background: var(--lower-surface);
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-icon,
+      .legacy-appendix .legacy-original .insight-icon {
+        border-color: var(--lower-line);
+        background: #ffffff;
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-mark.good,
+      .legacy-appendix .legacy-original .agency .apply-compare-mark.good {
+        background: var(--lower-green);
+      }
+
+      .legacy-appendix .legacy-original .apply-compare-mark.risk {
+        background: var(--lower-red);
+      }
+
+      .legacy-appendix .legacy-original .insight-mark {
+        background: var(--lower-mint);
+        color: #067268;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .metric {
+        border-right: 1px solid var(--lower-line);
+        padding: 1.15rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .metric strong {
+        color: var(--lower-ink);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .panel {
+        border-right: 1px solid var(--lower-line);
+        padding: 1.15rem;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .panel:last-child {
+        border-right: 1px solid var(--lower-line);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .timeline {
+        overflow-x: visible;
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .step {
+        border-right: 1px solid var(--lower-line);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .step:last-child {
+        border-right: 1px solid var(--lower-line);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .step .number,
+      .legacy-appendix .legacy-original .agency-merge .num {
+        border: 0;
+        background: var(--lower-accent);
+        color: var(--lower-ink);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .issue,
+      .legacy-appendix .legacy-original .agency-merge .reminder {
+        border-right: 1px solid var(--lower-line);
+      }
+
+      .legacy-appendix .legacy-original .agency-merge .issue:last-child,
+      .legacy-appendix .legacy-original .agency-merge .reminder:last-child {
+        border-right: 1px solid var(--lower-line);
+      }
+
+      .budget-planner,
+      .result-panel,
+      .budget-table,
+      .legacy-appendix,
+      .legacy-appendix .legacy-original .agency-merge.channel-top .channel-card,
+      .legacy-appendix .legacy-original .agency-merge .channel-card,
+      .legacy-appendix .legacy-original .pre-cost-card,
+      .legacy-appendix .legacy-original .pre-cost-footer,
+      .legacy-appendix .legacy-original .cost-visual-grid > .section,
+      .legacy-appendix .legacy-original .apply-compare-card,
+      .legacy-appendix .legacy-original .apply-compare-head,
+      .legacy-appendix .legacy-original .insight-panel,
+      .legacy-appendix .legacy-original .insight-identity,
+      .legacy-appendix .legacy-original .agency-merge .metric,
+      .legacy-appendix .legacy-original .agency-merge .panel,
+      .legacy-appendix .legacy-original .agency-merge .step,
+      .legacy-appendix .legacy-original .agency-merge .issue,
+      .legacy-appendix .legacy-original .agency-merge .reminder,
+      .legacy-appendix .legacy-original .material-step,
+      .legacy-appendix .legacy-original .table-wrap,
+      .legacy-appendix .legacy-original .agency-merge .table-wrap,
+      .legacy-appendix .legacy-original .bar-board {
+        border-radius: 0 !important;
+      }
+
+      @media (max-width: 1280px) {
+        .legacy-appendix {
+          width: auto;
+          max-width: none;
+          padding: 0;
+        }
+
+        .legacy-appendix .legacy-original .agency-merge .channel-showcase,
+        .legacy-appendix .legacy-original .apply-compare-grid,
+        .legacy-appendix .legacy-original .insight-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .legacy-appendix {
+          width: auto;
+          margin-top: 2.5rem;
+          padding: 0;
+        }
+
+        .legacy-appendix .legacy-original .agency-merge .channel-block h2,
+        .legacy-appendix .legacy-original .apply-compare-title {
+          font-size: clamp(0.64rem, 1.024vw, 0.96rem);
+          line-height: 1;
+        }
+
+        .legacy-appendix .legacy-original .apply-compare-card,
+        .legacy-appendix .legacy-original .insight-panel {
+          grid-template-columns: 1fr;
+          min-height: 0;
+        }
+
+        .legacy-appendix .legacy-original .agency-merge .channel-showcase,
+        .legacy-appendix .legacy-original .pre-cost-cards,
+        .legacy-appendix .legacy-original .cost-visual-grid,
+        .legacy-appendix .legacy-original .apply-compare-grid,
+        .legacy-appendix .legacy-original .agency-merge .metric-grid,
+        .legacy-appendix .legacy-original .agency-merge .panel-grid,
+        .legacy-appendix .legacy-original .agency-merge .panel-grid.three,
+        .legacy-appendix .legacy-original .agency-merge .issue-grid,
+        .legacy-appendix .legacy-original .agency-merge .reminder-grid,
+        .legacy-appendix .legacy-original .agency-merge .timeline,
+        .legacy-appendix .legacy-original .agency-merge .timeline.seven {
+          grid-template-columns: 1fr;
+        }
+
+        .legacy-appendix .legacy-original .agency-merge .metric,
+        .legacy-appendix .legacy-original .agency-merge .panel,
+        .legacy-appendix .legacy-original .agency-merge .step,
+        .legacy-appendix .legacy-original .agency-merge .issue,
+        .legacy-appendix .legacy-original .agency-merge .reminder {
+          border-right: 1px solid var(--lower-line);
+        }
+
+        .legacy-appendix .legacy-original .agency-merge .section-head {
+          grid-template-columns: 1fr;
+          align-items: start;
+        }
+
+        .legacy-appendix .legacy-original .agency-merge .channel-block h2,
+        .legacy-appendix .legacy-original .apply-compare-title {
+          font-size: clamp(0.64rem, 1.024vw, 0.96rem);
+          line-height: 1;
+        }
+
+        .legacy-appendix .legacy-original .summary-title,
+        .legacy-appendix .legacy-original .agency-merge .section-head h2 {
+          font-size: clamp(0.64rem, 1.024vw, 0.96rem);
+        }
+
+        .legacy-appendix .legacy-original .agency-merge .label {
+          justify-self: start;
+        }
+      }
+
       /* legacy-original-css:end */
     </style>
     <link rel="stylesheet" href="./header-unified.css" />
@@ -3441,7 +4579,17 @@
       <section class="hero" aria-label="韩国留学预算总览">
         <section class="budget-planner" aria-label="留学费用快速估算">
           <div class="planner-head">
-            <h2>韩国留学费用估算</h2>
+            <div class="planner-heading">
+              <h2>韩国留学费用估算</h2>
+              <p>根据城市、学校类型、专业和申请方式快速估算第一年预算</p>
+            </div>
+            <div class="planner-actions">
+              <button class="budget-reset-button" type="button" data-budget-reset>还原</button>
+              <button class="budget-run-button" type="button" data-budget-run>费用预估</button>
+            </div>
+          </div>
+          <div class="planner-visual" aria-hidden="true">
+            <img src="./public/cost-planner-illustration-transparent.png" alt="" decoding="async" />
           </div>
           <div class="planner-body">
             <form class="planner-form" id="budget-form">
@@ -3449,14 +4597,14 @@
                 <label for="city">城市</label>
                 <select id="city" data-planner-field>
                   <option value="regional">地方城市</option>
-                  <option value="seoul">首尔圈</option>
+                  <option value="seoul" selected>首尔圈</option>
                 </select>
               </div>
               <div class="field">
                 <label for="school">学校</label>
                 <select id="school" data-planner-field>
                   <option value="public">国公立</option>
-                  <option value="private">私立</option>
+                  <option value="private" selected>私立</option>
                 </select>
               </div>
               <div class="field">
@@ -3493,17 +4641,18 @@
               </div>
             </form>
 
-            <div class="result-panel">
-              <div class="budget-summary">
-                <span class="graph-eyebrow">预算图表</span>
-                <small id="budget-result-context">地方国公立，人文社科，宿舍，DIY，无奖学金假设</small>
-              </div>
+            <div class="budget-loading" role="status" aria-live="polite" hidden>
+              <span class="budget-loading-spinner" aria-hidden="true"></span>
+              <div>AI正在分析留学费用<span>正在匹配城市、学校类型、专业和申请方式，请稍等...</span></div>
+            </div>
+
+            <div class="result-panel" hidden>
               <table class="budget-table" aria-label="预算估算图表">
                 <thead>
                   <tr>
                     <th scope="col">项目</th>
-                    <th scope="col">估算金额</th>
-                    <th scope="col">可视化</th>
+                    <th scope="col">RMB 人民币</th>
+                    <th scope="col">KRW 韩元</th>
                     <th scope="col">计算规则</th>
                   </tr>
                 </thead>
@@ -3512,79 +4661,87 @@
                     <th class="budget-row-label" scope="row">第一年总预算</th>
                     <td class="budget-value">
                       <span class="result-amount-row total">
-                        <strong id="budget-result-total">7.8-10.5万</strong>
-                        <span class="result-period">/年 (预估)</span>
+                        <strong id="budget-result-total">7.13万</strong>
+                        <span class="result-period">/年</span>
                       </span>
                     </td>
-                    <td class="budget-visual"><div class="chart-track total-range-track" aria-hidden="true"><span class="chart-fill total" id="budget-bar-total"></span></div></td>
-                    <td class="budget-rule" id="budget-rule-total">学费 + 住宿12个月 + 生活12个月 + 出发前现金</td>
+                    <td class="budget-krw">
+                      <span class="result-amount-row">
+                        <strong id="budget-result-total-krw">1,602.2万</strong>
+                        <span class="result-period">/年</span>
+                      </span>
+                    </td>
+                    <td class="budget-rule" id="budget-rule-total">①净学费 / ②住宿12个月 / ③生活/保险12个月 / ④DIY前期现金</td>
                   </tr>
                   <tr>
                     <th class="budget-row-label" scope="row">在韩每月现金</th>
-                    <td class="budget-value"><strong id="budget-result-monthly">0.42-0.62万</strong></td>
-                    <td class="budget-visual"><div class="chart-track" aria-hidden="true"><span class="chart-fill monthly" id="budget-bar-monthly"></span></div></td>
-                    <td class="budget-rule" id="budget-rule-monthly">住宿 + 生活费 + 国民健康保险</td>
+                    <td class="budget-value">
+                      <span class="result-amount-row">
+                        <strong id="budget-result-monthly">0.40万</strong>
+                        <span class="result-period">/月</span>
+                      </span>
+                    </td>
+                    <td class="budget-krw">
+                      <span class="result-amount-row">
+                        <strong id="budget-result-monthly-krw">89.9万</strong>
+                        <span class="result-period">/月</span>
+                      </span>
+                    </td>
+                    <td class="budget-rule" id="budget-rule-monthly">①住宿月预算 / ②地方城市生活费 / ③NHIS保险</td>
                   </tr>
                   <tr>
                     <th class="budget-row-label" scope="row">净学费估算</th>
-                    <td class="budget-value"><strong id="budget-result-tuition">1.7-2.4万</strong></td>
-                    <td class="budget-visual"><div class="chart-track" aria-hidden="true"><span class="chart-fill tuition" id="budget-bar-tuition"></span></div></td>
-                    <td class="budget-rule" id="budget-rule-tuition">专业学费 × 学校/城市系数 × 奖学金假设</td>
+                    <td class="budget-value">
+                      <span class="result-amount-row">
+                        <strong id="budget-result-tuition">1.80万</strong>
+                        <span class="result-period">/年</span>
+                      </span>
+                    </td>
+                    <td class="budget-krw">
+                      <span class="result-amount-row">
+                        <strong id="budget-result-tuition-krw">404.5万</strong>
+                        <span class="result-period">/年</span>
+                      </span>
+                    </td>
+                    <td class="budget-rule" id="budget-rule-tuition">①人文社科基准学费 / ②国公立系数 / ③地方城市系数 / ④未扣奖学金</td>
                   </tr>
                   <tr>
                     <th class="budget-row-label" scope="row">出发前现金</th>
-                    <td class="budget-value"><strong id="budget-result-setup">0.25-0.7万</strong></td>
-                    <td class="budget-visual"><div class="chart-track" aria-hidden="true"><span class="chart-fill setup" id="budget-bar-setup"></span></div></td>
-                    <td class="budget-rule" id="budget-rule-setup">签证、材料、TOPIK、服务费等出发前支出</td>
+                    <td class="budget-value">
+                      <span class="result-amount-row">
+                        <strong id="budget-result-setup">0.48万</strong>
+                        <span class="result-period">一次性</span>
+                      </span>
+                    </td>
+                    <td class="budget-krw">
+                      <span class="result-amount-row">
+                        <strong id="budget-result-setup-krw">106.7万</strong>
+                        <span class="result-period">一次性</span>
+                      </span>
+                    </td>
+                    <td class="budget-rule" id="budget-rule-setup">①签证材料 / ②TOPIK / ③快递 / ④公证</td>
                   </tr>
                 </tbody>
               </table>
+              <p class="budget-average-note">以上为平均数据，仅供参考，不作为最终费用或录取承诺依据。</p>
+              <p class="budget-meta-line" hidden>
+                <span class="budget-meta-item">
+                  <span class="budget-meta-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="8"></circle>
+                      <path d="M9.5 9.4c.4-.9 1.3-1.4 2.5-1.4 1.5 0 2.5.8 2.5 2 0 1.1-.8 1.7-2.5 2-1.6.3-2.5.9-2.5 2 0 1.2 1 2 2.6 2 1.1 0 2-.4 2.5-1.2"></path>
+                      <path d="M12 6.6v10.8"></path>
+                    </svg>
+                  </span>
+                  <span><b>汇率口径</b> 1万韩元≈44.5元</span>
+                </span>
+              </p>
             </div>
           </div>
         </section>
       </section>
-      <p class="budget-meta-line">
-        <b>汇率口径</b> 1万韩元≈44.5元 ｜ <b>更新时间</b> 2026-06-10 ｜ <b>页面目标</b> 预算判断，不做录取承诺 ｜ <b>预算口径</b> 第一年总预算，含出发前现金
-      </p>
-
-      <section class="section" aria-label="降低成本优先级">
-        <div class="section-head">
-          <span class="section-index">02</span>
-          <h2>降低成本优先级</h2>
-          <span class="section-note">一页里保留真正能改变预算的动作</span>
-        </div>
-        <div class="priority-grid">
-          <ol class="priority-list">
-            <li><span>01</span><strong>先看奖学金</strong><p>30%-50% 学费减免比日常节省更有影响，但不能默认拿到，要按学校规则和成绩续评。</p></li>
-            <li><span>02</span><strong>先抢宿舍</strong><p>宿舍或合租通常比首尔单间更稳。住宿是月预算里最容易失控的项目。</p></li>
-            <li><span>03</span><strong>城市先定级</strong><p>地方国立和首尔私立不是同一预算游戏，先定城市再定学校，判断会清楚很多。</p></li>
-            <li><span>04</span><strong>专业单独查</strong><p>艺术、医学、部分工科不要用全校均值估算，直接查学院学费表。</p></li>
-            <li><span>05</span><strong>服务费拆开</strong><p>申请服务只算服务费，不要和学校申请费、翻译、公证、签证、快递混在一个报价里。</p></li>
-          </ol>
-          <div class="boundary">
-            <strong>哪些内容被压缩到边界里</strong>
-            <p>
-              这页不展开申请渠道、机构筛选、流程清单和录取概率。它们会把费用页变成另一份申请手册。这里保留它们对预算的影响：DIY省服务费但耗时，申请服务增加现金支出但能换流程支持。
-            </p>
-            <a href="./application.html">去看项目和申请路线</a>
-          </div>
-        </div>
-      </section>
 
       <section class="section legacy-appendix" aria-label="&#21407;&#39029;&#38754;&#30003;&#35831;&#36164;&#26009;&#24402;&#26723;">
-        <div class="section-head">
-          <span class="section-index">03</span>
-          <h2>&#21407;&#39029;&#38754;&#20869;&#23481;&#65306;&#30003;&#35831;&#19982;&#20013;&#20171;&#21442;&#32771;</h2>
-          <span class="section-note">&#20445;&#30041;&#21407;&#39029;&#38754;&#30340;&#20869;&#23481;&#12289;&#21345;&#29255;&#12289;&#22270;&#34920;&#12289;&#27604;&#36739;&#34920;&#21644;&#27969;&#31243;&#26679;&#24335;</span>
-        </div>
-
-        <div class="legacy-intro">
-          <p>
-            &#19978;&#26041;&#39029;&#38754;&#20808;&#35299;&#20915;&#8220;&#39044;&#31639;&#24590;&#20040;&#21028;&#26029;&#8221;&#12290;&#36825;&#19968;&#37096;&#20998;&#24674;&#22797;&#21407;&#39029;&#38754;&#30340;&#35270;&#35273;&#32467;&#26500;&#65306;&#30003;&#35831;&#28192;&#36947;&#21345;&#29255;&#12289;&#36212;&#38889;&#21069;&#36153;&#29992;&#21345;&#12289;&#36153;&#29992;&#26500;&#25104;&#22270;&#12289;&#30452;&#30003;&#47;&#20013;&#20171;&#27604;&#36739;&#12289;&#36335;&#24452;&#21028;&#26029;&#12289;&#27969;&#31243;&#21644;&#25552;&#37266;&#37117;&#25353;&#21407;&#26469;&#30340;&#26679;&#24335;&#25918;&#22312;&#39029;&#38754;&#26368;&#19979;&#26041;&#12290;
-          </p>
-          <span class="legacy-tag">&#21407;&#26679;&#24335;&#24402;&#26723;</span>
-        </div>
-
         <div class="legacy-original">
           <div class="agency-merge channel-top">
           <section class="channel-block" aria-label="三大核心申请渠道">
@@ -3643,9 +4800,9 @@
                     <h3>韩语学习 / TOPIK</h3>
                     <span class="pre-cost-chip">语言</span>
                   </div>
-                  <div class="pre-cost-amount"><strong>0.3-1.5万 + 400元/次</strong></div>
-                  <div class="pre-cost-line"><p>课程费差异大，TOPIK报名另算。</p></div>
-                  <small>单独放进语言预算。</small>
+                  <div class="pre-cost-amount"><strong>0.3-1.5万 + TOPIK约400元/次</strong></div>
+                  <div class="pre-cost-line"><p>前半是课程/教材预算，后半是单次考试费。</p></div>
+                  <small>语言课、教材和考试次数分开估算。</small>
                 </article>
 
                 <article class="pre-cost-card">
@@ -4088,14 +5245,33 @@
 
             const costVisualGrid = root.querySelector('.cost-visual-grid');
             const preCostSection = root.querySelector('.pre-cost-section');
-            if (costVisualGrid && preCostSection) {
-              preCostSection.insertAdjacentElement('beforebegin', costVisualGrid);
+            if (costVisualGrid && channelTopSection) {
+              channelTopSection.insertAdjacentElement('beforebegin', costVisualGrid);
+            }
+            if (preCostSection && channelTopSection) {
+              channelTopSection.insertAdjacentElement('beforebegin', preCostSection);
             }
 
             const insightGrid = root.querySelector('.insight-grid');
             if (insightGrid && costVisualGrid) {
               costVisualGrid.insertAdjacentElement('beforebegin', insightGrid);
             }
+
+            const applyCompareGrid = root.querySelector('.apply-compare-grid');
+            const studentInsightPanel = insightGrid?.querySelector('.insight-panel.student');
+            const choiceInsightPanel = insightGrid?.querySelector('.insight-panel.choice');
+            if (applyCompareGrid && studentInsightPanel) {
+              applyCompareGrid.insertAdjacentElement('afterbegin', studentInsightPanel);
+            }
+            if (choiceInsightPanel) {
+              choiceInsightPanel.remove();
+            }
+            if (insightGrid && !insightGrid.querySelector('.insight-panel')) {
+              insightGrid.remove();
+            }
+            root.querySelectorAll('.metric-grid, #core, #path, #diy, #agency, #agency-checklist, #fees, #success, #reminders').forEach((section) => {
+              section.remove();
+            });
 
             const materialToggle = root.querySelector('.pre-cost-card.featured');
             const materialBreakdown = root.querySelector('#material-breakdown');
@@ -4190,35 +5366,77 @@
       const insuranceMonthly = Math.round(76390 * sourceCurrencyRate);
 
       const form = document.querySelector("#budget-form");
+      const budgetRunButton = document.querySelector("[data-budget-run]");
+      const budgetResetButton = document.querySelector("[data-budget-reset]");
+      const budgetLoadingPanel = document.querySelector(".budget-loading");
+      const budgetResultPanel = document.querySelector(".result-panel");
+      const budgetMetaLine = document.querySelector(".budget-meta-line");
       const totalEl = document.querySelector("#budget-result-total");
       const contextEl = document.querySelector("#budget-result-context");
       const monthlyEl = document.querySelector("#budget-result-monthly");
       const tuitionEl = document.querySelector("#budget-result-tuition");
       const setupEl = document.querySelector("#budget-result-setup");
-      const totalBarEl = document.querySelector("#budget-bar-total");
-      const monthlyBarEl = document.querySelector("#budget-bar-monthly");
-      const tuitionBarEl = document.querySelector("#budget-bar-tuition");
-      const setupBarEl = document.querySelector("#budget-bar-setup");
+      const totalKrwEl = document.querySelector("#budget-result-total-krw");
+      const monthlyKrwEl = document.querySelector("#budget-result-monthly-krw");
+      const tuitionKrwEl = document.querySelector("#budget-result-tuition-krw");
+      const setupKrwEl = document.querySelector("#budget-result-setup-krw");
       const totalRuleEl = document.querySelector("#budget-rule-total");
       const monthlyRuleEl = document.querySelector("#budget-rule-monthly");
       const tuitionRuleEl = document.querySelector("#budget-rule-tuition");
       const setupRuleEl = document.querySelector("#budget-rule-setup");
+      let budgetLoadingTimer = null;
 
       function wan(value) {
-        return (value / 10000).toFixed(value >= 100000 ? 1 : 2).replace(/\.0$/, "");
+        const decimals = value >= 100000 ? 1 : 2;
+        const scale = 10 ** decimals;
+        const amount = Math.round(((value / 10000) + Number.EPSILON) * scale) / scale;
+        return amount.toFixed(decimals).replace(/\.0$/, "");
       }
 
-      function rangeWan(range) {
-        return `${wan(range[0])}-${wan(range[1])}万`;
+      function averageWan(range) {
+        return `${wan((range[0] + range[1]) / 2)}万`;
+      }
+
+      function averageRmbWan(range) {
+        return averageWan(range);
+      }
+
+      function addThousandsSeparator(value) {
+        const [integer, decimal] = value.split(".");
+        const formattedInteger = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return decimal ? `${formattedInteger}.${decimal}` : formattedInteger;
+      }
+
+      function averageKrwWanFromRmb(range) {
+        return `${addThousandsSeparator(wan(((range[0] + range[1]) / 2) / sourceCurrencyRate))}万`;
       }
 
       function getValue(id) {
         return document.querySelector(`#${id}`).value;
       }
 
-      function chartWidth(value, max) {
-        if (!max) return "12%";
-        return `${Math.max(12, Math.min(100, Math.round((value / max) * 100)))}%`;
+      function setBudgetOutputVisible(isVisible) {
+        if (budgetResultPanel) {
+          budgetResultPanel.hidden = !isVisible;
+        }
+        if (budgetMetaLine) {
+          budgetMetaLine.hidden = !isVisible;
+        }
+      }
+
+      function setBudgetLoadingVisible(isVisible) {
+        if (budgetLoadingPanel) {
+          budgetLoadingPanel.hidden = !isVisible;
+        }
+      }
+
+      function clearBudgetLoading() {
+        window.clearTimeout(budgetLoadingTimer);
+        budgetLoadingTimer = null;
+        setBudgetLoadingVisible(false);
+        if (budgetRunButton) {
+          budgetRunButton.disabled = false;
+        }
       }
 
       function renderBudget() {
@@ -4249,31 +5467,81 @@
         const totalLow = tuitionLow + annualHousingLow + annualLivingLow + setupRange[0];
         const totalHigh = tuitionHigh + annualHousingHigh + annualLivingHigh + setupRange[1];
 
-        totalEl.textContent = rangeWan([totalLow, totalHigh]);
-        contextEl.textContent = `${fieldLabels.city[city]}${fieldLabels.school[school]}，${fieldLabels.major[major]}，${fieldLabels.housing[housing]}，${fieldLabels.route[route]}，${scholarshipRate ? `假设减免${Math.round(scholarshipRate * 100)}%` : "无奖学金假设"}`;
-        monthlyEl.textContent = rangeWan([monthlyLow, monthlyHigh]);
-        tuitionEl.textContent = rangeWan([tuitionLow, tuitionHigh]);
-        setupEl.textContent = rangeWan(setupRange);
-        totalRuleEl.textContent = `净学费 + ${fieldLabels.housing[housing]}12个月 + 生活/保险12个月 + ${fieldLabels.route[route]}前期现金`;
-        monthlyRuleEl.textContent = `${fieldLabels.housing[housing]}月预算 + ${fieldLabels.city[city]}生活费 + NHIS保险`;
-        tuitionRuleEl.textContent = `${fieldLabels.major[major]}基准学费 × ${fieldLabels.school[school]} × ${fieldLabels.city[city]}${scholarshipRate ? ` × 减免${Math.round(scholarshipRate * 100)}%` : "，未扣奖学金"}`;
+        totalEl.textContent = averageRmbWan([totalLow, totalHigh]);
+        totalKrwEl.textContent = averageKrwWanFromRmb([totalLow, totalHigh]);
+        if (contextEl) {
+          contextEl.textContent = `${fieldLabels.city[city]}${fieldLabels.school[school]}，${fieldLabels.major[major]}，${fieldLabels.housing[housing]}，${fieldLabels.route[route]}，${scholarshipRate ? `假设减免${Math.round(scholarshipRate * 100)}%` : "无奖学金假设"}`;
+        }
+        monthlyEl.textContent = averageRmbWan([monthlyLow, monthlyHigh]);
+        monthlyKrwEl.textContent = averageKrwWanFromRmb([monthlyLow, monthlyHigh]);
+        tuitionEl.textContent = averageRmbWan([tuitionLow, tuitionHigh]);
+        tuitionKrwEl.textContent = averageKrwWanFromRmb([tuitionLow, tuitionHigh]);
+        setupEl.textContent = averageRmbWan(setupRange);
+        setupKrwEl.textContent = averageKrwWanFromRmb(setupRange);
+        totalRuleEl.textContent = `①净学费 / ②${fieldLabels.housing[housing]}12个月 / ③生活/保险12个月 / ④${fieldLabels.route[route]}前期现金`;
+        monthlyRuleEl.textContent = `①${fieldLabels.housing[housing]}月预算 / ②${fieldLabels.city[city]}生活费 / ③NHIS保险`;
+        tuitionRuleEl.textContent = `①${fieldLabels.major[major]}基准学费 / ②${fieldLabels.school[school]}系数 / ③${fieldLabels.city[city]}系数 / ④${scholarshipRate ? `奖学金减免${Math.round(scholarshipRate * 100)}%` : "未扣奖学金"}`;
         setupRuleEl.textContent =
           route === "assisted"
-            ? "含申请服务费、签证材料、TOPIK、快递和公证等前期现金"
-            : "DIY口径，仅保留签证材料、TOPIK、快递和公证等前期现金";
+            ? "①申请服务费 / ②签证材料 / ③TOPIK / ④快递/公证"
+            : "①签证材料 / ②TOPIK / ③快递 / ④公证";
 
-        const chartMax = Math.max(monthlyHigh, tuitionHigh, setupRange[1]);
-        totalBarEl.style.width = chartWidth((totalLow + totalHigh) / 2, totalHigh);
-        monthlyBarEl.style.width = chartWidth((monthlyLow + monthlyHigh) / 2, chartMax);
-        tuitionBarEl.style.width = chartWidth((tuitionLow + tuitionHigh) / 2, chartMax);
-        setupBarEl.style.width = chartWidth((setupRange[0] + setupRange[1]) / 2, chartMax);
+        setBudgetOutputVisible(true);
+        setBudgetLoadingVisible(false);
+        if (budgetRunButton) {
+          budgetRunButton.dataset.state = "ready";
+          budgetRunButton.disabled = false;
+        }
+      }
+
+      function runBudgetWithLoading() {
+        window.clearTimeout(budgetLoadingTimer);
+        setBudgetOutputVisible(false);
+        setBudgetLoadingVisible(true);
+        if (budgetRunButton) {
+          budgetRunButton.disabled = true;
+          budgetRunButton.dataset.state = "loading";
+        }
+        budgetLoadingTimer = window.setTimeout(() => {
+          renderBudget();
+          budgetLoadingTimer = null;
+        }, 1500);
       }
 
       document.querySelectorAll("[data-planner-field]").forEach((field) => {
-        field.addEventListener("change", renderBudget);
+        field.addEventListener("change", () => {
+          clearBudgetLoading();
+          setBudgetOutputVisible(false);
+          if (budgetRunButton) {
+            budgetRunButton.dataset.state = "pending";
+          }
+        });
       });
 
-      renderBudget();
+      if (budgetRunButton) {
+        budgetRunButton.addEventListener("click", runBudgetWithLoading);
+      }
+
+      if (form) {
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          runBudgetWithLoading();
+        });
+      }
+
+      if (budgetResetButton && form) {
+        budgetResetButton.addEventListener("click", () => {
+          form.reset();
+          clearBudgetLoading();
+          setBudgetOutputVisible(false);
+          if (budgetRunButton) {
+            budgetRunButton.dataset.state = "pending";
+          }
+        });
+      }
+
+      setBudgetLoadingVisible(false);
+      setBudgetOutputVisible(false);
     </script>
   </body>
 </html>

@@ -452,14 +452,14 @@ function SchoolInfoPanel({ university }: { university: (typeof universities)[num
 type DirectoryFilters = {
   types: string[];
   zones: string[];
-  tier: string;
+  tiers: string[];
   majors: string[];
 };
 
 const emptyDirectoryFilters: DirectoryFilters = {
   types: [],
   zones: [],
-  tier: "",
+  tiers: [],
   majors: []
 };
 
@@ -473,7 +473,7 @@ function visibleByFilters(university: (typeof universities)[number], filters: Di
     if (!matchesType) return false;
   }
   if (filters.zones.length > 0 && !cityZones.some((zone) => filters.zones.includes(zone))) return false;
-  if (filters.tier && tierFor(university.nameCn).tier !== filters.tier) return false;
+  if (filters.tiers.length > 0 && !filters.tiers.includes(tierFor(university.nameCn).tier)) return false;
   if (filters.majors.length > 0 && !filters.majors.every((major) => majorTags.includes(major))) return false;
   return true;
 }
@@ -510,7 +510,7 @@ function toggleArrayValue(values: string[], value: string) {
 }
 
 function hasNoFilters(filters: DirectoryFilters) {
-  return !filters.types.length && !filters.zones.length && !filters.tier && !filters.majors.length;
+  return !filters.types.length && !filters.zones.length && !filters.tiers.length && !filters.majors.length;
 }
 
 type UniversitiesDirectoryProps = {
@@ -541,7 +541,7 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
     setExpandedPanel(null);
   };
   const toggleTierFilter = (value: string) => {
-    setFilters((current) => ({ ...current, tier: current.tier === value ? "" : value }));
+    setFilters((current) => ({ ...current, tiers: toggleArrayValue(current.tiers, value) }));
     setExpandedPanel(null);
   };
   const toggleMajorFilter = (value: string) => {
@@ -596,7 +596,7 @@ export function UniversitiesDirectory({ actions }: UniversitiesDirectoryProps) {
               >
                 {tierFilterLabels.map((tier) => (
                   <button
-                    aria-pressed={filters.tier === tier}
+                    aria-pressed={filters.tiers.includes(tier)}
                     className="min-h-10 flex-none rounded-full border border-ink bg-[#e6f7f7] px-4 py-2 text-sm font-extrabold text-ink aria-pressed:bg-yellow aria-pressed:ring-2 aria-pressed:ring-ink aria-pressed:ring-offset-2 aria-pressed:ring-offset-paper"
                     key={tier}
                     type="button"

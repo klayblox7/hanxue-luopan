@@ -1395,11 +1395,19 @@
         display: none;
       }
 
+      .application-entry-preview-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        max-width: min(64vw, 67.5rem);
+        cursor: default;
+      }
+
       .application-entry-preview img {
         display: block;
         width: auto;
-        max-width: min(82vw, 98rem);
-        max-height: 68vh;
+        max-width: 100%;
+        max-height: 52vh;
         object-fit: contain;
         user-select: none;
         touch-action: none;
@@ -1432,12 +1440,12 @@
       }
 
       .application-entry-preview-snooze {
-        position: fixed;
-        right: 9.25rem;
-        bottom: 4.4rem;
+        position: static;
+        align-self: flex-end;
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
+        margin-top: 0.65rem;
         min-height: 2.3rem;
         padding: 0.45rem 0.85rem;
         border: 1px solid rgba(248, 248, 245, 0.58);
@@ -1461,8 +1469,12 @@
           padding: 5rem 1rem 4.5rem;
         }
 
-        .application-entry-preview img {
+        .application-entry-preview-content {
           max-width: 92vw;
+        }
+
+        .application-entry-preview img {
+          max-width: 100%;
           max-height: 62vh;
         }
 
@@ -1473,10 +1485,6 @@
           height: 3rem;
         }
 
-        .application-entry-preview-snooze {
-          right: 1rem;
-          bottom: 1.2rem;
-        }
       }
 
     </style>
@@ -1485,7 +1493,9 @@
   <body>
     <div class="application-entry-preview" id="application-entry-preview" role="dialog" aria-modal="true" aria-label="Project preview" hidden>
       <button class="application-entry-preview-close" type="button" aria-label="Close">x</button>
-      <img src="./public/application-entry-preview.png" alt="Project preview" />
+      <div class="application-entry-preview-content">
+        <img src="./public/application-entry-preview.png" alt="Project preview" />
+      </div>
     </div>
     <header class="header">
       <div class="header-inner">
@@ -2067,27 +2077,21 @@
         if (!preview) return;
 
         const previewImage = preview.querySelector("img");
+        const previewContent = preview.querySelector(".application-entry-preview-content") || preview;
         const previewClose = preview.querySelector(".application-entry-preview-close");
         const previewSnoozeKey = "koreaUniversityLinkApplicationPreviewHiddenDate";
-        const getTodayKey = () => {
-          const now = new Date();
-          const year = now.getFullYear();
-          const month = String(now.getMonth() + 1).padStart(2, "0");
-          const day = String(now.getDate()).padStart(2, "0");
-          return `${year}-${month}-${day}`;
-        };
-        const todayKey = getTodayKey();
-        const getSnoozeDate = () => {
+        const previewSnoozeDurationMs = 30 * 60 * 1000;
+        const getSnoozeUntil = () => {
           try {
-            return localStorage.getItem(previewSnoozeKey) || "";
+            return Number(localStorage.getItem(previewSnoozeKey) || 0);
           } catch (error) {
-            return "";
+            return 0;
           }
         };
-        const setSnoozeDate = (value) => {
+        const setSnoozeUntil = (value) => {
           try {
             if (value) {
-              localStorage.setItem(previewSnoozeKey, value);
+              localStorage.setItem(previewSnoozeKey, String(value));
             } else {
               localStorage.removeItem(previewSnoozeKey);
             }
@@ -2096,7 +2100,7 @@
           }
         };
 
-        if (getSnoozeDate() === todayKey) {
+        if (getSnoozeUntil() > Date.now()) {
           preview.hidden = true;
           return;
         }
@@ -2107,9 +2111,9 @@
         snoozeLabel.className = "application-entry-preview-snooze";
         snoozeCheckbox.type = "checkbox";
         snoozeCheckbox.id = "application-entry-preview-snooze";
-        snoozeText.textContent = String.fromCharCode(20170, 22825, 19981, 20877, 26174, 31034);
+        snoozeText.textContent = "30分钟内不再显示";
         snoozeLabel.append(snoozeCheckbox, snoozeText);
-        preview.appendChild(snoozeLabel);
+        previewContent.appendChild(snoozeLabel);
 
         let previewScale = 1;
         let previewX = 0;
@@ -2143,7 +2147,7 @@
         }
 
         snoozeCheckbox.addEventListener("change", () => {
-          setSnoozeDate(snoozeCheckbox.checked ? todayKey : "");
+          setSnoozeUntil(snoozeCheckbox.checked ? Date.now() + previewSnoozeDurationMs : 0);
         });
 
         preview.addEventListener("click", (event) => {

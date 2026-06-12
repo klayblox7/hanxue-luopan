@@ -1,6 +1,11 @@
-# Hanxue Luopan Product Context
+# KOREA UNIVERSITY LINK Product Context
 
 register: product
+
+## Brand Name
+
+English: KOREA UNIVERSITY LINK
+Chinese: 韩国大学通
 
 ## Users
 
@@ -8,7 +13,7 @@ Chinese students, parents, and applicants preparing for Korean universities, lan
 
 ## Product Purpose
 
-Hanxue Luopan is a Korean study-abroad decision platform. It should feel like a maintained data product, not a blog post or an agency advertisement.
+KOREA UNIVERSITY LINK is a Korean study-abroad decision platform. It should feel like a maintained data product, not a blog post or an agency advertisement.
 
 The homepage must help users understand that future modules will support university comparison, TOPIK planning, RMB-based cost estimates, scholarship research, Korean learning paths, application routes, and self-application versus agency decisions.
 

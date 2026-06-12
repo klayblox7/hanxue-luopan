@@ -5,9 +5,9 @@ import { BackToTopButton } from "@/components/BackToTopButton";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "韩学罗盘｜韩国留学大学库、TOPIK考试、费用和申请路线",
+  title: "KOREA UNIVERSITY LINK｜韩国大学通、TOPIK考试、费用和申请路线",
   description:
-    "面向中国学生的韩国留学决策平台，整理韩国大学、TOPIK考试、奖学金、人民币预算和申请路线。",
+    "面向中国学生的韩国大学决策平台，整理韩国大学、TOPIK考试、奖学金、人民币预算和申请路线。",
   keywords: [
     "韩国留学",
     "韩国大学申请",
