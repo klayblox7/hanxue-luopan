@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
+import { assetPath } from "@/data/assetPath";
 import { getAdmissionCaseSummary, type DistributionItem } from "@/data/admissionCases";
 import { koreaMapRegions, type KoreaMapRegionKey, type KoreaMapRegionShape } from "@/data/korea-map-regions";
 import { universityAddresses } from "@/data/universityAddresses";
@@ -487,7 +488,7 @@ export function KoreaStudyMap() {
   const markerPreviewSchool = hoveredSchool ?? activeSchool;
   const detailRegion = activeRegion;
   const transform = detailTransform(detailRegion);
-  const schoolImageSrc = schoolImageBySlug[activeSchool.slug] ?? schoolImageBySlug["yonsei-university"];
+  const schoolImageSrc = assetPath(schoolImageBySlug[activeSchool.slug] ?? schoolImageBySlug["yonsei-university"]);
   const activeFacts = studyInfoFacts(activeSchool);
 
   function chooseRegion(region: RegionProfile) {

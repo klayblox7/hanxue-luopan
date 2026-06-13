@@ -5,6 +5,7 @@ import {
   type IntendedMajor,
   type SchoolTypePreference
 } from "./recommendations";
+import { assetPath } from "./assetPath";
 import { getUniversityTier } from "./universityTiers";
 
 export type MobileRouteId = "undergraduate" | "transfer" | "graduate" | "language";
@@ -78,7 +79,7 @@ export const mobileHomeActions: MobileHomeAction[] = [
     detail: "地区、城市、学校位置",
     href: "/korea-university-map",
     source: "地图",
-    imageSrc: "/mobile-mini-program/category-map-transparent.png",
+    imageSrc: assetPath("/mobile-mini-program/category-map-transparent.png"),
     imageAlt: "韩国大学地图分类图",
     tone: "bg-[#b8a4ed]",
     mark: "图",
@@ -89,7 +90,7 @@ export const mobileHomeActions: MobileHomeAction[] = [
     detail: "城市、专业、语言要求",
     href: "/universities",
     source: "学校",
-    imageSrc: "/mobile-mini-program/category-universities-transparent.png",
+    imageSrc: assetPath("/mobile-mini-program/category-universities-transparent.png"),
     imageAlt: "韩国大学库分类图",
     tone: "bg-[#ffd0d8]",
     mark: "大",
@@ -100,7 +101,7 @@ export const mobileHomeActions: MobileHomeAction[] = [
     detail: "1+3、2+2等",
     href: "/application",
     source: "路线",
-    imageSrc: "/mobile-mini-program/category-application-clean.png",
+    imageSrc: assetPath("/mobile-mini-program/category-application-clean.png"),
     imageAlt: "国内+韩国项目分类图",
     tone: "bg-[#a4d4c5]",
     mark: "项",
@@ -111,7 +112,7 @@ export const mobileHomeActions: MobileHomeAction[] = [
     detail: "学费、住宿、预算",
     href: "/cost",
     source: "估算",
-    imageSrc: "/mobile-mini-program/category-cost-clean.png",
+    imageSrc: assetPath("/mobile-mini-program/category-cost-clean.png"),
     imageAlt: "留学费用分类图",
     tone: "bg-[#ffe07a]",
     mark: "费",
@@ -122,7 +123,7 @@ export const mobileHomeActions: MobileHomeAction[] = [
     detail: "TOPIK、报名、备考",
     href: "/topik",
     source: "官方",
-    imageSrc: "/mobile-mini-program/category-topik-clean.png",
+    imageSrc: assetPath("/mobile-mini-program/category-topik-clean.png"),
     imageAlt: "韩语分类图",
     tone: "bg-[#71d39b]",
     mark: "韩",
@@ -133,7 +134,7 @@ export const mobileHomeActions: MobileHomeAction[] = [
     detail: "人民币、韩元、预算",
     href: "/exchange-rate",
     source: "汇率",
-    imageSrc: "/mobile-mini-program/category-exchange-transparent.png",
+    imageSrc: assetPath("/mobile-mini-program/category-exchange-transparent.png"),
     imageAlt: "汇率换算分类图",
     tone: "bg-[#ffd0d8]",
     mark: "汇",

@@ -16,6 +16,7 @@ import {
   type MobileHomeAction,
   type MobileRecommendationInput
 } from "@/data/mobileHome";
+import { assetPath } from "@/data/assetPath";
 import { CampusImage } from "@/components/CampusImage";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 
@@ -364,7 +365,7 @@ export function MobileMiniProgramHome() {
           fill
           priority
           sizes="100vw"
-          src="/mobile-mini-program/home-hero-mobile.png"
+          src={assetPath("/mobile-mini-program/home-hero-mobile.png")}
         />
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#073f2d]/96 via-[#073f2d]/62 to-[#f5f3ed]" />
         <div className="absolute inset-y-0 left-0 z-10 w-[82%] bg-gradient-to-r from-[#073f2d] via-[#073f2d]/92 to-[#073f2d]/10" />

@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { assetPath } from "@/data/assetPath";
+
 const campusImageExtensions = ["webp", "jpg", "png", "jpeg"] as const;
 const fallbackCampusImage = "/campus-images/yonsei-university.webp";
 
@@ -13,7 +15,7 @@ type CampusImageProps = {
 
 export function CampusImage({ slug, name, className }: CampusImageProps) {
   const candidates = useMemo(
-    () => campusImageExtensions.map((extension) => `/campus-images/${slug}.${extension}`).concat(fallbackCampusImage),
+    () => campusImageExtensions.map((extension) => assetPath(`/campus-images/${slug}.${extension}`)).concat(assetPath(fallbackCampusImage)),
     [slug]
   );
   const [candidateIndex, setCandidateIndex] = useState(0);
@@ -28,7 +30,7 @@ export function CampusImage({ slug, name, className }: CampusImageProps) {
       className={className}
       decoding="async"
       loading="lazy"
-      src={candidates[candidateIndex] ?? fallbackCampusImage}
+      src={candidates[candidateIndex] ?? assetPath(fallbackCampusImage)}
       onError={() => setCandidateIndex((current) => Math.min(current + 1, candidates.length - 1))}
     />
   );

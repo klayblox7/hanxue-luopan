@@ -3,6 +3,7 @@
 import { Fragment, type ReactNode, useMemo, useState } from "react";
 
 import { getAdmissionCaseSummary, type AdmissionCaseSummary, type DistributionItem } from "@/data/admissionCases";
+import { assetPath } from "@/data/assetPath";
 import partnerSchoolProfiles from "@/data/partner-school-profiles.json";
 import { universities } from "@/data/universities";
 import majorTagData from "@/data/university-major-tags.json";
@@ -82,7 +83,7 @@ const supplementalProfilesBySlug: Record<string, Partial<SchoolProfile>> = {
 
 function publicAssetPath(value?: string) {
   if (!value) return "";
-  return value.startsWith("public/") ? `/${value.replace(/^public\//, "")}` : value;
+  return assetPath(value.startsWith("public/") ? `/${value.replace(/^public\//, "")}` : value);
 }
 
 const tagRules = [

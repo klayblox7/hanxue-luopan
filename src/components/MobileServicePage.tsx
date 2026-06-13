@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { assetPath } from "@/data/assetPath";
 import { MobileBottomNav, type MobileBottomTabId } from "./MobileBottomNav";
 
 type MobileServicePageId = "topik" | "cost" | "application" | "exchange" | "korean-learning";
@@ -990,7 +991,7 @@ function summarizeApplicationFact(label: string, value?: string) {
 
 function publicApplicationAssetPath(value?: string) {
   if (!value) return "";
-  return value.startsWith("public/") ? `/${value.slice("public/".length)}` : value;
+  return assetPath(value.startsWith("public/") ? `/${value.slice("public/".length)}` : value);
 }
 
 function MetricTile({ metric }: { metric: Metric }) {
@@ -1609,7 +1610,7 @@ function BudgetEstimator() {
           data-testid="mobile-budget-card-icon"
         >
           <Image
-            src="/mobile-mini-program/category-exchange-transparent.png"
+            src={assetPath("/mobile-mini-program/category-exchange-transparent.png")}
             alt="汇率换算图标"
             width={72}
             height={72}
