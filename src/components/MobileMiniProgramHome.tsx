@@ -191,11 +191,11 @@ function RecommendedSchoolSheet({
   const caseExamples = recommendationCaseExamples(school.caseSummary.representativeCases);
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[14dvh]" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh] md:hidden" onClick={onClose}>
       <section
         aria-label={school.nameCn}
         aria-modal="true"
-        className="ml-auto flex max-h-[82dvh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl border border-ink bg-[#f5f3ed] shadow-[0_-18px_46px_rgba(10,10,10,0.22)]"
+        className="mx-auto flex max-h-[82dvh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl border border-ink bg-[#f5f3ed] shadow-[0_-18px_46px_rgba(10,10,10,0.22)]"
         role="dialog"
         onClick={(event) => event.stopPropagation()}
       >
@@ -354,7 +354,7 @@ export function MobileMiniProgramHome() {
   };
 
   return (
-    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(5.8rem+env(safe-area-inset-bottom))] md:shadow-[0_0_0_1px_rgba(63,63,58,0.14),0_18px_54px_rgba(10,10,10,0.12)]" aria-label="KOREA UNIVERSITY LINK移动端小程序首页">
+    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(5.8rem+env(safe-area-inset-bottom))] md:hidden" aria-label="KOREA UNIVERSITY LINK移动端小程序首页">
       <div
         className="relative isolate min-h-[15rem] overflow-hidden bg-[#073f2d] px-6 pb-10 pt-8 text-[#fbfbf8]"
         data-testid="mobile-home-hero"
@@ -390,7 +390,7 @@ export function MobileMiniProgramHome() {
           </div>
 
           <div className="mt-4 rounded-xl bg-surface">
-            <div className="grid grid-cols-3 gap-y-4 border-b border-ink/10 pb-4">
+            <div className="grid grid-cols-3 gap-y-4 pb-4">
               {mobileHomeActions.slice(0, 3).map((action) => (
                 <MobileHomeActionLink action={action} key={action.href} />
               ))}
@@ -580,7 +580,7 @@ export function MobileMiniProgramHome() {
                     <span className="rounded-full border border-ink bg-surface px-2 py-0.5 text-xs font-black">{result.category}</span>
                   </div>
                   <p className="mt-2 text-[0.78rem] font-medium leading-5 text-ink">{result.reason}</p>
-                  <div className="mt-3 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2 border-t border-ink/10 pt-2" data-testid="mobile-recommendation-card-actions">
+                  <div className="mt-3 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2 pt-2" data-testid="mobile-recommendation-card-actions">
                     <button
                       className="inline-flex min-h-[2.35rem] min-w-0 items-center justify-center gap-1 overflow-hidden rounded-lg border border-ink bg-[#eef8df] px-1.5 text-center text-[0.82rem] font-black leading-tight"
                       type="button"

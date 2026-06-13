@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { LegacyDesktopFrame } from "@/components/LegacyDesktopFrame";
 import { MobileServicePage } from "@/components/MobileServicePage";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export default function CostPage() {
   return (
     <main className="min-h-screen bg-paper text-ink">
       <MobileServicePage page="cost" />
+      <LegacyDesktopFrame src="/cost.html" title="留学费用" />
     </main>
   );
 }

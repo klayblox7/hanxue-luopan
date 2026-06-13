@@ -3,11 +3,11 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 describe("mobile border tone", () => {
-  it("uses a dark gray border override for full-strength mobile ink borders", () => {
+  it("uses a shared gray border override for every mobile border", () => {
     const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
 
-    expect(css).toContain("--mobile-border-strong: #3f3f3a");
-    expect(css).toContain(".md\\:hidden .border-ink");
-    expect(css).toContain("border-color: var(--mobile-border-strong)");
+    expect(css).toContain("--mobile-border-gray: #7b786f");
+    expect(css).toContain(".mobile-app-shell *::before");
+    expect(css).toContain("border-color: var(--mobile-border-gray) !important");
   });
 });

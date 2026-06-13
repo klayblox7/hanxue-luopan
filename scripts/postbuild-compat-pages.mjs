@@ -1,7 +1,8 @@
-import { copyFileSync, existsSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const outDir = join(process.cwd(), "out");
+const publicDir = join(process.cwd(), "public");
 
 if (!existsSync(outDir)) {
   process.exit(0);
@@ -17,6 +18,26 @@ const compatibilityPages = {
   "topik.html": join("topik", "index.html"),
   "universities.html": join("universities", "index.html")
 };
+
+const legacyDir = join(outDir, "legacy");
+const legacyBaseHref = process.env.GITHUB_PAGES === "true" ? "/hanxue-luopan/" : "/";
+
+mkdirSync(legacyDir, { recursive: true });
+
+for (const target of Object.keys(compatibilityPages)) {
+  const publicSourcePath = join(publicDir, target);
+
+  if (!existsSync(publicSourcePath)) {
+    continue;
+  }
+
+  const html = readFileSync(publicSourcePath, "utf8");
+  const legacyHtml = html.includes("<base ")
+    ? html
+    : html.replace(/<head([^>]*)>/i, `<head$1>\n  <base href="${legacyBaseHref}">`);
+
+  writeFileSync(join(legacyDir, target), legacyHtml);
+}
 
 for (const [target, source] of Object.entries(compatibilityPages)) {
   const sourcePath = join(outDir, source);

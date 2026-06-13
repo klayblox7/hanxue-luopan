@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { LegacyDesktopFrame } from "@/components/LegacyDesktopFrame";
 import { MobileUniversitiesApp } from "@/components/MobileUniversitiesApp";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export default function UniversitiesPage() {
   return (
     <main className="min-h-screen bg-paper text-ink">
       <MobileUniversitiesApp />
+      <LegacyDesktopFrame src="/universities.html" title="韩国大学库" />
     </main>
   );
 }

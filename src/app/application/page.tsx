@@ -3,6 +3,7 @@ import path from "node:path";
 
 import type { Metadata } from "next";
 
+import { LegacyDesktopFrame } from "@/components/LegacyDesktopFrame";
 import { MobileServicePage, type ApplicationProgram } from "@/components/MobileServicePage";
 
 export const metadata: Metadata = {
@@ -36,6 +37,7 @@ export default function ApplicationPage() {
   return (
     <main className="min-h-screen bg-paper text-ink">
       <MobileServicePage applicationPrograms={applicationPrograms} page="application" />
+      <LegacyDesktopFrame src="/application.html" title="国内+韩国项目" />
     </main>
   );
 }

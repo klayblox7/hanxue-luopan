@@ -249,7 +249,7 @@ function mobileSchoolProfile(university: University) {
   };
 }
 
-function buildMobileUniversities(): MobileUniversity[] {
+export function buildMobileUniversities(): MobileUniversity[] {
   return universities
     .map((university) => {
       const tierProfile = getUniversityTierProfile(university.nameCn);
@@ -423,11 +423,11 @@ function PreciseFilterSheet({
   resultCount: number;
 }) {
   return (
-    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[10dvh]" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[10dvh] md:hidden" onClick={onClose}>
       <section
         aria-label="精准筛选"
         aria-modal="true"
-        className="ml-auto flex max-h-[88dvh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl border border-ink bg-[#f5f3ed] shadow-[0_-18px_46px_rgba(10,10,10,0.22)]"
+        className="mx-auto flex max-h-[88dvh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl border border-ink bg-[#f5f3ed] shadow-[0_-18px_46px_rgba(10,10,10,0.22)]"
         role="dialog"
         onClick={(event) => event.stopPropagation()}
       >
@@ -468,7 +468,7 @@ function PreciseFilterSheet({
   );
 }
 
-function UniversitySheet({
+export function UniversitySheet({
   mode,
   onShowCases,
   school,
@@ -484,7 +484,7 @@ function UniversitySheet({
   const applicantExamples = applicantCaseExamples(summary.representativeCases);
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh]" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh] md:hidden" onClick={onClose}>
       <section
         aria-label={label}
         aria-modal="true"
@@ -645,10 +645,10 @@ export function MobileUniversitiesApp() {
 
   return (
     <section
-      className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:shadow-[0_0_0_1px_rgba(63,63,58,0.14),0_18px_54px_rgba(10,10,10,0.12)]"
+      className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden"
       aria-label="韩国大学库移动端小程序"
     >
-      <header className="sticky top-0 z-30 w-full max-w-full overflow-hidden border-b border-ink/10 bg-[#f5f3ed]/95 px-4 pb-3 pt-[calc(0.85rem+env(safe-area-inset-top))] backdrop-blur">
+      <header className="sticky top-0 z-30 w-full max-w-full overflow-hidden bg-[#f5f3ed]/95 px-4 pb-3 pt-[calc(0.85rem+env(safe-area-inset-top))] backdrop-blur">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">KOREA UNIVERSITY LINK</p>
@@ -750,7 +750,7 @@ export function MobileUniversitiesApp() {
 
               <p className="mt-2 line-clamp-2 text-[0.83rem] font-bold leading-5 text-muted">{school.focus}</p>
 
-              <div className="mt-2 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2 border-t border-ink/10 pt-1.5" data-testid="university-card-actions">
+              <div className="mt-2 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2 pt-1.5" data-testid="university-card-actions">
                 <button
                   className="inline-flex min-h-[2rem] min-w-0 items-center justify-center gap-1 overflow-hidden rounded-lg border border-ink bg-[#eef8df] px-1.5 text-center text-[0.78rem] font-black leading-tight"
                   type="button"

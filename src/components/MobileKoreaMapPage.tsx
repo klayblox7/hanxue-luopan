@@ -1,14 +1,13 @@
 "use client";
 
-import { Search, X } from "lucide-react";
-import Link from "next/link";
+import { BadgeCheck, MapPin, Search, UsersRound } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { CampusImage } from "@/components/CampusImage";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { buildMobileUniversities, UniversitySheet } from "@/components/MobileUniversitiesApp";
 import { koreaMapRegions, type KoreaMapRegionKey } from "@/data/korea-map-regions";
 import { getUniversityTier } from "@/data/universityTiers";
-import { universities, type University } from "@/data/universities";
+import { universities } from "@/data/universities";
 
 type RegionFilter = {
   id: "all" | "seoul" | "chungcheong" | "gyeongsang" | "jeolla" | "gangwon-jeju";
@@ -62,6 +61,7 @@ const mapRegionGroups: MapRegionGroup[] = [
 const mapVerticalNudge = 16;
 const desktopMapOffset = { x: 74, y: mapVerticalNudge };
 const jejuInset = { x: 261, y: 222 + mapVerticalNudge, width: 64.6, height: 40.8, pathX: 188.5, pathY: -31.5 + mapVerticalNudge };
+const mobileMapContentTransform = "translate(242.5 150) scale(0.85 1) translate(-242.5 -150)";
 const regionPinPositions: Record<Exclude<RegionFilter["id"], "all">, { x: number; y: number }> = {
   seoul: { x: 196, y: 63 + mapVerticalNudge },
   chungcheong: { x: 224, y: 124 + mapVerticalNudge },
@@ -80,15 +80,6 @@ function getRegionById(id: RegionFilter["id"]) {
   return regionFilters.find((filter) => filter.id === id) ?? regionFilters[0];
 }
 
-function DetailMetric({ label, value }: { label: string; value?: string }) {
-  return (
-    <div className="rounded-lg border border-ink/15 bg-[#fffaf0] px-3 py-2">
-      <p className="text-[0.68rem] font-black text-muted">{label}</p>
-      <p className="mt-1 text-[0.92rem] font-black leading-tight text-ink">{value || "资料待补"}</p>
-    </div>
-  );
-}
-
 function SelectedRegionPin({ x, y }: { x: number; y: number }) {
   return (
     <g aria-hidden="true" className="pointer-events-none" data-testid="selected-region-pin">
@@ -105,79 +96,15 @@ function SelectedRegionPin({ x, y }: { x: number; y: number }) {
   );
 }
 
-function MapSchoolDetailSheet({ school, onClose }: { school: University; onClose: () => void }) {
-  const tier = getUniversityTier(school.nameCn);
-
-  return (
-    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[12dvh]" onClick={onClose}>
-      <section
-        aria-label={school.nameCn}
-        aria-modal="true"
-        className="ml-auto flex max-h-[84dvh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl border border-ink bg-[#f5f3ed] shadow-[0_-18px_46px_rgba(10,10,10,0.22)]"
-        role="dialog"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="flex items-start justify-between gap-3 border-b border-ink/10 bg-surface px-4 py-3">
-          <div className="min-w-0">
-            <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">School detail</p>
-            <h2 className="mt-1 text-2xl font-black leading-tight">{school.nameCn}</h2>
-            <p className="mt-1 truncate text-xs font-bold text-muted">
-              {school.nameKr} · {school.nameEn}
-            </p>
-          </div>
-          <button
-            aria-label="关闭"
-            className="grid size-10 shrink-0 place-items-center rounded-full border border-ink bg-paper text-ink"
-            type="button"
-            onClick={onClose}
-          >
-            <X size={18} strokeWidth={2.4} aria-hidden="true" />
-          </button>
-        </div>
-
-        <div className="overflow-y-auto px-4 py-4">
-          <CampusImage
-            className="h-44 w-full rounded-xl border border-ink bg-surface object-cover"
-            name={school.nameCn}
-            slug={school.slug}
-          />
-          <div className="mt-3 flex flex-wrap gap-2">
-            {[tier, school.city, school.type].map((item) => (
-              <span className="rounded-full border border-ink bg-surface px-3 py-1 text-xs font-black" key={item}>
-                {item}
-              </span>
-            ))}
-          </div>
-          <section className="mt-3 rounded-xl border border-ink bg-surface p-3">
-            <h3 className="text-sm font-black">学校方向</h3>
-            <p className="mt-2 text-sm font-bold leading-6 text-muted">{school.focus}</p>
-          </section>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <DetailMetric label="学生数" value={school.totalStudents} />
-            <DetailMetric label="外国学生" value={school.foreignStudents} />
-            <DetailMetric label="宿舍容量" value={school.dormitoryCapacity} />
-            <DetailMetric label="宿舍覆盖" value={school.dormitoryRate} />
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <Link className="inline-flex min-h-11 items-center justify-center rounded-lg border border-ink bg-[#71d39b] px-3 text-sm font-black text-ink" href="/universities">
-              进入大学库
-            </Link>
-            <Link className="inline-flex min-h-11 items-center justify-center rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink" href="/application">
-              申请路线
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
-
 export function MobileKoreaMapPage() {
   const [activeRegionId, setActiveRegionId] = useState<RegionFilter["id"]>("all");
   const [search, setSearch] = useState("");
   const [selectedSchoolSlug, setSelectedSchoolSlug] = useState<string | null>(null);
+  const [selectedCaseSchoolSlug, setSelectedCaseSchoolSlug] = useState<string | null>(null);
   const activeRegion = getRegionById(activeRegionId);
   const activePin = activeRegionId === "all" ? null : regionPinPositions[activeRegionId];
+  const mobileSchools = useMemo(() => buildMobileUniversities(), []);
+  const mobileSchoolsBySlug = useMemo(() => new Map(mobileSchools.map((school) => [school.slug, school])), [mobileSchools]);
 
   const regionStats = useMemo(
     () =>
@@ -214,10 +141,11 @@ export function MobileKoreaMapPage() {
       })
       .slice(0, 12);
   }, [activeRegion, search]);
-  const selectedSchool = selectedSchoolSlug ? universities.find((school) => school.slug === selectedSchoolSlug) : undefined;
+  const selectedSchool = selectedSchoolSlug ? mobileSchoolsBySlug.get(selectedSchoolSlug) : undefined;
+  const selectedCaseSchool = selectedCaseSchoolSlug ? mobileSchoolsBySlug.get(selectedCaseSchoolSlug) : undefined;
 
   return (
-    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:shadow-[0_0_0_1px_rgba(63,63,58,0.14),0_18px_54px_rgba(10,10,10,0.12)]" aria-label="韩国大学地图移动版">
+    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden" aria-label="韩国大学地图移动版">
       <header className="sticky top-0 z-30 border-b border-ink/10 bg-[#f5f3ed]/95 px-4 py-3 backdrop-blur">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
@@ -257,14 +185,15 @@ export function MobileKoreaMapPage() {
 
           <div className="relative mt-3">
             <svg
-              className="mx-auto block h-[22.1rem] w-full rounded-none border border-ink bg-[#eef1e9]"
+              className="mx-auto block h-[17.7rem] w-full rounded-none border border-ink bg-[#eef1e9]"
               data-testid="korea-region-map"
               role="img"
               aria-label="韩国大学地图分布"
               preserveAspectRatio="xMidYMid meet"
               viewBox="120 0 245 300"
             >
-              {mapRegionGroups.map((group) => {
+              <g data-testid="korea-map-content" transform={mobileMapContentTransform}>
+                {mapRegionGroups.map((group) => {
                 const stat = regionStats.find((item) => item.id === group.id);
                 const selected = activeRegionId === group.id;
                 const fill = selected ? group.color : activeRegionId === "all" ? "#fffefb" : "#faf8f0";
@@ -328,15 +257,16 @@ export function MobileKoreaMapPage() {
                   </g>
                 );
               })}
-              {activePin ? <SelectedRegionPin x={activePin.x} y={activePin.y} /> : null}
+                {activePin ? <SelectedRegionPin x={activePin.x} y={activePin.y} /> : null}
+              </g>
             </svg>
 
             <div
               data-testid="selected-region-summary"
-              className="pointer-events-none absolute right-3 top-3 grid justify-items-end gap-1"
+              className="pointer-events-none absolute right-3 top-3 grid justify-items-end gap-1.5"
             >
-              <p className="rounded-md border border-ink bg-[#faf8f0] px-2.5 py-1 text-xs font-black leading-none">{activeStat.label}</p>
-              <strong className="rounded-md border border-ink bg-[#ffe07a] px-2.5 py-1 text-xs font-black leading-none">
+              <p className="rounded-md border border-ink bg-[#faf8f0] px-3 py-1 text-[0.86rem] font-black leading-none">{activeStat.label}</p>
+              <strong className="rounded-md border border-ink bg-[#ffe07a] px-3 py-1 text-[0.86rem] font-black leading-none">
                 {activeStat.count}所
               </strong>
             </div>
@@ -345,38 +275,87 @@ export function MobileKoreaMapPage() {
 
         <section className="mt-4">
           <div className="grid gap-3">
-            {visibleSchools.map((school) => (
-              <article className="rounded-xl border border-ink bg-surface p-3" key={school.slug} aria-label={`${school.nameCn} ${school.city} ${school.focus}`}>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <h3 className="text-[0.96rem] font-black leading-tight">{school.nameCn}</h3>
-                    <p className="mt-1 text-xs font-bold text-muted">{school.nameKr} · {school.nameEn}</p>
+            {visibleSchools.map((school) => {
+              const mobileSchool = mobileSchoolsBySlug.get(school.slug);
+              const tier = mobileSchool?.tier ?? getUniversityTier(school.nameCn);
+              const caseCount = mobileSchool?.caseCount ?? 0;
+
+              return (
+                <article
+                  className="max-w-full overflow-hidden rounded-xl border border-ink bg-surface p-3 shadow-[0_8px_24px_rgba(10,10,10,0.07)]"
+                  key={school.slug}
+                  aria-label={`${school.nameCn} ${school.city} ${school.focus}`}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <h3 className="truncate text-[1.18rem] font-black leading-tight">{school.nameCn}</h3>
+                      <p className="mt-0.5 truncate text-[0.71rem] font-bold text-muted">{school.nameKr} · {school.nameEn}</p>
+                    </div>
+                    <span className="shrink-0 rounded-full border border-ink bg-[#ffe07a] px-2 py-0.5 text-[0.83rem] font-black">{tier}</span>
                   </div>
-                  <span className="shrink-0 rounded-full border border-ink bg-[#ffe07a] px-2 py-0.5 text-xs font-black">
-                    {getUniversityTier(school.nameCn)}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm font-black text-ink">
-                  {school.city} / {school.type}
-                </p>
-                <div className="mt-2 flex items-end justify-between gap-3" data-testid="map-school-card-action-row">
-                  <p className="min-w-0 text-sm font-normal italic leading-5 text-muted">{school.focus}</p>
-                  <button
-                    className="inline-flex min-h-[2.05rem] w-[7.75rem] shrink-0 items-center justify-center rounded-lg border border-ink bg-[#eef8df] px-2.5 text-[0.78rem] font-black"
-                    type="button"
-                    onClick={() => setSelectedSchoolSlug(school.slug)}
-                  >
-                    学校详情
-                  </button>
-                </div>
-              </article>
-            ))}
+
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    <span className="inline-flex items-center gap-1 rounded-full border border-ink/45 bg-paper px-2 py-0.5 text-[0.71rem] font-black">
+                      <MapPin size={12} strokeWidth={2.4} aria-hidden="true" />
+                      {school.city}
+                    </span>
+                    <span className="rounded-full border border-ink/45 bg-paper px-2 py-0.5 text-[0.71rem] font-black">{school.type}</span>
+                    <span className="rounded-full border border-ink/45 bg-[#e6f7f7] px-2 py-0.5 text-[0.71rem] font-black">{caseCount}案例</span>
+                  </div>
+
+                  <p className="mt-2 line-clamp-2 text-[0.83rem] font-bold leading-5 text-muted">{school.focus}</p>
+
+                  <div className="mt-2 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2 pt-1.5" data-testid="map-school-card-action-row">
+                    <button
+                      className="inline-flex min-h-[2rem] min-w-0 items-center justify-center gap-1 overflow-hidden rounded-lg border border-ink bg-[#eef8df] px-1.5 text-center text-[0.78rem] font-black leading-tight"
+                      type="button"
+                      onClick={() => {
+                        setSelectedCaseSchoolSlug(null);
+                        setSelectedSchoolSlug(school.slug);
+                      }}
+                    >
+                      学校详情
+                      <BadgeCheck size={14} strokeWidth={2.4} aria-hidden="true" />
+                    </button>
+                    <button
+                      className="inline-flex min-h-[2rem] min-w-0 items-center justify-center gap-1 overflow-hidden rounded-lg border border-ink bg-[#ffd0d8] px-1.5 text-center text-[0.78rem] font-black leading-tight"
+                      type="button"
+                      onClick={() => {
+                        setSelectedSchoolSlug(null);
+                        setSelectedCaseSchoolSlug(school.slug);
+                      }}
+                    >
+                      案例画像
+                      <UsersRound size={14} strokeWidth={2.4} aria-hidden="true" />
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
       </main>
 
       <MobileBottomNav activeTab="map" />
-      {selectedSchool ? <MapSchoolDetailSheet school={selectedSchool} onClose={() => setSelectedSchoolSlug(null)} /> : null}
+      {selectedSchool ? (
+        <UniversitySheet
+          mode="info"
+          school={selectedSchool}
+          onClose={() => setSelectedSchoolSlug(null)}
+          onShowCases={() => {
+            setSelectedSchoolSlug(null);
+            setSelectedCaseSchoolSlug(selectedSchool.slug);
+          }}
+        />
+      ) : null}
+      {selectedCaseSchool ? (
+        <UniversitySheet
+          mode="case"
+          school={selectedCaseSchool}
+          onClose={() => setSelectedCaseSchoolSlug(null)}
+          onShowCases={() => setSelectedCaseSchoolSlug(selectedCaseSchool.slug)}
+        />
+      ) : null}
     </section>
   );
 }

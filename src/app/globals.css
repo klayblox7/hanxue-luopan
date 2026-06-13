@@ -5,7 +5,7 @@
 :root {
   color: #0a0a0a;
   background: #fbfbf8;
-  --mobile-border-strong: #3f3f3a;
+  --mobile-border-gray: #7b786f;
 }
 
 html {
@@ -51,9 +51,11 @@ textarea {
     font-size: 90%;
   }
 
-  .md\:hidden.border-ink,
-  .md\:hidden .border-ink {
-    border-color: var(--mobile-border-strong);
+  .mobile-app-shell,
+  .mobile-app-shell *,
+  .mobile-app-shell *::before,
+  .mobile-app-shell *::after {
+    border-color: var(--mobile-border-gray) !important;
   }
 
   button,
