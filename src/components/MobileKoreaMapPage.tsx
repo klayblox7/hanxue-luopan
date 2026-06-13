@@ -109,7 +109,7 @@ function MapSchoolDetailSheet({ school, onClose }: { school: University; onClose
   const tier = getUniversityTier(school.nameCn);
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[12dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[12dvh]" onClick={onClose}>
       <section
         aria-label={school.nameCn}
         aria-modal="true"
@@ -217,7 +217,7 @@ export function MobileKoreaMapPage() {
   const selectedSchool = selectedSchoolSlug ? universities.find((school) => school.slug === selectedSchoolSlug) : undefined;
 
   return (
-    <section className="min-h-screen bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden" aria-label="韩国大学地图移动版">
+    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:shadow-[0_0_0_1px_rgba(63,63,58,0.14),0_18px_54px_rgba(10,10,10,0.12)]" aria-label="韩国大学地图移动版">
       <header className="sticky top-0 z-30 border-b border-ink/10 bg-[#f5f3ed]/95 px-4 py-3 backdrop-blur">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">

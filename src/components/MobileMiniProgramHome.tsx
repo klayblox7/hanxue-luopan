@@ -191,7 +191,7 @@ function RecommendedSchoolSheet({
   const caseExamples = recommendationCaseExamples(school.caseSummary.representativeCases);
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[14dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[14dvh]" onClick={onClose}>
       <section
         aria-label={school.nameCn}
         aria-modal="true"
@@ -354,7 +354,7 @@ export function MobileMiniProgramHome() {
   };
 
   return (
-    <section className="min-h-screen bg-[#f5f3ed] pb-[calc(5.8rem+env(safe-area-inset-bottom))] md:hidden" aria-label="KOREA UNIVERSITY LINK移动端小程序首页">
+    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(5.8rem+env(safe-area-inset-bottom))] md:shadow-[0_0_0_1px_rgba(63,63,58,0.14),0_18px_54px_rgba(10,10,10,0.12)]" aria-label="KOREA UNIVERSITY LINK移动端小程序首页">
       <div
         className="relative isolate min-h-[15rem] overflow-hidden bg-[#073f2d] px-6 pb-10 pt-8 text-[#fbfbf8]"
         data-testid="mobile-home-hero"

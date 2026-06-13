@@ -20,11 +20,23 @@ body {
   margin: 0;
   max-width: 100%;
   overflow-x: hidden;
-  background: #fbfbf8;
+  background: #f5f3ed;
   font-family:
     "Microsoft YaHei UI", "Microsoft YaHei", "微软雅黑", "PingFang SC", "Noto Sans CJK SC",
     "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "MS Gothic", "Malgun Gothic", Inter,
     system-ui, -apple-system, sans-serif;
+}
+
+.mobile-app-shell {
+  width: min(100%, 430px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .mobile-app-shell {
+    box-shadow: 0 0 0 1px rgba(63, 63, 58, 0.14), 0 18px 54px rgba(10, 10, 10, 0.12);
+  }
 }
 
 button,

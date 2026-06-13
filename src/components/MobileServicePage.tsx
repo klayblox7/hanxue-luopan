@@ -1144,7 +1144,7 @@ function ApplicationFilterSheet({
   ] as const;
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[12dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[12dvh]" onClick={onClose}>
       <section
         aria-label="项目筛选"
         aria-modal="true"
@@ -1969,7 +1969,7 @@ export function MobileServicePage({ applicationPrograms, page }: { applicationPr
   const config = pageConfigs[page];
 
   return (
-    <section className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden" aria-label={`${config.title}移动端小程序`}>
+    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:shadow-[0_0_0_1px_rgba(63,63,58,0.14),0_18px_54px_rgba(10,10,10,0.12)]" aria-label={`${config.title}移动端小程序`}>
       <header className="sticky top-0 z-30 border-b border-ink/10 bg-[#f5f3ed]/95 px-4 pb-3 pt-[calc(0.85rem+env(safe-area-inset-top))] backdrop-blur">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">

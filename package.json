@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/postbuild-compat-pages.mjs",
     "lint": "eslint .",
     "test": "vitest run",
     "check:static-encoding": "node scripts/check-static-encoding.mjs"

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { LegacyDesktopFrame } from "@/components/LegacyDesktopFrame";
 import { MobileKoreaMapPage } from "@/components/MobileKoreaMapPage";
 
 export const metadata: Metadata = {
@@ -12,7 +11,6 @@ export default function KoreaUniversityMapPage() {
   return (
     <main className="min-h-screen bg-paper text-ink">
       <MobileKoreaMapPage />
-      <LegacyDesktopFrame src="/korea-university-map.html" title="韩国大学地图" />
     </main>
   );
 }

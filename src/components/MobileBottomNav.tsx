@@ -19,7 +19,7 @@ const mobileBottomTabs: Array<{
 export function MobileBottomNav({ activeTab }: { activeTab?: MobileBottomTabId }) {
   return (
     <nav
-      className="fixed inset-x-3 bottom-3 z-40 rounded-[1.35rem] border border-ink/10 bg-surface px-2 pb-[calc(0.65rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_12px_38px_rgba(10,10,10,0.18)]"
+      className="fixed bottom-3 left-1/2 z-40 w-[calc(100%-1.5rem)] max-w-[406px] -translate-x-1/2 rounded-[1.35rem] border border-ink/10 bg-surface px-2 pb-[calc(0.65rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_12px_38px_rgba(10,10,10,0.18)]"
       aria-label="移动端底部导航"
     >
       <div className="grid grid-cols-5 items-end">

@@ -423,7 +423,7 @@ function PreciseFilterSheet({
   resultCount: number;
 }) {
   return (
-    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[10dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[10dvh]" onClick={onClose}>
       <section
         aria-label="精准筛选"
         aria-modal="true"
@@ -484,7 +484,7 @@ function UniversitySheet({
   const applicantExamples = applicantCaseExamples(summary.representativeCases);
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh]" onClick={onClose}>
       <section
         aria-label={label}
         aria-modal="true"
@@ -645,7 +645,7 @@ export function MobileUniversitiesApp() {
 
   return (
     <section
-      className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden"
+      className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:shadow-[0_0_0_1px_rgba(63,63,58,0.14),0_18px_54px_rgba(10,10,10,0.12)]"
       aria-label="韩国大学库移动端小程序"
     >
       <header className="sticky top-0 z-30 w-full max-w-full overflow-hidden border-b border-ink/10 bg-[#f5f3ed]/95 px-4 pb-3 pt-[calc(0.85rem+env(safe-area-inset-top))] backdrop-blur">
