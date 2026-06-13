@@ -107,8 +107,17 @@ export const homeMetrics: HomeMetric[] = [
 
 export const homeEntries: HomeEntry[] = [
   {
+    title: "韩国大学地图",
+    description: "从地区、城市和学校位置理解韩国大学分布，再进入学校库比较。",
+    href: "/korea-university-map",
+    category: "地区地图",
+    sourceType: "government",
+    actionLabel: "查看学校地图",
+    status: "available"
+  },
+  {
     title: "韩国大学库",
-    description: "比较50所韩国大学的城市、专业、奖学金和语言要求。",
+    description: "比较韩国大学的城市、类型、T档、专业方向、案例和语言要求。",
     href: "/universities",
     category: "学校比较",
     sourceType: "school",
@@ -116,20 +125,11 @@ export const homeEntries: HomeEntry[] = [
     status: "available"
   },
   {
-    title: "韩语学习",
-    description: "从零基础到TOPIK 6级的学习路线、教材和网课。",
-    href: "/korean-learning",
-    category: "备考路线",
-    sourceType: "community",
-    actionLabel: "查看规划入口",
-    status: "planned"
-  },
-  {
-    title: "TOPIK考试",
-    description: "查询等级、费用、考点、备考路线和大学申请关系。",
-    href: "/topik",
-    category: "语言成绩",
-    sourceType: "official",
+    title: "国内+韩国项目",
+    description: "按本科、插班、研究生、语学院拆申请时间线、材料清单和关键截止日。",
+    href: "/application",
+    category: "时间线+材料",
+    sourceType: "pending",
     actionLabel: "查看规划入口",
     status: "planned"
   },
@@ -143,11 +143,11 @@ export const homeEntries: HomeEntry[] = [
     status: "planned"
   },
   {
-    title: "国内+韩国项目",
-    description: "按本科、插班、研究生、语学院拆申请时间线、材料清单和关键截止日。",
-    href: "/application",
-    category: "时间线+材料",
-    sourceType: "pending",
+    title: "韩语(TOPIK)",
+    description: "查询等级、费用、考点、备考路线和大学申请语言要求。",
+    href: "/topik",
+    category: "语言成绩",
+    sourceType: "official",
     actionLabel: "查看规划入口",
     status: "planned"
   }

@@ -280,7 +280,7 @@ const schoolImageBySlug: Record<string, string> = {
   "sookmyung-womens-university": "/campus-images/sookmyung-womens-university.jpg",
   "soonchunhyang-university": "/campus-images/soonchunhyang-university.jpg",
   "soongsil-university": "/campus-images/soongsil-university.webp",
-  "sungkyunkwan-university": "/campus-images/sungkyunkwan-university.jpg",
+  "sungkyunkwan-university": "/campus-images/sungkyunkwan-university.jpg?v=skku-20260613",
   "sungshin-womens-university": "/campus-images/sungshin-womens-university.jpg",
   "university-of-seoul": "/campus-images/university-of-seoul.jpg",
   "university-of-ulsan": "/campus-images/university-of-ulsan.jpg",

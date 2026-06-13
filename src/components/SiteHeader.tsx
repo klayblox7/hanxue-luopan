@@ -7,29 +7,29 @@ import { usePathname } from "next/navigation";
 import { type HomeEntry } from "@/data/home";
 
 const primaryLinks: HeaderLink[] = [
+  { href: "/korea-university-map", label: "\u97e9\u56fd\u5927\u5b66\u5730\u56fe" },
   { href: "/universities", label: "\u97e9\u56fd\u5927\u5b66\u5e93", suffix: " \uff08\u76f4\u5347\uff09" },
   { href: "/application", label: "\u56fd\u5185+\u97e9\u56fd\u9879\u76ee" },
-  { href: "/topik", label: "\u97e9\u8bed(TOPIK)" },
   { href: "/cost", label: "\u7559\u5b66\u8d39\u7528", suffix: " \uff08\u5956\u5b66\u91d1\uff09" },
-  { href: "/exchange-rate", label: "\u6c47\u7387" }
+  { href: "/topik", label: "\u97e9\u8bed(TOPIK)" }
 ];
 
 const shortcutActiveColors: Record<string, string> = {
   "/": "bg-[#b8a4ed]",
+  "/korea-university-map": "bg-[#b8a4ed]",
   "/universities": "bg-[#ffd0d8]",
   "/topik": "bg-[#71d39b]",
   "/cost": "bg-[#ffe07a]",
-  "/application": "bg-[#a4d4c5]",
-  "/exchange-rate": "bg-[#ffe07a]"
+  "/application": "bg-[#a4d4c5]"
 };
 
 const shortcutHoverColors: Record<string, string> = {
   "/": "hover:bg-[#b8a4ed] focus:bg-[#b8a4ed] active:bg-[#b8a4ed]",
+  "/korea-university-map": "hover:bg-[#b8a4ed] focus:bg-[#b8a4ed] active:bg-[#b8a4ed]",
   "/universities": "hover:bg-[#ffd0d8] focus:bg-[#ffd0d8] active:bg-[#ffd0d8]",
   "/topik": "hover:bg-[#71d39b] focus:bg-[#71d39b] active:bg-[#71d39b]",
   "/cost": "hover:bg-[#ffe07a] focus:bg-[#ffe07a] active:bg-[#ffe07a]",
-  "/application": "hover:bg-[#a4d4c5] focus:bg-[#a4d4c5] active:bg-[#a4d4c5]",
-  "/exchange-rate": "hover:bg-[#ffe07a] focus:bg-[#ffe07a] active:bg-[#ffe07a]"
+  "/application": "hover:bg-[#a4d4c5] focus:bg-[#a4d4c5] active:bg-[#a4d4c5]"
 };
 
 function isActiveHref(pathname: string, href: string) {
@@ -55,10 +55,10 @@ function linkClass(href: string, active: boolean, mobile = false) {
   const desktopWidth =
     {
       "/universities": "md:w-[11.4rem]",
+      "/korea-university-map": "md:w-[9.5rem]",
       "/application": "md:w-[9.4rem]",
       "/topik": "md:w-[10.6rem]",
-      "/cost": "md:w-[12.4rem]",
-      "/exchange-rate": "md:w-[5.6rem]"
+      "/cost": "md:w-[12.4rem]"
     }[href] ?? "md:w-[8.8rem]";
   const sizeClass = mobile
     ? "min-h-10 flex-none px-3 text-[0.82rem]"

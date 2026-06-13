@@ -23,7 +23,7 @@ export function TrustNotice() {
             先区分来源，再做留学决策
           </h2>
           <p className="mt-3 text-sm leading-7 text-muted">
-            奖学金、TOPIK要求、学费和住宿费用每年可能变化。韩学罗盘会把官方信息、学校信息、人民币估算和学生经验分层标注，避免把参考信息写成确定结论。
+            奖学金、TOPIK要求、学费和住宿费用每年可能变化。韩国大学通会把官方信息、学校信息、人民币估算和学生经验分层标注，避免把参考信息写成确定结论。
           </p>
         </div>
         <div className="rounded-2xl border border-ink bg-[#ffe07a] p-4 text-sm leading-7 text-ink md:max-w-sm">

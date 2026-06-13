@@ -1,3 +1,12 @@
+import {
+  recommendUniversities,
+  type BudgetLevel,
+  type HighSchoolTier,
+  type IntendedMajor,
+  type SchoolTypePreference
+} from "./recommendations";
+import { getUniversityTier } from "./universityTiers";
+
 export type MobileRouteId = "undergraduate" | "transfer" | "graduate" | "language";
 export type MobileBudgetLevel = "low" | "medium" | "high";
 
@@ -6,8 +15,11 @@ export type MobileHomeAction = {
   detail: string;
   href: string;
   source: string;
-  iconSrc: string;
-  iconAlt: string;
+  imageSrc: string;
+  imageAlt: string;
+  tone: string;
+  mark: string;
+  filters: string[];
 };
 
 export type MobileRouteTrack = {
@@ -31,46 +43,101 @@ export type MobilePlannerResult = {
   actionLabel: string;
 };
 
+export type MobileRecommendationInput = {
+  gpaPercent: number;
+  highSchoolTier: HighSchoolTier;
+  topikLevel: number;
+  intendedMajor: IntendedMajor;
+  preferredRegion: string;
+  budgetLevel: BudgetLevel;
+  schoolTypePreference: SchoolTypePreference;
+};
+
+export type MobileRecommendationResult = {
+  schoolSlug: string;
+  schoolNameCn: string;
+  city: string;
+  schoolType: string;
+  tier: string;
+  category: string;
+  reason: string;
+  caution: string;
+};
+
+const mobileRecommendationCategoryLabels = {
+  stable: "较有希望",
+  match: "适合申请",
+  reach: "冲刺申请",
+  prepare_first: "先补条件",
+  verify: "需确认"
+};
+
 export const mobileHomeActions: MobileHomeAction[] = [
+  {
+    title: "韩国大学地图",
+    detail: "地区、城市、学校位置",
+    href: "/korea-university-map",
+    source: "地图",
+    imageSrc: "/mobile-mini-program/category-map-transparent.png",
+    imageAlt: "韩国大学地图分类图",
+    tone: "bg-[#b8a4ed]",
+    mark: "图",
+    filters: ["地区", "城市", "院校位置"]
+  },
   {
     title: "韩国大学库",
     detail: "城市、专业、语言要求",
     href: "/universities",
     source: "学校",
-    iconSrc: "/mobile-mini-program/icon-universities.png",
-    iconAlt: "韩国大学库图标"
+    imageSrc: "/mobile-mini-program/category-universities-transparent.png",
+    imageAlt: "韩国大学库分类图",
+    tone: "bg-[#ffd0d8]",
+    mark: "大",
+    filters: ["城市", "类型", "专业", "T档"]
   },
   {
-    title: "TOPIK考试",
-    detail: "等级、报名、备考路线",
-    href: "/topik",
-    source: "官方",
-    iconSrc: "/mobile-mini-program/icon-topik.png",
-    iconAlt: "TOPIK考试图标"
+    title: "国内+韩国项目",
+    detail: "1+3、2+2等",
+    href: "/application",
+    source: "路线",
+    imageSrc: "/mobile-mini-program/category-application-clean.png",
+    imageAlt: "国内+韩国项目分类图",
+    tone: "bg-[#a4d4c5]",
+    mark: "项",
+    filters: ["路径", "材料", "时间线"]
   },
   {
     title: "留学费用",
-    detail: "学费、住宿、人民币估算",
+    detail: "学费、住宿、预算",
     href: "/cost",
     source: "估算",
-    iconSrc: "/mobile-mini-program/icon-cost.png",
-    iconAlt: "留学费用图标"
+    imageSrc: "/mobile-mini-program/category-cost-clean.png",
+    imageAlt: "留学费用分类图",
+    tone: "bg-[#ffe07a]",
+    mark: "费",
+    filters: ["城市", "学校类型", "专业", "奖学金"]
   },
   {
-    title: "申请路线",
-    detail: "材料、时间线、项目选择",
-    href: "/application",
-    source: "待核验",
-    iconSrc: "/mobile-mini-program/icon-application.png",
-    iconAlt: "申请路线图标"
+    title: "韩语",
+    detail: "TOPIK、报名、备考",
+    href: "/topik",
+    source: "官方",
+    imageSrc: "/mobile-mini-program/category-topik-clean.png",
+    imageAlt: "韩语分类图",
+    tone: "bg-[#71d39b]",
+    mark: "韩",
+    filters: ["当前等级", "目标等级", "备考时间"]
   },
   {
-    title: "汇率参考",
-    detail: "韩元到人民币",
+    title: "汇率换算",
+    detail: "人民币、韩元、预算",
     href: "/exchange-rate",
-    source: "参考",
-    iconSrc: "/mobile-mini-program/icon-exchange.png",
-    iconAlt: "汇率参考图标"
+    source: "汇率",
+    imageSrc: "/mobile-mini-program/category-exchange-transparent.png",
+    imageAlt: "汇率换算分类图",
+    tone: "bg-[#ffd0d8]",
+    mark: "汇",
+    filters: ["人民币", "韩元", "预算参考"]
   }
 ];
 
@@ -148,4 +215,31 @@ export function getMobilePlannerResult(input: MobilePlannerInput): MobilePlanner
     href: "/universities",
     actionLabel: "进入大学库"
   };
+}
+
+export function getMobileRecommendationResults(input: MobileRecommendationInput): MobileRecommendationResult[] {
+  return recommendUniversities({
+    age: 18,
+    gpaPercent: input.gpaPercent,
+    highSchoolTier: input.highSchoolTier,
+    gradeRankBand: "top_25",
+    gaokaoStrength: "not_submitted",
+    topikLevel: input.topikLevel,
+    intendedMajor: input.intendedMajor,
+    preferredRegion: input.preferredRegion,
+    budgetLevel: input.budgetLevel,
+    schoolTypePreference: input.schoolTypePreference,
+    languageTrack: "korean"
+  })
+    .slice(0, 5)
+    .map((result) => ({
+      schoolSlug: result.schoolSlug,
+      schoolNameCn: result.schoolNameCn,
+      city: result.city,
+      schoolType: result.schoolType,
+      tier: getUniversityTier(result.schoolNameCn),
+      category: mobileRecommendationCategoryLabels[result.category],
+      reason: result.reasons.slice(1, 3).join(" / "),
+      caution: result.cautions[0] ?? "请以学校最新招生简章为准。"
+    }));
 }

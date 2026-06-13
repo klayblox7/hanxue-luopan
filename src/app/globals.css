@@ -5,9 +5,11 @@
 :root {
   color: #0a0a0a;
   background: #fbfbf8;
+  --mobile-border-strong: #3f3f3a;
 }
 
 html {
+  overflow-x: hidden;
   overflow-y: scroll;
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
@@ -16,6 +18,8 @@ html {
 
 body {
   margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
   background: #fbfbf8;
   font-family:
     "Microsoft YaHei UI", "Microsoft YaHei", "微软雅黑", "PingFang SC", "Noto Sans CJK SC",
@@ -31,12 +35,20 @@ textarea {
 }
 
 @media (max-width: 767px) {
+  html {
+    font-size: 90%;
+  }
+
+  .md\:hidden.border-ink,
+  .md\:hidden .border-ink {
+    border-color: var(--mobile-border-strong);
+  }
+
   button,
   input,
   select,
   textarea {
-    min-height: 44px;
-    font-size: 16px;
+    min-height: 40px;
   }
 }
 

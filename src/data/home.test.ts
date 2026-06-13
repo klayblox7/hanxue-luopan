@@ -48,16 +48,23 @@ describe("home data", () => {
   it("exposes five homepage entries that point to future product routes", () => {
     expect(homeEntries).toHaveLength(5);
     expect(homeEntries.map((entry) => entry.href)).toEqual([
+      "/korea-university-map",
       "/universities",
-      "/korean-learning",
-      "/topik",
+      "/application",
       "/cost",
-      "/application"
+      "/topik"
+    ]);
+    expect(homeEntries.map((entry) => entry.title)).toEqual([
+      "韩国大学地图",
+      "韩国大学库",
+      "国内+韩国项目",
+      "留学费用（奖学金）",
+      "韩语(TOPIK)"
     ]);
     expect(homeEntries[0]).toMatchObject({
-      title: "韩国大学库",
-      href: "/universities",
-      actionLabel: "查看学校列表",
+      title: "韩国大学地图",
+      href: "/korea-university-map",
+      actionLabel: "查看学校地图",
       status: "available"
     });
     expect(homeEntries.some((entry) => entry.title === "韩国大学库")).toBe(true);
