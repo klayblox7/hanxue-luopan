@@ -424,51 +424,11 @@ function shell({ title, body, extraStyle = "", headerTitle = title, activePath =
           font-weight: 900;
         }
       }
-      /* Image back-to-top control */
-      .back-to-top-button {
-        position: fixed;
-        right: 4.25rem;
-        bottom: 1.25rem;
-        z-index: 90;
-        display: block;
-        width: 5.1rem;
-        border: 0;
-        background: transparent;
-        padding: 0;
-        cursor: pointer;
-      }
 
-      .back-to-top-button img {
-        display: block;
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        pointer-events: none;
-      }
 
-      .back-to-top-button:hover,
-      .back-to-top-button:focus,
-      .back-to-top-button:active {
-        background: transparent;
-      }
 
-      .back-to-top-button:focus {
-        outline: none;
-      }
 
-      .back-to-top-button:focus-visible {
-        border-radius: 0.75rem;
-        outline: 2px solid var(--ink, #0a0a0a);
-        outline-offset: 0.25rem;
-      }
 
-      @media (max-width: 720px) {
-        .back-to-top-button {
-          right: 0.75rem;
-          bottom: calc(0.75rem + env(safe-area-inset-bottom));
-          width: 4.08rem;
-        }
-      }
 
     
       /* header-lock: keep page headers aligned across every module */
@@ -782,9 +742,6 @@ function shell({ title, body, extraStyle = "", headerTitle = title, activePath =
       </div>
     </header>
     ${body}
-    <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Back to top">
-      <img src="./public/top.webp" alt="" aria-hidden="true" />
-    </button>
   </body>
 </html>`;
 }

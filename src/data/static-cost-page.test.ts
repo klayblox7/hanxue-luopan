@@ -17,9 +17,9 @@ describe("static cost page", () => {
     expect(document.querySelector(".budget-planner")).not.toBeNull();
     expect(document.querySelector("#budget-result-total")?.textContent).toContain("万");
     expect(document.querySelectorAll("[data-planner-field]")).toHaveLength(6);
-    expect(document.querySelector(".data-table-wrap")).not.toBeNull();
-    expect(document.querySelector(".profile-grid")).not.toBeNull();
-    expect(document.querySelector(".priority-grid")).not.toBeNull();
+    expect(document.querySelector(".budget-table")).not.toBeNull();
+    expect(document.querySelector(".cost-visual-grid")).not.toBeNull();
+    expect(document.querySelector(".apply-compare-grid")).not.toBeNull();
 
     const plannerIndex = html.indexOf('class="budget-planner"');
     const appendixIndex = html.indexOf('class="section legacy-appendix"');
@@ -49,24 +49,19 @@ describe("static cost page", () => {
   it("keeps source-backed data visible and labeled", () => {
     const { html, document } = readCostPage();
 
-    const sourceRows = Array.from(document.querySelectorAll(".source-row"));
-
-    expect(sourceRows.length).toBeGreaterThanOrEqual(8);
-    expect(document.querySelectorAll(".source-badge.official").length).toBeGreaterThanOrEqual(5);
-    expect(document.querySelectorAll(".source-badge.estimate").length).toBeGreaterThanOrEqual(2);
-    expect(html).toContain("studyinkorea.go.kr");
-    expect(html).toContain("oia.korea.ac.kr");
-    expect(html).toContain("oga.snu.ac.kr");
-    expect(html).toContain("topik.neea.cn");
+    expect(document.querySelector(".pre-cost-sources")).not.toBeNull();
+    expect(document.querySelectorAll(".pre-cost-sources a")).toHaveLength(3);
+    expect(document.querySelector(".budget-average-note")?.textContent).toContain("仅供参考");
+    expect(html).toContain("https://www.topik.go.kr/");
+    expect(html).toContain("https://www.yskli.com/course.php?mid=E01_02");
+    expect(html).toContain("https://oia.yonsei.ac.kr/intstd/admission.asp");
   });
 
   it("renders compressed reference profiles and calculator script", () => {
     const { html, document } = readCostPage();
 
-    const profiles = Array.from(document.querySelectorAll(".profile-card"));
-
-    expect(profiles).toHaveLength(3);
-    expect(document.querySelectorAll(".stack-segment").length).toBeGreaterThanOrEqual(12);
+    expect(document.querySelectorAll(".pre-cost-card")).toHaveLength(4);
+    expect(document.querySelectorAll(".apply-compare-card")).toHaveLength(2);
     expect(html).toContain("function renderBudget()");
     expect(html).toContain("const sourceCurrencyRate");
   });

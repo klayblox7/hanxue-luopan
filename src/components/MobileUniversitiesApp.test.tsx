@@ -1,20 +1,16 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { universities } from "@/data/universities";
-
 import { MobileUniversitiesApp } from "./MobileUniversitiesApp";
 
 describe("MobileUniversitiesApp", () => {
   it("starts as a compact mini-program university list", () => {
     render(<MobileUniversitiesApp />);
 
-    expect(screen.getByRole("heading", { name: "韩国大学库" })).toBeInTheDocument();
-    expect(screen.getByText(`${universities.length}校`)).toBeInTheDocument();
-    expect(screen.getByText("小程序版")).toBeInTheDocument();
-    for (const label of ["入库", "案例", "方向"]) {
-      expect(screen.getByText(label)).toHaveClass("self-end", "justify-self-end");
-    }
+    expect(screen.queryByRole("heading", { name: "韩国大学库" })).not.toBeInTheDocument();
+    expect(screen.queryByText("小程序版")).not.toBeInTheDocument();
+    expect(screen.queryByRole("searchbox", { name: "搜索学校" })).not.toBeInTheDocument();
+    expect(screen.getByText("当前结果")).toBeInTheDocument();
     expect(screen.getAllByRole("article", { name: /大学/ })).toHaveLength(8);
     expect(screen.queryByRole("link", { name: "返回首页" })).not.toBeInTheDocument();
     const seoulCard = screen.getByRole("article", { name: /首尔大学/ });
@@ -23,7 +19,11 @@ describe("MobileUniversitiesApp", () => {
     expect(within(seoulCard).queryByText("工科")).not.toBeInTheDocument();
     expect(within(seoulCard).getByText(/综合研究、理工、人文社科/)).toHaveClass("text-[0.83rem]");
     expect(within(seoulCard).getByTestId("university-card-actions")).toHaveClass("pt-1.5");
-    expect(within(seoulCard).getByRole("button", { name: "学校详情" })).toHaveClass("min-h-[2rem]", "text-[0.78rem]");
+    const detailButton = within(seoulCard).getByRole("button", { name: "学校详情" });
+    expect(detailButton).toHaveClass("min-h-[2rem]", "text-[0.78rem]", "bg-[#dff3dc]", "text-[#004c3f]");
+    expect(detailButton).toHaveStyle({
+      boxShadow: "inset 0 0 0 0.6px rgba(0, 98, 65, 0.58), 0 4px 10px rgba(0, 98, 65, 0.08)"
+    });
     expect(within(screen.getByRole("navigation", { name: "移动端底部导航" })).getAllByRole("link").map((link) => link.textContent?.trim())).toEqual([
       "首页",
       "大学地图",
@@ -33,25 +33,12 @@ describe("MobileUniversitiesApp", () => {
     ]);
   });
 
-  it("searches schools without showing a long desktop table", () => {
+  it("keeps the university list compact without the removed desktop-style search area", () => {
     render(<MobileUniversitiesApp />);
 
-    const searchbox = screen.getByRole("searchbox", { name: "搜索学校" });
-
-    expect(searchbox).toHaveClass("h-[2.55rem]");
-    expect(searchbox).toHaveClass("text-[0.85rem]");
-    expect(searchbox).toHaveClass("font-normal");
-    expect(searchbox).toHaveClass("italic");
-    expect(searchbox).not.toHaveClass("h-12");
-    expect(searchbox).not.toHaveClass("text-base");
-    expect(searchbox).not.toHaveClass("font-bold");
-
-    fireEvent.change(searchbox, {
-      target: { value: "延世" }
-    });
-
+    expect(screen.queryByRole("searchbox", { name: "搜索学校" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "推荐" })).not.toBeInTheDocument();
     expect(screen.getByRole("article", { name: /延世大学/ })).toBeInTheDocument();
-    expect(screen.queryByRole("article", { name: /首尔大学/ })).not.toBeInTheDocument();
     expect(screen.queryByRole("table")).not.toBeInTheDocument();
   });
 

@@ -7,7 +7,14 @@
     "build": "next build && node scripts/postbuild-compat-pages.mjs",
     "lint": "eslint .",
     "test": "vitest run",
-    "check:static-encoding": "node scripts/check-static-encoding.mjs"
+    "check:static-encoding": "node scripts/check-static-encoding.mjs",
+    "remotion:studio": "remotion studio remotion/index.tsx",
+    "remotion:still": "remotion still remotion/index.tsx KoreaLinkShortCn9x16 output/korea-link-short-cn-9x16-frame.png --frame=265",
+    "remotion:render": "remotion render remotion/index.tsx KoreaLinkShortCn9x16 output/korea-link-short-cn-9x16.mp4",
+    "remotion:still:wide": "remotion still remotion/index.tsx KoreaLinkFilm16x9 output/korea-link-film-16x9-frame.png --frame=240",
+    "remotion:still:vertical": "remotion still remotion/index.tsx KoreaLinkFilm9x16 output/korea-link-film-9x16-frame.png --frame=500",
+    "remotion:render:wide": "remotion render remotion/index.tsx KoreaLinkFilm16x9 output/korea-link-film-16x9.mp4",
+    "remotion:render:vertical": "remotion render remotion/index.tsx KoreaLinkFilm9x16 output/korea-link-film-9x16.mp4"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
@@ -17,6 +24,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
+    "@remotion/cli": "4.0.477",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.1.0",
     "@types/node": "^22.10.0",
@@ -29,8 +37,10 @@
     "impeccable": "^2.1.9",
     "jsdom": "^25.0.0",
     "postcss": "^8.4.49",
+    "remotion": "4.0.477",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.0",
-    "vitest": "^2.1.0"
+    "vitest": "^2.1.0",
+    "zod": "4.3.6"
   }
 }

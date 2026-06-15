@@ -2,168 +2,221 @@ import { readFileSync } from "node:fs";
 
 import { JSDOM } from "jsdom";
 
+import { getAdmissionCaseSummary } from "./admissionCases";
 import { universities } from "./universities";
-import { getUniversityTier } from "./universityTiers";
+
+function createStaticHomeDom() {
+  const html = readFileSync("hanxue-luopan-home.html", "utf8");
+  const summaries = Object.fromEntries(
+    universities.map((university) => [university.slug, getAdmissionCaseSummary(university.slug)])
+  );
+
+  return new JSDOM(html, {
+    runScripts: "dangerously",
+    beforeParse(window) {
+      window.requestAnimationFrame = ((callback: FrameRequestCallback) => {
+        callback(0);
+        return 0;
+      }) as typeof window.requestAnimationFrame;
+      window.cancelAnimationFrame = (() => undefined) as typeof window.cancelAnimationFrame;
+      window.setTimeout = ((callback: TimerHandler) => {
+        if (typeof callback === "function") callback();
+        return 0;
+      }) as typeof window.setTimeout;
+      window.clearTimeout = (() => undefined) as typeof window.clearTimeout;
+      window.setInterval = (() => 0) as typeof window.setInterval;
+      window.clearInterval = (() => undefined) as typeof window.clearInterval;
+      Object.defineProperty(window, "recommendationUniversities", {
+        configurable: true,
+        value: universities
+      });
+      Object.defineProperty(window, "admissionCaseSummaries", {
+        configurable: true,
+        value: summaries
+      });
+    }
+  });
+}
+
+function changeSelect(document: Document, id: string, value: string) {
+  const field = document.getElementById(id) as HTMLSelectElement;
+  field.value = value;
+  field.dispatchEvent(new document.defaultView!.Event("change", { bubbles: true }));
+}
 
 describe("static home recommender", () => {
-  it("uses the full university catalog as recommendation candidates", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
-    const scriptUniversitiesBlock = html.match(/const universities = \[([\s\S]*?)\n\s*\];/)?.[1] ?? "";
-    const staticCandidateSlugs = [...scriptUniversitiesBlock.matchAll(/slug:\s*"([^"]+)"/g)].map((match) => match[1]);
+  it("serves desktop images from the Next public root instead of a nested public folder", () => {
+    for (const filePath of ["hanxue-luopan-home.html", "public/hanxue-luopan-home.html"]) {
+      const html = readFileSync(filePath, "utf8");
 
-    expect(staticCandidateSlugs).toHaveLength(universities.length);
-    expect(new Set(staticCandidateSlugs)).toEqual(new Set(universities.map((university) => university.slug)));
-  });
-
-  it("sets the main screen defaults to broad-access filters", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
-
-    expect(html).toContain('<option value="77" selected>75-80分</option>');
-    expect(html).toContain('<option value="regular" selected>普通高中</option>');
-    expect(html).toContain('<option value="undecided" selected>还没确定</option>');
-    expect(html).toContain('"rec-gpa": "77"');
-    expect(html).toContain('"rec-school-tier": "regular"');
-    expect(html).toContain('"rec-major": "undecided"');
-  });
-
-  it("renders recommendation confidence as language instead of numeric scores", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
-
-    expect(html).toContain("较有希望");
-    expect(html).toContain("适合申请");
-    expect(html).toContain("冲刺申请");
-    expect(html).toContain("先补条件");
-    expect(html).not.toContain("recommendation-score");
-    expect(html).not.toContain("${school.score}分");
-  });
-
-  it("keeps recommendation tier badges aligned with the shared university tier table", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
-    const tierNotesBlock = html.match(/const tierNotes = \{([\s\S]*?)\n\s*\};/)?.[1] ?? "";
-
-    for (const school of universities) {
-      expect(tierNotesBlock).toContain(`"${school.slug}": "${getUniversityTier(school.nameCn)}"`);
+      expect(html).toContain('src="/korea-link-logo.gif"');
+      expect(html).toContain('src="/home-banner-1b.png"');
+      expect(html).toContain('src="/home-banner-1c.jpg"');
+      expect(html).toContain('folder: "/campus-images"');
+      expect(html).toContain('folder: "/school-logos"');
+      expect(html).not.toContain('src="./public/');
+      expect(html).not.toContain('src="public/');
+      expect(html).not.toContain('folder: "public/');
     }
-
-    expect(tierNotesBlock).toContain('"chungbuk-national-university": "T3"');
-    expect(tierNotesBlock).not.toContain('"chungbuk-national-university": "T4"');
   });
 
-  it("places recommendation confidence in the title row and keeps card copy black", () => {
+  it("keeps the legacy recommender disabled and uses the shared case recommender", () => {
     const html = readFileSync("hanxue-luopan-home.html", "utf8");
 
-    expect(html).toContain("recommendation-meta-inline");
-    expect(html).toContain("recommendation-confidence");
-    expect(html).toContain("color: #9f1d1d");
-    expect(html).toContain(".recommendation-card p");
-    expect(html).toContain("color: var(--ink)");
-    expect(html).toContain('${school.city} / ${school.type} · <span class="recommendation-confidence">${school.category}</span>');
-    expect(html).toContain("<p><strong>专业方向匹配：</strong>${school.focus}</p>");
-    expect(html).toContain(".case-reason-detail");
-    expect(html).toContain("color: #123a72");
-    expect(html).toContain("letter-spacing: 0.025em");
-    expect(html).toContain("word-spacing: 0.16em");
-    expect(html).toContain("text-decoration: none");
-    expect(html).toContain('<p><strong>案例参考：</strong><span class="case-reason-detail">${school.caseReason}</span></p>');
-    expect(html).toContain("recommendation-result-note");
-    expect(html).toContain('<p class="recommendation-result-note">公开案例存在样本偏差，只适合做申请画像参考，不等于学校官方录取概率。</p>');
-    expect(html).toContain("font-weight: 400");
-    expect(html).not.toContain('<span class="result-badge">${school.status}</span>');
-    expect(html).not.toContain('<p class="case-panel-note">公开案例存在样本偏差，只适合做申请画像参考，不等于学校官方录取概率。</p>');
-    expect(html).not.toContain("<p>${school.city} · <strong>${school.category}</strong></p>");
-    expect(html).not.toContain("<p><strong>${school.city} / ${school.type}</strong> / 专业方向匹配：${school.focus}</p>");
+    expect(html).toContain('data-disabled-legacy-recommender');
+    expect(html).toContain('script id="restored-ai-case-recommender"');
+    expect(html).toContain('["录取有望", "录取有望", "录取有望", "条件匹配", "录取较难"]');
   });
 
-  it("lets recommendation school names open an inline school case detail panel", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
+  it("marks required fields and removes English score from the static form", () => {
+    const { document } = createStaticHomeDom().window;
 
-    expect(html).toContain('<script src="./admission-case-summaries.js"></script>');
-    expect(html).toContain("recommendation-school-toggle");
-    expect(html).toContain('data-school-slug="${school.slug}"');
-    expect(html).toContain('aria-expanded="${expandedRecommendationSlug === school.slug ? "true" : "false"}"');
-    expect(html).toContain("function renderRecommendationCasePanel");
-    expect(html).toContain("function toggleRecommendationCasePanel");
-    expect(html).toContain("window.admissionCaseSummaries");
+    expect(document.getElementById("rec-english")).toBeNull();
+    expect(document.getElementById("recommend-major-warning")).toBeNull();
+    expect(document.querySelectorAll(".recommend-required-control")).toHaveLength(3);
+    expect(readFileSync("hanxue-luopan-home.html", "utf8")).toMatch(
+      /\.recommend-required-control select \{[\s\S]*?color: transparent;/
+    );
+    expect(readFileSync("hanxue-luopan-home.html", "utf8")).toMatch(
+      /\.recommend-required-badge \{[\s\S]*?font-size: 0\.85rem;/
+    );
+    expect(Array.from(document.querySelectorAll(".recommend-required-badge")).map((node) => node.textContent)).toEqual([
+      "必选项",
+      "必选项",
+      "必选项"
+    ]);
+    document.querySelectorAll(".recommend-required-badge").forEach((badge) => {
+      expect(badge.closest(".recommend-required-control")).not.toBeNull();
+    });
   });
 
-  it("marks recommendation school name links with an external arrow", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
-    const dom = new JSDOM(html, { runScripts: "dangerously" });
+  it("reveals each static required value immediately after the select changes", () => {
+    const { document } = createStaticHomeDom().window;
+    const controls = Array.from(document.querySelectorAll(".recommend-required-control"));
+
+    changeSelect(document, "rec-gpa", "72");
+    expect(controls[0].classList.contains("is-confirmed")).toBe(true);
+    expect(controls[1].classList.contains("is-confirmed")).toBe(false);
+
+    changeSelect(document, "rec-topik", "4");
+    expect(controls[1].classList.contains("is-confirmed")).toBe(true);
+
+    changeSelect(document, "rec-major", "computer-science");
+    expect(controls[2].classList.contains("is-confirmed")).toBe(true);
+
+    changeSelect(document, "rec-major", "undecided");
+    expect(controls[2].classList.contains("is-confirmed")).toBe(false);
+  });
+
+  it("keeps the button clickable and flashes required controls until a major is selected", () => {
+    const dom = createStaticHomeDom();
+    const { document } = dom.window;
+    const button = document.getElementById("recommend-button") as HTMLButtonElement;
+    const results = document.getElementById("recommendation-results");
+
+    expect(button.disabled).toBe(false);
+
+    button.click();
+    expect(results?.classList.contains("is-visible")).toBe(false);
+    expect(Array.from(document.querySelectorAll(".recommend-required-control")).every((node) =>
+      node.classList.contains("is-flashing")
+    )).toBe(true);
+
+    changeSelect(document, "rec-major", "computer-science");
+    expect(button.disabled).toBe(false);
+
+    button.click();
+    expect(Array.from(document.querySelectorAll(".recommend-required-control")).every((node) =>
+      node.classList.contains("is-confirmed")
+    )).toBe(true);
+    expect((document.getElementById("rec-gpa") as HTMLSelectElement).value).toBe("77");
+    expect((document.getElementById("rec-topik") as HTMLSelectElement).value).toBe("4");
+    expect((document.getElementById("rec-major") as HTMLSelectElement).value).toBe("computer-science");
+  });
+
+  it("shows project and Korean-study guidance instead of non-fit schools when TOPIK is too low", () => {
+    const dom = createStaticHomeDom();
     const { document } = dom.window;
 
+    changeSelect(document, "rec-major", "computer-science");
+    changeSelect(document, "rec-topik", "1");
     document.getElementById("recommend-button")?.click();
 
-    const schoolNames = Array.from(document.querySelectorAll(".recommendation-school-toggle")).map((node) =>
+    const results = document.getElementById("recommendation-results")!;
+    expect(results.classList.contains("is-visible")).toBe(true);
+    expect(results.textContent).toContain("当前条件暂时不适合直接推荐大学");
+    expect(results.textContent).toContain("国内+韩国项目");
+    expect(results.textContent).toContain("韩语 / TOPIK、报名、备考");
+    expect(results.textContent).not.toContain("暂不符合");
+    expect(results.querySelector<HTMLAnchorElement>('a[href="/application"]')).not.toBeNull();
+    expect(results.querySelector<HTMLAnchorElement>('a[href="/topik"]')).not.toBeNull();
+    expect(results.querySelectorAll(".recommendation-rank")).toHaveLength(0);
+  });
+
+  it("recommends five schools from lower rank toward higher rank with the common category mix", () => {
+    const dom = createStaticHomeDom();
+    const { document } = dom.window;
+
+    changeSelect(document, "rec-gpa", "77");
+    changeSelect(document, "rec-school-tier", "regular");
+    changeSelect(document, "rec-topik", "4");
+    changeSelect(document, "rec-gaokao", "not_submitted");
+    changeSelect(document, "rec-major", "computer-science");
+    changeSelect(document, "rec-material", "matched");
+    changeSelect(document, "rec-type", "any");
+    changeSelect(document, "rec-region", "any");
+    document.getElementById("recommend-button")?.click();
+
+    const categoryTexts = Array.from(document.querySelectorAll(".recommendation-confidence")).map((node) =>
       node.textContent?.trim()
     );
-
-    expect(schoolNames.length).toBeGreaterThan(0);
-    expect(schoolNames).toContain("釜山大学 ↗");
-    expect(schoolNames.every((name) => name?.endsWith(" ↗"))).toBe(true);
-
-    const schoolNameArrows = Array.from(document.querySelectorAll(".recommendation-school-arrow"));
-    expect(schoolNameArrows).toHaveLength(schoolNames.length);
-    expect(schoolNameArrows.every((node) => node.textContent?.trim() === "↗")).toBe(true);
-    expect(html).toContain(".recommendation-school-arrow");
-    expect(html).toContain("font-size: 70%");
-  });
-
-  it("keeps the inline case panel metrics square and highlights each chart's largest item", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
-
-    expect(html).toContain("height: 2.35rem");
-    expect(html).toContain("border-radius: 0");
-    expect(html).toContain("grid-template-columns: repeat(2, minmax(0, 1fr))");
-    expect(html).not.toContain("min-height: 12rem");
-    expect(html).toContain("function highlightItemKey");
-    expect(html).toContain("const highlightedKey = highlightItemKey(items);");
-    expect(html).toContain("item.key === highlightedKey ? caseHighlightColor : caseBarColor");
-    expect(html).toContain('if (title === "TOPIK分布") return text.replace(/^TOPIK\\s*/, "");');
-    expect(html).toContain('return /^\\d+(?:\\.\\d+)?$/.test(score) ? `${score}分` : score.replace("雅思", "");');
-  });
-
-  it("renders a seven-school balanced recommendation slate", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
-
-    expect(html).toContain("ai生成7所推荐大学");
-    expect(html).toContain(".slice(0, 7)");
-    expect(html).toContain('stable: { label: "较有希望", count: 3 }');
-    expect(html).toContain('match: { label: "适合申请", count: 2 }');
-    expect(html).toContain('reach: { label: "冲刺申请", count: 1 }');
-    expect(html).toContain('prepare_first: { label: "先补条件", count: 1 }');
-  });
-
-  it("orders static homepage recommendations from easier T5 toward harder T1 tiers", () => {
-    const html = readFileSync("hanxue-luopan-home.html", "utf8");
-    const dom = new JSDOM(html, { runScripts: "dangerously" });
-    const { document } = dom.window;
-
-    (document.getElementById("rec-gpa") as HTMLSelectElement).value = "77";
-    (document.getElementById("rec-school-tier") as HTMLSelectElement).value = "regular";
-    (document.getElementById("rec-topik") as HTMLSelectElement).value = "4";
-    (document.getElementById("rec-english") as HTMLSelectElement).value = "ielts60";
-    (document.getElementById("rec-gaokao") as HTMLSelectElement).value = "not_submitted";
-    (document.getElementById("rec-major") as HTMLSelectElement).value = "undecided";
-    (document.getElementById("rec-material") as HTMLSelectElement).value = "matched";
-    (document.getElementById("rec-type") as HTMLSelectElement).value = "any";
-    (document.getElementById("rec-region") as HTMLSelectElement).value = "any";
-    document.getElementById("recommend-button")?.click();
-
     const tierRanks = Array.from(document.querySelectorAll(".recommendation-rank")).map((node) =>
       Number(node.textContent?.replace("T", ""))
     );
 
-    expect(tierRanks).toHaveLength(7);
+    expect(categoryTexts).toHaveLength(5);
+    expect(categoryTexts.filter((category) => category === "录取有望")).toHaveLength(3);
+    expect(categoryTexts.filter((category) => category === "条件匹配")).toHaveLength(1);
+    expect(categoryTexts.filter((category) => category === "录取较难")).toHaveLength(1);
+    expect(categoryTexts).not.toContain("暂不符合");
+    expect(tierRanks).toHaveLength(5);
     expect(tierRanks).toEqual([...tierRanks].sort((a, b) => b - a));
+    expect(tierRanks.every((rank) => rank <= 2)).toBe(true);
+    expect(document.getElementById("recommendation-results")?.textContent).toContain("专业匹配已计入推荐分");
   });
 
-  it("includes a fixed back-to-top control on the static home page", () => {
+  it("uses the selected major to reorder static desktop recommendations inside the same academic target", () => {
+    function resultSlugsForMajor(major: string) {
+      const dom = createStaticHomeDom();
+      const { document } = dom.window;
+
+      changeSelect(document, "rec-gpa", "77");
+      changeSelect(document, "rec-school-tier", "regular");
+      changeSelect(document, "rec-topik", "4");
+      changeSelect(document, "rec-gaokao", "not_submitted");
+      changeSelect(document, "rec-major", major);
+      changeSelect(document, "rec-material", "matched");
+      changeSelect(document, "rec-type", "any");
+      changeSelect(document, "rec-region", "any");
+      document.getElementById("recommend-button")?.click();
+
+      return Array.from(document.querySelectorAll<HTMLButtonElement>(".recommendation-school-toggle")).map((button) =>
+        button.dataset.schoolSlug
+      );
+    }
+
+    const computerSlugs = resultSlugsForMajor("computer-science");
+    const artSlugs = resultSlugsForMajor("art-design");
+
+    expect(computerSlugs).toHaveLength(5);
+    expect(artSlugs).toHaveLength(5);
+    expect(artSlugs).not.toEqual(computerSlugs);
+  });
+
+  it("does not render the static back-to-top control", () => {
     const html = readFileSync("hanxue-luopan-home.html", "utf8");
 
-    expect(html).toContain(".back-to-top-button");
-    expect(html).toContain("position: fixed");
-    expect(html).toContain("background: var(--yellow, #ffe07a)");
-    expect(html).toContain('onclick="window.scrollTo({ top: 0, behavior: \'smooth\' })"');
-    expect(html).toContain('aria-label="回到顶部"');
+    expect(html).not.toContain(".back-to-top-button");
+    expect(html).not.toContain("window.scrollTo({ top: 0, behavior: 'smooth' })");
   });
 });

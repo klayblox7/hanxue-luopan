@@ -11,8 +11,16 @@ describe("MobileServicePage", () => {
   it("renders TOPIK as a compact mini-program detail page", () => {
     render(<MobileServicePage page="topik" />);
 
-    expect(screen.getByRole("heading", { name: "TOPIK考试" })).toBeInTheDocument();
-    expect(screen.getByText("小程序版")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "TOPIK考试" })).not.toBeInTheDocument();
+    expect(screen.queryByText("小程序版")).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "AI TOPIK 规划" })).toBeInTheDocument();
+    expect(screen.getByTestId("mobile-primary-tool-card")).toHaveClass(
+      "border-2",
+      "bg-[#f4fbef]",
+      "shadow-[0_14px_36px_rgba(11,106,74,0.16)]"
+    );
+    expect(screen.getAllByTestId("mobile-reference-card")[0]).toHaveClass("border-ink/25", "bg-[#fbfaf4]", "shadow-none");
+    expect(screen.getAllByTestId("mobile-reference-card")[0]).not.toHaveClass("border-2");
     expect(screen.getByLabelText("目标学校").closest("form")).toHaveClass("overflow-hidden");
     expect(screen.getByLabelText("目标学校").closest("label")).toHaveClass("min-w-0");
     expect(screen.getByLabelText("目标学校")).toHaveClass("truncate", "min-w-0", "max-w-full", "w-full");
@@ -49,6 +57,13 @@ describe("MobileServicePage", () => {
     const desktopCost = screen.getByRole("heading", { name: "费用构成分析" });
     const budgetIcon = screen.getByTestId("mobile-budget-card-icon");
 
+    expect(screen.getByTestId("mobile-primary-tool-card")).toHaveClass(
+      "border-2",
+      "bg-[#f4fbef]",
+      "shadow-[0_14px_36px_rgba(11,106,74,0.16)]"
+    );
+    expect(screen.getAllByTestId("mobile-reference-card")[0]).toHaveClass("border-ink/25", "bg-[#fbfaf4]", "shadow-none");
+    expect(screen.getAllByTestId("mobile-reference-card")[0]).not.toHaveClass("border-2");
     expect(screen.queryByLabelText("留学费用页面说明")).not.toBeInTheDocument();
     expect(screen.queryByText(/budget planner/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/移动版只放决策入口/)).not.toBeInTheDocument();
@@ -56,10 +71,11 @@ describe("MobileServicePage", () => {
     expect(screen.queryByText("按城市、学校、专业、住宿和奖学金快速估第一年预算。")).not.toBeInTheDocument();
     expect(within(budgetIcon).getByAltText("汇率换算图标")).toHaveAttribute(
       "src",
-      expect.stringContaining("category-exchange-transparent.png")
+      expect.stringContaining("icon-exchange-budget-99.png")
     );
-    expect(within(budgetIcon).getByText("汇率")).toBeInTheDocument();
+    expect(within(budgetIcon).queryByText("汇率")).not.toBeInTheDocument();
     expect(budgetIcon.closest("a")).toHaveAttribute("href", "/exchange-rate");
+    expect(budgetIcon).toHaveClass("mt-3");
     expect(estimatorTitle.compareDocumentPosition(desktopCost) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText("学费")).toBeInTheDocument();
     expect(within(screen.getByLabelText("留学费用移动端补充信息")).getByText("约25-45%")).toHaveClass("self-center");
@@ -76,6 +92,8 @@ describe("MobileServicePage", () => {
     expect(screen.getByText("核心学生群体画像")).toBeInTheDocument();
     expect(screen.getByText("直申（DIY）")).toBeInTheDocument();
     expect(screen.getByText("中介申请")).toBeInTheDocument();
+    expect(screen.getAllByText("优点")[0]).toHaveClass("bg-[#d8f3e7]", "text-[#0b6a4a]");
+    expect(screen.getAllByText("注意")[0]).toHaveClass("bg-[#fff3b8]", "text-[#7a5a00]");
     expect(screen.getByText("节省中介服务费（10,000-30,000元）")).toBeInTheDocument();
     expect(screen.getByText("需甄别机构资质与服务质量")).toBeInTheDocument();
   });
@@ -169,7 +187,10 @@ describe("MobileServicePage", () => {
     expect(screen.getByLabelText("申请")).toHaveClass("text-[0.79rem]");
     expect(screen.getByLabelText("奖学金")).toHaveClass("text-[0.79rem]");
     expect(screen.getByRole("button", { name: "还原" })).toHaveClass("text-[0.79rem]");
-    expect(screen.getByRole("button", { name: "费用预估" })).toHaveClass("text-[0.79rem]");
+    expect(screen.getByRole("button", { name: "费用预估" })).toHaveClass("bg-[#dff3dc]", "text-[#004c3f]", "text-[0.79rem]");
+    expect(screen.getByRole("button", { name: "费用预估" })).toHaveStyle({
+      boxShadow: "inset 0 0 0 1px #006241, 0 6px 14px rgba(0, 98, 65, 0.12)"
+    });
 
     fireEvent.change(screen.getByLabelText("城市"), { target: { value: "regional" } });
     fireEvent.change(screen.getByLabelText("学校"), { target: { value: "public" } });
@@ -184,6 +205,20 @@ describe("MobileServicePage", () => {
     });
 
     expect(screen.getByText("第一年总预算")).toBeInTheDocument();
+    expect(screen.getByTestId("budget-total-card")).toHaveClass("bg-[#dff3dc]");
+    expect(screen.getByTestId("budget-total-card")).toHaveStyle({
+      boxShadow: "inset 0 0 0 1px #006241, 0 10px 22px rgba(0, 98, 65, 0.14)"
+    });
+    expect(screen.getByTestId("budget-total-amount-row")).toHaveClass("flex", "items-end", "gap-3");
+    expect(screen.getByTestId("budget-total-amount-row")).toContainElement(screen.getByTestId("budget-total-krw"));
+    expect(screen.getByTestId("budget-total-krw")).toHaveClass("mb-0.5", "min-w-[8.8rem]", "text-center", "bg-[#f7fbf3]", "text-[#25443a]");
+    const resultAmountRows = screen.getAllByTestId("budget-result-amount-row");
+    const resultKrwAmounts = screen.getAllByTestId("budget-result-krw");
+    expect(resultAmountRows).toHaveLength(3);
+    expect(resultKrwAmounts).toHaveLength(3);
+    expect(resultAmountRows[0]).toHaveClass("flex", "items-end", "gap-2");
+    expect(resultAmountRows[0]).toContainElement(resultKrwAmounts[0]);
+    expect(resultKrwAmounts[0]).toHaveClass("mb-0.5", "min-w-[5.9rem]", "text-center", "bg-[#f7fbf3]", "text-[#25443a]");
     expect(screen.getByText(/地方城市国公立，理工/)).toBeInTheDocument();
     expect(screen.getByText("大学学费")).toBeInTheDocument();
     expect(screen.getByText("住宿+生活")).toBeInTheDocument();
@@ -208,6 +243,10 @@ describe("MobileServicePage", () => {
     fireEvent.change(screen.getByLabelText("现在水平"), { target: { value: "2" } });
     fireEvent.change(screen.getByLabelText("目标学校"), { target: { value: "t2" } });
     fireEvent.change(screen.getByLabelText("每周时间"), { target: { value: "14" } });
+    expect(screen.getByRole("button", { name: "AI规划" })).toHaveClass("bg-[#dff3dc]", "text-[#004c3f]");
+    expect(screen.getByRole("button", { name: "AI规划" })).toHaveStyle({
+      boxShadow: "inset 0 0 0 1px #006241, 0 6px 14px rgba(0, 98, 65, 0.12)"
+    });
     fireEvent.click(screen.getByRole("button", { name: "AI规划" }));
 
     expect(screen.getByRole("status")).toHaveTextContent("AI正在分析TOPIK目标");
@@ -218,7 +257,13 @@ describe("MobileServicePage", () => {
     });
 
     expect(screen.getByText("现实性判断")).toBeInTheDocument();
-    expect(screen.getByTestId("topik-result-title")).toHaveClass("text-[#8b1e1e]");
+    expect(screen.getByTestId("topik-result-card")).toHaveClass("bg-[#dff3dc]");
+    expect(screen.getByTestId("topik-result-card")).toHaveStyle({
+      boxShadow: "inset 0 0 0 1px #006241, 0 10px 22px rgba(0, 98, 65, 0.14)"
+    });
+    expect(screen.getByTestId("topik-result-title")).toHaveClass("text-[#004c3f]");
+    expect(screen.queryByText("先补发音、语法和听读。")).not.toBeInTheDocument();
+    expect(screen.getByTestId("topik-target-gap")).toHaveClass("text-[#8b1e1e]");
     expect(screen.getByTestId("topik-hour-gap")).toHaveClass("text-[#8b1e1e]");
     expect(screen.queryByText(/预计到TOPIK/)).not.toBeInTheDocument();
     expect(screen.getByText("目标完成率")).toBeInTheDocument();

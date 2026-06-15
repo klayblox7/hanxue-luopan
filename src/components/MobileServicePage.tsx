@@ -1496,7 +1496,7 @@ function ApplicationChannelGuide() {
                   <div className="grid grid-cols-[2.6rem_minmax(0,1fr)] items-start gap-2 text-[0.72rem] leading-4" key={`${point.label}-${point.text}`}>
                     <span
                       className={`rounded-full px-1.5 py-0.5 text-center font-black ${
-                        point.label === "优点" ? "bg-[#0b6a4a] text-white" : "bg-[#ffeb7a] text-ink"
+                        point.label === "优点" ? "bg-[#d8f3e7] text-[#0b6a4a]" : "bg-[#fff3b8] text-[#7a5a00]"
                       }`}
                     >
                       {point.label}
@@ -1523,18 +1523,18 @@ function MobileReferenceSections({
   return (
     <section className="mt-4 grid gap-3" aria-label={ariaLabel}>
       {sections.map((section) => (
-        <section className="rounded-xl border border-ink bg-surface p-4 shadow-[0_8px_24px_rgba(10,10,10,0.06)]" key={section.title}>
-          <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">{section.eyebrow}</p>
-          <h2 className="mt-1 text-[1.05rem] font-black leading-tight">{section.title}</h2>
+        <section className="rounded-lg border border-ink/25 bg-[#fbfaf4] px-4 py-3 shadow-none" data-testid="mobile-reference-card" key={section.title}>
+          <p className="text-[0.66rem] font-black uppercase tracking-[0.08em] text-[#687365]">{section.eyebrow}</p>
+          <h2 className="mt-1 text-[0.98rem] font-black leading-tight">{section.title}</h2>
           {section.copy ? <p className="mt-2 text-xs font-medium leading-5 text-muted">{section.copy}</p> : null}
-          <div className="mt-3 grid gap-2">
+          <div className="mt-2 grid gap-1.5">
             {section.items.map((item) => (
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-t border-ink/10 pt-2" key={item.label}>
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-t border-ink/15 pt-2" key={item.label}>
                 <div className="min-w-0">
-                  <p className="text-sm font-black leading-5">{item.label}</p>
+                  <p className="text-[0.84rem] font-black leading-5">{item.label}</p>
                   <p className="mt-0.5 text-[0.72rem] font-medium leading-4 text-muted">{item.detail}</p>
                 </div>
-                <p className="self-center max-w-[6.6rem] text-right text-sm font-black leading-5 text-[#0b6a4a]">{item.value}</p>
+                <p className="self-center max-w-[6.6rem] text-right text-[0.84rem] font-black leading-5 text-[#0b6a4a]">{item.value}</p>
               </div>
             ))}
           </div>
@@ -1548,8 +1548,12 @@ function BudgetResultTile({ label, item }: { label: string; item: { rmb: string;
   return (
     <div className="rounded-lg border border-ink/15 bg-[#fffaf0] p-3">
       <p className="text-xs font-black text-muted">{label}</p>
-      <p className="mt-1 text-lg font-black leading-tight text-ink">{item.rmb}</p>
-      <p className="mt-1 text-[0.72rem] font-semibold leading-4 text-muted">{item.krw}</p>
+      <div className="mt-1 flex flex-wrap items-end gap-2" data-testid="budget-result-amount-row">
+        <p className="text-lg font-black leading-tight text-ink">{item.rmb}</p>
+        <p className="mb-0.5 min-w-[5.9rem] rounded bg-[#f7fbf3] px-1.5 py-0.5 text-center text-[0.68rem] font-black leading-none text-[#25443a] shadow-[inset_0_0_0_1px_rgba(0,98,65,0.16)]" data-testid="budget-result-krw">
+          {item.krw}
+        </p>
+      </div>
       <p className="mt-2 text-[0.7rem] font-medium leading-4 text-muted">{item.rule}</p>
     </div>
   );
@@ -1596,7 +1600,11 @@ function BudgetEstimator() {
   };
 
   return (
-    <section className="rounded-xl border border-ink bg-surface p-4 shadow-[0_8px_24px_rgba(10,10,10,0.07)]" aria-label="韩国留学费用估算">
+    <section
+      className="rounded-[1.1rem] border-2 border-[#0b6a4a] bg-[#f4fbef] p-5 shadow-[0_14px_36px_rgba(11,106,74,0.16)] ring-1 ring-[#0b6a4a]/10"
+      aria-label="韩国留学费用估算"
+      data-testid="mobile-primary-tool-card"
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">AI budget</p>
@@ -1606,18 +1614,17 @@ function BudgetEstimator() {
         <Link
           href="/exchange-rate"
           aria-label="汇率参考"
-          className="relative flex w-14 shrink-0 flex-col items-center justify-center gap-0.5 overflow-visible rounded-lg transition-transform active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b6a4a]"
+          className="relative mt-3 flex w-16 shrink-0 flex-col items-center justify-center gap-0.5 overflow-visible rounded-lg transition-transform active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b6a4a]"
           data-testid="mobile-budget-card-icon"
         >
           <Image
-            src={assetPath("/mobile-mini-program/category-exchange-transparent.png")}
+            src={assetPath("/mobile-mini-program/icon-exchange-budget-99.png")}
             alt="汇率换算图标"
-            width={72}
-            height={72}
-            className="h-[3.3rem] w-[3.3rem] object-contain"
+            width={256}
+            height={244}
+            className="h-[3.8rem] w-[4rem] object-contain"
             priority={false}
           />
-          <span className="text-[0.58rem] font-semibold leading-none text-[#0b6a4a]">汇率</span>
         </Link>
       </div>
 
@@ -1714,8 +1721,9 @@ function BudgetEstimator() {
           还原
         </button>
         <button
-          className="min-h-11 rounded-lg border border-ink bg-[#ffe07a] px-3 text-[0.79rem] font-black disabled:opacity-60"
+          className="min-h-11 rounded-lg bg-[#dff3dc] px-3 text-[0.79rem] font-black text-[#004c3f] shadow-[0_6px_14px_rgba(0,98,65,0.12)] disabled:opacity-60"
           disabled={status === "loading"}
+          style={{ boxShadow: "inset 0 0 0 1px #006241, 0 6px 14px rgba(0, 98, 65, 0.12)" }}
           type="submit"
         >
           {status === "loading" ? "AI计算中" : "费用预估"}
@@ -1731,11 +1739,19 @@ function BudgetEstimator() {
 
       {status === "result" && estimate ? (
         <div className="mt-4 grid gap-3" aria-live="polite">
-          <section className="rounded-xl border border-ink bg-[#ffe07a] p-4">
-            <p className="text-xs font-black text-ink/70">第一年总预算</p>
-            <p className="mt-1 text-3xl font-black leading-none">{estimate.total.rmb}</p>
-            <p className="mt-2 text-xs font-semibold text-ink/70">{estimate.total.krw}</p>
-            <p className="mt-3 text-sm font-medium leading-6 text-ink">{estimate.context}</p>
+          <section
+            className="rounded-xl bg-[#dff3dc] p-4"
+            data-testid="budget-total-card"
+            style={{ boxShadow: "inset 0 0 0 1px #006241, 0 10px 22px rgba(0, 98, 65, 0.14)" }}
+          >
+            <p className="text-xs font-black text-[#006241]">第一年总预算</p>
+            <div className="mt-1 flex flex-wrap items-end gap-3" data-testid="budget-total-amount-row">
+              <p className="text-3xl font-black leading-none text-[#004c3f]">{estimate.total.rmb}</p>
+              <p className="mb-0.5 min-w-[8.8rem] rounded-md bg-[#f7fbf3] px-2 py-1 text-center text-xs font-black leading-none text-[#25443a] shadow-[inset_0_0_0_1px_rgba(0,98,65,0.16)]" data-testid="budget-total-krw">
+                {estimate.total.krw}
+              </p>
+            </div>
+            <p className="mt-3 text-sm font-semibold leading-6 text-[#25443a]">{estimate.context}</p>
           </section>
           <div className="grid grid-cols-2 gap-2">
             <BudgetResultTile label="大学学费" item={estimate.tuition} />
@@ -1745,7 +1761,7 @@ function BudgetEstimator() {
             </div>
           </div>
           <p className="rounded-lg border border-ink/15 bg-paper p-3 text-[0.72rem] font-medium leading-5 text-muted">
-            预算为参考区间均值，付款前请重新核对学校官网、宿舍通知、签证材料和银行实时汇率。
+            预算为参考区间均值，请重新核对学校官网、宿舍通知、签证材料和银行实时汇率。
           </p>
         </div>
       ) : null}
@@ -1794,7 +1810,11 @@ function TopikAiPlanner() {
   };
 
   return (
-    <section className="w-full max-w-full overflow-hidden rounded-xl border border-ink bg-surface p-4 shadow-[0_8px_24px_rgba(10,10,10,0.07)]" aria-label="AI TOPIK规划">
+    <section
+      className="w-full max-w-full overflow-hidden rounded-[1.1rem] border-2 border-[#0b6a4a] bg-[#f4fbef] p-5 shadow-[0_14px_36px_rgba(11,106,74,0.16)] ring-1 ring-[#0b6a4a]/10"
+      aria-label="AI TOPIK规划"
+      data-testid="mobile-primary-tool-card"
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">AI TOPIK</p>
@@ -1879,8 +1899,9 @@ function TopikAiPlanner() {
           还原
         </button>
         <button
-          className="min-h-11 rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black disabled:opacity-60"
+          className="min-h-11 rounded-lg bg-[#dff3dc] px-3 text-sm font-black text-[#004c3f] shadow-[0_6px_14px_rgba(0,98,65,0.12)] disabled:opacity-60"
           disabled={status === "loading"}
+          style={{ boxShadow: "inset 0 0 0 1px #006241, 0 6px 14px rgba(0, 98, 65, 0.12)" }}
           type="submit"
         >
           {status === "loading" ? "AI分析中" : "AI规划"}
@@ -1896,10 +1917,13 @@ function TopikAiPlanner() {
 
       {status === "result" && plan ? (
         <div className="mt-4 grid gap-3" aria-live="polite">
-          <section className={`rounded-xl border border-ink p-4 ${plan.isOnTrack ? "bg-[#eef8df]" : "bg-[#fffaf0]"}`}>
-            <p className="text-xs font-black text-[#0b6a4a]">现实性判断</p>
-            <h3 className="mt-1 text-2xl font-black leading-tight text-[#8b1e1e]" data-testid="topik-result-title">{plan.resultTitle}</h3>
-            <p className="mt-2 rounded-lg border border-ink/15 bg-surface p-3 text-xs font-medium leading-5 text-muted">{plan.suggestion}</p>
+          <section
+            className="rounded-xl bg-[#dff3dc] p-4"
+            data-testid="topik-result-card"
+            style={{ boxShadow: "inset 0 0 0 1px #006241, 0 10px 22px rgba(0, 98, 65, 0.14)" }}
+          >
+            <p className="text-xs font-black text-[#006241]">现实性判断</p>
+            <h3 className="mt-1 text-2xl font-black leading-tight text-[#004c3f]" data-testid="topik-result-title">{plan.resultTitle}</h3>
           </section>
 
           <div className="grid grid-cols-2 gap-2">
@@ -1908,12 +1932,18 @@ function TopikAiPlanner() {
               ["每周缺口", plan.weeklyGapText],
               ["累计学习量", plan.cumulativeText],
               ["目标差额", plan.gapTotalText]
-            ].map(([label, value]) => (
-              <div className="rounded-lg border border-ink/15 bg-[#fffaf0] p-3" key={label}>
-                <p className="text-xs font-black text-muted">{label}</p>
-                <p className="mt-1 text-lg font-black leading-tight text-ink">{value}</p>
-              </div>
-            ))}
+            ].map(([label, value]) => {
+              const isTargetGap = label === "目标差额";
+
+              return (
+                <div className="rounded-lg border border-ink/15 bg-[#fffaf0] p-3" key={label}>
+                  <p className="text-xs font-black text-muted">{label}</p>
+                  <p className={`mt-1 text-lg font-black leading-tight ${isTargetGap ? "text-[#8b1e1e]" : "text-ink"}`} data-testid={isTargetGap ? "topik-target-gap" : undefined}>
+                    {value}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           <section className="rounded-lg border border-ink/15 bg-surface p-3">
@@ -1970,16 +2000,6 @@ export function MobileServicePage({ applicationPrograms, page }: { applicationPr
 
   return (
     <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden" aria-label={`${config.title}移动端小程序`}>
-      <header className="sticky top-0 z-30 border-b border-ink/10 bg-[#f5f3ed]/95 px-4 pb-3 pt-[calc(0.85rem+env(safe-area-inset-top))] backdrop-blur">
-        <div className="flex items-center gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">KOREA UNIVERSITY LINK</p>
-            <h1 className="mt-0.5 truncate text-2xl font-black leading-none">{config.title}</h1>
-          </div>
-          <span className="rounded-full border border-ink bg-[#ffd0d8] px-3 py-1 text-xs font-black">小程序版</span>
-        </div>
-      </header>
-
       <main className="px-4 pt-4">
         {page === "application" ? (
           <div className="grid gap-4">

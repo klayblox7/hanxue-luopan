@@ -315,6 +315,106 @@
         text-align: right;
       }
 
+      .recommend-warning {
+        display: none;
+        width: fit-content;
+        max-width: min(26rem, 100%);
+        margin: 0;
+        border: 1px solid rgba(255, 107, 90, 0.55);
+        border-radius: 8px;
+        background: #fff3ed;
+        color: #9f2d1f;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.78rem;
+        font-weight: 900;
+        line-height: 1.5;
+      }
+
+      .recommend-warning.is-visible {
+        display: block;
+      }
+
+      .recommend-required-badge {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        z-index: 2;
+        color: #9f1d1d;
+        font-size: 0.85rem;
+        font-weight: 900;
+        line-height: 1;
+        pointer-events: none;
+        transform: translateY(-50%);
+      }
+
+      .recommend-required-control {
+        position: relative;
+        display: block;
+      }
+
+      .recommend-required-control select {
+        min-height: 2.75rem;
+        color: transparent;
+        padding-top: 0.55rem;
+        padding-bottom: 0.55rem;
+      }
+
+      .recommend-required-control.is-confirmed .recommend-required-badge {
+        display: none;
+      }
+
+      .recommend-required-control.is-confirmed select {
+        color: var(--ink);
+      }
+
+      .recommend-required-control option {
+        color: var(--ink);
+      }
+
+      .recommend-required-control.is-flashing {
+        border-radius: 8px;
+        animation: recommend-required-flash 340ms ease-out 0s 2;
+      }
+
+      @keyframes recommend-required-flash {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(159, 29, 29, 0);
+        }
+
+        50% {
+          box-shadow:
+            0 0 0 2px rgba(159, 29, 29, 0.42),
+            0 0 0 5px rgba(159, 29, 29, 0.14);
+        }
+      }
+
+      .recommendation-guidance-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+        gap: 0.55rem;
+        margin-top: 0.85rem;
+      }
+
+      .recommendation-guidance-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 3rem;
+        border: 1px solid var(--ink);
+        border-radius: 10px;
+        padding: 0.65rem 0.85rem;
+        background: #dff3dc;
+        color: #004c3f;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .recommendation-guidance-link:nth-child(2) {
+        background: var(--yellow);
+        color: var(--ink);
+      }
+
       .recommendation-results {
         display: none;
         margin-top: 1.25rem;
@@ -456,8 +556,38 @@
       }
 
       .recommendation-confidence {
-        color: #9f1d1d;
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #9da39a;
+        border-radius: 999px;
+        padding: 0.12rem 0.46rem;
         font-weight: 800;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+
+      .recommendation-confidence-hopeful {
+        border-color: oklch(62% 0.14 300);
+        background: oklch(94% 0.052 305);
+        color: oklch(35% 0.13 300);
+      }
+
+      .recommendation-confidence-match {
+        border-color: oklch(61% 0.12 230);
+        background: oklch(94% 0.045 230);
+        color: oklch(34% 0.105 230);
+      }
+
+      .recommendation-confidence-reach {
+        border-color: oklch(66% 0.14 65);
+        background: oklch(94% 0.065 75);
+        color: oklch(38% 0.105 55);
+      }
+
+      .recommendation-confidence-blocked {
+        border-color: oklch(63% 0.11 25);
+        background: oklch(94% 0.035 25);
+        color: oklch(35% 0.105 25);
       }
 
       .school-info-toggle {
@@ -1391,96 +1521,15 @@
         }
       }
 
-      .back-to-top-button {
-        position: fixed;
-        right: 2rem;
-        bottom: 2rem;
-        z-index: 70;
-        display: inline-flex;
-        min-height: 2.5rem;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid var(--ink, #0a0a0a);
-        border-radius: 999px;
-        background: var(--yellow, #ffe07a);
-        color: var(--ink, #0a0a0a);
-        padding: 0.55rem 0.95rem;
-        font: inherit;
-        font-size: 0.9rem;
-        font-weight: 900;
-        line-height: 1;
-        cursor: pointer;
-      }
 
-      .back-to-top-button:hover,
-      .back-to-top-button:focus {
-        background: #ffec9f;
-        outline: none;
-      }
 
-      .back-to-top-button:focus-visible {
-        outline: 2px solid var(--ink, #0a0a0a);
-        outline-offset: 3px;
-      }
 
-      .back-to-top-button:active {
-        background: #ffd75f;
-      }
 
-      @media (max-width: 720px) {
-        .back-to-top-button {
-          right: 1rem;
-          bottom: calc(1rem + env(safe-area-inset-bottom));
-          min-height: 2.35rem;
-          padding: 0.5rem 0.75rem;
-          font-size: 0.82rem;
-        }
-      }
-      /* Image back-to-top control */
-      .back-to-top-button {
-        position: fixed;
-        right: 4.25rem;
-        bottom: 1.25rem;
-        z-index: 90;
-        display: block;
-        width: 5.1rem;
-        border: 0;
-        background: transparent;
-        padding: 0;
-        cursor: pointer;
-      }
 
-      .back-to-top-button img {
-        display: block;
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        pointer-events: none;
-      }
 
-      .back-to-top-button:hover,
-      .back-to-top-button:focus,
-      .back-to-top-button:active {
-        background: transparent;
-      }
 
-      .back-to-top-button:focus {
-        outline: none;
-      }
 
-      .back-to-top-button:focus-visible {
-        border-radius: 0.75rem;
-        outline: 2px solid var(--ink, #0a0a0a);
-        outline-offset: 0.25rem;
-      }
 
-      @media (max-width: 720px) {
-        .back-to-top-button {
-          right: 0.75rem;
-          bottom: calc(0.75rem + env(safe-area-inset-bottom));
-          width: 4.08rem;
-        }
-      }
 
 
       /* header-lock: keep page headers aligned across every module */
@@ -1949,7 +1998,6 @@
       }
     </style>
 
-
     <style id="thin-border-override">
       *, *::before, *::after {
         border-width: 0.3px !important;
@@ -1994,7 +2042,7 @@
       <header class="site-header">
         <div class="header-inner">
           <a href="./hanxue-luopan-home.html" aria-label="&#38889;&#23398;&#32599;&#30424;">
-            <img class="logo" src="./public/korea-link-logo.gif" alt="&#38889;&#23398;&#32599;&#30424;" />
+            <img class="logo" src="/korea-link-logo.gif" alt="&#38889;&#23398;&#32599;&#30424;" />
           </a>
           <nav class="top-nav" aria-label="main navigation">
           <a class="nav-pill nav-shortcut nav-lavender" href="./korea-university-map.html">&#38889;&#22269;&#22823;&#23398;&#22320;&#22270;</a>
@@ -2027,16 +2075,19 @@
           <div>
             <div class="recommender-form recommender-form-live" aria-label="&#25512;&#33616;&#26465;&#20214;">
               <label>
-                &#39640;&#20013;&#22343;&#20998;
-                <select id="rec-gpa">
-                  <option value="55">60&#20998;&#20197;&#19979;</option>
-                  <option value="65">60-70&#20998;</option>
-                  <option value="72">70-75&#20998;</option>
-                  <option value="77" selected>75-80&#20998;</option>
-                  <option value="82">80-85&#20998;</option>
-                  <option value="88">85-90&#20998;</option>
-                  <option value="95">90&#20998;&#20197;&#19978;</option>
-                </select>
+                <span>&#39640;&#20013;&#22343;&#20998;</span>
+                <span class="recommend-required-control">
+                  <span class="recommend-required-badge" aria-hidden="true">&#24517;&#36873;&#39033;</span>
+                  <select id="rec-gpa">
+                    <option value="55">60&#20998;&#20197;&#19979;</option>
+                    <option value="65">60-70&#20998;</option>
+                    <option value="72">70-75&#20998;</option>
+                    <option value="77" selected>75-80&#20998;</option>
+                    <option value="82">80-85&#20998;</option>
+                    <option value="88">85-90&#20998;</option>
+                    <option value="95">90&#20998;&#20197;&#19978;</option>
+                  </select>
+                </span>
               </label>
               <label>
                 &#39640;&#20013;&#31867;&#22411;
@@ -2049,26 +2100,19 @@
                 </select>
               </label>
               <label>
-                TOPIK&#31561;&#32423;
-                <select id="rec-topik">
-                  <option value="0">&#26242;&#26080;</option>
-                  <option value="1">1&#32423;</option>
-                  <option value="2">2&#32423;</option>
-                  <option value="3">3&#32423;</option>
-                  <option value="4" selected>4&#32423;</option>
-                  <option value="5">5&#32423;</option>
-                  <option value="6">6&#32423;</option>
-                </select>
-              </label>
-              <label>
-                &#33521;&#35821;&#25104;&#32489;
-                <select id="rec-english">
-                  <option value="none">&#26080;/&#19981;&#25552;&#20132;</option>
-                  <option value="ielts55">&#38597;&#24605;5.5&#24038;&#21491;</option>
-                  <option value="ielts60" selected>&#38597;&#24605;6.0&#24038;&#21491;</option>
-                  <option value="ielts65">&#38597;&#24605;6.5&#24038;&#21491;</option>
-                  <option value="toefl80">&#25176;&#31119;80+</option>
-                </select>
+                <span>TOPIK&#31561;&#32423;</span>
+                <span class="recommend-required-control">
+                  <span class="recommend-required-badge" aria-hidden="true">&#24517;&#36873;&#39033;</span>
+                  <select id="rec-topik">
+                    <option value="0">&#26242;&#26080;</option>
+                    <option value="1">1&#32423;</option>
+                    <option value="2">2&#32423;</option>
+                    <option value="3">3&#32423;</option>
+                    <option value="4" selected>4&#32423;</option>
+                    <option value="5">5&#32423;</option>
+                    <option value="6">6&#32423;</option>
+                  </select>
+                </span>
               </label>
               <label>
                 &#39640;&#32771;/&#32479;&#32771;&#36164;&#26009;
@@ -2088,19 +2132,22 @@
                 </select>
               </label>
               <label>
-                &#24076;&#26395;&#19987;&#19994;
-                <select id="rec-major">
-                  <option value="undecided" selected>&#36824;&#27809;&#30830;&#23450;</option>
-                  <option value="business">&#32463;&#33829;/&#21830;&#31185;</option>
-                  <option value="computer-science">&#35745;&#31639;&#26426;/AI</option>
-                  <option value="engineering">&#24037;&#31185;</option>
-                  <option value="media">&#20256;&#23186;/&#24433;&#35270;</option>
-                  <option value="art-design">&#33402;&#26415;/&#35774;&#35745;</option>
-                  <option value="korean-language">&#38889;&#35821;/&#25945;&#32946;</option>
-                  <option value="tourism">&#37202;&#24215;/&#26053;&#28216;</option>
-                  <option value="humanities">&#20154;&#25991;/&#22806;&#35821;</option>
-                  <option value="science">&#33258;&#28982;&#31185;&#23398;/&#29983;&#21629;</option>
-                </select>
+                <span>&#24076;&#26395;&#19987;&#19994;</span>
+                <span class="recommend-required-control">
+                  <span class="recommend-required-badge" aria-hidden="true">&#24517;&#36873;&#39033;</span>
+                  <select id="rec-major">
+                    <option value="undecided" selected>&#36824;&#27809;&#30830;&#23450;</option>
+                    <option value="business">&#32463;&#33829;/&#21830;&#31185;</option>
+                    <option value="computer-science">&#35745;&#31639;&#26426;/AI</option>
+                    <option value="engineering">&#24037;&#31185;</option>
+                    <option value="media">&#20256;&#23186;/&#24433;&#35270;</option>
+                    <option value="art-design">&#33402;&#26415;/&#35774;&#35745;</option>
+                    <option value="korean-language">&#38889;&#35821;/&#25945;&#32946;</option>
+                    <option value="tourism">&#37202;&#24215;/&#26053;&#28216;</option>
+                    <option value="humanities">&#20154;&#25991;/&#22806;&#35821;</option>
+                    <option value="science">&#33258;&#28982;&#31185;&#23398;/&#29983;&#21629;</option>
+                  </select>
+                </span>
               </label>
               <label>
                 &#19987;&#19994;&#26448;&#26009;
@@ -2137,18 +2184,19 @@
               </div>
             </div>
             <div class="recommendation-results" id="recommendation-results" aria-live="polite"></div>
-            <script>
+            <script type="application/json" data-disabled-legacy-recommender>
               (() => {
                 const button = document.getElementById("recommend-button");
                 const resetButton = document.getElementById("reset-recommendation-button");
                 const resultsEl = document.getElementById("recommendation-results");
+                const majorWarning = document.getElementById("recommend-major-warning");
+                const requiredControls = Array.from(document.querySelectorAll(".recommend-required-control"));
                 if (!button || !resultsEl) return;
 
                 const selectIds = [
                   "rec-gpa",
                   "rec-school-tier",
                   "rec-topik",
-                  "rec-english",
                   "rec-gaokao",
                   "rec-path",
                   "rec-major",
@@ -2175,12 +2223,18 @@
                   const summary = window.admissionCaseSummaries?.[school.slug];
                   return !!summary && Number(summary.caseCount || 0) > 0;
                 }
+                function recommendationConfidenceClass(category) {
+                  if (category === "录取有望") return "recommendation-confidence recommendation-confidence-hopeful";
+                  if (category === "条件匹配") return "recommendation-confidence recommendation-confidence-match";
+                  if (category === "录取较难") return "recommendation-confidence recommendation-confidence-reach";
+                  return "recommendation-confidence recommendation-confidence-blocked";
+                }
                 const categoryLabels = {
-                  stable: "较有希望",
-                  match: "适合申请",
-                  reach: "冲刺申请",
-                  prepare_first: "先补条件",
-                  verify: "需确认",
+                  stable: "录取有望",
+                  match: "条件匹配",
+                  reach: "录取较难",
+                  prepare_first: "暂不符合",
+                  verify: "暂不符合",
                 };
                 const majorKeywords = {
                   business: ["经营", "商科", "经济", "国际", "创业", "房地产"],
@@ -2209,6 +2263,46 @@
                   return field ? field.value : "";
                 }
 
+                function hasSelectedMajor() {
+                  return fieldValue("rec-major") !== "undecided";
+                }
+
+                function syncRecommendationButton(isLoading = false) {
+                  button.disabled = isLoading;
+                }
+
+                function flashRequiredControls() {
+                  requiredControls.forEach((control) => {
+                    control.classList.remove("is-flashing");
+                    void control.offsetWidth;
+                    control.classList.add("is-flashing");
+                  });
+                }
+
+                function requiredControlHasSelection(control) {
+                  const select = control.querySelector("select");
+                  if (!select) return false;
+                  if (select.id === "rec-major") return select.value !== "undecided";
+                  return select.dataset.requiredSelected === "true";
+                }
+
+                function syncRequiredControlsFromSelection() {
+                  requiredControls.forEach((control) => {
+                    control.classList.toggle("is-confirmed", requiredControlHasSelection(control));
+                  });
+                }
+
+                function setRequiredControlsConfirmed(isConfirmed) {
+                  requiredControls.forEach((control) => {
+                    const select = control.querySelector("select");
+                    if (select) {
+                      if (isConfirmed) select.dataset.requiredSelected = "true";
+                      else delete select.dataset.requiredSelected;
+                    }
+                    control.classList.toggle("is-confirmed", isConfirmed);
+                  });
+                }
+
                 function tierRank(school) {
                   if (school.no <= 17) return 1;
                   if (school.no <= 30) return 2;
@@ -2226,13 +2320,24 @@
                   return 66;
                 }
 
-                function categoryFrom(score, school) {
-                  const rank = tierRank(school);
-                  if (score >= 84) return rank <= 2 ? "match" : "stable";
-                  if (score >= 72) return "match";
-                  if (score >= 60) return "reach";
-                  if (score >= 48) return "prepare_first";
-                  return "verify";
+                function clampTier(value) {
+                  return Math.min(5, Math.max(1, value));
+                }
+
+                function recommendationTargetTier() {
+                  const gpa = Number(fieldValue("rec-gpa")) || 0;
+                  const topik = Number(fieldValue("rec-topik")) || 0;
+                  if (topik < 3) return null;
+                  let realisticTier = 5;
+                  if (gpa >= 88) realisticTier = 2;
+                  else if (gpa >= 75) realisticTier = 3;
+                  else if (gpa >= 70) realisticTier = 4;
+                  if (topik >= 5) realisticTier -= 1;
+                  return clampTier(realisticTier - 1);
+                }
+
+                function slotTier(targetTier, category) {
+                  return category === "reach" ? clampTier(targetTier - 1) : targetTier;
                 }
 
                 function majorMatches(school, major) {
@@ -2243,50 +2348,30 @@
 
                 function scoreSchool(school) {
                   const gpa = Number(fieldValue("rec-gpa")) || 0;
-                  const schoolTier = fieldValue("rec-school-tier");
                   const topik = Number(fieldValue("rec-topik")) || 0;
-                  const english = fieldValue("rec-english");
-                  const gaokao = fieldValue("rec-gaokao");
-                  const path = fieldValue("rec-path");
                   const major = fieldValue("rec-major");
-                  const material = fieldValue("rec-material");
+                  const targetTier = recommendationTargetTier();
+                  const rank = tierRank(school);
 
-                  let score = 62 + (gpa - targetGpa(school)) * 1.25;
-                  if (schoolTier === "provincial_key") score += 7;
-                  if (schoolTier === "city_key") score += 4;
-                  if (schoolTier === "vocational") score -= 4;
-                  if (gaokao === "high") score += 7;
-                  if (gaokao === "above_tier_one") score += 5;
-                  if (gaokao === "submitted") score += 2;
-                  if (topik >= 5) score += 8;
-                  else if (topik === 4) score += 5;
-                  else if (topik === 3) score += 1;
-                  else score -= 8;
-                  if (["ielts60", "ielts65", "toefl80"].includes(english)) score += 3;
-                  if (majorMatches(school, major)) score += 8;
-                  else if (major !== "undecided") score -= 6;
-                  if (material === "portfolio" && /艺术|设计|美术|传媒|影视|动画/.test(String(school.focus || ""))) score += 7;
-                  if (material === "matched") score += 4;
-                  if (material === "none") score -= 5;
-                  if (path === "language" && topik <= 3) score += 5;
-                  if (path === "direct" && topik >= 4) score += 4;
+                  let score = 45 + Math.max(0, Math.min(35, gpa - 55)) + Math.min(20, topik * 3);
+                  if (targetTier) score += 20 - Math.abs(rank - targetTier) * 8;
+                  score += Math.max(0, 12 - Number(school.no || 120) / 12);
 
                   const reasons = [];
-                  reasons.push(majorMatches(school, major) ? "专业方向与学校强项较匹配" : "专业方向可作为备选确认");
-                  reasons.push(gpa >= targetGpa(school) ? "高中均分达到该梯队参考线" : "均分略低，建议搭配保底校");
-                  reasons.push(topik >= 4 ? "TOPIK条件适合直申参考" : "韩语等级需要继续补强");
+                  reasons.push(`推荐依据：高中均分 ${gpa}分，TOPIK ${topik}级`);
+                  reasons.push(targetTier ? `当前推荐目标：T${targetTier}` : "TOPIK未达到直接申请参考线");
+                  reasons.push("专业匹配已计入推荐分");
 
                   const cautions = [];
                   if (tierRank(school) <= 2) cautions.push("名校竞争强，需要确认当年招生简章");
-                  if (material === "none") cautions.push("专业材料不足时，录取把握会下降");
-                  if (topik <= 3) cautions.push("建议同步准备语言学院或补交计划");
+                  if (topik < 3) cautions.push("TOPIK低于3级时，建议先补强韩语或选择国内+韩国项目");
                   if (!cautions.length) cautions.push("注意申请批次、材料截止日和面试要求");
 
                   return {
                     school,
                     score,
                     rank: tierRank(school),
-                    category: categoryFrom(score, school),
+                    category: "stable",
                     reasons,
                     cautions,
                   };
@@ -2308,29 +2393,34 @@
                 }
 
                 function chooseRecommendations() {
+                  const targetTier = recommendationTargetTier();
+                  if (!targetTier) return [];
                   const scored = filteredSchools()
                     .map(scoreSchool)
-                    .sort((a, b) => b.score - a.score || a.school.no - b.school.no);
+                    .sort((a, b) => b.rank - a.rank || Number(b.school.no || 0) - Number(a.school.no || 0));
                   const picked = [];
                   const used = new Set();
-                  const desiredCategories = ["stable", "match", "match", "reach", "stable"];
+                  const desiredCategories = ["stable", "stable", "stable", "match", "reach"];
 
                   for (const category of desiredCategories) {
-                    const item = scored.find((candidate) => !used.has(candidate.school.slug) && candidate.category === category);
+                    const wantedTier = slotTier(targetTier, category);
+                    const item = scored
+                      .filter((candidate) => !used.has(candidate.school.slug))
+                      .sort((a, b) => Math.abs(a.rank - wantedTier) - Math.abs(b.rank - wantedTier) || b.rank - a.rank || Number(b.school.no || 0) - Number(a.school.no || 0))[0];
                     if (!item) continue;
-                    picked.push(item);
+                    picked.push({ ...item, category });
                     used.add(item.school.slug);
                   }
                   for (const item of scored) {
                     if (picked.length >= 5) break;
                     if (used.has(item.school.slug)) continue;
-                    picked.push(item);
+                    picked.push({ ...item, category: desiredCategories[picked.length] || "stable" });
                     used.add(item.school.slug);
                   }
 
                   return picked
                     .slice(0, 5)
-                    .sort((a, b) => b.rank - a.rank || b.score - a.score || a.school.no - b.school.no);
+                    .sort((a, b) => b.rank - a.rank || Number(b.school.no || 0) - Number(a.school.no || 0));
                 }
 
                 function casePanel(slug) {
@@ -2352,7 +2442,33 @@
                   `;
                 }
 
+                function noDirectRecommendationHtml() {
+                  return `
+                    <h2>初步推荐结果</h2>
+                    <article class="recommendation-card">
+                      <span class="recommendation-index">!</span>
+                      <div class="recommendation-body">
+                        <h3>当前条件暂时不适合直接推荐大学</h3>
+                        <p>TOPIK低于3级时，直接申请本科风险较高。建议先走项目路径，或先补强韩语后再重新选校。</p>
+                        <div class="recommendation-guidance-links">
+                          <a class="recommendation-guidance-link" href="/application">国内+韩国项目 <span>›</span></a>
+                          <a class="recommendation-guidance-link" href="/topik">韩语 / TOPIK、报名、备考 <span>›</span></a>
+                        </div>
+                      </div>
+                    </article>
+                  `;
+                }
+
                 function renderRecommendations() {
+                  if (!hasSelectedMajor()) {
+                    syncRequiredControlsFromSelection();
+                    flashRequiredControls();
+                    resultsEl.classList.remove("is-visible");
+                    syncRecommendationButton(false);
+                    return;
+                  }
+
+                  setRequiredControlsConfirmed(true);
                   if (!universitiesForRecommendation.length) {
                     resultsEl.innerHTML = '<h2>初步推荐结果</h2><article class="recommendation-card"><span class="recommendation-index">!</span><div class="recommendation-body"><p>推荐数据读取失败，请刷新页面后再试。</p></div></article>';
                     resultsEl.classList.add("is-visible");
@@ -2360,11 +2476,16 @@
                   }
 
                   const recommendations = chooseRecommendations();
+                  if (!recommendations.length) {
+                    resultsEl.innerHTML = noDirectRecommendationHtml();
+                    resultsEl.classList.add("is-visible");
+                    return;
+                  }
                   resultsEl.innerHTML = `
                     <h2>初步推荐结果</h2>
                     ${recommendations.map((item, index) => {
                       const school = item.school;
-                      const confidence = categoryLabels[item.category] || "适合申请";
+                      const confidence = categoryLabels[item.category] || "条件匹配";
                       return `
                         <article class="recommendation-card">
                           <span class="recommendation-index">${index + 1}</span>
@@ -2375,7 +2496,7 @@
                                   ${safeHtml(school.nameCn)} <span class="recommendation-school-arrow">↗</span>
                                 </button>
                                 <span class="recommendation-rank">T${item.rank}</span>
-                                <span class="recommendation-meta-inline">${safeHtml(school.city)} / ${safeHtml(school.type)} · <span class="recommendation-confidence">${safeHtml(confidence)}</span></span>
+                                <span class="recommendation-meta-inline">${safeHtml(school.city)} / ${safeHtml(school.type)} · <span class="${recommendationConfidenceClass(confidence)}">${safeHtml(confidence)}</span></span>
                               </h3>
                             </div>
                             <p><strong>专业方向匹配：</strong><span>${safeHtml(school.focus || "综合类专业")}</span></p>
@@ -2407,7 +2528,23 @@
                   });
                   resultsEl.innerHTML = "";
                   resultsEl.classList.remove("is-visible");
+                  setRequiredControlsConfirmed(false);
+                  syncRecommendationButton(false);
                 });
+                selectIds.forEach((id) => document.getElementById(id)?.addEventListener("change", (event) => {
+                  const field = event.currentTarget;
+                  if (field?.closest?.(".recommend-required-control")) {
+                    if (field.id === "rec-major" && field.value === "undecided") {
+                      delete field.dataset.requiredSelected;
+                    } else {
+                      field.dataset.requiredSelected = "true";
+                    }
+                  }
+                  requiredControls.forEach((control) => control.classList.remove("is-flashing"));
+                  syncRequiredControlsFromSelection();
+                  syncRecommendationButton(false);
+                }));
+                syncRecommendationButton(false);
               })();
             </script>
             <script id="restored-ai-case-recommender">
@@ -2415,6 +2552,8 @@
                 const button = document.getElementById("recommend-button");
                 const resetButton = document.getElementById("reset-recommendation-button");
                 const resultsEl = document.getElementById("recommendation-results");
+                const majorWarning = document.getElementById("recommend-major-warning");
+                const requiredControls = Array.from(document.querySelectorAll(".recommend-required-control"));
                 if (!button || !resultsEl) return;
 
                 function htmlEscape(value) {
@@ -2495,9 +2634,9 @@
                 const schoolTierBonus = { provincial_key: 4, city_key: 3, regular: 0, vocational: -1, unknown: 1 };
                 const gaokaoBonus = { high: 5, above_tier_one: 4, submitted: 2, not_submitted: 0 };
                 const recommendationSlatePlan = {
-                  stable: { label: "较有希望", count: 2 },
-                  match: { label: "适合申请", count: 2 },
-                  reach: { label: "冲刺申请", count: 1 },
+                  stable: { label: "录取有望", count: 3 },
+                  match: { label: "条件匹配", count: 1 },
+                  reach: { label: "录取较难", count: 1 },
                 };
                 const defaultSlate = [
                   "pusan-national-university",
@@ -2514,13 +2653,13 @@
                   "chungnam-national-university": 5,
                 };
                 const defaultCategories = {
-                  "pusan-national-university": "较有希望",
-                  "jeonbuk-national-university": "较有希望",
-                  "pukyong-national-university": "较有希望",
-                  "chonnam-national-university": "适合申请",
-                  "chungnam-national-university": "适合申请",
-                  "chungbuk-national-university": "冲刺申请",
-                  "kyungpook-national-university": "先补条件",
+                  "pusan-national-university": "录取有望",
+                  "jeonbuk-national-university": "录取有望",
+                  "pukyong-national-university": "录取有望",
+                  "chonnam-national-university": "条件匹配",
+                  "chungnam-national-university": "录取较难",
+                  "chungbuk-national-university": "录取较难",
+                  "kyungpook-national-university": "暂不符合",
                 };
                 const schoolDetails = {
                   "pusan-national-university": {
@@ -2590,6 +2729,28 @@
                   return Number(String(tierFor(school)).replace("T", "")) || 4;
                 }
 
+                function clampTier(value) {
+                  return Math.min(5, Math.max(1, value));
+                }
+
+                function recommendationTargetTier(applicant) {
+                  if ((applicant.topik || 0) < 3) return null;
+                  let realisticTier = 5;
+                  if ((applicant.gpa || 0) >= 88) realisticTier = 2;
+                  else if ((applicant.gpa || 0) >= 75) realisticTier = 3;
+                  else if ((applicant.gpa || 0) >= 70) realisticTier = 4;
+                  if ((applicant.topik || 0) >= 5) realisticTier -= 1;
+                  return clampTier(realisticTier - 1);
+                }
+
+                function targetTierForSlot(targetTier, category) {
+                  return category === "录取较难" ? clampTier(targetTier - 1) : targetTier;
+                }
+
+                function lowerRankFirst(a, b) {
+                  return schoolTierRank(b) - schoolTierRank(a) || Number(b.no || 0) - Number(a.no || 0);
+                }
+
                 function isDefaultApplicant(applicant) {
                   return applicant.gpa === 77 &&
                     applicant.schoolTier === "regular" &&
@@ -2608,6 +2769,13 @@
                   return keywords.some((keyword) => focus.includes(keyword)) ? 10 : -5;
                 }
 
+                function majorFitText(school, applicant, matched) {
+                  if (applicant.major === "undecided") return "请先选择希望专业。";
+                  return matched
+                    ? `专业匹配已计入推荐分：学校代表方向包含${school.focus || "综合类专业"}。`
+                    : `专业匹配较弱：学校代表方向为${school.focus || "综合类专业"}，建议确认是否开设目标专业。`;
+                }
+
                 function summaryFor(slug) {
                   return window.admissionCaseSummaries?.[slug] || null;
                 }
@@ -2621,18 +2789,35 @@
                   return items?.[0]?.label || "样本不足";
                 }
 
+                function englishScoreValue(english) {
+                  if (english === "ielts65") return 6.5;
+                  if (english === "ielts60" || english === "toefl80") return 6;
+                  if (english === "ielts55") return 5.5;
+                  return 0;
+                }
+
+                function schoolCanUseEnglishReadiness(school) {
+                  return /艺术|设计|美术|传媒|影视|动画|国际|外语|英语|AI|工科|工程/.test(String(school.focus || ""));
+                }
+
+                function languageReadyFor(school, applicant, minTopik) {
+                  return applicant.topik >= 3;
+                }
+
+                function languageFitDistance(school, applicant, minTopik) {
+                  return languageReadyFor(school, applicant, minTopik) ? 0 : Math.abs((applicant.topik || 0) - 3);
+                }
+
                 function averageGpaFromSummary(summary, fallback) {
                   return summary?.admittedAverageGpa ? Math.round(summary.admittedAverageGpa) : fallback;
                 }
 
                 function categoryFor(score, school, applicant) {
-                  const tier = tierFor(school);
-                  const minTopik = tierTopikMinimum[tier] || 3;
-                  if (applicant.topik < minTopik) return "先补条件";
-                  if (score >= 82) return "较有希望";
-                  if (score >= 70) return "适合申请";
-                  if (score >= 58) return "冲刺申请";
-                  return "先补条件";
+                  if (applicant.topik < 3) return "暂不符合";
+                  if (score >= 82) return "录取有望";
+                  if (score >= 70) return "条件匹配";
+                  if (score >= 58) return "录取较难";
+                  return "暂不符合";
                 }
 
                 function detailFor(school, applicant, category) {
@@ -2645,7 +2830,7 @@
                   return {
                     caseReason: `${sampleText}，${gpaText}，常见语言段为${topikText}。`,
                     caseSummary: `${school.name}案例方向偏${school.focus || "综合学科"}，可结合高中背景和专业材料判断。`,
-                    caution: category === "先补条件" ? "当前条件需要先补强语言或专业材料，再作为正式申请候选。" : "建议同步确认最新招生简章、面试要求和材料截止日。",
+                    caution: category === "暂不符合" ? "当前条件需要先补强语言或专业材料，再作为正式申请候选。" : "建议同步确认最新招生简章、面试要求和材料截止日。",
                   };
                 }
 
@@ -2653,14 +2838,12 @@
                   const tier = tierFor(school);
                   const summary = summaryFor(school.slug);
                   const target = averageGpaFromSummary(summary, tierTarget[tier] || 74);
-                  let score = 70 + (applicant.gpa - target) * 1.3;
-                  score += schoolTierBonus[applicant.schoolTier] || 0;
-                  score += gaokaoBonus[applicant.gaokao] || 0;
-                  score += Math.min(applicant.topik, 6) * 2;
-                  score += majorScore(school, applicant);
-                  if (applicant.material === "matched") score += 4;
-                  if (applicant.material === "portfolio" && /艺术|设计|美术|传媒|影视|动画/.test(String(school.focus || ""))) score += 8;
-                  if (applicant.material === "none") score -= 5;
+                  const targetTier = recommendationTargetTier(applicant);
+                  let score = 45 + Math.max(0, Math.min(35, applicant.gpa - 55)) + Math.min(20, applicant.topik * 3);
+                  if (targetTier) score += 20 - Math.abs(schoolTierRank(school) - targetTier) * 8;
+                  score += Math.max(0, 12 - Number(school.no || 120) / 12);
+                  const majorFit = majorScore(school, applicant);
+                  score += majorFit;
                   const category = forcedCategory || categoryFor(score, school, applicant);
                   const detail = detailFor(school, applicant, category);
                   return {
@@ -2668,7 +2851,9 @@
                     name: school.name || school.nameCn || school.nameEn,
                     category,
                     score,
-                    fit: Math.abs(applicant.gpa - target) + Math.abs((applicant.topik || 0) - (tierTopikMinimum[tier] || 3)) * 5,
+                    majorMatched: majorFit > 0,
+                    majorFitText: majorFitText(school, applicant, majorFit > 0),
+                    fit: Math.abs(schoolTierRank(school) - (targetTier || schoolTierRank(school))) * 10 + Math.abs(applicant.gpa - target),
                     caseReason: detail.caseReason,
                     caseSummary: detail.caseSummary,
                     caution: detail.caution,
@@ -2688,24 +2873,15 @@
                       results.find((school) => !used.has(school.slug));
                     if (!picked) return;
                     used.add(picked.slug);
-                    selected.push({ ...picked, category: label });
+                    selected.push(picked);
                   });
 
                   return selected.slice(0, RECOMMENDATION_LIMIT);
                 }
 
                 function recommendationResults(applicant) {
-                  if (isDefaultApplicant(applicant)) {
-                    return defaultSlate
-                      .map((slug) => universityBySlug.get(slug))
-                      .filter((school) => school && hasAdmissionData(school))
-                      .map((school) => ({
-                        ...enrichSchool(school, applicant, defaultCategories[school.slug]),
-                        displayIndex: defaultVisualOrder[school.slug],
-                        visualOrder: defaultVisualOrder[school.slug],
-                      }))
-                      .sort((a, b) => a.visualOrder - b.visualOrder);
-                  }
+                  const targetTier = recommendationTargetTier(applicant);
+                  if (!targetTier) return [];
 
                   const filtered = universities
                     .filter(hasAdmissionData)
@@ -2719,11 +2895,22 @@
                       if (applicant.region === "regional") return !String(school.city || "").includes("首尔");
                       return true;
                     })
-                    .map((school) => enrichSchool(school, applicant))
-                    .sort((a, b) => a.fit - b.fit || b.score - a.score || schoolTierRank(b) - schoolTierRank(a));
+                    .map((school) => enrichSchool(school, applicant));
 
-                  return buildBalancedSlate(filtered)
-                    .sort((a, b) => schoolTierRank(b) - schoolTierRank(a) || b.score - a.score)
+                  const selected = [];
+                  const used = new Set();
+                  ["录取有望", "录取有望", "录取有望", "条件匹配", "录取较难"].forEach((category) => {
+                    const slotTier = targetTierForSlot(targetTier, category);
+                    const picked = filtered
+                      .filter((school) => !used.has(school.slug))
+                      .sort((a, b) => Math.abs(schoolTierRank(a) - slotTier) - Math.abs(schoolTierRank(b) - slotTier) || b.score - a.score || lowerRankFirst(a, b))[0];
+                    if (!picked) return;
+                    used.add(picked.slug);
+                    selected.push({ ...picked, category });
+                  });
+
+                  return selected
+                    .sort((a, b) => schoolTierRank(b) - schoolTierRank(a))
                     .slice(0, RECOMMENDATION_LIMIT)
                     .map((school, index) => ({ ...school, displayIndex: index + 1, visualOrder: index + 1 }));
                 }
@@ -2860,7 +3047,7 @@
                   const photo = `<figure class="school-info-photo-frame">${candidateImageHtml({
                     className: "school-info-photo",
                     slug: school.slug,
-                    folder: "public/campus-images",
+                    folder: "/campus-images",
                     exts: ["webp", "jpg", "png", "svg"],
                     alt: `${profile.name}校园`,
                     style: `object-position:${profile.imagePosition}`,
@@ -2868,7 +3055,7 @@
                   const logo = candidateImageHtml({
                     className: "school-info-logo",
                     slug: school.slug,
-                    folder: "public/school-logos",
+                    folder: "/school-logos",
                     exts: ["png", "jpg", "svg", "webp"],
                     alt: `${profile.name}校徽`,
                   });
@@ -2896,18 +3083,41 @@
                 let expandedSchoolInfoSlug = null;
                 let recommendationLoadingTimer = null;
 
+                function recommendationConfidenceClass(category) {
+                  if (category === "录取有望") return "recommendation-confidence recommendation-confidence-hopeful";
+                  if (category === "条件匹配") return "recommendation-confidence recommendation-confidence-match";
+                  if (category === "录取较难") return "recommendation-confidence recommendation-confidence-reach";
+                  return "recommendation-confidence recommendation-confidence-blocked";
+                }
+
+                function renderNoDirectRecommendation() {
+                  return `<h2>AI案例推荐结果</h2><article class="recommendation-card" style="order:1">
+                    <span class="recommendation-index" aria-label="暂不推荐">!</span>
+                    <div class="recommendation-body">
+                      <div class="recommendation-head"><h3>当前条件暂时不适合直接推荐大学</h3></div>
+                      <p>TOPIK低于3级时，直接申请本科风险较高。建议先走项目路径，或先补强韩语后再重新选校。</p>
+                      <div class="recommendation-guidance-links">
+                        <a class="recommendation-guidance-link" href="/application">国内+韩国项目 <span>›</span></a>
+                        <a class="recommendation-guidance-link" href="/topik">韩语 / TOPIK、报名、备考 <span>›</span></a>
+                      </div>
+                    </div>
+                  </article>`;
+                }
+
                 function renderRecommendations(results) {
+                  if (!results.length) return renderNoDirectRecommendation();
                   return `<h2>AI案例推荐结果</h2>${results
                     .map((school) => `<article class="recommendation-card" style="order: ${school.visualOrder}">
                       <span class="recommendation-index" aria-label="推荐第${school.displayIndex}位">${school.displayIndex}</span>
                       <div class="recommendation-body">
                         <div class="recommendation-head">
                           <div>
-                            <h3><button class="recommendation-school-toggle" type="button" data-school-slug="${htmlEscape(school.slug)}" aria-expanded="${expandedRecommendationSlug === school.slug ? "true" : "false"}">${htmlEscape(school.name)} <span class="recommendation-school-arrow">↗</span></button><span class="recommendation-rank">${htmlEscape(tierFor(school))}</span><span class="recommendation-meta-inline">${htmlEscape(school.city)} / ${htmlEscape(school.type)} · <span class="recommendation-confidence">${htmlEscape(school.category)}</span></span><button class="school-info-toggle" type="button" data-school-info-slug="${htmlEscape(school.slug)}" aria-expanded="${expandedSchoolInfoSlug === school.slug ? "true" : "false"}">学校信息</button></h3>
+                            <h3><button class="recommendation-school-toggle" type="button" data-school-slug="${htmlEscape(school.slug)}" aria-expanded="${expandedRecommendationSlug === school.slug ? "true" : "false"}">${htmlEscape(school.name)} <span class="recommendation-school-arrow">↗</span></button><span class="recommendation-rank">${htmlEscape(tierFor(school))}</span><span class="recommendation-meta-inline">${htmlEscape(school.city)} / ${htmlEscape(school.type)} · <span class="${recommendationConfidenceClass(school.category)}">${htmlEscape(school.category)}</span></span><button class="school-info-toggle" type="button" data-school-info-slug="${htmlEscape(school.slug)}" aria-expanded="${expandedSchoolInfoSlug === school.slug ? "true" : "false"}">学校信息</button></h3>
                           </div>
                         </div>
                         <p><strong>专业方向匹配：</strong>${htmlEscape(school.focus)}</p>
                         <p><strong>案例参考：</strong><span class="case-reason-detail">${htmlEscape(school.caseReason)}</span></p>
+                        <p>${htmlEscape(school.majorFitText)}</p>
                         <p>${htmlEscape(school.caseSummary)}</p>
                         <p>${htmlEscape(school.caution)}</p>
                         ${expandedSchoolInfoSlug === school.slug ? renderSchoolInfoPanel(school) : ""}
@@ -2924,7 +3134,7 @@
                 }
 
                 function renderRecommendationLoading() {
-                  return `<div class="recommendation-loading" role="status"><span class="recommendation-loading-spinner" aria-hidden="true"></span><div>AI正在分析公开录取案例<span>正在匹配分数、TOPIK、专业和地区条件，请稍等...</span></div></div>`;
+                  return `<div class="recommendation-loading" role="status"><span class="recommendation-loading-spinner" aria-hidden="true"></span><div>AI正在分析公开录取案例<span>正在匹配高中均分、TOPIK和学校类型，请稍等...</span></div></div>`;
                 }
 
                 function currentApplicant() {
@@ -2940,21 +3150,70 @@
                   };
                 }
 
+                function hasSelectedMajor(applicant = currentApplicant()) {
+                  return applicant.major !== "undecided";
+                }
+
+                function syncRecommendationButton(isLoading = false) {
+                  button.disabled = isLoading;
+                }
+
+                function flashRequiredControls() {
+                  requiredControls.forEach((control) => {
+                    control.classList.remove("is-flashing");
+                    void control.offsetWidth;
+                    control.classList.add("is-flashing");
+                  });
+                }
+
+                function requiredControlHasSelection(control) {
+                  const select = control.querySelector("select");
+                  if (!select) return false;
+                  if (select.id === "rec-major") return select.value !== "undecided";
+                  return select.dataset.requiredSelected === "true";
+                }
+
+                function syncRequiredControlsFromSelection() {
+                  requiredControls.forEach((control) => {
+                    control.classList.toggle("is-confirmed", requiredControlHasSelection(control));
+                  });
+                }
+
+                function setRequiredControlsConfirmed(isConfirmed) {
+                  requiredControls.forEach((control) => {
+                    const select = control.querySelector("select");
+                    if (select) {
+                      if (isConfirmed) select.dataset.requiredSelected = "true";
+                      else delete select.dataset.requiredSelected;
+                    }
+                    control.classList.toggle("is-confirmed", isConfirmed);
+                  });
+                }
+
                 function recommendAiCases() {
                   const applicant = currentApplicant();
+                  if (!hasSelectedMajor(applicant)) {
+                    syncRequiredControlsFromSelection();
+                    flashRequiredControls();
+                    resultsEl.classList.remove("is-visible");
+                    syncRecommendationButton(false);
+                    return;
+                  }
+
                   window.clearTimeout(recommendationLoadingTimer);
+                  setRequiredControlsConfirmed(true);
                   expandedRecommendationSlug = null;
                   expandedSchoolInfoSlug = null;
                   resultsEl.classList.add("is-visible");
                   resultsEl.setAttribute("aria-busy", "true");
                   resultsEl.innerHTML = renderRecommendationLoading();
-                  button.disabled = true;
+                  syncRecommendationButton(true);
                   recommendationLoadingTimer = window.setTimeout(() => {
                     const results = recommendationResults(applicant);
                     resultsEl.dataset.lastApplicant = JSON.stringify(applicant);
                     resultsEl.innerHTML = renderRecommendations(results);
                     resultsEl.removeAttribute("aria-busy");
-                    button.disabled = false;
+                    syncRecommendationButton(false);
                     recommendationLoadingTimer = null;
                   }, 1500);
                 }
@@ -2967,7 +3226,8 @@
                 function resetAiCases() {
                   window.clearTimeout(recommendationLoadingTimer);
                   recommendationLoadingTimer = null;
-                  button.disabled = false;
+                  syncRecommendationButton(false);
+                  setRequiredControlsConfirmed(false);
                   expandedRecommendationSlug = null;
                   expandedSchoolInfoSlug = null;
                   delete resultsEl.dataset.lastApplicant;
@@ -2976,6 +3236,30 @@
                   resultsEl.innerHTML = "";
                 }
 
+                [
+                  "rec-gpa",
+                  "rec-school-tier",
+                  "rec-topik",
+                  "rec-gaokao",
+                  "rec-path",
+                  "rec-major",
+                  "rec-material",
+                  "rec-type",
+                  "rec-region",
+                ].forEach((id) => document.getElementById(id)?.addEventListener("change", (event) => {
+                  const field = event.currentTarget;
+                  if (field?.closest?.(".recommend-required-control")) {
+                    if (field.id === "rec-major" && field.value === "undecided") {
+                      delete field.dataset.requiredSelected;
+                    } else {
+                      field.dataset.requiredSelected = "true";
+                    }
+                  }
+                  requiredControls.forEach((control) => control.classList.remove("is-flashing"));
+                  syncRequiredControlsFromSelection();
+                  if (!recommendationLoadingTimer) syncRecommendationButton(false);
+                }));
+                syncRecommendationButton(false);
                 button.addEventListener("click", recommendAiCases);
                 resetButton?.addEventListener("click", resetAiCases);
                 resultsEl.addEventListener("click", (event) => {
@@ -3054,8 +3338,8 @@
 
       <section class="home-banner" aria-label="Korea University Link banner">
         <div class="home-banner-frame" data-banner-open role="button" tabindex="0" aria-label="Open banner image">
-          <img class="home-banner-image is-active" src="./public/home-banner-1b.png" alt="Korea university application guide banner" data-banner-image />
-          <img class="home-banner-image" src="./public/home-banner-1c.jpg" alt="Korea study abroad suitability banner" data-banner-image />
+          <img class="home-banner-image is-active" src="/home-banner-1b.png" alt="Korea university application guide banner" data-banner-image />
+          <img class="home-banner-image" src="/home-banner-1c.jpg" alt="Korea study abroad suitability banner" data-banner-image />
           <button class="home-banner-nav prev" type="button" data-banner-prev aria-label="Previous banner">&#8249;</button>
           <button class="home-banner-nav next" type="button" data-banner-next aria-label="Next banner">&#8250;</button>
           <span class="home-banner-dots" aria-hidden="true">
@@ -3076,12 +3360,9 @@
     <div class="image-viewer" data-image-viewer aria-hidden="true">
       <button class="image-viewer-close" type="button" data-viewer-close aria-label="Close image viewer">X</button>
       <div class="image-viewer-stage" data-viewer-stage>
-        <img class="image-viewer-image" src="./public/home-banner-1b.png" alt="" data-viewer-image />
+        <img class="image-viewer-image" src="/home-banner-1b.png" alt="" data-viewer-image />
       </div>
     </div>
-    <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="鍥炲埌椤堕儴">
-      <img src="./public/up.gif" alt="" aria-hidden="true" />
-    </button>
     <script id="home-banner-viewer">
       (() => {
         const bannerImages = Array.from(document.querySelectorAll("[data-banner-image]"));

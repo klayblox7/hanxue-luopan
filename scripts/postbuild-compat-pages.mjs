@@ -20,7 +20,9 @@ const compatibilityPages = {
 };
 
 const legacyDir = join(outDir, "legacy");
-const legacyBaseHref = process.env.GITHUB_PAGES === "true" ? "/hanxue-luopan/" : "/";
+const deployBasePath = process.env.NEXT_PUBLIC_BASE_PATH || (process.env.GITHUB_PAGES === "true" ? "/hanxue-luopan" : "");
+const normalizedDeployBasePath = deployBasePath.replace(/\/$/, "");
+const legacyBaseHref = normalizedDeployBasePath ? `${normalizedDeployBasePath}/` : "/";
 
 mkdirSync(legacyDir, { recursive: true });
 

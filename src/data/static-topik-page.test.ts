@@ -18,41 +18,27 @@ describe("static TOPIK page", () => {
     expect(document.querySelector("#topik-region")).toBeNull();
     expect(document.querySelector("#topik-tier")?.textContent).toContain("T1 SKY/成均馆/汉阳/KAIST");
     expect(document.querySelector("#topik-tier")?.textContent).not.toContain("T2 成均馆/汉阳");
-    expect(document.querySelector("[data-planner-run]")?.textContent).toContain("\u751f\u6210\u63a8\u8350");
-    expect(html).toContain("grid-template-columns: repeat(24, minmax(0, 1fr));");
-    expect(html).toContain("gap: 1.1rem 1.25rem;");
-    expect(html).toContain(".planner-panel-title {\n        border-bottom: 1px solid var(--ink);");
-    expect(html).toContain("background: #c9f6df;");
-    expect(html).toContain("padding: 1.45rem 1.35rem 1.15rem;");
-    expect(html).toContain(".planner-field label {\n        color: var(--ink);\n        font-size: 0.85rem;\n        font-weight: 800;");
-    expect(html).toContain(".planner-field select {\n        width: 100%;\n        height: auto;\n        min-height: 2.55rem;");
-    expect(html).toContain("font-size: 0.94rem;\n        font-weight: 800;");
-    expect(html).toContain(".planner-field:nth-of-type(1) {\n        grid-column: 1 / 5;");
-    expect(html).toContain(".planner-field:nth-of-type(3) {\n        grid-column: 11 / 17;");
-    expect(html).toContain(".planner-field:nth-of-type(4) {\n        grid-column: 17 / 22;");
-    expect(html).toContain(".planner-control-row {\n        display: flex;");
-    expect(html).toContain("grid-column: 22 / 25;\n        grid-row: 1;");
-    expect(html).toContain("padding: calc(0.85rem * 1.35 + 0.3rem) 0 0;");
-    expect(html).toContain("justify-content: stretch;\n          padding-top: 0;");
+    expect(document.querySelector("[data-planner-run]")?.textContent).toContain("AI\u89c4\u5212");
+    expect(html).toContain(".planner-form {\n        display: grid;");
+    expect(html).toContain("grid-template-columns: minmax(9.8rem, 0.9fr) minmax(14rem, 1.18fr) minmax(15rem, 1.25fr) minmax(13rem, 1.05fr);");
+    expect(html).toContain(".planner-control-row {");
+    expect(html).toContain("display: flex;");
     expect(html).toContain("border-radius: 8px;");
-    expect(html).toContain("min-height: 2.55rem;\n        align-items: center;");
-    expect(html).toContain("box-shadow: inset 0 -2px 0 rgba(10, 10, 10, 0.08);");
-    expect(html).toContain("margin: 0 1.35rem 1.35rem;");
     expect(html).toContain("word-break: keep-all;");
     expect(html).toContain("overflow-wrap: anywhere;");
-    expect(html).toContain("font-size: clamp(1.45rem, 2.1vw, 2.18rem);");
-    expect(html).toContain("min-height: 5.2rem;");
-    expect(html).toContain(".planner-field {\n        display: grid;");
-    expect(html).toContain(".planner-explain-grid {\n        display: grid;");
-    expect(html).toContain(".adjustment-card {\n        display: grid;");
+    expect(html).toContain(".planner-field {");
+    expect(html).toContain(".planner-explain-grid {");
+    expect(html).toContain(".adjustment-card {");
+    expect(html).toContain(".hour-bar-row {");
     expect(html).not.toContain("field.addEventListener('change', renderPlanner);");
     expect(document.querySelector(".planner-output")?.textContent).toContain(
       "\u73b0\u5b9e\u6027\u5224\u65ad"
     );
-    expect(document.querySelectorAll(".source-row").length).toBeGreaterThanOrEqual(8);
-    expect(document.querySelectorAll(".source-badge.official").length).toBeGreaterThanOrEqual(5);
-    expect(document.querySelector(".application-match")).not.toBeNull();
-    expect(document.querySelector(".roadmap-grid")).not.toBeNull();
+    expect(document.querySelector(".study-hours-model")).not.toBeNull();
+    expect(document.querySelectorAll(".hour-bar-row")).toHaveLength(6);
+    expect(document.querySelector(".undergrad-plan")).not.toBeNull();
+    expect(document.querySelector(".resources-section")).not.toBeNull();
+    expect(document.querySelectorAll(".resources-section .resource-section table").length).toBeGreaterThanOrEqual(4);
 
     const plannerIndex = html.indexOf('class="topik-planner"');
     const appendixIndex = html.indexOf('id="legacy-topik-appendix"');
@@ -85,17 +71,17 @@ describe("static TOPIK page", () => {
     expect(html).not.toContain("background: var(--yellow);\n        font-size: clamp(0.8rem, 1.28vw, 1.2rem);");
   });
 
-  it("includes source-backed TOPIK rules and current-data caveats", () => {
+  it("includes current TOPIK rules, planning caveats, and learning resources", () => {
     const html = readFileSync("topik.html", "utf8");
 
-    expect(html).toContain("https://register.topik.go.kr/tmpNotice.do");
-    expect(html).toContain("https://topik.neea.cn/");
-    expect(html).toContain("https://www.topik-hk.org/eng/detail.asp");
-    expect(html).toContain("https://www.iksi.or.kr/lms/main/about.do");
-    expect(html).toContain("\u6570\u636e\u6821\u5bf9\uff1a2026-06-10");
-    expect(html).toContain("80 / 140 / 120 / 150 / 190 / 230");
-    expect(html).toContain("https://support.cambridgeenglish.org/hc/en-gb/articles/202838506-Guided-learning-hours");
-    expect(html).toContain("https://www.iksi.or.kr/lms/main/lectureType.do");
+    expect(html).toContain("TOPIK I");
+    expect(html).toContain("TOPIK II");
+    expect(html).toContain("80-139");
+    expect(html).toContain("150-189");
+    expect(html).toContain("\u4e2d\u56fd\u5927\u9646\u62a5\u540d\u4ee5\u6559\u80b2\u90e8\u6559\u80b2\u8003\u8bd5\u9662\u62a5\u540d\u7f51\u7ad9\u6700\u7ec8\u516c\u544a\u4e3a\u51c6");
+    expect(html).toContain("\u9ad8\u4e2d\u751f\u65f6\u95f4\u4e3a\u89c4\u5212\u5047\u8bbe");
+    expect(html).toContain("https://www.bilibili.com/video/BV1PXrxYZEjy/");
+    expect(html).toContain("https://item.jd.com/12706601.html");
   });
 
   it("explains why each planner input matters and how to read the result", () => {
@@ -130,10 +116,11 @@ describe("static TOPIK page", () => {
     const { document } = dom.window;
 
     expect(document.querySelector(".study-hours-model")).not.toBeNull();
-    expect(document.querySelectorAll(".hour-row")).toHaveLength(6);
-    expect(document.querySelector(".study-hours-model")?.textContent).toContain("TOPIK5\u7ea6900\u5c0f\u65f6");
-    expect(document.querySelector(".student-time-table")?.textContent).toContain("\u9ad8\u4e2d\u65e5\u5e38");
-    expect(document.querySelector(".student-time-table")?.textContent).toContain("\u6bcf\u59290.8-1.3\u5c0f\u65f6");
+    expect(document.querySelectorAll(".hour-bar-row")).toHaveLength(6);
+    expect(document.querySelector(".study-hours-model")?.textContent).toContain("TOPIK 5");
+    expect(document.querySelector(".study-hours-model")?.textContent).toContain("900h");
+    expect(document.querySelector(".hour-detail-panel")?.textContent).toContain("TOPIK4\u7ea6600\u5c0f\u65f6");
+    expect(document.querySelector(".model-caveat")?.textContent).toContain("\u9ad8\u4e2d\u751f\u65f6\u95f4\u4e3a\u89c4\u5212\u5047\u8bbe");
     expect(document.querySelector("[data-required-weekly]")).not.toBeNull();
     expect(document.querySelector("[data-realistic-tier]")).not.toBeNull();
     expect(document.querySelector(".adjustment-card")?.textContent).toContain("\u5efa\u8bae\u8c03\u6574");
@@ -149,12 +136,14 @@ describe("static TOPIK page", () => {
     const runButton = document.querySelector("[data-planner-run]") as HTMLButtonElement | null;
 
     expect(output?.hasAttribute("hidden")).toBe(true);
-    expect(runButton?.textContent).toContain("\u751f\u6210\u63a8\u8350");
+    expect(runButton?.textContent).toContain("AI\u89c4\u5212");
 
     runButton?.click();
 
     expect(output?.hasAttribute("hidden")).toBe(false);
-    expect(runButton?.textContent).toContain("\u5df2\u751f\u6210\u63a8\u8350");
+    expect(output?.classList.contains("is-loading")).toBe(true);
+    expect(runButton?.textContent).toContain("AI\u5206\u6790\u4e2d");
+    expect(html).toContain("}, 1500);");
   });
 
   it("keeps generated planner copy compact enough for the result table", () => {

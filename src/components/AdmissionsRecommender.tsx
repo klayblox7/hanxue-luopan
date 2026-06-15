@@ -1,7 +1,8 @@
 ﻿"use client";
 
-import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { BookOpenCheck, ChevronRight, Route, Search } from "lucide-react";
+import Link from "next/link";
+import { type ReactNode, useMemo, useState } from "react";
 
 import {
   recommendUniversities,
@@ -11,6 +12,7 @@ import {
   type GradeRankBand,
   type HighSchoolTier,
   type IntendedMajor,
+  type RecommendationCategory,
   type SchoolTypePreference
 } from "@/data/recommendations";
 import { getAdmissionCaseSummary } from "@/data/admissionCases";
@@ -32,11 +34,19 @@ const defaultApplicant: ApplicantProfile = {
 };
 
 const categoryLabels = {
-  stable: "较有希望",
-  match: "适合申请",
-  reach: "冲刺申请",
-  prepare_first: "先补条件",
-  verify: "需确认"
+  stable: "录取有望",
+  match: "条件匹配",
+  reach: "录取较难",
+  prepare_first: "暂不符合",
+  verify: "暂不符合"
+};
+
+const categoryBadgeStyles: Record<RecommendationCategory, string> = {
+  stable: "border-[oklch(59%_0.14_150)] bg-[oklch(94%_0.055_150)] text-[oklch(31%_0.105_150)]",
+  match: "border-[oklch(61%_0.12_230)] bg-[oklch(94%_0.045_230)] text-[oklch(34%_0.105_230)]",
+  reach: "border-[oklch(66%_0.14_65)] bg-[oklch(94%_0.065_75)] text-[oklch(38%_0.105_55)]",
+  prepare_first: "border-[oklch(63%_0.11_25)] bg-[oklch(94%_0.035_25)] text-[oklch(35%_0.105_25)]",
+  verify: "border-[oklch(63%_0.11_25)] bg-[oklch(94%_0.035_25)] text-[oklch(35%_0.105_25)]"
 };
 
 const gpaBandOptions = [
@@ -49,11 +59,86 @@ const gpaBandOptions = [
   { label: "90分以上", value: 95 }
 ];
 
+function RequiredControl({ children, flashKey, showValue = false }: { children: ReactNode; flashKey: number; showValue?: boolean }) {
+  return (
+    <span
+      className={`relative block ${flashKey > 0 ? "required-field-flash" : ""}`}
+      data-testid="required-control"
+      key={flashKey}
+    >
+      {showValue ? null : (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-[0.85rem] font-black leading-none text-[#9f1d1d]"
+        >
+          必选项
+        </span>
+      )}
+      {children}
+    </span>
+  );
+}
+
+function LabelText({ children }: { children: string }) {
+  return (
+    <span className="flex items-center">
+      {children}
+    </span>
+  );
+}
+
+function NoDirectRecommendationGuidance() {
+  return (
+    <div className="grid gap-3 rounded-lg border border-ink bg-[#fffaf0] p-4" data-testid="no-direct-recommendation-guidance">
+      <div>
+        <h3 className="text-lg font-black leading-tight">当前条件暂时不适合直接推荐大学</h3>
+        <p className="mt-2 text-sm leading-6 text-muted">
+          TOPIK低于3级时，直接申请本科风险较高。建议先走项目路径，或先补强韩语后再重新生成推荐。
+        </p>
+      </div>
+      <div className="grid gap-2 sm:grid-cols-2">
+        <Link
+          className="flex min-h-12 items-center justify-between gap-3 rounded-lg border border-ink bg-[#dff3dc] px-3 text-sm font-black text-[#004c3f]"
+          href="/application"
+        >
+          <span className="inline-flex items-center gap-2">
+            <Route size={17} strokeWidth={2.4} aria-hidden="true" />
+            国内+韩国项目
+          </span>
+          <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
+        </Link>
+        <Link
+          className="flex min-h-12 items-center justify-between gap-3 rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink"
+          href="/topik"
+        >
+          <span className="inline-flex items-center gap-2">
+            <BookOpenCheck size={17} strokeWidth={2.4} aria-hidden="true" />
+            韩语 / TOPIK、报名、备考
+          </span>
+          <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+const initialRequiredSelectionState = {
+  gpa: false,
+  topik: false,
+  major: false
+};
+
 export function AdmissionsRecommender() {
   const [applicant, setApplicant] = useState<ApplicantProfile>(defaultApplicant);
   const [submitted, setSubmitted] = useState(false);
   const [expandedSchoolSlug, setExpandedSchoolSlug] = useState<string | null>(null);
+  const [requiredFlashKey, setRequiredFlashKey] = useState(0);
+  const [requiredSelectionState, setRequiredSelectionState] = useState(initialRequiredSelectionState);
   const results = useMemo(() => recommendUniversities(applicant), [applicant]);
+  const hasSelectedMajor = applicant.intendedMajor !== "undecided";
+  const showGpaValue = requiredSelectionState.gpa || submitted;
+  const showTopikValue = requiredSelectionState.topik || submitted;
+  const showMajorValue = hasSelectedMajor && (requiredSelectionState.major || submitted);
 
   return (
     <section className="bg-paper px-3 py-4 sm:px-6 sm:py-6 lg:px-8" aria-label="韩国大学推荐">
@@ -61,7 +146,7 @@ export function AdmissionsRecommender() {
         <div className="grid gap-4">
           <div className="grid gap-3 rounded-lg border border-ink bg-surface p-3 sm:grid-cols-2 sm:p-4 lg:grid-cols-5">
             <label className="grid gap-1 text-sm font-bold">
-              年龄
+              <LabelText>年龄</LabelText>
               <input
                 className="border border-ink bg-paper px-3 py-2"
                 max={30}
@@ -73,22 +158,28 @@ export function AdmissionsRecommender() {
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              高中均分
-              <select
-                className="border border-ink bg-paper px-3 py-2"
-                value={applicant.gpaPercent}
-                onChange={(event) => setApplicant({ ...applicant, gpaPercent: Number(event.target.value) })}
-              >
-                {gpaBandOptions.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+              <LabelText>高中均分</LabelText>
+              <RequiredControl flashKey={requiredFlashKey} showValue={showGpaValue}>
+                <select
+                  aria-label="高中均分"
+                  className={`required-value-hidden min-h-[2.75rem] w-full border border-ink bg-paper px-3 py-2 ${showGpaValue ? "text-ink" : "text-transparent"}`}
+                  value={applicant.gpaPercent}
+                  onChange={(event) => {
+                    setRequiredSelectionState((current) => ({ ...current, gpa: true }));
+                    setApplicant({ ...applicant, gpaPercent: Number(event.target.value) });
+                  }}
+                >
+                  {gpaBandOptions.map((option) => (
+                    <option value={option.value} key={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </RequiredControl>
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              高中类型
+              <LabelText>高中类型</LabelText>
               <select
                 className="border border-ink bg-paper px-3 py-2"
                 value={applicant.highSchoolTier}
@@ -102,7 +193,7 @@ export function AdmissionsRecommender() {
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              年级排名
+              <LabelText>年级排名</LabelText>
               <select
                 className="border border-ink bg-paper px-3 py-2"
                 value={applicant.gradeRankBand}
@@ -117,22 +208,28 @@ export function AdmissionsRecommender() {
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              TOPIK等级
-              <select
-                className="border border-ink bg-paper px-3 py-2"
-                value={applicant.topikLevel}
-                onChange={(event) => setApplicant({ ...applicant, topikLevel: Number(event.target.value) })}
-              >
-                {[0, 1, 2, 3, 4, 5, 6].map((level) => (
-                  <option value={level} key={level}>
-                    {level === 0 ? "暂无" : `${level}级`}
-                  </option>
-                ))}
-              </select>
+              <LabelText>TOPIK等级</LabelText>
+              <RequiredControl flashKey={requiredFlashKey} showValue={showTopikValue}>
+                <select
+                  aria-label="TOPIK等级"
+                  className={`required-value-hidden min-h-[2.75rem] w-full border border-ink bg-paper px-3 py-2 ${showTopikValue ? "text-ink" : "text-transparent"}`}
+                  value={applicant.topikLevel}
+                  onChange={(event) => {
+                    setRequiredSelectionState((current) => ({ ...current, topik: true }));
+                    setApplicant({ ...applicant, topikLevel: Number(event.target.value) });
+                  }}
+                >
+                  {[0, 1, 2, 3, 4, 5, 6].map((level) => (
+                    <option value={level} key={level}>
+                      {level === 0 ? "暂无" : `${level}级`}
+                    </option>
+                  ))}
+                </select>
+              </RequiredControl>
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              高考/统考资料
+              <LabelText>高考/统考资料</LabelText>
               <select
                 className="border border-ink bg-paper px-3 py-2"
                 value={applicant.gaokaoStrength}
@@ -146,27 +243,37 @@ export function AdmissionsRecommender() {
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              希望专业
-              <select
-                className="border border-ink bg-paper px-3 py-2"
-                value={applicant.intendedMajor}
-                onChange={(event) => setApplicant({ ...applicant, intendedMajor: event.target.value as IntendedMajor })}
-              >
-                <option value="undecided">还没确定</option>
-                <option value="business">经营/商科</option>
-                <option value="computer-science">计算机/AI</option>
-                <option value="engineering">工科</option>
-                <option value="media">传媒/影视</option>
-                <option value="art-design">艺术/设计</option>
-                <option value="korean-language">韩语/教育</option>
-                <option value="tourism">酒店/旅游</option>
-                <option value="humanities">人文/外语</option>
-                <option value="science">自然科学/生命</option>
-              </select>
+              <LabelText>希望专业</LabelText>
+              <RequiredControl flashKey={requiredFlashKey} showValue={showMajorValue}>
+                <select
+                  aria-label="希望专业"
+                  className={`required-value-hidden min-h-[2.75rem] w-full border border-ink bg-paper px-3 py-2 ${showMajorValue ? "text-ink" : "text-transparent"}`}
+                  value={applicant.intendedMajor}
+                  onChange={(event) => {
+                    const nextMajor = event.target.value as IntendedMajor;
+                    setRequiredSelectionState((current) => ({ ...current, major: nextMajor !== "undecided" }));
+                    setApplicant({ ...applicant, intendedMajor: nextMajor });
+                    setRequiredFlashKey(0);
+                    if (nextMajor === "undecided") setSubmitted(false);
+                    setExpandedSchoolSlug(null);
+                  }}
+                >
+                  <option value="undecided">还没确定</option>
+                  <option value="business">经营/商科</option>
+                  <option value="computer-science">计算机/AI</option>
+                  <option value="engineering">工科</option>
+                  <option value="media">传媒/影视</option>
+                  <option value="art-design">艺术/设计</option>
+                  <option value="korean-language">韩语/教育</option>
+                  <option value="tourism">酒店/旅游</option>
+                  <option value="humanities">人文/外语</option>
+                  <option value="science">自然科学/生命</option>
+                </select>
+              </RequiredControl>
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              倾向地区
+              <LabelText>倾向地区</LabelText>
               <select
                 className="border border-ink bg-paper px-3 py-2"
                 value={applicant.preferredRegion}
@@ -179,7 +286,7 @@ export function AdmissionsRecommender() {
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              预算
+              <LabelText>预算</LabelText>
               <select
                 className="border border-ink bg-paper px-3 py-2"
                 value={applicant.budgetLevel}
@@ -192,7 +299,7 @@ export function AdmissionsRecommender() {
             </label>
 
             <label className="grid gap-1 text-sm font-bold">
-              学校类型
+              <LabelText>学校类型</LabelText>
               <select
                 className="border border-ink bg-paper px-3 py-2"
                 value={applicant.schoolTypePreference}
@@ -207,25 +314,32 @@ export function AdmissionsRecommender() {
             </label>
 
             <div className="grid gap-2 sm:col-span-2 sm:flex sm:items-center sm:gap-3 lg:col-span-5 lg:ml-auto lg:w-[min(58rem,100%)] lg:justify-end">
-              <p className="text-xs italic leading-5 text-muted sm:mb-0.5 sm:mr-3 sm:flex-1 sm:self-end sm:text-right">
-                推荐结果仅用于初步选校，不代表录取保证。请以学校最新招生简章为准。
-              </p>
+              <div className="grid gap-2 text-xs leading-5 text-muted sm:mb-0.5 sm:mr-3 sm:flex-1 sm:self-end sm:text-right">
+                <p className="italic">推荐结果仅用于初步选校，不代表录取保证。请以学校最新招生简章为准。</p>
+              </div>
               <button
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-ink bg-yellow px-5 py-3 text-sm font-black sm:w-fit"
                 type="button"
                 onClick={() => {
+                  if (!hasSelectedMajor) {
+                    setRequiredFlashKey((current) => current + 1);
+                    return;
+                  }
+                  setRequiredSelectionState({ gpa: true, topik: true, major: true });
                   setSubmitted(true);
                   setExpandedSchoolSlug(null);
                 }}
               >
                 <Search size={16} aria-hidden="true" />
-                生成7所推荐大学
+                生成5所推荐大学
               </button>
               <button
                 className="inline-flex w-full items-center justify-center rounded-full border border-ink bg-[#71d39b] px-5 py-3 text-sm font-black sm:w-fit"
                 type="button"
                 onClick={() => {
                   setApplicant(defaultApplicant);
+                  setRequiredFlashKey(0);
+                  setRequiredSelectionState(initialRequiredSelectionState);
                   setSubmitted(false);
                   setExpandedSchoolSlug(null);
                 }}
@@ -238,6 +352,7 @@ export function AdmissionsRecommender() {
           {submitted ? (
             <div className="grid gap-3">
               <h2 className="text-xl font-black">初步推荐结果</h2>
+              {results.length === 0 ? <NoDirectRecommendationGuidance /> : null}
               {results.map((result, index) => (
                 <article className="rounded-lg border border-ink bg-surface p-3 sm:p-4" data-testid="recommendation-result" key={result.schoolSlug}>
                   <div className="flex items-start gap-3">
@@ -268,7 +383,10 @@ export function AdmissionsRecommender() {
                             </span>
                             <span className="ml-5 align-baseline text-[0.82em] font-bold text-ink">
                               {result.city} / {result.schoolType} ·{" "}
-                              <span className="text-[#9f1d1d]" data-testid="recommendation-confidence">
+                              <span
+                                className={`inline-flex rounded-full border px-2 py-0.5 text-[0.75rem] font-black leading-none ${categoryBadgeStyles[result.category]}`}
+                                data-testid="recommendation-confidence"
+                              >
                                 {categoryLabels[result.category]}
                               </span>
                             </span>

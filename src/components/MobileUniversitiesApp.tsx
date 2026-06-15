@@ -4,7 +4,6 @@ import {
   BadgeCheck,
   ChevronRight,
   MapPin,
-  Search,
   SlidersHorizontal,
   UsersRound,
   X
@@ -22,7 +21,6 @@ import { CampusImage } from "./CampusImage";
 import { MobileBottomNav } from "./MobileBottomNav";
 
 type SheetMode = "info" | "case";
-type QuickFilterId = "recommended" | "seoul" | "national" | "tier12" | "cases";
 type SchoolTypeFilter = "all" | "national" | "private";
 type RegionFilter = "all" | "seoul" | "gyeonggi" | "north" | "central" | "south" | "jeju";
 type TierFilter = "all" | "T1" | "T2" | "T3" | "T4" | "T5";
@@ -57,7 +55,6 @@ type MobileUniversity = University & {
   tierNote: string;
   tags: string[];
   filterTags: string[];
-  searchText: string;
 };
 
 type SchoolProfile = {
@@ -81,14 +78,6 @@ const supplementalProfilesBySlug: Record<string, Partial<SchoolProfile>> = {
       "首尔大学位于首尔，成立时间为1946年，是一所国立院校。该校在本项目库中主要用于综合研究、理工、人文社科方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。"
   }
 };
-
-const quickFilters: Array<{ id: QuickFilterId; label: string }> = [
-  { id: "recommended", label: "推荐" },
-  { id: "seoul", label: "首尔圈" },
-  { id: "national", label: "国公立" },
-  { id: "tier12", label: "T1/T2" },
-  { id: "cases", label: "案例多" }
-];
 
 const defaultPreciseFilters: PreciseFilters = {
   type: "all",
@@ -155,10 +144,6 @@ const tagRules = [
   { label: "人文/外语", keywords: ["人文", "外语", "国际", "通翻译", "法学"] },
   { label: "自然科学/生命", keywords: ["自然", "生命", "医学", "护理", "药学", "生物"] }
 ];
-
-function normalize(value: string) {
-  return value.trim().toLocaleLowerCase("zh-Hans-CN");
-}
 
 function formatPercent(value: number) {
   return `${value.toFixed(value % 1 === 0 ? 0 : 1)}%`;
@@ -267,19 +252,10 @@ export function buildMobileUniversities(): MobileUniversity[] {
         tier: tierProfile.tier,
         tierNote: tierProfile.note,
         tags,
-        filterTags,
-        searchText: normalize([university.nameCn, university.nameKr, university.nameEn, university.slug, university.city, university.type, university.focus, filterTags.join(" ")].join(" "))
+        filterTags
       };
     })
     .sort((a, b) => rankTier(a.tier) - rankTier(b.tier) || b.caseCount - a.caseCount || a.no - b.no);
-}
-
-function matchesQuickFilter(university: MobileUniversity, filterId: QuickFilterId) {
-  if (filterId === "recommended") return true;
-  if (filterId === "seoul") return university.city.includes("首尔") || university.city.includes("仁川") || university.city.includes("水原");
-  if (filterId === "national") return university.type.includes("国立") || university.type.includes("公立");
-  if (filterId === "tier12") return university.tier === "T1" || university.tier === "T2";
-  return university.caseCount >= 10;
 }
 
 function matchesRegion(university: MobileUniversity, region: RegionFilter) {
@@ -306,12 +282,6 @@ function matchesPreciseFilters(university: MobileUniversity, filters: PreciseFil
 
 function hasPreciseFilters(filters: PreciseFilters) {
   return Object.entries(filters).some(([key, value]) => defaultPreciseFilters[key as keyof PreciseFilters] !== value);
-}
-
-function topSchoolsByTag(schools: MobileUniversity[]) {
-  return schools
-    .flatMap((school) => school.tags.map((tag) => [tag, school] as const))
-    .reduce<Record<string, number>>((counts, [tag]) => ({ ...counts, [tag]: (counts[tag] ?? 0) + 1 }), {});
 }
 
 function MetricPill({ label, labelPlacement = "top", value }: { label: string; labelPlacement?: "bottomRight" | "top"; value: string }) {
@@ -596,49 +566,28 @@ export function UniversitySheet({
 }
 
 export function MobileUniversitiesApp() {
-  const [query, setQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<QuickFilterId>("recommended");
   const [preciseFilters, setPreciseFilters] = useState<PreciseFilters>(defaultPreciseFilters);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [visibleLimit, setVisibleLimit] = useState(8);
   const [sheet, setSheet] = useState<{ slug: string; mode: SheetMode } | null>(null);
   const schools = useMemo(() => buildMobileUniversities(), []);
-  const tagCounts = useMemo(() => topSchoolsByTag(schools), [schools]);
   const hasActivePreciseFilters = hasPreciseFilters(preciseFilters);
 
   const filteredSchools = useMemo(() => {
-    const search = normalize(query);
-    const nextSchools = schools.filter(
-      (school) => matchesQuickFilter(school, activeFilter) && matchesPreciseFilters(school, preciseFilters) && (!search || school.searchText.includes(search))
-    );
-
-    if (activeFilter === "cases") {
-      return [...nextSchools].sort((a, b) => b.caseCount - a.caseCount || rankTier(a.tier) - rankTier(b.tier) || a.no - b.no);
-    }
-
-    return nextSchools;
-  }, [activeFilter, preciseFilters, query, schools]);
+    return schools.filter((school) => matchesPreciseFilters(school, preciseFilters));
+  }, [preciseFilters, schools]);
 
   const visibleSchools = filteredSchools.slice(0, visibleLimit);
   const selectedSchool = sheet ? schools.find((school) => school.slug === sheet.slug) : undefined;
 
-  const changeFilter = (filterId: QuickFilterId) => {
-    setActiveFilter(filterId);
-    setPreciseFilters(defaultPreciseFilters);
-    setVisibleLimit(8);
-    setSheet(null);
-  };
-
   const changePreciseFilter = <K extends keyof PreciseFilters>(key: K, value: PreciseFilters[K]) => {
     setPreciseFilters((current) => ({ ...current, [key]: value }));
-    setActiveFilter("recommended");
     setVisibleLimit(8);
     setSheet(null);
   };
 
   const resetPreciseFilters = () => {
     setPreciseFilters(defaultPreciseFilters);
-    setActiveFilter("recommended");
     setVisibleLimit(8);
     setSheet(null);
   };
@@ -648,64 +597,6 @@ export function MobileUniversitiesApp() {
       className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden"
       aria-label="韩国大学库移动端小程序"
     >
-      <header className="sticky top-0 z-30 w-full max-w-full overflow-hidden bg-[#f5f3ed]/95 px-4 pb-3 pt-[calc(0.85rem+env(safe-area-inset-top))] backdrop-blur">
-        <div className="flex items-center gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">KOREA UNIVERSITY LINK</p>
-            <h1 className="mt-0.5 truncate text-2xl font-black leading-none">韩国大学库</h1>
-          </div>
-          <span className="rounded-full border border-ink bg-[#ffd0d8] px-3 py-1 text-xs font-black">小程序版</span>
-        </div>
-
-        <div className="mt-3 grid grid-cols-3 gap-2">
-          <MetricPill label="入库" labelPlacement="bottomRight" value={`${universities.length}校`} />
-          <MetricPill label="案例" labelPlacement="bottomRight" value={`${schools.reduce((sum, school) => sum + school.caseCount, 0)}例`} />
-          <MetricPill label="方向" labelPlacement="bottomRight" value={`${Object.keys(tagCounts).length}类`} />
-        </div>
-
-        <label className="relative mt-3 block">
-          <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={15} strokeWidth={2.25} aria-hidden="true" />
-          <input
-            aria-label="搜索学校"
-            className="h-[2.55rem] w-full rounded-xl border border-ink bg-surface px-9 text-[0.85rem] font-normal italic outline-none placeholder:text-muted focus:ring-2 focus:ring-[#71d39b]"
-            type="search"
-            value={query}
-            placeholder="搜学校 / 城市 / 专业方向"
-            onChange={(event) => {
-              setQuery(event.target.value);
-              setVisibleLimit(8);
-              setSheet(null);
-            }}
-          />
-          {query ? (
-            <button
-              aria-label="清空搜索"
-              className="absolute right-2 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full border border-ink bg-paper"
-              type="button"
-              onClick={() => setQuery("")}
-            >
-              <X size={15} strokeWidth={2.4} aria-hidden="true" />
-            </button>
-          ) : null}
-        </label>
-
-        <div className="mt-3 grid grid-cols-5 gap-2" aria-label="大学库快捷筛选">
-          {quickFilters.map((filter) => (
-            <button
-              aria-pressed={activeFilter === filter.id}
-              className={`min-h-10 min-w-0 rounded-full border border-ink px-1 text-[0.8rem] font-black transition active:translate-y-0.5 ${
-                activeFilter === filter.id ? "bg-[#71d39b]" : "bg-surface"
-              }`}
-              key={filter.id}
-              type="button"
-              onClick={() => changeFilter(filter.id)}
-            >
-              {filter.label}
-            </button>
-          ))}
-        </div>
-      </header>
-
       <main className="w-full max-w-full overflow-hidden px-4 pt-4">
         <section className="mb-3 flex items-center justify-between gap-3">
           <div>
@@ -752,7 +643,11 @@ export function MobileUniversitiesApp() {
 
               <div className="mt-2 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2 pt-1.5" data-testid="university-card-actions">
                 <button
-                  className="inline-flex min-h-[2rem] min-w-0 items-center justify-center gap-1 overflow-hidden rounded-lg border border-ink bg-[#eef8df] px-1.5 text-center text-[0.78rem] font-black leading-tight"
+                  className="inline-flex min-h-[2rem] min-w-0 items-center justify-center gap-1 overflow-hidden rounded-lg bg-[#dff3dc] px-1.5 text-center text-[0.78rem] font-black leading-tight text-[#004c3f] shadow-[0_4px_10px_rgba(0,98,65,0.08)]"
+                  style={{
+                    boxShadow:
+                      "inset 0 0 0 0.6px rgba(0, 98, 65, 0.58), 0 4px 10px rgba(0, 98, 65, 0.08)"
+                  }}
                   type="button"
                   onClick={() => setSheet({ slug: school.slug, mode: "info" })}
                 >

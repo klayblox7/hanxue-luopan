@@ -1,4 +1,4 @@
-import { admissionProfiles, type AdmissionProfile, type TuitionLevel, type VerificationStatus } from "./admissions";
+import { admissionProfiles, type VerificationStatus } from "./admissions";
 import { getUniversityTier } from "./universityTiers";
 import { universities } from "./universities";
 
@@ -42,6 +42,7 @@ export type UniversityRecommendation = {
   city: string;
   schoolType: string;
   score: number;
+  majorMatchCount: number;
   fitPriority: number;
   academicGap: number;
   category: RecommendationCategory;
@@ -51,19 +52,12 @@ export type UniversityRecommendation = {
   cautions: string[];
 };
 
-const recommendationSlatePlan: RecommendationCategory[] = [
-  "stable",
-  "stable",
-  "stable",
-  "match",
-  "match",
-  "reach",
-  "prepare_first"
-];
+const directTopikMinimum = 3;
+const categoryPlan: RecommendationCategory[] = ["stable", "stable", "stable", "match", "reach"];
 
 const majorKeywords: Record<IntendedMajor, string[]> = {
   business: ["经营", "商", "经济", "贸易", "政经"],
-  "computer-science": ["IT", "AI", "计算机", "软件", "数据", "人工智能"],
+  "computer-science": ["IT", "AI", "计算机", "软件", "数据", "人工智能", "工科", "工程", "电子", "半导体", "机器人"],
   engineering: ["工科", "工程", "电子", "机械", "半导体", "航空", "造船"],
   media: ["传媒", "电影", "影像", "广告", "内容", "表演"],
   "art-design": ["艺术", "设计", "美术", "动画", "建筑"],
@@ -74,98 +68,53 @@ const majorKeywords: Record<IntendedMajor, string[]> = {
   undecided: []
 };
 
-const academicTargets: Record<string, number> = {
-  "seoul-national-university": 94,
-  "yonsei-university": 91,
-  "korea-university": 91,
-  "sungkyunkwan-university": 88,
-  "hanyang-university": 87,
-  "kyung-hee-university": 85,
-  "chung-ang-university": 85,
-  "hongik-university": 84,
-  "sogang-university": 86,
-  "ewha-womans-university": 85
-};
+const bySlug = new Map(universities.map((university) => [university.slug, university]));
 
-function academicTargetForUniversity(university: (typeof universities)[number]): number {
-  const explicitTarget = academicTargets[university.slug];
-  if (explicitTarget) return explicitTarget;
-  if (university.no <= 10) return 86;
-  if (university.no <= 20) return 80;
-  if (university.no <= 30) return 76;
-  if (university.no <= 40) return 72;
-  return 70;
+function clampTier(tier: number): number {
+  return Math.min(5, Math.max(1, tier));
 }
 
-function academicTargetForProfile(university: (typeof universities)[number], profile: AdmissionProfile): number {
-  return profile.recommendationTargetPercent ?? academicTargetForUniversity(university);
+function universityNo(slug: string): number {
+  return bySlug.get(slug)?.no ?? 999;
 }
 
-const schoolTierBonus: Record<HighSchoolTier, number> = {
-  provincial_key: 4,
-  city_key: 3,
-  regular: 0,
-  unknown: 1
-};
-
-const rankBonus: Record<GradeRankBand, number> = {
-  top_5: 5,
-  top_10: 4,
-  top_25: 2,
-  middle: 0,
-  unknown: 1
-};
-
-const gaokaoBonus: Record<GaokaoStrength, number> = {
-  high: 5,
-  above_tier_one: 4,
-  submitted: 2,
-  not_submitted: 0
-};
-
-function scoreMajor(focus: string, intendedMajor: IntendedMajor): number {
-  if (intendedMajor === "undecided") return 18;
-  const keywords = majorKeywords[intendedMajor];
-  const matches = keywords.filter((keyword) => focus.includes(keyword)).length;
-  return Math.min(30, matches * 12);
+function tierRankForName(schoolNameCn: string): number {
+  return Number(getUniversityTier(schoolNameCn).slice(1)) || 5;
 }
 
-function scoreLanguage(topikLevel: number, minimum?: number): number {
-  if (!minimum) return topikLevel >= 3 ? 14 : 8;
-  if (topikLevel >= minimum + 2) return 20;
-  if (topikLevel >= minimum + 1) return 18;
-  if (topikLevel >= minimum) return 15;
-  if (topikLevel + 1 === minimum) return 8;
-  return 3;
+function countMajorMatches(focus: string, intendedMajor: IntendedMajor): number {
+  if (intendedMajor === "undecided") return 0;
+  return (majorKeywords[intendedMajor] ?? []).filter((keyword) => focus.includes(keyword)).length;
 }
 
-function scoreAcademic(
-  applicant: ApplicantProfile,
-  university: (typeof universities)[number],
-  profile: AdmissionProfile
-): { score: number; adjustedGap: number; target: number } {
-  const target = academicTargetForProfile(university, profile);
-  const base = applicant.gpaPercent - target;
-  const adjusted = base + schoolTierBonus[applicant.highSchoolTier] + rankBonus[applicant.gradeRankBand] + gaokaoBonus[applicant.gaokaoStrength];
-  const score = adjusted >= 8 ? 20 : adjusted >= 3 ? 17 : adjusted >= 0 ? 14 : adjusted >= -5 ? 9 : 4;
-
-  return { score, adjustedGap: adjusted, target };
+function majorFitBonus(matchCount: number, intendedMajor: IntendedMajor): number {
+  if (intendedMajor === "undecided") return 0;
+  return matchCount > 0 ? Math.min(18, 8 + matchCount * 4) : -6;
 }
 
-function scoreBudget(type: string, budgetLevel: BudgetLevel, tuitionLevel: TuitionLevel = "unknown"): number {
-  if (budgetLevel === "high") return 10;
-  if (tuitionLevel === "low") return 10;
-  if (tuitionLevel === "medium") return budgetLevel === "medium" ? 6 : 2;
-  if (tuitionLevel === "high") return budgetLevel === "medium" ? 3 : 0;
-  if (type.includes("国立") || type.includes("公立")) return 10;
-  return budgetLevel === "medium" ? 7 : 3;
+function realisticTierForApplicant(applicant: ApplicantProfile): number | null {
+  if (applicant.topikLevel < directTopikMinimum) return null;
+
+  const academicPercent = applicant.gpaPercent;
+  let realisticTier = 5;
+  if (academicPercent >= 88) realisticTier = 2;
+  else if (academicPercent >= 75) realisticTier = 3;
+  else if (academicPercent >= 70) realisticTier = 4;
+
+  if (applicant.topikLevel >= 5) realisticTier -= 1;
+  return clampTier(realisticTier);
 }
 
-function scoreRegion(city: string, preferredRegion: string): number {
-  if (!preferredRegion || preferredRegion === "不限" || preferredRegion === "都可以") return 8;
-  if (preferredRegion === "首尔") return city.includes("首尔") ? 10 : 0;
-  if (preferredRegion === "地方") return city.includes("首尔") ? 0 : 10;
-  return city.includes(preferredRegion) ? 10 : 3;
+export function recommendationTargetTier(applicant: ApplicantProfile): number | null {
+  const realisticTier = realisticTierForApplicant(applicant);
+  if (!realisticTier) return null;
+
+  return clampTier(realisticTier - 1);
+}
+
+function targetTierForSlot(targetTier: number, category: RecommendationCategory): number {
+  if (category === "reach") return clampTier(targetTier - 1);
+  return targetTier;
 }
 
 function matchesPreferredRegion(city: string, preferredRegion: string): boolean {
@@ -175,136 +124,72 @@ function matchesPreferredRegion(city: string, preferredRegion: string): boolean 
   return city.includes(preferredRegion);
 }
 
-function scoreSchoolType(type: string, preference: SchoolTypePreference): number {
-  if (preference === "any") return 5;
-  if (preference === "national" && (type.includes("国立") || type.includes("公立"))) return 5;
-  if (preference === "private" && type.includes("私立")) return 5;
-  return 1;
+function matchesSchoolType(type: string, preference: SchoolTypePreference): boolean {
+  if (preference === "any") return true;
+  if (preference === "national") return type.includes("国立") || type.includes("公立");
+  return type.includes("私立");
 }
 
-function scoreReliability(status: VerificationStatus): number {
-  if (status === "verified") return 5;
-  if (status === "partial") return 3;
-  return -20;
+function baseScore(
+  applicant: ApplicantProfile,
+  schoolTier: number,
+  targetTier: number,
+  schoolNo: number,
+  majorMatchCount: number
+): number {
+  const academicPercent = applicant.gpaPercent;
+  const tierFit = 20 - Math.abs(schoolTier - targetTier) * 8;
+  const topikScore = Math.min(20, applicant.topikLevel * 3);
+  const academicScore = Math.max(0, Math.min(35, academicPercent - 55));
+  const rankingOrderScore = Math.max(0, 12 - schoolNo / 12);
+  const majorScore = majorFitBonus(majorMatchCount, applicant.intendedMajor);
+
+  return Math.round(academicScore + topikScore + tierFit + rankingOrderScore + majorScore);
 }
 
-function passesHardGate(applicant: ApplicantProfile, minimumTopik?: number, academicGatePercent?: number): boolean {
-  if (academicGatePercent && applicant.gpaPercent < academicGatePercent) return false;
-  if (minimumTopik && applicant.topikLevel < minimumTopik) return false;
-  return true;
-}
-
-function readinessPenalty({
-  academicGateBlocked,
-  languageGateBlocked,
-  adjustedAcademicGap,
-  languageGap
-}: {
-  academicGateBlocked: boolean;
-  languageGateBlocked: boolean;
-  adjustedAcademicGap: number;
-  languageGap: number;
-}): number {
-  let penalty = 0;
-  if (academicGateBlocked) penalty += 60;
-  if (languageGateBlocked) penalty += 35;
-  if (adjustedAcademicGap < -18) penalty += 35;
-  else if (adjustedAcademicGap < -12) penalty += 22;
-  else if (adjustedAcademicGap < -8) penalty += 12;
-  if (languageGap <= -2) penalty += 30;
-  else if (languageGap === -1) penalty += 12;
-  return penalty;
-}
-
-function fitPriority({
-  academicGateBlocked,
-  languageGateBlocked,
-  adjustedAcademicGap,
-  languageGap
-}: {
-  academicGateBlocked: boolean;
-  languageGateBlocked: boolean;
-  adjustedAcademicGap: number;
-  languageGap: number;
-}): number {
-  if (academicGateBlocked || languageGateBlocked || adjustedAcademicGap < -18 || languageGap <= -2) return 2;
-  if (adjustedAcademicGap < -8 || languageGap < 0) return 1;
-  return 0;
-}
-
-function categorize(score: number, status: VerificationStatus, hardGatePassed: boolean, fit: number): RecommendationCategory {
-  if (status === "pending") return "verify";
-  if (!hardGatePassed || fit === 2) return "prepare_first";
-  if (score >= 82) return "stable";
-  if (score >= 68) return "match";
-  return "reach";
-}
-
-function recommendationTierRank(schoolNameCn: string): number {
-  return Number(getUniversityTier(schoolNameCn).slice(1));
-}
-
-function compareRecommendationsByEase(a: UniversityRecommendation, b: UniversityRecommendation): number {
-  const tierCompare = recommendationTierRank(b.schoolNameCn) - recommendationTierRank(a.schoolNameCn);
+function compareLowerRankFirst(a: UniversityRecommendation, b: UniversityRecommendation): number {
+  const tierCompare = tierRankForName(b.schoolNameCn) - tierRankForName(a.schoolNameCn);
   if (tierCompare !== 0) return tierCompare;
+  return universityNo(b.schoolSlug) - universityNo(a.schoolSlug);
+}
 
-  const fitCompare = a.fitPriority - b.fitPriority;
-  if (fitCompare !== 0) return fitCompare;
-  if (a.fitPriority === 2) return b.academicGap - a.academicGap || b.score - a.score;
-  return b.score - a.score;
+function compareVisibleTierOrder(a: UniversityRecommendation, b: UniversityRecommendation): number {
+  return tierRankForName(b.schoolNameCn) - tierRankForName(a.schoolNameCn);
+}
+
+function compareSlotCandidates(slotTier: number) {
+  return (a: UniversityRecommendation, b: UniversityRecommendation): number => {
+    const aTier = tierRankForName(a.schoolNameCn);
+    const bTier = tierRankForName(b.schoolNameCn);
+    const tierDistance = Math.abs(aTier - slotTier) - Math.abs(bTier - slotTier);
+    if (tierDistance !== 0) return tierDistance;
+
+    const scoreCompare = b.score - a.score;
+    if (scoreCompare !== 0) return scoreCompare;
+
+    const sameTierOrder = compareLowerRankFirst(a, b);
+    if (sameTierOrder !== 0) return sameTierOrder;
+
+    return 0;
+  };
 }
 
 export function scoreUniversityRecommendation(applicant: ApplicantProfile, schoolSlug: string): UniversityRecommendation | undefined {
-  const bySlug = new Map(universities.map((university) => [university.slug, university]));
-  const profile = admissionProfiles.find((admissionProfile) => admissionProfile.schoolSlug === schoolSlug);
   const university = bySlug.get(schoolSlug);
+  const profile = admissionProfiles.find((admissionProfile) => admissionProfile.schoolSlug === schoolSlug);
+  if (!university || !profile) return undefined;
 
-  if (!profile || !university) return undefined;
-
-  const majorScore = scoreMajor(university.focus, applicant.intendedMajor);
-  const languageScore = scoreLanguage(applicant.topikLevel, profile.topikMinimum);
-  const academicReadiness = scoreAcademic(applicant, university, profile);
-  const academicGateBlocked = Boolean(profile.academicGatePercent && applicant.gpaPercent < profile.academicGatePercent);
-  const languageGap = profile.topikMinimum ? applicant.topikLevel - profile.topikMinimum : applicant.topikLevel >= 3 ? 0 : -1;
-  const languageGateBlocked = Boolean(profile.topikMinimum && applicant.topikLevel < profile.topikMinimum);
-  const hardGatePassed = passesHardGate(applicant, profile.topikMinimum, profile.academicGatePercent);
-  const fit = fitPriority({
-    academicGateBlocked,
-    languageGateBlocked,
-    adjustedAcademicGap: academicReadiness.adjustedGap,
-    languageGap
-  });
-  const rawScore =
-    majorScore +
-    languageScore +
-    academicReadiness.score +
-    scoreBudget(university.type, applicant.budgetLevel, profile.tuitionLevel) +
-    scoreRegion(university.city, applicant.preferredRegion) +
-    scoreSchoolType(university.type, applicant.schoolTypePreference) +
-    scoreReliability(profile.verificationStatus);
-  const score = Math.max(
-    0,
-    rawScore -
-      readinessPenalty({
-        academicGateBlocked,
-        languageGateBlocked,
-        adjustedAcademicGap: academicReadiness.adjustedGap,
-        languageGap
-      })
-  );
-
-  const cautions: string[] = [];
-  if (profile.verificationStatus !== "verified") cautions.push("需再次确认学校官方招生简章。");
-  if (!hardGatePassed) cautions.push("当前条件可能未过记录中的硬门槛，需要先补强。");
-  if (profile.topikMinimum && applicant.topikLevel < profile.topikMinimum) cautions.push("TOPIK等级低于当前记录的参考门槛。");
-  if (academicReadiness.adjustedGap < -18) cautions.push("当前高中成绩与该校竞争区间差距较大，不建议作为现阶段主申。");
-  if (profile.portfolioOrPracticalRequired === "major_specific") cautions.push("艺术、设计、表演等专业可能需要作品集、面试或实技。");
-  if (profile.interviewRequired === "required") cautions.push("该校记录显示面试是重要环节。");
-  if (profile.competitiveNotes.length) cautions.push(profile.competitiveNotes[0]);
-
-  const gateText = profile.academicGatePercent
-    ? `成绩参考硬门槛：${profile.academicGatePercent}%不是录取保证`
-    : "硬门槛需按最新简章确认";
+  const targetTier = recommendationTargetTier(applicant);
+  const schoolTier = tierRankForName(university.nameCn);
+  const hardGatePassed = targetTier !== null;
+  const majorMatchCount = countMajorMatches(university.focus, applicant.intendedMajor);
+  const score = targetTier !== null ? baseScore(applicant, schoolTier, targetTier, university.no, majorMatchCount) : 0;
+  const majorFitReason =
+    applicant.intendedMajor === "undecided"
+      ? "专业选择为必选项，请先选择目标专业"
+      : majorMatchCount > 0
+        ? `专业匹配已计入推荐分：学校代表方向包含${university.focus}`
+        : `专业匹配较弱：学校代表方向为${university.focus}，建议确认是否开设目标专业`;
 
   return {
     schoolSlug: university.slug,
@@ -312,87 +197,56 @@ export function scoreUniversityRecommendation(applicant: ApplicantProfile, schoo
     city: university.city,
     schoolType: university.type,
     score,
-    fitPriority: fit,
-    academicGap: academicReadiness.adjustedGap,
-    category: categorize(score, profile.verificationStatus, hardGatePassed, fit),
+    majorMatchCount,
+    fitPriority: hardGatePassed ? Math.abs(schoolTier - (targetTier ?? schoolTier)) : 2,
+    academicGap: applicant.gpaPercent - 75,
+    category: hardGatePassed ? (schoolTier < (targetTier ?? schoolTier) ? "reach" : "stable") : "prepare_first",
     verificationStatus: profile.verificationStatus,
     hardGatePassed,
     reasons: [
       `${university.city} / ${university.type}`,
-      `专业方向匹配：${university.focus}`,
-      profile.topikMinimum ? `当前记录参考TOPIK ${profile.topikMinimum}级以上` : "语言门槛需按最新简章确认",
-      profile.tuitionPerSemesterKrw ? `学费参考：${profile.tuitionPerSemesterKrw}/学期` : "学费需按最新简章确认",
-      gateText
+      `推荐依据：高中均分 ${applicant.gpaPercent}分，TOPIK ${applicant.topikLevel}级`,
+      targetTier ? `当前推荐目标：T${targetTier}` : "TOPIK未达到直接申请参考线",
+      majorFitReason
     ],
-    cautions: cautions.length ? cautions : ["请以学校最新招生简章为准。"]
+    cautions:
+      applicant.topikLevel < directTopikMinimum
+        ? ["TOPIK低于3级时，不建议直接生成大学推荐。"]
+        : ["请进入学校详情确认是否开设目标专业，并以最新招生简章为准。"]
   };
 }
 
 export function recommendUniversities(applicant: ApplicantProfile): UniversityRecommendation[] {
-  const sortedResults = admissionProfiles
+  const targetTier = recommendationTargetTier(applicant);
+  if (!targetTier) return [];
+
+  const baseCandidates = admissionProfiles
     .map((profile) => scoreUniversityRecommendation(applicant, profile.schoolSlug))
     .filter((result): result is UniversityRecommendation => Boolean(result))
-    .filter((result) => {
-      if (applicant.schoolTypePreference !== "national") return true;
-      return result.schoolType.includes("国立") || result.schoolType.includes("公立");
-    })
-    .filter((result) => {
-      if (applicant.schoolTypePreference !== "private") return true;
-      return result.schoolType.includes("私立");
-    })
-    .filter((result) => {
-      if (applicant.budgetLevel !== "low") return true;
-      return result.schoolType.includes("国立") || result.schoolType.includes("公立");
-    })
+    .filter((result) => result.verificationStatus !== "pending")
     .filter((result) => matchesPreferredRegion(result.city, applicant.preferredRegion))
-    .sort((a, b) => {
-      const fitCompare = a.fitPriority - b.fitPriority;
-      if (fitCompare !== 0) return fitCompare;
-      if (a.fitPriority === 2) return b.academicGap - a.academicGap || b.score - a.score;
-      return b.score - a.score;
-    });
+    .filter((result) => matchesSchoolType(result.schoolType, applicant.schoolTypePreference));
 
-  return buildBalancedSlate(sortedResults).sort(compareRecommendationsByEase);
-}
+  const candidates = baseCandidates.length >= categoryPlan.length
+    ? baseCandidates
+    : admissionProfiles
+        .map((profile) => scoreUniversityRecommendation(applicant, profile.schoolSlug))
+        .filter((result): result is UniversityRecommendation => Boolean(result))
+        .filter((result) => matchesPreferredRegion(result.city, applicant.preferredRegion))
+        .filter((result) => matchesSchoolType(result.schoolType, applicant.schoolTypePreference));
 
-function buildBalancedSlate(results: UniversityRecommendation[]): UniversityRecommendation[] {
-  const selected: UniversityRecommendation[] = [];
   const used = new Set<string>();
-  const isUnused = (result: UniversityRecommendation) => !used.has(result.schoolSlug);
-  const isConfirmedEnough = (result: UniversityRecommendation) => result.verificationStatus !== "pending";
-  const pickFirst = (predicate: (result: UniversityRecommendation) => boolean) => results.find((result) => isUnused(result) && predicate(result));
-  const pickLast = (predicate: (result: UniversityRecommendation) => boolean) =>
-    [...results].reverse().find((result) => isUnused(result) && predicate(result));
+  const selected = categoryPlan
+    .map((category) => {
+      const slotTier = targetTierForSlot(targetTier, category);
+      const picked = [...candidates]
+        .filter((candidate) => !used.has(candidate.schoolSlug))
+        .sort(compareSlotCandidates(slotTier))[0];
+      if (!picked) return undefined;
+      used.add(picked.schoolSlug);
+      return { ...picked, category };
+    })
+    .filter((result): result is UniversityRecommendation => Boolean(result));
 
-  function pickForSlot(category: RecommendationCategory): UniversityRecommendation | undefined {
-    if (category === "stable") return pickFirst((result) => result.category === "stable" && isConfirmedEnough(result)) ?? pickFirst(isConfirmedEnough);
-    if (category === "match")
-      return (
-        pickFirst((result) => result.category === "match" && isConfirmedEnough(result)) ??
-        pickFirst((result) => result.category === "stable" && isConfirmedEnough(result)) ??
-        pickFirst(isConfirmedEnough)
-      );
-    if (category === "reach")
-      return (
-        pickFirst((result) => result.category === "reach" && isConfirmedEnough(result)) ??
-        pickFirst((result) => result.fitPriority === 1 && isConfirmedEnough(result)) ??
-        pickFirst(isConfirmedEnough)
-      );
-    if (category === "prepare_first")
-      return (
-        pickFirst((result) => result.category === "prepare_first" && isConfirmedEnough(result)) ??
-        pickLast((result) => result.fitPriority > 0 && isConfirmedEnough(result)) ??
-        pickLast(isConfirmedEnough)
-      );
-    return pickFirst(isConfirmedEnough);
-  }
-
-  recommendationSlatePlan.forEach((category) => {
-    const result = pickForSlot(category) ?? pickFirst(() => true);
-    if (!result) return;
-    used.add(result.schoolSlug);
-    selected.push({ ...result, category });
-  });
-
-  return selected;
+  return selected.sort(compareVisibleTierOrder);
 }

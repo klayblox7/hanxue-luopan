@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { assetPath } from "@/data/assetPath";
@@ -811,9 +812,9 @@ export function KoreaStudyMap() {
                 </div>
               </div>
 
-              <a className="col-span-full inline-flex min-h-9 items-center justify-center rounded-lg border border-ink/35 bg-yellow text-sm font-black text-ink no-underline" href="/universities">
+              <Link className="col-span-full inline-flex min-h-9 items-center justify-center rounded-lg border border-ink/35 bg-yellow text-sm font-black text-ink no-underline" href="/universities">
                 报考详情 →
-              </a>
+              </Link>
               </div>
           </article>
         </div>

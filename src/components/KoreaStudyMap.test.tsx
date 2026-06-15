@@ -8,7 +8,7 @@ describe("KoreaStudyMap", () => {
 
     expect(screen.getByText("首尔特别市")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "延世大学" })).toBeInTheDocument();
-    expect(screen.getAllByText("Yonsei University").length).toBeGreaterThan(0);
+    expect(screen.getByText(/Yonsei University/)).toBeInTheDocument();
   });
 
   it("updates the region and default school when a map region is selected", () => {
@@ -37,17 +37,17 @@ describe("KoreaStudyMap", () => {
     expect(screen.getAllByTestId("study-map-marker")).toHaveLength(30);
   });
 
-  it("uses a no-halo active pin and visible yellow school markers", () => {
+  it("uses the current red active pin and violet school markers", () => {
     render(<KoreaStudyMap />);
 
     const markers = screen.getAllByTestId("study-map-marker");
     const activeMarker = markers.find((marker) => marker.getAttribute("data-active") === "true");
     const inactiveMarker = markers.find((marker) => marker.getAttribute("data-active") === "false");
 
-    expect(activeMarker).toHaveAttribute("fill", "#ffd0d8");
-    expect(activeMarker).toHaveAttribute("stroke", "#0a0a0a");
+    expect(activeMarker).toHaveAttribute("fill", "#b91c1c");
+    expect(activeMarker).toHaveAttribute("stroke", "#7f1d1d");
     expect(activeMarker).not.toHaveAttribute("stroke", "#fffefb");
-    expect(inactiveMarker).toHaveAttribute("fill", "#fff2a8");
+    expect(inactiveMarker).toHaveAttribute("fill", "#8f57ef");
     expect(inactiveMarker).toHaveAttribute("stroke", "#0a0a0a");
   });
 });

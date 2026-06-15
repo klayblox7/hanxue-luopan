@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { buildMobileUniversities, UniversitySheet } from "@/components/MobileUniversitiesApp";
 import { koreaMapRegions, type KoreaMapRegionKey } from "@/data/korea-map-regions";
-import { getUniversityTier } from "@/data/universityTiers";
+import { getUniversityTier, type UniversityTier } from "@/data/universityTiers";
 import { universities } from "@/data/universities";
 
 type RegionFilter = {
@@ -20,6 +20,8 @@ type MapRegionGroup = {
   color: string;
   regionKeys: KoreaMapRegionKey[];
 };
+
+type TierFilter = "all" | UniversityTier;
 
 const regionFilters: RegionFilter[] = [
   { id: "all", label: "全部", keywords: [] },
@@ -58,10 +60,20 @@ const mapRegionGroups: MapRegionGroup[] = [
   }
 ];
 
+const tierFilters: Array<{ value: TierFilter; label: string }> = [
+  { value: "all", label: "全部" },
+  { value: "T1", label: "T1" },
+  { value: "T2", label: "T2" },
+  { value: "T3", label: "T3" },
+  { value: "T4", label: "T4" },
+  { value: "T5", label: "T5" }
+];
+
 const mapVerticalNudge = 16;
+const mapHorizontalNudge = -70;
 const desktopMapOffset = { x: 74, y: mapVerticalNudge };
 const jejuInset = { x: 261, y: 222 + mapVerticalNudge, width: 64.6, height: 40.8, pathX: 188.5, pathY: -31.5 + mapVerticalNudge };
-const mobileMapContentTransform = "translate(242.5 150) scale(0.85 1) translate(-242.5 -150)";
+const mobileMapContentTransform = `translate(${mapHorizontalNudge} 0) translate(242.5 150) scale(0.85 1) translate(-242.5 -150)`;
 const regionPinPositions: Record<Exclude<RegionFilter["id"], "all">, { x: number; y: number }> = {
   seoul: { x: 196, y: 63 + mapVerticalNudge },
   chungcheong: { x: 224, y: 124 + mapVerticalNudge },
@@ -98,6 +110,7 @@ function SelectedRegionPin({ x, y }: { x: number; y: number }) {
 
 export function MobileKoreaMapPage() {
   const [activeRegionId, setActiveRegionId] = useState<RegionFilter["id"]>("all");
+  const [activeTierFilter, setActiveTierFilter] = useState<TierFilter>("all");
   const [search, setSearch] = useState("");
   const [selectedSchoolSlug, setSelectedSchoolSlug] = useState<string | null>(null);
   const [selectedCaseSchoolSlug, setSelectedCaseSchoolSlug] = useState<string | null>(null);
@@ -135,26 +148,23 @@ export function MobileKoreaMapPage() {
 
     return universities
       .filter((school) => matchesRegion(school.city, activeRegion))
+      .filter((school) => activeTierFilter === "all" || getUniversityTier(school.nameCn) === activeTierFilter)
       .filter((school) => {
         if (!query) return true;
         return `${school.nameCn} ${school.nameEn} ${school.city} ${school.focus}`.toLowerCase().includes(query);
-      })
-      .slice(0, 12);
-  }, [activeRegion, search]);
+      });
+  }, [activeRegion, activeTierFilter, search]);
   const selectedSchool = selectedSchoolSlug ? mobileSchoolsBySlug.get(selectedSchoolSlug) : undefined;
   const selectedCaseSchool = selectedCaseSchoolSlug ? mobileSchoolsBySlug.get(selectedCaseSchoolSlug) : undefined;
 
+  const selectTierFilter = (tier: TierFilter) => {
+    setActiveTierFilter(tier);
+    setSelectedSchoolSlug(null);
+    setSelectedCaseSchoolSlug(null);
+  };
+
   return (
     <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden" aria-label="韩国大学地图移动版">
-      <header className="sticky top-0 z-30 border-b border-ink/10 bg-[#f5f3ed]/95 px-4 py-3 backdrop-blur">
-        <div className="flex items-center gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="text-[0.72rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">KOREA UNIVERSITY LINK</p>
-            <h1 className="truncate text-2xl font-black leading-none">韩国大学地图</h1>
-          </div>
-        </div>
-      </header>
-
       <main className="px-3 py-4">
         <section
           className="rounded-none border border-ink bg-surface p-2 shadow-[0_12px_28px_rgba(10,10,10,0.08)]"
@@ -263,12 +273,35 @@ export function MobileKoreaMapPage() {
 
             <div
               data-testid="selected-region-summary"
-              className="pointer-events-none absolute right-3 top-3 grid justify-items-end gap-1.5"
+              className="pointer-events-none absolute right-8 top-7 grid justify-items-end gap-1.5"
             >
-              <p className="rounded-md border border-ink bg-[#faf8f0] px-3 py-1 text-[0.86rem] font-black leading-none">{activeStat.label}</p>
-              <strong className="rounded-md border border-ink bg-[#ffe07a] px-3 py-1 text-[0.86rem] font-black leading-none">
-                {activeStat.count}所
+              <p className="w-[5.8rem] rounded-md border border-ink bg-[#faf8f0] px-3 py-1 text-center text-[0.77rem] font-black leading-none">{activeStat.label}</p>
+              <strong className="w-[5.8rem] rounded-md border border-ink bg-[#ffe07a] px-3 py-1 text-center text-[0.77rem] font-black leading-none" data-testid="selected-region-count">
+                {visibleSchools.length}所
               </strong>
+            </div>
+
+            <div
+              aria-label="学校等级筛选"
+              className="absolute right-8 top-[5.7rem] z-20 w-[5.8rem] rounded-lg border border-ink bg-[#faf8f0]/95 p-1.5 shadow-[0_8px_18px_rgba(10,10,10,0.08)]"
+              data-testid="map-tier-filter"
+            >
+              <p className="text-center text-[0.58rem] font-black leading-none text-muted">学校等级</p>
+              <div className="mt-1.5 grid grid-cols-2 gap-[0.24rem]" data-testid="map-tier-filter-grid">
+                {tierFilters.map((filter) => (
+                  <button
+                    aria-pressed={activeTierFilter === filter.value}
+                    className={`h-[2.36rem] min-h-0 min-w-0 rounded-md border border-ink text-[0.66rem] font-black leading-none transition active:translate-y-0.5 ${
+                      activeTierFilter === filter.value ? "bg-[#71d39b]" : "bg-surface"
+                    }`}
+                    key={filter.value}
+                    type="button"
+                    onClick={() => selectTierFilter(filter.value)}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -307,7 +340,11 @@ export function MobileKoreaMapPage() {
 
                   <div className="mt-2 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2 pt-1.5" data-testid="map-school-card-action-row">
                     <button
-                      className="inline-flex min-h-[2rem] min-w-0 items-center justify-center gap-1 overflow-hidden rounded-lg border border-ink bg-[#eef8df] px-1.5 text-center text-[0.78rem] font-black leading-tight"
+                      className="inline-flex min-h-[2rem] min-w-0 items-center justify-center gap-1 overflow-hidden rounded-lg bg-[#dff3dc] px-1.5 text-center text-[0.78rem] font-black leading-tight text-[#004c3f] shadow-[0_4px_10px_rgba(0,98,65,0.08)]"
+                      style={{
+                        boxShadow:
+                          "inset 0 0 0 0.6px rgba(0, 98, 65, 0.58), 0 4px 10px rgba(0, 98, 65, 0.08)"
+                      }}
                       type="button"
                       onClick={() => {
                         setSelectedCaseSchoolSlug(null);

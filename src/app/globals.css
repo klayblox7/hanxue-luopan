@@ -75,6 +75,28 @@ textarea {
   display: none;
 }
 
+.required-value-hidden option {
+  color: #0a0a0a;
+}
+
+.required-field-flash {
+  border-radius: 0.5rem;
+  animation: required-field-flash 340ms ease-out 0s 2;
+}
+
+@keyframes required-field-flash {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(159, 29, 29, 0);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 2px rgba(159, 29, 29, 0.42),
+      0 0 0 5px rgba(159, 29, 29, 0.14);
+  }
+}
+
 .detail-page-container {
   width: calc(100% - 1.5rem);
   margin-left: auto;

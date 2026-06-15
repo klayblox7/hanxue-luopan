@@ -1191,24 +1191,6 @@
         line-height: 1.7;
       }
 
-      .back-to-top-button {
-        position: fixed;
-        right: 1.25rem;
-        bottom: 1.25rem;
-        width: 3.25rem;
-        height: 3.25rem;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: #ffffff;
-        cursor: pointer;
-      }
-
-      .back-to-top-button img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-
       @media (max-width: 1280px) {
         .wrap {
           width: calc(100% - 3rem);
@@ -1648,7 +1630,6 @@
               font-size: 1.05rem;
               line-height: 1.8;
             }
-
 
             .legacy-appendix .legacy-original .wrap {
               width: calc(100% - 25rem);
@@ -2713,7 +2694,6 @@
               }
             }
 
-
             .legacy-appendix .legacy-original .nav .pill:not(.active) { background: #ffffff; }
             .legacy-appendix .legacy-original .nav .pill.pink.active,
             .legacy-appendix .legacy-original .nav .pill.pink:hover,
@@ -2838,52 +2818,6 @@
                 font-weight: 900;
               }
             }
-            /* Image back-to-top control */
-            .legacy-appendix .legacy-original .back-to-top-button {
-              position: fixed;
-              right: 4.25rem;
-              bottom: 1.25rem;
-              z-index: 90;
-              display: block;
-              width: 5.1rem;
-              border: 0;
-              background: transparent;
-              padding: 0;
-              cursor: pointer;
-            }
-
-            .legacy-appendix .legacy-original .back-to-top-button img {
-              display: block;
-              width: 100%;
-              height: auto;
-              object-fit: contain;
-              pointer-events: none;
-            }
-
-            .legacy-appendix .legacy-original .back-to-top-button:hover,
-            .legacy-appendix .legacy-original .back-to-top-button:focus,
-            .legacy-appendix .legacy-original .back-to-top-button:active {
-              background: transparent;
-            }
-
-            .legacy-appendix .legacy-original .back-to-top-button:focus {
-              outline: none;
-            }
-
-            .legacy-appendix .legacy-original .back-to-top-button:focus-visible {
-              border-radius: 0.75rem;
-              outline: 2px solid var(--ink, #0a0a0a);
-              outline-offset: 0.25rem;
-            }
-
-            @media (max-width: 720px) {
-              .legacy-appendix .legacy-original .back-to-top-button {
-                right: 0.75rem;
-                bottom: calc(0.75rem + env(safe-area-inset-bottom));
-                width: 4.08rem;
-              }
-            }
-
 
             /* header-lock: keep page headers aligned across every module */
             .legacy-appendix .legacy-original .nav-suffix {
@@ -2984,7 +2918,6 @@
               }
             }
 
-
             /* header-lock-pill: normalize nav pill height across modules */
             .legacy-appendix .legacy-original .header .nav > .pill,
             .legacy-appendix .legacy-original .header .top-nav > .nav-pill {
@@ -3006,7 +2939,6 @@
                 white-space: nowrap;
               }
             }
-
 
             /* final-header-lock: absolute header geometry, based on application/cost pages */
             .legacy-appendix .legacy-original .nav-suffix {
@@ -3180,7 +3112,6 @@
                 white-space: nowrap !important;
               }
             }
-
 
             /* agency-merge: copied body styles scoped under cost page */
             .legacy-appendix .legacy-original .agency-merge {
@@ -3668,7 +3599,6 @@
               line-height: 1.65;
             }
 
-
             .legacy-appendix .legacy-original .agency-merge .section:first-child {
               margin-top: 0;
             }
@@ -3676,7 +3606,6 @@
             .legacy-appendix .legacy-original .agency-merge .channel-block:first-child {
               margin-top: 5.75rem;
             }
-
 
             .legacy-appendix .legacy-original .agency-merge.channel-top {
               margin-top: 0;
@@ -5300,10 +5229,6 @@
         数据来源简表：Study in Korea / Academy Info、高丽大学 2026 学期学费、韩国语学院公开页面、NHIS/SNU OGA、TOPIK 报名入口、高丽大学生活费样本、公开 KRW/CNY 汇率，以及学校奖学金页面。
       </p>
     </main>
-
-    <button class="back-to-top-button" type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Back to top">
-      <img src="./public/up.gif" alt="" aria-hidden="true" />
-    </button>
 
     <script>
       const sourceCurrencyRate = 0.00445;
