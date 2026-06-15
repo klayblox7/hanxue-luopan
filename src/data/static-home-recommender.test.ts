@@ -45,13 +45,13 @@ function changeSelect(document: Document, id: string, value: string) {
 }
 
 describe("static home recommender", () => {
-  it("serves desktop images from the Next public root instead of a nested public folder", () => {
+  it("serves desktop images through base-aware relative urls", () => {
     for (const filePath of ["hanxue-luopan-home.html", "public/hanxue-luopan-home.html"]) {
       const html = readFileSync(filePath, "utf8");
 
-      expect(html).toContain('src="/korea-link-logo.gif"');
-      expect(html).toContain('src="/home-banner-1b.png"');
-      expect(html).toContain('src="/home-banner-1c.jpg"');
+      expect(html).toContain('src="./korea-link-logo.gif"');
+      expect(html).toContain('src="./home-banner-1b.png"');
+      expect(html).toContain('src="./home-banner-1c.jpg"');
       expect(html).toContain('folder: "/campus-images"');
       expect(html).toContain('folder: "/school-logos"');
       expect(html).not.toContain('src="./public/');
