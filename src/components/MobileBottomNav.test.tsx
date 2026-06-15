@@ -11,7 +11,7 @@ describe("MobileBottomNav", () => {
     const links = within(nav).getAllByRole("link");
 
     expect(links.map((link) => link.textContent?.trim())).toEqual(["首页", "大学地图", "大学库", "费用", "TOPIK"]);
-    expect(links.map((link) => link.getAttribute("href"))).toEqual(["/", "/korea-university-map", "/universities", "/cost", "/topik"]);
+    expect(links.map((link) => link.getAttribute("href"))).toEqual(["/", "/korea-university-map/", "/universities/", "/cost/", "/topik/"]);
     expect(within(nav).getByRole("link", { name: "大学地图" })).toHaveAttribute("aria-current", "page");
   });
 });

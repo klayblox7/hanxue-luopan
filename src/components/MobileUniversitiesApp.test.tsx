@@ -92,7 +92,7 @@ describe("MobileUniversitiesApp", () => {
     expect(within(dialog).queryByText("数据更新")).not.toBeInTheDocument();
     expect(within(dialog).queryByText("数据状态")).not.toBeInTheDocument();
     expect(within(dialog).queryByRole("link", { name: /申请路线/ })).not.toBeInTheDocument();
-    expect(within(dialog).getByRole("link", { name: /费用预算/ })).toHaveAttribute("href", "/cost");
+    expect(within(dialog).getByRole("link", { name: /费用预算/ })).toHaveAttribute("href", "/cost/");
     expect(within(dialog).queryByText("首尔大学介绍")).not.toBeInTheDocument();
 
     fireEvent.click(within(dialog).getByRole("button", { name: /案例画像/ }));

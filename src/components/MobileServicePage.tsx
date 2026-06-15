@@ -8,10 +8,9 @@ import {
   SearchCheck
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { assetPath } from "@/data/assetPath";
+import { assetPath, routePath } from "@/data/assetPath";
 import { MobileBottomNav, type MobileBottomTabId } from "./MobileBottomNav";
 
 type MobileServicePageId = "topik" | "cost" | "application" | "exchange" | "korean-learning";
@@ -1611,8 +1610,8 @@ function BudgetEstimator() {
           <h2 className="mt-1 text-xl font-black leading-tight">韩国留学费用估算</h2>
           <p className="mt-1 text-xs font-medium leading-5 text-muted">按城市、学校、专业、住宿等估算。</p>
         </div>
-        <Link
-          href="/exchange-rate"
+        <a
+          href={routePath("/exchange-rate")}
           aria-label="汇率参考"
           className="relative mt-3 flex w-16 shrink-0 flex-col items-center justify-center gap-0.5 overflow-visible rounded-lg transition-transform active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b6a4a]"
           data-testid="mobile-budget-card-icon"
@@ -1625,7 +1624,7 @@ function BudgetEstimator() {
             className="h-[3.8rem] w-[4rem] object-contain"
             priority={false}
           />
-        </Link>
+        </a>
       </div>
 
       <form

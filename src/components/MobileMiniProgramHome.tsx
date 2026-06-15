@@ -2,7 +2,6 @@
 
 import { BadgeCheck, BookOpenCheck, ChevronRight, Route, Search, UsersRound, X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { type ReactNode, type TouchEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import partnerSchoolProfiles from "@/data/partner-school-profiles.json";
@@ -15,7 +14,7 @@ import {
   type MobileHomeAction,
   type MobileRecommendationInput
 } from "@/data/mobileHome";
-import { assetPath } from "@/data/assetPath";
+import { assetPath, routePath } from "@/data/assetPath";
 import { CampusImage } from "@/components/CampusImage";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 
@@ -87,26 +86,26 @@ function NoDirectRecommendationGuidance() {
         </p>
       </div>
       <div className="grid gap-2">
-        <Link
+        <a
           className="flex min-h-12 items-center justify-between gap-3 rounded-lg border border-ink bg-[#dff3dc] px-3 text-sm font-black text-[#004c3f]"
-          href="/application"
+          href={routePath("/application")}
         >
           <span className="inline-flex items-center gap-2">
             <Route size={17} strokeWidth={2.4} aria-hidden="true" />
             国内+韩国项目
           </span>
           <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
-        </Link>
-        <Link
+        </a>
+        <a
           className="flex min-h-12 items-center justify-between gap-3 rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink"
-          href="/topik"
+          href={routePath("/topik")}
         >
           <span className="inline-flex items-center gap-2">
             <BookOpenCheck size={17} strokeWidth={2.4} aria-hidden="true" />
             韩语 / TOPIK、报名、备考
           </span>
           <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
-        </Link>
+        </a>
       </div>
     </div>
   );
@@ -242,7 +241,7 @@ function MobileIntroOverlay({
 
 function MobileHomeActionLink({ action }: { action: MobileHomeAction }) {
   return (
-    <Link className="grid min-w-0 justify-items-center gap-1.5 px-1 text-center text-ink transition active:translate-y-0.5" href={action.href}>
+    <a className="grid min-w-0 justify-items-center gap-1.5 px-1 text-center text-ink transition active:translate-y-0.5" href={routePath(action.href)}>
       <span
         className="flex"
         style={{
@@ -269,7 +268,7 @@ function MobileHomeActionLink({ action }: { action: MobileHomeAction }) {
         <span className="block truncate text-[0.92rem] font-black leading-tight">{action.title}</span>
         <span className="mt-1 block text-[0.68rem] font-medium leading-4 text-muted">{action.detail}</span>
       </span>
-    </Link>
+    </a>
   );
 }
 
@@ -474,10 +473,10 @@ function RecommendedSchoolSheet({
                   案例画像
                   <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
                 </button>
-                <Link className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink" href="/universities">
+                <a className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink" href={routePath("/universities")}>
                   进入大学库
                   <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
-                </Link>
+                </a>
               </div>
             </div>
           ) : (

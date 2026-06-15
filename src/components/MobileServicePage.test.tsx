@@ -74,7 +74,7 @@ describe("MobileServicePage", () => {
       expect.stringContaining("icon-exchange-budget-99.png")
     );
     expect(within(budgetIcon).queryByText("汇率")).not.toBeInTheDocument();
-    expect(budgetIcon.closest("a")).toHaveAttribute("href", "/exchange-rate");
+    expect(budgetIcon.closest("a")).toHaveAttribute("href", "/exchange-rate/");
     expect(budgetIcon).toHaveClass("mt-3");
     expect(estimatorTitle.compareDocumentPosition(desktopCost) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText("学费")).toBeInTheDocument();

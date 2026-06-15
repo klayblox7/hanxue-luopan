@@ -8,7 +8,6 @@ import {
   UsersRound,
   X
 } from "lucide-react";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { getAdmissionCaseSummary, type AdmissionCase, type AdmissionCaseSummary, type DistributionItem } from "@/data/admissionCases";
@@ -16,6 +15,7 @@ import partnerSchoolProfiles from "@/data/partner-school-profiles.json";
 import { universities, type University } from "@/data/universities";
 import majorTagData from "@/data/university-major-tags.json";
 import { getUniversityTierProfile } from "@/data/universityTiers";
+import { routePath } from "@/data/assetPath";
 
 import { CampusImage } from "./CampusImage";
 import { MobileBottomNav } from "./MobileBottomNav";
@@ -520,10 +520,10 @@ export function UniversitySheet({
                   案例画像
                   <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
                 </button>
-                <Link className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink" href="/cost">
+                <a className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink" href={routePath("/cost")}>
                   费用预算
                   <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
-                </Link>
+                </a>
               </div>
             </div>
           ) : (

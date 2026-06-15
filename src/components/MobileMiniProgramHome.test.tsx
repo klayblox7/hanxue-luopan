@@ -111,12 +111,12 @@ describe("MobileMiniProgramHome", () => {
       expect(image.parentElement).toHaveStyle({ height: "5.18rem", maxWidth: "5.98rem" });
     });
     expect(screen.getByText("1+3、2+2等")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /韩国大学地图/ })).toHaveAttribute("href", "/korea-university-map");
-    expect(screen.getByRole("link", { name: /韩国大学库/ })).toHaveAttribute("href", "/universities");
-    expect(screen.getByRole("link", { name: /国内\+韩国项目/ })).toHaveAttribute("href", "/application");
-    expect(screen.getByRole("link", { name: /留学费用/ })).toHaveAttribute("href", "/cost");
-    expect(screen.getByRole("link", { name: /韩语/ })).toHaveAttribute("href", "/topik");
-    expect(screen.getByRole("link", { name: /汇率换算/ })).toHaveAttribute("href", "/exchange-rate");
+    expect(screen.getByRole("link", { name: /韩国大学地图/ })).toHaveAttribute("href", "/korea-university-map/");
+    expect(screen.getByRole("link", { name: /韩国大学库/ })).toHaveAttribute("href", "/universities/");
+    expect(screen.getByRole("link", { name: /国内\+韩国项目/ })).toHaveAttribute("href", "/application/");
+    expect(screen.getByRole("link", { name: /留学费用/ })).toHaveAttribute("href", "/cost/");
+    expect(screen.getByRole("link", { name: /韩语/ })).toHaveAttribute("href", "/topik/");
+    expect(screen.getByRole("link", { name: /汇率换算/ })).toHaveAttribute("href", "/exchange-rate/");
   });
 
   it("shows a mini-program style bottom tab bar without a character or QR center button", () => {
@@ -127,10 +127,10 @@ describe("MobileMiniProgramHome", () => {
     expect(bottomNav).toBeInTheDocument();
     expect(within(bottomNav).getAllByRole("link").map((link) => link.textContent?.trim())).toEqual(["首页", "大学地图", "大学库", "费用", "TOPIK"]);
     expect(within(bottomNav).getByRole("link", { name: "首页" })).toHaveAttribute("href", "/");
-    expect(within(bottomNav).getByRole("link", { name: "大学地图" })).toHaveAttribute("href", "/korea-university-map");
-    expect(within(bottomNav).getByRole("link", { name: "大学库" })).toHaveAttribute("href", "/universities");
-    expect(within(bottomNav).getByRole("link", { name: "费用" })).toHaveAttribute("href", "/cost");
-    expect(within(bottomNav).getByRole("link", { name: "TOPIK" })).toHaveAttribute("href", "/topik");
+    expect(within(bottomNav).getByRole("link", { name: "大学地图" })).toHaveAttribute("href", "/korea-university-map/");
+    expect(within(bottomNav).getByRole("link", { name: "大学库" })).toHaveAttribute("href", "/universities/");
+    expect(within(bottomNav).getByRole("link", { name: "费用" })).toHaveAttribute("href", "/cost/");
+    expect(within(bottomNav).getByRole("link", { name: "TOPIK" })).toHaveAttribute("href", "/topik/");
     expect(within(bottomNav).queryByAltText("KOREA LINK角色标识")).not.toBeInTheDocument();
   });
 
@@ -256,8 +256,8 @@ describe("MobileMiniProgramHome", () => {
     expect(screen.queryByTestId("mobile-recommendation-card")).not.toBeInTheDocument();
     const guidance = screen.getByTestId("mobile-no-direct-guidance");
     expect(guidance).toHaveTextContent("TOPIK低于3级");
-    expect(within(guidance).getByRole("link", { name: /国内\+韩国项目/ })).toHaveAttribute("href", "/application");
-    expect(within(guidance).getByRole("link", { name: /韩语 \/ TOPIK、报名、备考/ })).toHaveAttribute("href", "/topik");
+    expect(within(guidance).getByRole("link", { name: /国内\+韩国项目/ })).toHaveAttribute("href", "/application/");
+    expect(within(guidance).getByRole("link", { name: /韩语 \/ TOPIK、报名、备考/ })).toHaveAttribute("href", "/topik/");
     expect(screen.queryByText("暂不符合")).not.toBeInTheDocument();
   });
 
@@ -285,7 +285,7 @@ describe("MobileMiniProgramHome", () => {
     expect(within(dialog).queryByText("重点方向")).not.toBeInTheDocument();
     expect(within(dialog).queryByText("数据更新")).not.toBeInTheDocument();
     expect(within(dialog).queryByText("数据状态")).not.toBeInTheDocument();
-    expect(within(dialog).getByRole("link", { name: /进入大学库/ })).toHaveAttribute("href", "/universities");
+    expect(within(dialog).getByRole("link", { name: /进入大学库/ })).toHaveAttribute("href", "/universities/");
   });
 
   it("opens admission evidence from a recommended school's case action", () => {

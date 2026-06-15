@@ -1,5 +1,6 @@
 import { BookOpenCheck, Calculator, GraduationCap, Home, MapPinned, type LucideIcon } from "lucide-react";
-import Link from "next/link";
+
+import { routePath } from "@/data/assetPath";
 
 export type MobileBottomTabId = "home" | "map" | "universities" | "cost" | "topik";
 
@@ -28,19 +29,19 @@ export function MobileBottomNav({ activeTab }: { activeTab?: MobileBottomTabId }
           const isActive = activeTab === tab.id;
 
           return (
-            <Link
+            <a
               aria-current={isActive ? "page" : undefined}
               className={`grid min-w-0 justify-items-center gap-1 text-[0.66rem] font-black leading-tight ${
                 isActive ? "text-[#0b6a4a]" : "text-[#9b9b9b]"
               }`}
-              href={tab.href}
+              href={routePath(tab.href)}
               key={tab.id}
             >
               <span className="grid size-8 place-items-center">
                 <Icon size={25} strokeWidth={2.2} aria-hidden="true" />
               </span>
               <span className="max-w-full truncate">{tab.label}</span>
-            </Link>
+            </a>
           );
         })}
       </div>
