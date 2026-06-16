@@ -393,7 +393,7 @@ function PreciseFilterSheet({
   resultCount: number;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[10dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[10dvh] lg:landscape:hidden xl:hidden" onClick={onClose}>
       <section
         aria-label="精准筛选"
         aria-modal="true"
@@ -454,7 +454,7 @@ export function UniversitySheet({
   const applicantExamples = applicantCaseExamples(summary.representativeCases);
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh] lg:landscape:hidden xl:hidden" onClick={onClose}>
       <section
         aria-label={label}
         aria-modal="true"
@@ -594,7 +594,7 @@ export function MobileUniversitiesApp() {
 
   return (
     <section
-      className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden"
+      className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink lg:landscape:hidden xl:hidden"
       aria-label="韩国大学库移动端小程序"
     >
       <main className="w-full max-w-full overflow-hidden px-4 pt-4">

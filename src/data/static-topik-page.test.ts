@@ -5,6 +5,7 @@ import { JSDOM } from "jsdom";
 describe("static TOPIK page", () => {
   it("starts directly with the decision-first TOPIK planner before the preserved appendix", () => {
     const html = readFileSync("topik.html", "utf8");
+    const normalizedHtml = html.replace(/\r\n/g, "\n");
     const dom = new JSDOM(html);
     const { document } = dom.window;
 
@@ -19,9 +20,10 @@ describe("static TOPIK page", () => {
     expect(document.querySelector("#topik-tier")?.textContent).toContain("T1 SKY/成均馆/汉阳/KAIST");
     expect(document.querySelector("#topik-tier")?.textContent).not.toContain("T2 成均馆/汉阳");
     expect(document.querySelector("[data-planner-run]")?.textContent).toContain("AI\u89c4\u5212");
-    expect(html).toContain(".planner-form {\n        display: grid;");
-    expect(html).toContain("grid-template-columns: minmax(9.8rem, 0.9fr) minmax(14rem, 1.18fr) minmax(15rem, 1.25fr) minmax(13rem, 1.05fr);");
-    expect(html).toContain(".planner-control-row {");
+    expect(normalizedHtml).toContain(".planner-form {\n        display: grid;");
+    expect(normalizedHtml).toContain("grid-template-columns: minmax(9.8rem, 0.9fr) minmax(14rem, 1.18fr) minmax(15rem, 1.25fr) minmax(13rem, 1.05fr);");
+    expect(normalizedHtml).toContain("max-width: calc(100% - 19rem);");
+    expect(normalizedHtml).toContain(".planner-control-row {\n        top: 6.75rem;\n        right: 17.5rem;");
     expect(html).toContain("display: flex;");
     expect(html).toContain("border-radius: 8px;");
     expect(html).toContain("word-break: keep-all;");

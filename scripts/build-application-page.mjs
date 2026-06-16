@@ -3,7 +3,8 @@ import path from "node:path";
 
 const projectRoot = process.cwd();
 const markdownPath = process.argv[2] || "E:/360MoveData/Users/49676/Desktop/\u7f51\u7ad9/x+x.md";
-const outputPath = process.argv[3] || path.join(projectRoot, "application.html");
+const defaultOutputPath = path.join(projectRoot, "public", "application.html");
+const outputPath = process.argv[3] || defaultOutputPath;
 
 const md = fs.readFileSync(markdownPath, "utf8");
 const universitySource = fs.readFileSync(path.join(projectRoot, "src/data/universities.ts"), "utf8");
@@ -215,11 +216,22 @@ if (fs.existsSync(staticHomePath)) {
   }
 }
 
+function deployAssetPath(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(text)) return text;
+
+  const withoutPublic = text.replace(/^\.?\/?public\//, "");
+  if (withoutPublic.startsWith("./") || withoutPublic.startsWith("../")) return withoutPublic;
+  if (withoutPublic.startsWith("/")) return `.${withoutPublic}`;
+  return `./${withoutPublic}`;
+}
+
 function localAssetPath(folder, slug) {
   if (!slug) return "";
   for (const ext of [".webp", ".jpg", ".png", ".svg", ".jpeg"]) {
     const candidate = path.join(projectRoot, "public", folder, `${slug}${ext}`);
-    if (fs.existsSync(candidate)) return `public/${folder}/${slug}${ext}`;
+    if (fs.existsSync(candidate)) return deployAssetPath(`public/${folder}/${slug}${ext}`);
   }
   return "";
 }
@@ -383,12 +395,12 @@ for (const profile of partnerProfileSource) {
     founded: profile.founded,
     totalStudents: profile.totalStudents,
     foreignStudents: profile.foreignStudents,
-    campusImage: profile.campusImage,
+    campusImage: deployAssetPath(profile.campusImage),
     imagePosition: profile.imagePosition,
     intro: profile.intro || profile.extract,
     sourceUrl: profile.wikiUrl || profile.wikidataUrl,
     officialUrl: profile.officialUrl || "",
-    logoImage: profile.logoImage || "",
+    logoImage: deployAssetPath(profile.logoImage || ""),
   });
 }
 
@@ -428,11 +440,11 @@ function resolvePartnerSchool(rawName) {
       totalStudents: supplemental.totalStudents || university.totalStudents || withPeopleSuffix(facts.students),
       foreignStudents: supplemental.foreignStudents || university.foreignStudents || withPeopleSuffix(facts.foreignStudents),
       founded: supplemental.founded || foundedLabel(facts.founded),
-      campusImage: supplemental.campusImage || campusAssetPath(university.slug),
+      campusImage: deployAssetPath(supplemental.campusImage || campusAssetPath(university.slug)),
       imagePosition: supplemental.imagePosition || "center",
       intro: supplemental.intro || "",
       officialUrl: supplemental.officialUrl || facts.officialUrl || supplementalOfficialUrls.get(university.nameCn) || "",
-      logoImage: supplemental.logoImage || logoAssetPath(university.slug),
+      logoImage: deployAssetPath(supplemental.logoImage || logoAssetPath(university.slug)),
       known: true,
     };
   }
@@ -454,11 +466,11 @@ function resolvePartnerSchool(rawName) {
     totalStudents: supplemental.totalStudents || "",
     foreignStudents: supplemental.foreignStudents || "",
     founded: supplemental.founded || "",
-    campusImage: supplemental.campusImage || campusAssetPath(slug),
+    campusImage: deployAssetPath(supplemental.campusImage || campusAssetPath(slug)),
     imagePosition: supplemental.imagePosition || "center",
     intro: supplemental.intro || "",
     officialUrl: supplemental.officialUrl || supplementalOfficialUrls.get(displayName) || "",
-    logoImage: supplemental.logoImage || logoAssetPath(slug),
+    logoImage: deployAssetPath(supplemental.logoImage || logoAssetPath(slug)),
     known: Boolean(supplemental.slug),
   };
 }
@@ -2508,5 +2520,25 @@ const html = `<!doctype html>
 </html>
 `;
 
-fs.writeFileSync(outputPath, html, "utf8");
+function writeApplicationHtml(html) {
+  const resolvedOutputPath = path.resolve(outputPath);
+  fs.mkdirSync(path.dirname(resolvedOutputPath), { recursive: true });
+  fs.writeFileSync(resolvedOutputPath, html, "utf8");
+
+  const mirroredPaths = [
+    path.join(projectRoot, "application.html"),
+    path.join(projectRoot, "public", "application.html"),
+  ];
+  const shouldMirror = mirroredPaths.some((mirrorPath) => path.resolve(mirrorPath) === resolvedOutputPath);
+
+  if (shouldMirror) {
+    for (const mirrorPath of mirroredPaths) {
+      if (path.resolve(mirrorPath) !== resolvedOutputPath) {
+        fs.writeFileSync(mirrorPath, html, "utf8");
+      }
+    }
+  }
+}
+
+writeApplicationHtml(html);
 console.log(`Wrote ${projects.length} x+x projects to ${outputPath}`);

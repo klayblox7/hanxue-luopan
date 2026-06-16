@@ -12,6 +12,9 @@ describe("MobileKoreaMapPage", () => {
   it("starts with a touchable Korea map before the school list", () => {
     const { container } = render(<MobileKoreaMapPage />);
 
+    expect(container.querySelector(".mobile-app-shell")).toHaveClass("lg:landscape:hidden", "xl:hidden");
+    expect(container.querySelector(".mobile-app-shell")).not.toHaveClass("md:hidden");
+
     expect(screen.getByRole("img", { name: "韩国大学地图分布" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "韩国大学地图" })).not.toBeInTheDocument();
     expect(container.querySelector('svg[data-testid="korea-region-map"]')).toBeInTheDocument();

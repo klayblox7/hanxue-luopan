@@ -62,6 +62,17 @@ function parseStaticHomeStringMap(name) {
   return new Map([...block.matchAll(/"([^"]+)":\s*"([^"]+)"/g)].map(([, slug, value]) => [slug, value]));
 }
 
+function deployAssetPath(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(text)) return text;
+
+  const withoutPublic = text.replace(/^\.?\/?public\//, "");
+  if (withoutPublic.startsWith("./") || withoutPublic.startsWith("../")) return withoutPublic;
+  if (withoutPublic.startsWith("/")) return `.${withoutPublic}`;
+  return `./${withoutPublic}`;
+}
+
 const campusImageBySlug = parseStaticHomeStringMap("campusImageBySlug");
 const campusImagePositionBySlug = parseStaticHomeStringMap("campusImagePositionBySlug");
 const schoolLogoBySlug = parseStaticHomeStringMap("schoolLogoBySlug");
@@ -192,13 +203,13 @@ function schoolInfoProfile(university) {
       fact.internationalStudents ||
       (university.foreignStudents ? `外国人 ${university.foreignStudents}` : ""),
     tier,
-    campusImage: partnerProfile.campusImage || campusImageBySlug.get(university.slug) || "",
+    campusImage: deployAssetPath(partnerProfile.campusImage || campusImageBySlug.get(university.slug) || ""),
     imagePosition: campusImagePositionBySlug.get(university.slug) || partnerProfile.imagePosition || "center",
     intro:
       (!hasGenericPartnerFocus && partnerProfile.intro) ||
       `${university.nameCn}位于${city}，成立时间为${founded}，是一所${type}院校。该校在本项目库中主要用于${focus}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`,
     officialWebsite: partnerProfile.officialUrl || fact.officialWebsite || "",
-    logoImage: partnerProfile.logoImage || schoolLogoBySlug.get(university.slug) || ""
+    logoImage: deployAssetPath(partnerProfile.logoImage || schoolLogoBySlug.get(university.slug) || "")
   };
 }
 
@@ -2024,4 +2035,9 @@ const html = `<!doctype html>
 </html>
 `;
 
+const mapSchoolProfilesScript = `window.mapSchoolProfiles = ${JSON.stringify(schoolProfiles)};\n`;
+
 writeFileSync(new URL("universities.html", root), html, "utf8");
+writeFileSync(new URL("public/universities.html", root), html, "utf8");
+writeFileSync(new URL("map-school-profiles.js", root), mapSchoolProfilesScript, "utf8");
+writeFileSync(new URL("public/map-school-profiles.js", root), mapSchoolProfilesScript, "utf8");

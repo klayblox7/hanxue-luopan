@@ -11,6 +11,9 @@ describe("MobileServicePage", () => {
   it("renders TOPIK as a compact mini-program detail page", () => {
     render(<MobileServicePage page="topik" />);
 
+    expect(document.querySelector(".mobile-app-shell")).toHaveClass("lg:landscape:hidden", "xl:hidden");
+    expect(document.querySelector(".mobile-app-shell")).not.toHaveClass("md:hidden");
+
     expect(screen.queryByRole("heading", { name: "TOPIK考试" })).not.toBeInTheDocument();
     expect(screen.queryByText("小程序版")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "AI TOPIK 规划" })).toBeInTheDocument();

@@ -182,7 +182,7 @@ function MobileIntroOverlay({
     <div
       aria-label="Mobile intro"
       aria-modal="true"
-      className="fixed inset-0 z-[80] flex items-center justify-center px-3 py-[calc(1rem+env(safe-area-inset-top))] md:hidden"
+      className="fixed inset-0 z-[80] flex items-center justify-center px-3 py-[calc(1rem+env(safe-area-inset-top))] lg:landscape:hidden xl:hidden"
       data-testid="mobile-intro-overlay"
       role="dialog"
       style={{ backgroundColor: "rgba(10, 10, 10, 0.78)" }}
@@ -416,7 +416,7 @@ function RecommendedSchoolSheet({
   const caseExamples = recommendationCaseExamples(school.caseSummary.representativeCases);
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh] lg:landscape:hidden xl:hidden" onClick={onClose}>
       <section
         aria-label={school.nameCn}
         aria-modal="true"
@@ -605,7 +605,7 @@ export function MobileMiniProgramHome() {
   };
 
   return (
-    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(5.8rem+env(safe-area-inset-bottom))] md:hidden" aria-label="KOREA UNIVERSITY LINK移动端小程序首页">
+    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(5.8rem+env(safe-area-inset-bottom))] lg:landscape:hidden xl:hidden" aria-label="KOREA UNIVERSITY LINK移动端小程序首页">
       {showIntro ? (
         <MobileIntroOverlay
           activeIndex={introIndex}

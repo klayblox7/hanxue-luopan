@@ -117,3 +117,83 @@
     width: 10.6rem !important;
   }
 }
+
+@media (min-width: 981px) and (max-width: 1439px) {
+  .site-header,
+  .header {
+    height: 8.9rem !important;
+    min-height: 8.9rem !important;
+    padding: 0.85rem 1.5rem !important;
+  }
+
+  .site-header .header-inner,
+  .header .header-inner {
+    height: 7.2rem !important;
+    min-height: 7.2rem !important;
+  }
+
+  .site-header .logo,
+  .site-header img.logo,
+  .header .logo,
+  .header img.logo {
+    width: 5.6rem !important;
+    height: 4.3rem !important;
+  }
+
+  .header .header-title {
+    left: 6.4rem !important;
+    top: 2.15rem !important;
+    width: calc(100% - 6.4rem) !important;
+    font-size: clamp(1.35rem, 2.25vw, 1.95rem) !important;
+  }
+
+  .site-header .top-nav,
+  .header .nav,
+  .header .top-nav {
+    left: 6.4rem !important;
+    right: auto !important;
+    top: 4.95rem !important;
+    width: calc(100% - 6.4rem) !important;
+    transform: none !important;
+    justify-content: flex-start !important;
+    gap: 0.35rem !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+  }
+
+  .site-header .top-nav > .nav-pill,
+  .header .nav > .pill,
+  .header .top-nav > .nav-pill {
+    font-size: 0.86rem !important;
+  }
+
+  .site-header .top-nav > .nav-pill:nth-child(1),
+  .header .nav > .pill:nth-child(1),
+  .header .top-nav > .nav-pill:nth-child(1) {
+    width: 10rem !important;
+  }
+
+  .site-header .top-nav > .nav-pill:nth-child(2),
+  .header .nav > .pill:nth-child(2),
+  .header .top-nav > .nav-pill:nth-child(2) {
+    width: 10.8rem !important;
+  }
+
+  .site-header .top-nav > .nav-pill:nth-child(3),
+  .header .nav > .pill:nth-child(3),
+  .header .top-nav > .nav-pill:nth-child(3) {
+    width: 9.8rem !important;
+  }
+
+  .site-header .top-nav > .nav-pill:nth-child(4),
+  .header .nav > .pill:nth-child(4),
+  .header .top-nav > .nav-pill:nth-child(4) {
+    width: 11.6rem !important;
+  }
+
+  .site-header .top-nav > .nav-pill:nth-child(5),
+  .header .nav > .pill:nth-child(5),
+  .header .top-nav > .nav-pill:nth-child(5) {
+    width: 9.4rem !important;
+  }
+}

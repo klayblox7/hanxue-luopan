@@ -164,7 +164,7 @@ export function MobileKoreaMapPage() {
   };
 
   return (
-    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden" aria-label="韩国大学地图移动版">
+    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink lg:landscape:hidden xl:hidden" aria-label="韩国大学地图移动版">
       <main className="px-3 py-4">
         <section
           className="rounded-none border border-ink bg-surface p-2 shadow-[0_12px_28px_rgba(10,10,10,0.08)]"

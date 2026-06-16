@@ -1143,7 +1143,7 @@ function ApplicationFilterSheet({
   ] as const;
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[12dvh] md:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-ink/35 px-3 pb-3 pt-[12dvh] lg:landscape:hidden xl:hidden" onClick={onClose}>
       <section
         aria-label="项目筛选"
         aria-modal="true"
@@ -1998,7 +1998,7 @@ export function MobileServicePage({ applicationPrograms, page }: { applicationPr
   const config = pageConfigs[page];
 
   return (
-    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink md:hidden" aria-label={`${config.title}移动端小程序`}>
+    <section className="mobile-app-shell mx-auto min-h-screen w-full max-w-[430px] overflow-x-hidden bg-[#f5f3ed] pb-[calc(6rem+env(safe-area-inset-bottom))] text-ink lg:landscape:hidden xl:hidden" aria-label={`${config.title}移动端小程序`}>
       <main className="px-4 pt-4">
         {page === "application" ? (
           <div className="grid gap-4">

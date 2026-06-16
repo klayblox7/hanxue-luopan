@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 function readApplicationPrograms() {
   const candidates = [
-    path.join(process.cwd(), "application.html"),
-    path.join(process.cwd(), "public", "application.html")
+    path.join(process.cwd(), "public", "application.html"),
+    path.join(process.cwd(), "application.html")
   ];
   const htmlPath = candidates.find((candidate) => existsSync(candidate));
   if (!htmlPath) return undefined;

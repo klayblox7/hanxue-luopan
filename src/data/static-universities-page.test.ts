@@ -31,4 +31,40 @@ describe("static universities page", () => {
     expect(tags).toContain(beautyTag);
     expect(row?.textContent).toContain(beautyTag);
   });
+
+  it("serves school info images through deploy-relative urls", () => {
+    const directoryHtml = readFileSync("universities.html", "utf8");
+    const mapHtml = readFileSync("korea-university-map.html", "utf8");
+    const campusImage = "./campus-images/partner-glo-iwn-ho3-i1c-hlz-i1y.webp";
+    const logoImage = "./school-logos/partner-glo-iwn-ho3-i1c-hlz-i1y.png";
+
+    expect(directoryHtml).toContain(`"campusImage":"${campusImage}"`);
+    expect(directoryHtml).toContain(`"logoImage":"${logoImage}"`);
+    expect(mapHtml).toContain(`"partner-glo-iwn-ho3-i1c-hlz-i1y":"${campusImage}"`);
+    expect(mapHtml).toContain(`"partner-glo-iwn-ho3-i1c-hlz-i1y":"${logoImage}"`);
+    expect(mapHtml).toContain("raw.replace(/^\\.?\\/?public\\//,'').replace(/^\\.?\\//,'')");
+    expect(mapHtml).not.toContain("return './'+raw.replace(/^\\.?\\//,'')");
+
+    for (const html of [directoryHtml, mapHtml]) {
+      expect(html).not.toContain("public/campus-images");
+      expect(html).not.toContain("public/school-logos");
+    }
+  });
+
+  it("generates a valid deploy-ready map school profile script", () => {
+    const script = readFileSync("map-school-profiles.js", "utf8");
+    const publicScript = readFileSync("public/map-school-profiles.js", "utf8");
+    const campusImage = "./campus-images/partner-glo-iwn-ho3-i1c-hlz-i1y.webp";
+    const logoImage = "./school-logos/partner-glo-iwn-ho3-i1c-hlz-i1y.png";
+    const window = {} as {
+      mapSchoolProfiles?: Record<string, { campusImage?: string; logoImage?: string }>;
+    };
+
+    expect(script).toBe(publicScript);
+    const profiles = new Function("window", `${script}\nreturn window.mapSchoolProfiles;`)(window) as typeof window.mapSchoolProfiles;
+    const dongduk = profiles?.["partner-glo-iwn-ho3-i1c-hlz-i1y"];
+
+    expect(dongduk?.campusImage).toBe(campusImage);
+    expect(dongduk?.logoImage).toBe(logoImage);
+  });
 });

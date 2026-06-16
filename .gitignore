@@ -1,15 +1,18 @@
 node_modules/
 .next/
+.next-dev/
 out/
 dist/
 coverage/
 output/
+outputs/
 test-results/
 backups/
 *.tsbuildinfo
 TOPIK
 .agents/
 .codex/
+.codex-logs/
 .codex-screenshots/
 .superpowers/
 .tmp-*
@@ -24,4 +27,5 @@ pnpm-debug.log*
 tmp-next-dev.log
 tmp-next-dev.err.log
 tmp-next-dev.out.log
+tmp-next-*.log
 .DS_Store

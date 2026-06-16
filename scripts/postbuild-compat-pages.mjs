@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const outDir = join(process.cwd(), "out");
@@ -8,17 +8,16 @@ if (!existsSync(outDir)) {
   process.exit(0);
 }
 
-const compatibilityPages = {
-  "hanxue-luopan-home.html": "index.html",
-  "application.html": join("application", "index.html"),
-  "cost.html": join("cost", "index.html"),
-  "exchange-rate.html": join("exchange-rate", "index.html"),
-  "korea-university-map.html": join("korea-university-map", "index.html"),
-  "korean-learning.html": join("korean-learning", "index.html"),
-  "topik.html": join("topik", "index.html"),
-  "universities.html": join("universities", "index.html")
-};
-
+const legacyPages = [
+  "hanxue-luopan-home.html",
+  "application.html",
+  "cost.html",
+  "exchange-rate.html",
+  "korea-university-map.html",
+  "korean-learning.html",
+  "topik.html",
+  "universities.html"
+];
 const legacyDir = join(outDir, "legacy");
 const deployBasePath = process.env.NEXT_PUBLIC_BASE_PATH || (process.env.GITHUB_PAGES === "true" ? "/hanxue-luopan" : "");
 const normalizedDeployBasePath = deployBasePath.replace(/\/$/, "");
@@ -26,7 +25,7 @@ const legacyBaseHref = normalizedDeployBasePath ? `${normalizedDeployBasePath}/`
 
 mkdirSync(legacyDir, { recursive: true });
 
-for (const target of Object.keys(compatibilityPages)) {
+for (const target of legacyPages) {
   const publicSourcePath = join(publicDir, target);
 
   if (!existsSync(publicSourcePath)) {
@@ -39,14 +38,7 @@ for (const target of Object.keys(compatibilityPages)) {
     : html.replace(/<head([^>]*)>/i, `<head$1>\n  <base href="${legacyBaseHref}">`);
 
   writeFileSync(join(legacyDir, target), legacyHtml);
-}
-
-for (const [target, source] of Object.entries(compatibilityPages)) {
-  const sourcePath = join(outDir, source);
-
-  if (existsSync(sourcePath)) {
-    copyFileSync(sourcePath, join(outDir, target));
-  }
+  writeFileSync(join(outDir, target), legacyHtml);
 }
 
 writeFileSync(join(outDir, ".nojekyll"), "");

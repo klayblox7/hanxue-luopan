@@ -11,8 +11,8 @@ export function LegacyDesktopFrame({ src, title }: LegacyDesktopFrameProps) {
     : assetPath(src);
 
   return (
-    <section className="hidden min-h-screen bg-paper md:block" aria-label={`${title} desktop html`}>
-      <iframe className="h-screen w-full border-0" src={desktopSrc} title={title} />
+    <section className="hidden min-h-screen overflow-hidden bg-paper lg:landscape:block xl:block" aria-label={`${title} desktop html`}>
+      <iframe className="legacy-desktop-frame h-screen w-full border-0" src={desktopSrc} title={title} />
     </section>
   );
 }

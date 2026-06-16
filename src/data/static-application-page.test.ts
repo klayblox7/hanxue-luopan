@@ -25,6 +25,15 @@ describe("static application page", () => {
     expect(html).not.toContain(".partner-separator");
   });
 
+  it("serves partner profile images through deploy-relative urls", () => {
+    const html = readFileSync("application.html", "utf8");
+
+    expect(html).toContain('"campusImage":"./campus-images/jeonbuk-national-university.webp"');
+    expect(html).toContain('"logoImage":"./school-logos/jeonbuk-national-university.png"');
+    expect(html).not.toContain('"campusImage":"public/');
+    expect(html).not.toContain('"logoImage":"public/');
+  });
+
   it("allows multiple project filters to stay selected together", () => {
     const html = readFileSync("application.html", "utf8");
     const dom = new JSDOM(html, { runScripts: "dangerously" });

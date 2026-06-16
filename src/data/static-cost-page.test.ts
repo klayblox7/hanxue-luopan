@@ -46,6 +46,17 @@ describe("static cost page", () => {
     expect(css).toContain("width: 10.6rem");
   });
 
+  it("keeps the desktop header from overlapping on iPad landscape widths", () => {
+    const css = readFileSync("header-unified.css", "utf8");
+
+    expect(css).toContain("@media (min-width: 981px) and (max-width: 1439px)");
+    expect(css).toContain("height: 8.9rem");
+    expect(css).toContain("left: 6.4rem");
+    expect(css).toContain("top: 4.95rem");
+    expect(css).toContain("width: calc(100% - 6.4rem)");
+    expect(css).toContain("gap: 0.35rem");
+  });
+
   it("keeps source-backed data visible and labeled", () => {
     const { html, document } = readCostPage();
 

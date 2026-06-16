@@ -12,6 +12,9 @@ describe("MobileMiniProgramHome", () => {
     vi.useFakeTimers();
     render(<MobileMiniProgramHome />);
 
+    expect(document.querySelector(".mobile-app-shell")).toHaveClass("lg:landscape:hidden", "xl:hidden");
+    expect(document.querySelector(".mobile-app-shell")).not.toHaveClass("md:hidden");
+
     expect(screen.getByTestId("mobile-intro-overlay")).toBeInTheDocument();
     expect(screen.getByTestId("mobile-intro-overlay")).toHaveStyle({ backgroundColor: "rgba(10, 10, 10, 0.78)" });
     expect(screen.getByTestId("mobile-intro-frame")).toHaveClass("max-w-[26rem]");

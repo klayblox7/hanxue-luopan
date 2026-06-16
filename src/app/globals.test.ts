@@ -17,4 +17,16 @@ describe("mobile border tone", () => {
     expect(layout).not.toContain("BackToTopButton");
     expect(existsSync(join(process.cwd(), "src/components/BackToTopButton.tsx"))).toBe(false);
   });
+
+  it("scales legacy desktop frames to fit iPad landscape without clipping", () => {
+    const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
+
+    expect(css).toContain(".legacy-desktop-frame");
+    expect(css).toContain("@media (min-width: 1024px) and (max-width: 1100px) and (orientation: landscape)");
+    expect(css).toContain("width: 133.333vw");
+    expect(css).toContain("transform: scale(0.75)");
+    expect(css).toContain("@media (min-width: 1101px) and (max-width: 1279px) and (orientation: landscape)");
+    expect(css).toContain("width: 111.111vw");
+    expect(css).toContain("transform: scale(0.9)");
+  });
 });

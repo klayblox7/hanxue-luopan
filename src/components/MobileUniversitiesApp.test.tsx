@@ -7,6 +7,9 @@ describe("MobileUniversitiesApp", () => {
   it("starts as a compact mini-program university list", () => {
     render(<MobileUniversitiesApp />);
 
+    expect(document.querySelector(".mobile-app-shell")).toHaveClass("lg:landscape:hidden", "xl:hidden");
+    expect(document.querySelector(".mobile-app-shell")).not.toHaveClass("md:hidden");
+
     expect(screen.queryByRole("heading", { name: "韩国大学库" })).not.toBeInTheDocument();
     expect(screen.queryByText("小程序版")).not.toBeInTheDocument();
     expect(screen.queryByRole("searchbox", { name: "搜索学校" })).not.toBeInTheDocument();

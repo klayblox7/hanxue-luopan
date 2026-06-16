@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/postbuild-compat-pages.mjs",
+    "build": "node scripts/check-deploy-html.mjs public && next build && node scripts/postbuild-compat-pages.mjs && node scripts/check-deploy-html.mjs out",
     "lint": "eslint .",
     "test": "vitest run",
     "check:static-encoding": "node scripts/check-static-encoding.mjs",
+    "check:deploy-html": "node scripts/check-deploy-html.mjs public out",
     "remotion:studio": "remotion studio remotion/index.tsx",
     "remotion:still": "remotion still remotion/index.tsx KoreaLinkShortCn9x16 output/korea-link-short-cn-9x16-frame.png --frame=265",
     "remotion:render": "remotion render remotion/index.tsx KoreaLinkShortCn9x16 output/korea-link-short-cn-9x16.mp4",
