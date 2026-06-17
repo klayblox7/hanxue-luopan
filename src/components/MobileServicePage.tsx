@@ -5,7 +5,8 @@ import {
   Calculator,
   ChevronRight,
   ClipboardList,
-  SearchCheck
+  SearchCheck,
+  X
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -100,6 +101,16 @@ type ApplicationPartner = {
   displayLabel?: string;
   tier?: string;
   city?: string;
+  type?: string;
+  focus?: string;
+  totalStudents?: string;
+  foreignStudents?: string;
+  founded?: string;
+  intro?: string;
+  nameKr?: string;
+  nameEn?: string;
+  officialUrl?: string;
+  logoImage?: string;
   slug?: string;
   campusImage?: string;
   imagePosition?: string;
@@ -237,9 +248,9 @@ const pageConfigs: Record<MobileServicePageId, PageConfig> = {
     primaryAction: { label: "先选学校", href: "/universities" },
     secondaryAction: { label: "检查TOPIK", href: "/topik" },
     metrics: [
-      { label: "模式", value: "2+2等", detail: "分段项目" },
-      { label: "筛选", value: "地区+专业", detail: "先缩小范围" },
-      { label: "核对", value: "费用+证书", detail: "以官方为准" }
+      { label: "项目", value: "63项", detail: "28保留+35官方" },
+      { label: "范围", value: "本科/预科", detail: "不含专科/高职" },
+      { label: "核对", value: "模式+费用", detail: "以官方简章为准" }
     ],
     actions: [
       {
@@ -914,7 +925,7 @@ function summarizeApplicationMajor(value?: string) {
 
 function summarizeApplicationMode(value?: string) {
   const text = cleanApplicationText(value);
-  const mode = text.match(/\d\+\d/)?.[0];
+  const mode = text.match(/\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?\+\d+(?:\.\d+)?/)?.[0];
   const detail = text.match(/（([^）]+)）/)?.[1] || text.match(/\(([^)]+)\)/)?.[1] || "";
   return mode && detail ? `${mode}：${compactText(detail.replace(/本科层次/g, "本科"), 28)}` : compactText(text, 32);
 }
@@ -922,35 +933,54 @@ function summarizeApplicationMode(value?: string) {
 function summarizeApplicationDomesticFee(value?: string) {
   const text = cleanApplicationText(value);
   if (!text) return "资料待核对";
+  if (/(没有列出|未列|以.+收费通知为准|以.+缴费通知为准)/.test(text) && !/[\d,]+(?:\s*[~～-]\s*[\d,]+)?\s*元/.test(text)) {
+    return compactText(text, 82);
+  }
   if (/公开资料参考/.test(text)) {
-    const amount = text.match(/约\s*[\d.]+(?:-[\d.]+)?\s*万元\s*\/\s*年/)?.[0];
+    const amount = text.match(/约\s*[\d,.]+(?:\s*[~～-]\s*[\d,.]+)?\s*万元\s*\/\s*年/)?.[0];
     if (amount) {
       if (/专科|高职/.test(text)) return `同类专科/高职：${amount}`;
       if (/国内全程|校际合作/.test(text)) return `国内全程/合作项目：${amount}`;
       return `同类本科项目：${amount}`;
     }
   }
-  const tuition = text.match(/学费\s*[^，,；;。)]*/)?.[0];
-  const dorm = text.match(/住(?:宿|宿费)\s*[^，,；;。)]*/)?.[0];
-  const parts = [tuition, dorm].filter(Boolean);
-  return parts.length ? compactText(parts.join("；"), 44) : compactText(text, 38);
+  const tuition =
+    text.match(/(?:学费|课程费)\s*[\d,]+(?:\s*[~～-]\s*[\d,]+)?\s*元\s*\/\s*(?:人\s*\/\s*)?(?:学年|学期|年)/)?.[0] ||
+    text.match(/(?:学费|课程费)\s*[^；;。)]*/)?.[0];
+  const dorm = text.match(/住(?:宿|宿费)\s*[^；;。)]*/)?.[0];
+  const applicationFee = text.match(/(?:国外院校申请费及管理费|申请\/海外服务|申请服务费)\s*[\d,]+(?:\s*[~～-]\s*[\d,]+)?\s*元(?:\s*\/\s*人)?/)?.[0];
+  const halfYearCaveat = /0\.5年制未见官方单列/.test(text) ? "0.5年制未见官方单列" : "";
+  const parts = [tuition, dorm, applicationFee, halfYearCaveat].filter(Boolean);
+  return parts.length ? compactText(parts.join("；"), halfYearCaveat ? 72 : 82) : compactText(text, 38);
 }
 
 function summarizeApplicationKoreaFee(value?: string) {
   const text = cleanApplicationText(value);
   if (!text) return "资料待核对";
   if (/公开资料参考/.test(text)) {
-    const national = text.match(/国立约\s*[\d.]+(?:-[\d.]+)?\s*万元\s*\/\s*年/)?.[0];
-    const priv = text.match(/私立约\s*[\d.]+(?:-[\d.]+)?\s*万元\s*\/\s*年/)?.[0];
+    const national = text.match(/国立约\s*[\d,.]+(?:\s*[~～-]\s*[\d,.]+)?\s*万元\s*\/\s*年/)?.[0];
+    const priv = text.match(/私立约\s*[\d,.]+(?:\s*[~～-]\s*[\d,.]+)?\s*万元\s*\/\s*年/)?.[0];
     if (national || priv) return compactText([national, priv].filter(Boolean).join("；"), 42);
-    const amount = text.match(/约\s*[\d.]+(?:-[\d.]+)?\s*万元\s*\/\s*年/)?.[0];
+    const amount = text.match(/约\s*[\d,.]+(?:\s*[~～-]\s*[\d,.]+)?\s*万元\s*\/\s*年/)?.[0];
     if (amount) {
       if (/国立|公立/.test(text)) return `韩方国立/公立：${amount}`;
       if (/私立/.test(text)) return `韩方私立：${amount}`;
       return `韩方参考学费：${amount}`;
     }
   }
-  const amounts = [...text.matchAll(/(?:约|为)?[\d.]+(?:-[\d.]+)?\s*万?元\s*\/\s*(?:学期|年)/g)].map((match) => match[0]);
+  if (/未列固定韩方金额|未列统一韩方金额|按.*专业学费表收费|按.*本校专业学费表收费/.test(text)) {
+    return compactText(text, 118);
+  }
+  const koreaTuition = text.match(/[^；;。]*学费[^；;。]*/)?.[0]?.trim();
+  const koreaDorm = text.match(/[^；;。]*(?:公寓|住宿)[^；;。]*/)?.[0]?.trim();
+  const koreaLiving = text.match(/[^；;。]*生活费[^；;。]*/)?.[0]?.trim();
+  const koreaMeal = text.match(/[^；;。]*(?:食堂|每餐)[^；;。]*/)?.[0]?.trim();
+  if (koreaTuition || koreaDorm || koreaLiving || koreaMeal) {
+    return compactText(Array.from(new Set([koreaTuition, koreaDorm, koreaLiving, koreaMeal].filter(Boolean))).join("；"), 96);
+  }
+  const amounts = [...text.matchAll(/(?:约|为)?\s*[\d,]+(?:\s*[~～-]\s*[\d,]+)?\s*万?元\s*\/\s*(?:人\s*\/\s*)?(?:学期|学年|年)/g)].map((match) =>
+    match[0].trim()
+  );
   if (amounts.length) return compactText(`参考学费：${amounts.slice(0, 2).join("、")}`, 42);
   if (/奖学金|减免|勤工/.test(text)) return "学费以官方为准；可关注奖学金";
   return compactText(text, 38);
@@ -959,23 +989,13 @@ function summarizeApplicationKoreaFee(value?: string) {
 function summarizeApplicationRequirements(value?: string) {
   const text = cleanApplicationText(value);
   if (!text) return "资料待核对";
-  const parts: string[] = [];
-  if (/高中毕业生|同等学力/.test(text)) parts.push("高中/同等学力");
-  if (/专科毕业生|三年制专科/.test(text)) parts.push("专科毕业");
-  if (/高考成绩/.test(text)) parts.push("高考达标");
-  if (/面试|笔试|能力测试/.test(text)) parts.push("校考/面试");
-  const topik = text.match(/TOPIK\s*\d\s*级/);
-  if (topik) parts.push(`赴韩前${topik[0].replace(/\s+/g, " ")}`);
-  return parts.length ? parts.slice(0, 4).join("；") : compactText(text, 40);
+  return text;
 }
 
 function summarizeApplicationCertificate(value?: string) {
   const text = cleanApplicationText(value);
   if (!text) return "资料待核对";
-  if (/学士学位证/.test(text) && /中留服认证|留学服务中心|认证/.test(text)) return "韩方学士学位；可办中留服认证";
-  if (!/学士学位证/.test(text) && /毕业证|学位证/.test(text) && /韩国/.test(text)) return "中方毕业/学位；韩方证书看课程";
-  if (/中留服认证|留学服务中心|认证/.test(text)) return "可办中留服认证";
-  return compactText(text, 38);
+  return text;
 }
 
 function summarizeApplicationFact(label: string, value?: string) {
@@ -990,7 +1010,42 @@ function summarizeApplicationFact(label: string, value?: string) {
 
 function publicApplicationAssetPath(value?: string) {
   if (!value) return "";
-  return assetPath(value.startsWith("public/") ? `/${value.slice("public/".length)}` : value);
+  const normalized = value.startsWith("public/") ? `/${value.slice("public/".length)}` : value.startsWith("/") ? value : `/${value}`;
+  return assetPath(normalized);
+}
+
+function applicationPartnerName(partner?: ApplicationPartner) {
+  return partner?.displayName || partner?.raw || partner?.displayLabel || "韩国合作大学";
+}
+
+function applicationPartnerList(program: ApplicationProgram) {
+  const explicit = cleanApplicationText(program.fields["合作院校"]);
+  const names = explicit && explicit !== "资料待核对" ? explicit : program.koreaSchools;
+  return names
+    .replace(/韩国名校\s*\d+所/g, "")
+    .split(/[、，,；;]/)
+    .map((item) =>
+      item
+        .replace(/^韩国/, "")
+        .replace(/等\d+余?所$/, "")
+        .replace(/等$/, "")
+        .trim()
+    )
+    .filter(Boolean);
+}
+
+function applicationPartnerHeader(program: ApplicationProgram) {
+  const explicit = cleanApplicationText(program.fields["合作院校"]);
+  const items = applicationPartnerList(program);
+  if (/韩国.*\d+余?所/.test(program.koreaSchools)) return program.koreaSchools;
+  if (explicit && explicit !== "资料待核对" && items.length === 1) return program.koreaSchools;
+  if ((explicit && explicit !== "资料待核对") || /名校|多所/.test(program.koreaSchools)) {
+    return `韩国名校 ${items.length || "多"}所`;
+  }
+  if (program.koreaPartners?.length) {
+    return program.koreaPartners.map((item) => item.displayName || item.raw || item.displayLabel).filter(Boolean).join("、");
+  }
+  return program.koreaSchools;
 }
 
 function MetricTile({ metric }: { metric: Metric }) {
@@ -1005,18 +1060,21 @@ function MetricTile({ metric }: { metric: Metric }) {
 
 function ApplicationProgramCard({
   expanded,
+  onPartnerOpen,
   onToggle,
   program
 }: {
   expanded: boolean;
+  onPartnerOpen: (partner: ApplicationPartner) => void;
   onToggle: () => void;
   program: ApplicationProgram;
 }) {
   const partner = program.koreaPartners?.find((item) => item.campusImage);
   const imageSrc = publicApplicationAssetPath(partner?.campusImage);
-  const partnerNames = program.koreaPartners?.length
-    ? program.koreaPartners.map((item) => item.displayName || item.raw || item.displayLabel).filter(Boolean).join("、")
-    : program.koreaSchools;
+  const partnerName = applicationPartnerName(partner);
+  const partnerNames = applicationPartnerHeader(program);
+  const partnerList = applicationPartnerList(program);
+  const shouldShowPartnerList = Boolean(program.fields["合作院校"]) || /名校|多所/.test(program.koreaSchools);
 
   return (
     <article className="w-full max-w-full overflow-hidden rounded-xl border border-ink bg-surface p-3 shadow-[0_6px_18px_rgba(10,10,10,0.06)]" data-testid="application-program-card">
@@ -1066,15 +1124,47 @@ function ApplicationProgramCard({
               </div>
             ))}
           </dl>
-          {imageSrc ? (
-            <Image
-              alt={`${partner?.displayName || "韩国合作大学"}校园图片`}
-              className="h-36 w-full rounded-lg border border-ink/20 bg-paper object-cover"
-              height={256}
-              src={imageSrc}
-              style={{ height: "9rem", objectFit: "cover", objectPosition: partner?.imagePosition || "center", width: "100%" }}
-              width={420}
-            />
+          {shouldShowPartnerList ? (
+            <div className="rounded-lg border border-ink/15 bg-paper p-3" data-testid="application-partner-list-card">
+              <p className="text-xs font-black text-muted">合作院校</p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {partnerList.map((name) => (
+                  <span className="max-w-full rounded-full border border-ink/20 bg-[#fffaf0] px-2 py-1 text-[0.68rem] font-black leading-tight text-ink" key={`${program.slug}-${name}`}>
+                    {name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : null}
+          {imageSrc && partner ? (
+            <div className="relative h-36 w-full overflow-hidden rounded-lg border border-ink/20 bg-paper" data-testid="application-campus-photo">
+              <Image
+                alt={`${partnerName}校园图片`}
+                className="h-full w-full object-cover"
+                height={256}
+                src={imageSrc}
+                style={{ objectFit: "cover", objectPosition: partner.imagePosition || "center", width: "100%" }}
+                width={420}
+              />
+              <div className="absolute inset-x-0 bottom-0 border-t border-[#f8f8f5]/15 bg-[rgba(10,10,10,0.48)] px-3 py-2 text-[#f8f8f5]" data-testid="application-campus-caption">
+                <button
+                  aria-label={`${[partnerName, partner.city, partner.tier, "学校信息"].filter(Boolean).join(" ")}`}
+                  className="flex w-full min-w-0 items-center justify-between gap-2 text-left"
+                  type="button"
+                  onClick={() => onPartnerOpen(partner)}
+                >
+                  <span className="min-w-0 truncate text-[0.86rem] font-black leading-tight">
+                    {partnerName}
+                    {partner.city ? <span className="font-bold text-[#f8f8f5]/85"> · {partner.city}</span> : null}
+                  </span>
+                  {partner.tier ? (
+                    <span className="shrink-0 rounded-full border border-[#f8f8f5]/80 bg-[#ffe07a] px-2 py-0.5 text-[0.68rem] font-black leading-none text-ink">
+                      {partner.tier}
+                    </span>
+                  ) : null}
+                </button>
+              </div>
+            </div>
           ) : null}
           <div className="grid gap-2">
             {[
@@ -1083,7 +1173,7 @@ function ApplicationProgramCard({
             ].map(([label, value]) => (
               <div className="rounded-lg border border-ink/15 bg-paper p-3" key={label}>
                 <p className="text-xs font-black text-muted">{label}</p>
-                <p className="mt-1 break-words text-sm font-semibold leading-5 text-ink">{value}</p>
+                <p className="mt-1 break-words text-[0.79rem] font-semibold leading-[1.25rem] text-ink">{value}</p>
               </div>
             ))}
           </div>
@@ -1106,6 +1196,99 @@ function ApplicationProgramCard({
         </div>
       ) : null}
     </article>
+  );
+}
+
+function ApplicationPartnerDialog({ onClose, partner }: { onClose: () => void; partner: ApplicationPartner }) {
+  const name = applicationPartnerName(partner);
+  const meta = [partner.tier, partner.city, partner.type].filter(Boolean);
+  const campusSrc = publicApplicationAssetPath(partner.campusImage);
+  const logoSrc = publicApplicationAssetPath(partner.logoImage);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-ink/40 px-3 pb-3 pt-[10dvh] lg:landscape:hidden xl:hidden" onClick={onClose}>
+      <section
+        aria-label={`${name}学校信息`}
+        aria-modal="true"
+        className="mx-auto flex max-h-[86dvh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl border border-ink bg-[#f5f3ed] shadow-[0_-18px_46px_rgba(10,10,10,0.24)]"
+        role="dialog"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-3 border-b border-ink/10 bg-surface px-4 py-3">
+          <div className="min-w-0">
+            <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">大学库学校信息</p>
+            <h2 className="mt-1 break-words text-2xl font-black leading-tight">{name}</h2>
+            {partner.nameKr || partner.nameEn ? <p className="mt-1 break-words text-xs font-bold text-muted">{[partner.nameKr, partner.nameEn].filter(Boolean).join(" · ")}</p> : null}
+          </div>
+          <button
+            aria-label="关闭学校信息"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink bg-paper text-ink"
+            type="button"
+            onClick={onClose}
+          >
+            <X size={17} strokeWidth={2.5} aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="grid gap-3 overflow-y-auto px-4 py-4">
+          {campusSrc ? (
+            <Image
+              alt={`${name}校园图片`}
+              className="h-40 w-full rounded-xl border border-ink bg-surface object-cover"
+              height={256}
+              src={campusSrc}
+              style={{ objectPosition: partner.imagePosition || "center" }}
+              width={420}
+            />
+          ) : null}
+
+          <div className="flex flex-wrap gap-2">
+            {meta.map((item) => (
+              <span className="rounded-full border border-ink bg-surface px-3 py-1 text-xs font-black" key={item}>
+                {item}
+              </span>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <MetricTile metric={{ label: "学生数", value: partner.totalStudents || "资料待补" }} />
+            <MetricTile metric={{ label: "外国学生", value: partner.foreignStudents || "资料待补" }} />
+            <MetricTile metric={{ label: "成立时间", value: partner.founded || "资料待补" }} />
+            <MetricTile metric={{ label: "参考层级", value: partner.tier || "资料待补" }} />
+          </div>
+
+          {partner.focus || partner.intro ? (
+            <section className="rounded-xl border border-ink/15 bg-surface p-3">
+              {partner.focus ? (
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="shrink-0 text-sm font-black">重点方向</h3>
+                  <p className="min-w-0 flex-1 text-right text-[0.78rem] font-semibold leading-5 text-muted">{partner.focus}</p>
+                </div>
+              ) : null}
+              {partner.intro ? <p className="mt-3 border-t border-ink/10 pt-3 text-[0.78rem] font-medium leading-6 text-muted">{partner.intro}</p> : null}
+            </section>
+          ) : null}
+
+          <div className="grid grid-cols-2 gap-2">
+            <a className="inline-flex min-h-11 items-center justify-center rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink" href={routePath("/universities")}>
+              打开大学库
+            </a>
+            {partner.officialUrl ? (
+              <a
+                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-ink bg-surface px-3 text-sm font-black text-ink"
+                href={partner.officialUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                学校官网
+              </a>
+            ) : logoSrc ? (
+              <span className="inline-flex min-h-11 items-center justify-center rounded-lg border border-ink bg-surface px-3 text-sm font-black text-ink">学校资料</span>
+            ) : null}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -1196,7 +1379,6 @@ function ApplicationFilterSheet({
 
 function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: ApplicationProgram[] }) {
   const programs = initialPrograms?.length ? initialPrograms : fallbackApplicationPrograms;
-  const loadState = initialPrograms?.length ? "live" : "fallback";
   const [regionFilter, setRegionFilter] = useState("全部");
   const [modeFilter, setModeFilter] = useState("全部");
   const [majorFilter, setMajorFilter] = useState("全部");
@@ -1204,6 +1386,7 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(6);
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
+  const [selectedPartner, setSelectedPartner] = useState<ApplicationPartner | null>(null);
 
   const regionOptions = useMemo(() => ["全部", ...Array.from(new Set(programs.map((program) => program.region).filter(Boolean)))], [programs]);
   const modeOptions = useMemo(() => ["全部", ...Array.from(new Set(programs.map((program) => program.mode).filter(Boolean)))], [programs]);
@@ -1238,6 +1421,15 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
     setVisibleCount(6);
     setExpandedSlug((current) => (current && filteredPrograms.some((program) => program.slug === current) ? current : null));
   }, [filteredPrograms]);
+
+  useEffect(() => {
+    if (!selectedPartner) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedPartner(null);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [selectedPartner]);
 
   const resetApplicationFilters = () => {
     setRegionFilter("全部");
@@ -1292,6 +1484,7 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
             expanded={expandedSlug === program.slug}
             key={program.slug}
             program={program}
+            onPartnerOpen={setSelectedPartner}
             onToggle={() => setExpandedSlug((current) => (current === program.slug ? null : program.slug))}
           />
         ))}
@@ -1323,6 +1516,7 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
           onReset={resetApplicationFilters}
         />
       ) : null}
+      {selectedPartner ? <ApplicationPartnerDialog partner={selectedPartner} onClose={() => setSelectedPartner(null)} /> : null}
     </section>
   );
 }

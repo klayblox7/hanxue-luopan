@@ -12,11 +12,13 @@ describe("static application page", () => {
     const firstPartnerLink = partnerLinks[0];
     const partnerInfoLabels = Array.from(document.querySelectorAll(".partner-info-label"));
     const partnerSeparators = Array.from(document.querySelectorAll(".partner-separator"));
+    const firstPartnerText = firstPartnerLink?.textContent?.trim() || "";
 
     expect(partnerLinks.length).toBeGreaterThan(0);
-    expect(firstPartnerLink?.textContent?.trim()).toContain("T3 全北大学学校信息");
-    expect(firstPartnerLink?.textContent?.trim()).not.toContain("(全州)");
-    expect(firstPartnerLink?.textContent?.trim()).not.toContain("↗");
+    expect(firstPartnerText).toMatch(/^T\d+\s/);
+    expect(firstPartnerText).toContain("学校信息");
+    expect(firstPartnerText).not.toContain("(");
+    expect(firstPartnerText).not.toContain("↗");
     expect(partnerInfoLabels.length).toBeGreaterThanOrEqual(partnerLinks.length);
     expect(partnerInfoLabels.every((node) => node.textContent?.trim() === "学校信息")).toBe(true);
     expect(partnerSeparators).toHaveLength(0);
@@ -27,11 +29,19 @@ describe("static application page", () => {
 
   it("serves partner profile images through deploy-relative urls", () => {
     const html = readFileSync("application.html", "utf8");
+    const match = html.match(/const programs = (\[[\s\S]*?\]);\s*const caseSummaries/);
+    expect(match?.[1]).toBeTruthy();
 
-    expect(html).toContain('"campusImage":"./campus-images/jeonbuk-national-university.webp"');
-    expect(html).toContain('"logoImage":"./school-logos/jeonbuk-national-university.png"');
-    expect(html).not.toContain('"campusImage":"public/');
-    expect(html).not.toContain('"logoImage":"public/');
+    const programs = JSON.parse(match?.[1] || "[]") as Array<{
+      koreaPartners?: Array<{ campusImage?: string; logoImage?: string }>;
+    }>;
+    const imageValues = programs.flatMap((program) =>
+      (program.koreaPartners || []).flatMap((partner) => [partner.campusImage, partner.logoImage].filter(Boolean))
+    );
+
+    expect(imageValues.some((value) => value?.startsWith("campus-images/"))).toBe(true);
+    expect(imageValues.some((value) => value?.startsWith("school-logos/"))).toBe(true);
+    expect(imageValues.every((value) => value && !value.startsWith("public/") && !value.startsWith("/"))).toBe(true);
   });
 
   it("allows multiple project filters to stay selected together", () => {

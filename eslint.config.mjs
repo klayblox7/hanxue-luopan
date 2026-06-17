@@ -13,11 +13,16 @@ const eslintConfig = [
   {
     ignores: [
       ".next/**",
+      ".next-dev/**",
       ".agents/**",
       ".codex/**",
+      "_tmp_restore_check/**",
+      "temp_backup_restore/**",
       "node_modules/**",
       "coverage/**",
       "output/**",
+      "outputs/**",
+      "out/**",
       "test-results/**",
       "next-env.d.ts"
     ]

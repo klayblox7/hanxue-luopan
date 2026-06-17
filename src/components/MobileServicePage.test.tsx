@@ -149,6 +149,20 @@ describe("MobileServicePage", () => {
 
     expect(within(firstProjectCard).getByText("专业设置")).toBeInTheDocument();
     expect(within(firstProjectCard).getByText("申请条件")).toBeInTheDocument();
+    const campusCaption = within(firstProjectCard).getByTestId("application-campus-caption");
+    expect(campusCaption).toHaveTextContent("全北大学");
+    expect(campusCaption).toHaveTextContent("全州");
+    expect(campusCaption).toHaveTextContent("T3");
+
+    fireEvent.click(within(firstProjectCard).getByRole("button", { name: /全北大学.*T3.*学校信息/ }));
+    const partnerDialog = screen.getByRole("dialog", { name: "全北大学学校信息" });
+    expect(within(partnerDialog).getByText("大学库学校信息")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("全州")).toBeInTheDocument();
+    expect(within(partnerDialog).getAllByText("T3").length).toBeGreaterThan(0);
+    expect(within(partnerDialog).getByRole("link", { name: "打开大学库" })).toHaveAttribute("href", "/universities/");
+    fireEvent.click(within(partnerDialog).getByRole("button", { name: "关闭学校信息" }));
+    expect(screen.queryByRole("dialog", { name: "全北大学学校信息" })).not.toBeInTheDocument();
+
     expect(screen.queryByRole("button", { name: "研究生" })).not.toBeInTheDocument();
     expect(screen.queryByText("研究计划")).not.toBeInTheDocument();
     expect(screen.queryByText("教授方向")).not.toBeInTheDocument();
