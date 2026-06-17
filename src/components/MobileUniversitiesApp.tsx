@@ -4,6 +4,7 @@ import {
   BadgeCheck,
   ChevronRight,
   MapPin,
+  Search,
   SlidersHorizontal,
   UsersRound,
   X
@@ -12,10 +13,12 @@ import { useMemo, useState } from "react";
 
 import { getAdmissionCaseSummary, type AdmissionCase, type AdmissionCaseSummary, type DistributionItem } from "@/data/admissionCases";
 import partnerSchoolProfiles from "@/data/partner-school-profiles.json";
+import { universityAlumniText } from "@/data/universityAlumni";
+import { universityFoundedYear } from "@/data/universityFoundedYears";
+import { universityOfficialUrlsBySlug } from "@/data/universityOfficialUrls";
 import { universities, type University } from "@/data/universities";
 import majorTagData from "@/data/university-major-tags.json";
 import { getUniversityTierProfile } from "@/data/universityTiers";
-import { routePath } from "@/data/assetPath";
 
 import { CampusImage } from "./CampusImage";
 import { MobileBottomNav } from "./MobileBottomNav";
@@ -53,6 +56,8 @@ type MobileUniversity = University & {
   intro: string;
   tier: string;
   tierNote: string;
+  alumni: string;
+  officialUrl: string;
   tags: string[];
   filterTags: string[];
 };
@@ -65,6 +70,7 @@ type SchoolProfile = {
   focus?: string;
   founded?: string;
   intro?: string;
+  officialUrl?: string;
 };
 
 const universityMajorTags = majorTagData as Record<string, string[]>;
@@ -220,7 +226,7 @@ function mobileSchoolProfile(university: University) {
   const profile = schoolProfilesBySlug.get(university.slug) ?? {};
   const supplemental = supplementalProfilesBySlug[university.slug] ?? {};
   const merged = { ...profile, ...supplemental };
-  const founded = merged.founded || "资料待补";
+  const founded = merged.founded || universityFoundedYear(university.slug) || "资料待补";
   const city = merged.city || university.city;
   const type = merged.type || university.type;
   const hasGenericPartnerFocus = merged.focus === genericPartnerFocus;
@@ -228,6 +234,7 @@ function mobileSchoolProfile(university: University) {
 
   return {
     founded,
+    officialUrl: merged.officialUrl || universityOfficialUrlsBySlug[university.slug] || "",
     intro:
       (!hasGenericPartnerFocus && merged.intro) ||
       `${university.nameCn}位于${city}，成立时间为${founded}，是一所${type}院校。该校在本项目库中主要用于${focus}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`
@@ -251,6 +258,8 @@ export function buildMobileUniversities(): MobileUniversity[] {
         intro: profile.intro,
         tier: tierProfile.tier,
         tierNote: tierProfile.note,
+        alumni: universityAlumniText(university.slug),
+        officialUrl: profile.officialUrl,
         tags,
         filterTags
       };
@@ -439,11 +448,15 @@ function PreciseFilterSheet({
 }
 
 export function UniversitySheet({
+  ariaLabel,
+  closeLabel = "关闭",
   mode,
   onShowCases,
   school,
   onClose
 }: {
+  ariaLabel?: string;
+  closeLabel?: string;
   mode: SheetMode;
   onShowCases: () => void;
   school: MobileUniversity;
@@ -456,7 +469,7 @@ export function UniversitySheet({
   return (
     <div className="fixed inset-0 z-50 flex justify-center bg-ink/35 px-3 pb-3 pt-[14dvh] lg:landscape:hidden xl:hidden" onClick={onClose}>
       <section
-        aria-label={label}
+        aria-label={ariaLabel || label}
         aria-modal="true"
         className="mx-auto flex max-h-[82dvh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl border border-ink bg-[#f5f3ed] shadow-[0_-18px_46px_rgba(10,10,10,0.22)]"
         role="dialog"
@@ -471,7 +484,7 @@ export function UniversitySheet({
             </p>
           </div>
           <button
-            aria-label="关闭"
+            aria-label={closeLabel}
             className="grid size-10 shrink-0 place-items-center rounded-full border border-ink bg-paper text-ink"
             type="button"
             onClick={onClose}
@@ -485,6 +498,7 @@ export function UniversitySheet({
             <div className="grid gap-3">
               <CampusImage
                 className="h-40 w-full rounded-xl border border-ink bg-surface object-cover"
+                folder="campus-images/mobile"
                 name={school.nameCn}
                 slug={school.slug}
               />
@@ -510,18 +524,29 @@ export function UniversitySheet({
                     {school.focus}
                   </p>
                 </div>
+                <div className="mt-3 flex items-start justify-between gap-3 border-t border-ink/10 pt-3">
+                  <h3 className="shrink-0 text-sm font-black">校友名单</h3>
+                  <p className="min-w-0 flex-1 text-right text-[0.78rem] font-normal leading-5 text-muted" data-testid="mobile-university-alumni">
+                    {school.alumni}
+                  </p>
+                </div>
                 <div className="mt-3 border-t border-ink/10 pt-3" data-testid="mobile-university-intro">
-                  <p className="text-xs font-black text-ink">成立时间：{school.founded}</p>
+                  <p className="text-[0.81rem] font-black text-ink">成立时间：{school.founded}</p>
                   <p className="mt-2 text-[0.78rem] font-medium leading-6 text-muted">{school.intro}</p>
                 </div>
               </section>
               <div className="grid grid-cols-2 gap-2">
-                <button className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#71d39b] px-3 text-sm font-black text-ink" type="button" onClick={onShowCases}>
+                <button className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#8ddfac] px-3 text-sm font-black text-ink" type="button" onClick={onShowCases}>
                   案例画像
                   <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
                 </button>
-                <a className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#ffe07a] px-3 text-sm font-black text-ink" href={routePath("/cost")}>
-                  费用预算
+                <a
+                  className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#fff4bd] px-3 text-sm font-black text-ink"
+                  href={school.officialUrl}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  学校官网
                   <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
                 </a>
               </div>
@@ -568,14 +593,24 @@ export function UniversitySheet({
 export function MobileUniversitiesApp() {
   const [preciseFilters, setPreciseFilters] = useState<PreciseFilters>(defaultPreciseFilters);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const [visibleLimit, setVisibleLimit] = useState(8);
   const [sheet, setSheet] = useState<{ slug: string; mode: SheetMode } | null>(null);
   const schools = useMemo(() => buildMobileUniversities(), []);
   const hasActivePreciseFilters = hasPreciseFilters(preciseFilters);
 
   const filteredSchools = useMemo(() => {
-    return schools.filter((school) => matchesPreciseFilters(school, preciseFilters));
-  }, [preciseFilters, schools]);
+    const query = search.trim().toLowerCase();
+
+    return schools
+      .filter((school) => matchesPreciseFilters(school, preciseFilters))
+      .filter((school) => {
+        if (!query) return true;
+        return `${school.nameCn} ${school.nameKr} ${school.nameEn} ${school.city} ${school.focus} ${school.alumni}`
+          .toLowerCase()
+          .includes(query);
+      });
+  }, [preciseFilters, schools, search]);
 
   const visibleSchools = filteredSchools.slice(0, visibleLimit);
   const selectedSchool = sheet ? schools.find((school) => school.slug === sheet.slug) : undefined;
@@ -598,14 +633,33 @@ export function MobileUniversitiesApp() {
       aria-label="韩国大学库移动端小程序"
     >
       <main className="w-full max-w-full overflow-hidden px-4 pt-4">
-        <section className="mb-3 flex items-center justify-between gap-3">
-          <div>
+        <section className="mb-3 flex items-center gap-3">
+          <div className="shrink-0">
             <p className="text-xs font-black text-muted">当前结果</p>
             <h2 className="text-xl font-black leading-tight">{filteredSchools.length}所学校</h2>
           </div>
+          <label
+            className="ml-auto flex h-10 min-w-0 w-[46.5%] items-center gap-2 rounded-xl border border-ink bg-surface px-3 text-xs text-muted"
+            data-testid="university-inline-search"
+          >
+            <Search size={16} strokeWidth={2.4} aria-hidden="true" className="shrink-0" />
+            <span className="sr-only">搜索校名、校友</span>
+            <input
+              aria-label="搜索校名、校友"
+              className="min-w-0 flex-1 bg-transparent text-sm font-normal text-ink outline-none placeholder:font-normal placeholder:italic placeholder:text-muted"
+              placeholder="校名、校友"
+              type="search"
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setVisibleLimit(8);
+                setSheet(null);
+              }}
+            />
+          </label>
           <button
             aria-expanded={isFilterSheetOpen}
-            className={`inline-flex min-h-10 items-center gap-1 rounded-full border border-ink px-3 py-2 text-xs font-black active:translate-y-0.5 ${
+            className={`inline-flex min-h-10 shrink-0 items-center gap-1 rounded-full border border-ink px-3 py-2 text-xs font-black active:translate-y-0.5 ${
               hasActivePreciseFilters ? "bg-[#b8a4ed]" : "bg-surface"
             }`}
             type="button"

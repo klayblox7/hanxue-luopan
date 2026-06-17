@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { MobileUniversitiesApp } from "./MobileUniversitiesApp";
+import { buildMobileUniversities, MobileUniversitiesApp } from "./MobileUniversitiesApp";
 
 describe("MobileUniversitiesApp", () => {
   it("starts as a compact mini-program university list", () => {
@@ -12,7 +12,13 @@ describe("MobileUniversitiesApp", () => {
 
     expect(screen.queryByRole("heading", { name: "韩国大学库" })).not.toBeInTheDocument();
     expect(screen.queryByText("小程序版")).not.toBeInTheDocument();
-    expect(screen.queryByRole("searchbox", { name: "搜索学校" })).not.toBeInTheDocument();
+    const inlineSearch = screen.getByRole("searchbox", { name: "搜索校名、校友" });
+    expect(inlineSearch).toHaveAttribute("placeholder", "校名、校友");
+    expect(inlineSearch).toHaveClass("font-normal", "placeholder:italic");
+    expect(inlineSearch).not.toHaveClass("font-bold", "font-black");
+    const searchWrap = screen.getByTestId("university-inline-search");
+    expect(searchWrap).toHaveClass("ml-auto", "w-[46.5%]");
+    expect(searchWrap).not.toHaveClass("flex-1");
     expect(screen.getByText("当前结果")).toBeInTheDocument();
     expect(screen.getAllByRole("article", { name: /大学/ })).toHaveLength(8);
     expect(screen.queryByRole("link", { name: "返回首页" })).not.toBeInTheDocument();
@@ -36,13 +42,25 @@ describe("MobileUniversitiesApp", () => {
     ]);
   });
 
-  it("keeps the university list compact without the removed desktop-style search area", () => {
+  it("keeps the university list compact with the inline school and alumni search", () => {
     render(<MobileUniversitiesApp />);
 
-    expect(screen.queryByRole("searchbox", { name: "搜索学校" })).not.toBeInTheDocument();
+    const inlineSearch = screen.getByRole("searchbox", { name: "搜索校名、校友" });
+    expect(inlineSearch).toHaveAttribute("placeholder", "校名、校友");
     expect(screen.queryByRole("button", { name: "推荐" })).not.toBeInTheDocument();
     expect(screen.getByRole("article", { name: /延世大学/ })).toBeInTheDocument();
     expect(screen.queryByRole("table")).not.toBeInTheDocument();
+  });
+
+  it("filters the university list by famous alumni names", () => {
+    render(<MobileUniversitiesApp />);
+
+    const inlineSearch = screen.getByRole("searchbox", { name: "搜索校名、校友" });
+    fireEvent.change(inlineSearch, { target: { value: "宋汉基" } });
+
+    expect(screen.getByText("1所学校")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "又石大学" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "首尔大学" })).not.toBeInTheDocument();
   });
 
   it("opens precise filters with the desktop option groups and applies them to the list", () => {
@@ -86,8 +104,15 @@ describe("MobileUniversitiesApp", () => {
     expect(focus).toHaveTextContent("综合研究、理工、人文社科");
     expect(focus).toHaveClass("text-right", "font-medium");
     expect(focus).not.toHaveClass("font-bold");
+    const alumni = within(dialog).getByTestId("mobile-university-alumni");
+    expect(within(dialog).getByText("校友名单")).toBeInTheDocument();
+    expect(alumni).toHaveTextContent("潘基文、尹锡悦、金泳三");
+    expect(alumni).toHaveClass("min-w-0", "flex-1", "text-right", "font-normal");
+    expect(alumni.parentElement).toHaveClass("flex", "justify-between", "border-t");
+    expect(alumni).not.toHaveClass("border-t", "pt-2", "mt-2");
+    expect(alumni).not.toHaveClass("font-bold", "font-semibold", "font-medium");
     const intro = within(dialog).getByTestId("mobile-university-intro");
-    expect(within(intro).getByText("成立时间：1946年")).toBeInTheDocument();
+    expect(within(intro).getByText("成立时间：1946年")).toHaveClass("text-[0.81rem]");
     expect(within(intro).getByText(/首尔大学位于首尔，成立时间为1946年/)).toBeInTheDocument();
     expect(within(dialog).queryByText("工科")).not.toBeInTheDocument();
     expect(within(dialog).queryByText("自然科学/生命")).not.toBeInTheDocument();
@@ -95,13 +120,29 @@ describe("MobileUniversitiesApp", () => {
     expect(within(dialog).queryByText("数据更新")).not.toBeInTheDocument();
     expect(within(dialog).queryByText("数据状态")).not.toBeInTheDocument();
     expect(within(dialog).queryByRole("link", { name: /申请路线/ })).not.toBeInTheDocument();
-    expect(within(dialog).getByRole("link", { name: /费用预算/ })).toHaveAttribute("href", "/cost/");
+    expect(within(dialog).queryByRole("link", { name: /费用预算/ })).not.toBeInTheDocument();
+    const officialLink = within(dialog).getByRole("link", { name: /学校官网/ });
+    expect(officialLink).toHaveAttribute("href", "https://www.snu.ac.kr");
+    expect(officialLink).toHaveAttribute("target", "_blank");
+    expect(officialLink).toHaveClass("bg-[#fff4bd]");
     expect(within(dialog).queryByText("首尔大学介绍")).not.toBeInTheDocument();
 
-    fireEvent.click(within(dialog).getByRole("button", { name: /案例画像/ }));
+    const caseProfileButton = within(dialog).getByRole("button", { name: /案例画像/ });
+    expect(caseProfileButton).toHaveClass("bg-[#8ddfac]");
+    fireEvent.click(caseProfileButton);
 
     expect(within(dialog).getByText("样本量")).toBeInTheDocument();
     expect(within(dialog).getByRole("region", { name: "申请者具体案例" })).toBeInTheDocument();
+  });
+
+  it("fills missing founding years from the supplemental data set", () => {
+    const schools = buildMobileUniversities();
+
+    expect(schools.filter((school) => school.founded === "资料待补")).toEqual([]);
+    expect(schools.find((school) => school.slug === "ajou-university")).toMatchObject({
+      founded: "1973年",
+      intro: expect.stringContaining("亚洲大学位于水原，成立时间为1973年")
+    });
   });
 
   it("keeps admissions evidence behind a focused sheet", () => {

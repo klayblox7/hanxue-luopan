@@ -5,6 +5,7 @@ import Image from "next/image";
 import { type ReactNode, type TouchEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import partnerSchoolProfiles from "@/data/partner-school-profiles.json";
+import { universityFoundedYear } from "@/data/universityFoundedYears";
 import { universities, type University } from "@/data/universities";
 import { getUniversityTierProfile } from "@/data/universityTiers";
 import { getAdmissionCaseSummary, type AdmissionCase, type AdmissionCaseSummary, type DistributionItem } from "@/data/admissionCases";
@@ -364,7 +365,7 @@ function recommendationSchoolProfile(university: University) {
   const profile = schoolProfilesBySlug.get(university.slug) ?? {};
   const supplemental = supplementalProfilesBySlug[university.slug] ?? {};
   const merged = { ...profile, ...supplemental };
-  const founded = merged.founded || "资料待补";
+  const founded = merged.founded || universityFoundedYear(university.slug) || "资料待补";
   const city = merged.city || university.city;
   const type = merged.type || university.type;
   const hasGenericPartnerFocus = merged.focus === genericPartnerFocus;
@@ -499,11 +500,11 @@ function RecommendedSchoolSheet({
               </div>
               <section className="rounded-lg border border-ink bg-surface p-3" data-testid="recommended-school-intro">
                 <h3 className="text-sm font-black">学校介绍</h3>
-                <p className="mt-2 text-xs font-black text-ink">成立时间：{school.founded}</p>
+                <p className="mt-2 text-[0.81rem] font-black text-ink">成立时间：{school.founded}</p>
                 <p className="mt-2 text-sm font-medium leading-6 text-muted">{school.intro}</p>
               </section>
               <div className="grid grid-cols-2 gap-2">
-                <button className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#71d39b] px-3 text-sm font-black text-ink" type="button" onClick={onShowCases}>
+                <button className="inline-flex min-h-11 items-center justify-center gap-1 rounded-lg border border-ink bg-[#8ddfac] px-3 text-sm font-black text-ink" type="button" onClick={onShowCases}>
                   案例画像
                   <ChevronRight size={16} strokeWidth={2.4} aria-hidden="true" />
                 </button>

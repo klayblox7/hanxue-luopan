@@ -13,6 +13,11 @@ const partnerProfilePath = path.join(projectRoot, "src/data/partner-school-profi
 const partnerProfileSource = fs.existsSync(partnerProfilePath)
   ? JSON.parse(fs.readFileSync(partnerProfilePath, "utf8"))
   : [];
+const universityAlumniPath = path.join(projectRoot, "src/data/universityAlumni.json");
+const universityAlumniBySlug = fs.existsSync(universityAlumniPath)
+  ? JSON.parse(fs.readFileSync(universityAlumniPath, "utf8"))
+  : {};
+const noPublicAlumniText = "暂无公开知名校友资料";
 
 const regionOrder = ["华北", "东北", "华东", "华中", "华南", "西南", "西北", "综合"];
 const modeOrder = ["2+2", "1+3", "3+1", "3+2", "2+3", "4+0"];
@@ -222,9 +227,8 @@ function deployAssetPath(value) {
   if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(text)) return text;
 
   const withoutPublic = text.replace(/^\.?\/?public\//, "");
-  if (withoutPublic.startsWith("./") || withoutPublic.startsWith("../")) return withoutPublic;
-  if (withoutPublic.startsWith("/")) return `.${withoutPublic}`;
-  return `./${withoutPublic}`;
+  if (withoutPublic.startsWith("../")) return withoutPublic;
+  return withoutPublic.replace(/^\.?\//, "");
 }
 
 function localAssetPath(folder, slug) {
@@ -420,6 +424,11 @@ function partnerSlug(displayName) {
     .slice(0, 80)}`;
 }
 
+function alumniTextForSlug(slug) {
+  const names = universityAlumniBySlug[slug] || [];
+  return names.length ? names.join("、") : noPublicAlumniText;
+}
+
 function resolvePartnerSchool(rawName) {
   const raw = String(rawName || "").trim();
   const university = universitiesByName.get(normalizeSchoolName(raw));
@@ -445,6 +454,7 @@ function resolvePartnerSchool(rawName) {
       intro: supplemental.intro || "",
       officialUrl: supplemental.officialUrl || facts.officialUrl || supplementalOfficialUrls.get(university.nameCn) || "",
       logoImage: deployAssetPath(supplemental.logoImage || logoAssetPath(university.slug)),
+      alumni: alumniTextForSlug(university.slug),
       known: true,
     };
   }
@@ -471,6 +481,7 @@ function resolvePartnerSchool(rawName) {
     intro: supplemental.intro || "",
     officialUrl: supplemental.officialUrl || supplementalOfficialUrls.get(displayName) || "",
     logoImage: deployAssetPath(supplemental.logoImage || logoAssetPath(slug)),
+    alumni: alumniTextForSlug(slug),
     known: Boolean(supplemental.slug),
   };
 }
@@ -491,6 +502,7 @@ function parsePartnerSchools(value) {
       slug: "",
       known: false,
       suffix: true,
+      alumni: noPublicAlumniText,
     });
   }
   return partners.length ? partners : [resolvePartnerSchool(text)];
@@ -1319,6 +1331,25 @@ const html = `<!doctype html>
         line-height: 1.75;
       }
 
+      .profile-alumni {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .profile-alumni h3 {
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 900;
+        line-height: 1.35;
+      }
+
+      .profile-alumni-text {
+        border-top: 1px solid #aaa69d;
+        padding-top: 0.55rem;
+        color: var(--muted);
+        font-weight: 400;
+      }
+
       .profile-note {
         color: var(--muted);
         font-size: 0.72rem !important;
@@ -1969,7 +2000,7 @@ const html = `<!doctype html>
     <header class="header">
       <div class="header-inner">
         <a href="./hanxue-luopan-home.html" aria-label="韩学罗盘">
-          <img class="logo" src="./public/korea-link-logo.gif" alt="韩学罗盘" />
+          <img class="logo" src="./korea-link-logo.gif" alt="韩学罗盘" />
         </a>
         <div class="header-title">&#22269;&#20869;+&#38889;&#22269;&#39033;&#30446;&#24211;</div>
         <nav class="nav" aria-label="main navigation">
@@ -2290,6 +2321,7 @@ const html = `<!doctype html>
           const founded = partner.founded || "\u8d44\u6599\u5f85\u6838\u5bf9";
           const fallbackIntro = profileIntroFallback(name, city, founded, type, focus);
           const intro = partner.intro && !hasBrokenText(partner.intro) ? partner.intro : fallbackIntro;
+          const alumni = partner.alumni || "\u6682\u65e0\u516c\u5f00\u77e5\u540d\u6821\u53cb\u8d44\u6599";
           return {
             name,
             nameKr: partner.nameKr || "",
@@ -2302,6 +2334,7 @@ const html = `<!doctype html>
             foreignStudents,
             founded,
             intro,
+            alumni,
             campusImage: partner.campusImage || "",
             imagePosition: partner.imagePosition || "center",
             officialUrl: partner.officialUrl || "",
@@ -2337,7 +2370,7 @@ const html = `<!doctype html>
             '</div></div>' +
             '<div class="profile-intro">' +
             '<div class="profile-heading"><h2>' + htmlEscape(profile.name) + '\u4ecb\u7ecd</h2></div>' +
-            '<div class="profile-intro-body"><p>' + htmlEscape(profile.intro) + '</p><p><strong>\u91cd\u70b9\u65b9\u5411\uff1a</strong>' + htmlEscape(profile.focus) + '</p><p class="profile-note">\u5b66\u6821\u7b80\u4ecb\u7528\u4e8e\u5feb\u901f\u4e86\u89e3\u5408\u4f5c\u9662\u6821\uff0c\u7533\u8bf7\u5224\u65ad\u4ecd\u9700\u7ed3\u5408\u5b98\u65b9\u62db\u751f\u7b80\u7ae0\u3001\u9879\u76ee\u5408\u540c\u548c\u6700\u65b0\u8d39\u7528\u8bf4\u660e\u3002</p></div>' +
+            '<div class="profile-intro-body"><p>' + htmlEscape(profile.intro) + '</p><p><strong>\u91cd\u70b9\u65b9\u5411\uff1a</strong>' + htmlEscape(profile.focus) + '</p><div class="profile-alumni"><h3>\u6821\u53cb\u540d\u5355</h3><p class="profile-alumni-text">' + htmlEscape(profile.alumni) + '</p></div><p class="profile-note">\u5b66\u6821\u7b80\u4ecb\u7528\u4e8e\u5feb\u901f\u4e86\u89e3\u5408\u4f5c\u9662\u6821\uff0c\u7533\u8bf7\u5224\u65ad\u4ecd\u9700\u7ed3\u5408\u5b98\u65b9\u62db\u751f\u7b80\u7ae0\u3001\u9879\u76ee\u5408\u540c\u548c\u6700\u65b0\u8d39\u7528\u8bf4\u660e\u3002</p></div>' +
             '</div>' +
             '</section>';
         }

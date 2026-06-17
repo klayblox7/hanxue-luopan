@@ -151,9 +151,12 @@ export function MobileKoreaMapPage() {
       .filter((school) => activeTierFilter === "all" || getUniversityTier(school.nameCn) === activeTierFilter)
       .filter((school) => {
         if (!query) return true;
-        return `${school.nameCn} ${school.nameEn} ${school.city} ${school.focus}`.toLowerCase().includes(query);
+        const mobileSchool = mobileSchoolsBySlug.get(school.slug);
+        return `${school.nameCn} ${school.nameKr} ${school.nameEn} ${school.city} ${school.focus} ${mobileSchool?.alumni ?? ""}`
+          .toLowerCase()
+          .includes(query);
       });
-  }, [activeRegion, activeTierFilter, search]);
+  }, [activeRegion, activeTierFilter, mobileSchoolsBySlug, search]);
   const selectedSchool = selectedSchoolSlug ? mobileSchoolsBySlug.get(selectedSchoolSlug) : undefined;
   const selectedCaseSchool = selectedCaseSchoolSlug ? mobileSchoolsBySlug.get(selectedCaseSchoolSlug) : undefined;
 
@@ -176,18 +179,21 @@ export function MobileKoreaMapPage() {
               <h2 className="text-xl font-black leading-tight">地图分布</h2>
             </div>
             <label
-              className="mb-0.5 flex h-10 w-1/2 min-w-0 items-center gap-2 rounded-xl border border-ink bg-surface px-3 text-xs font-black text-muted"
+              className="mb-0.5 flex h-10 w-1/2 min-w-0 items-center gap-2 rounded-xl border border-ink bg-surface px-3 text-xs text-muted"
               data-testid="map-inline-search"
             >
               <Search size={16} strokeWidth={2.4} aria-hidden="true" className="shrink-0" />
-              <span className="sr-only">搜索学校或城市</span>
+              <span className="sr-only">搜索校名、校友</span>
               <input
-                className="min-w-0 flex-1 bg-transparent text-sm font-bold text-ink outline-none placeholder:text-muted"
-                placeholder="搜索"
+                aria-label="搜索校名、校友"
+                className="min-w-0 flex-1 bg-transparent text-sm font-normal text-ink outline-none placeholder:font-normal placeholder:italic placeholder:text-muted"
+                placeholder="校名、校友"
+                type="search"
                 value={search}
                 onChange={(event) => {
                   setSearch(event.target.value);
                   setSelectedSchoolSlug(null);
+                  setSelectedCaseSchoolSlug(null);
                 }}
               />
             </label>

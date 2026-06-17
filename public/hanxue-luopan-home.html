@@ -765,6 +765,7 @@
       .school-info-intro {
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
         padding: 0;
       }
 
@@ -783,6 +784,27 @@
         color: var(--ink);
         font-size: 0.86rem;
         line-height: 1.75;
+      }
+
+      .school-info-alumni {
+        margin: 0.65rem 1.25rem 0;
+      }
+
+      .school-info-alumni h5 {
+        margin: 0;
+        font-size: 0.86rem;
+        font-weight: 900;
+        line-height: 1.45;
+      }
+
+      .school-info-alumni p {
+        margin: 0.45rem 0 0;
+        border-top: 1px solid #a8a8a8;
+        padding-top: 0.45rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 400;
+        line-height: 1.55;
       }
 
       .school-info-intro em {
@@ -2067,6 +2089,7 @@
 
       <script src="./admission-case-summaries.js"></script>
       <script src="./recommendation-universities.js"></script>
+      <script src="./map-school-profiles.js"></script>
       <script type="application/json" data-disabled-src="./admission-case-static.js"></script>
 
             <section class="recommender" aria-label="&#38889;&#22269;&#22823;&#23398;&#25512;&#33616;">
@@ -3022,6 +3045,7 @@
                 }
 
                 function profileFor(school) {
+                  const linkedProfile = window.mapSchoolProfiles?.[school.slug] || {};
                   const tier = tierFor(school);
                   const studentCount = school.totalStudents || "资料待补";
                   const foreignCount = school.foreignStudents || "";
@@ -3038,6 +3062,7 @@
                     tier,
                     imagePosition: "center",
                     intro: `${school.name || school.nameCn}位于${school.city || "韩国"}，是一所${school.type || "韩国"}院校。该校在本项目库中主要用于${school.focus || "综合类专业"}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`,
+                    alumni: linkedProfile.alumni || "暂无公开知名校友资料",
                   };
                 }
 
@@ -3076,7 +3101,9 @@
                     profile.name
                   )}介绍</h4><p>${htmlEscape(profile.intro)}</p><p><strong>重点方向：</strong>${htmlEscape(
                     profile.focus
-                  )}</p><em>学校简介用于快速了解合作院校，申请判断仍需结合官方招生简章、项目合同和最新费用说明。</em></div></section>`;
+                  )}</p><div class="school-info-alumni"><h5>校友名单</h5><p>${htmlEscape(
+                    profile.alumni
+                  )}</p></div><em>学校简介用于快速了解合作院校，申请判断仍需结合官方招生简章、项目合同和最新费用说明。</em></div></section>`;
                 }
 
                 let expandedRecommendationSlug = null;

@@ -11,12 +11,24 @@ type CampusImageProps = {
   slug: string;
   name: string;
   className?: string;
+  folder?: string;
 };
 
-export function CampusImage({ slug, name, className }: CampusImageProps) {
+function normalizedImageFolder(folder?: string) {
+  return (folder || "campus-images").replace(/^\/+|\/+$/g, "");
+}
+
+export function CampusImage({ slug, name, className, folder }: CampusImageProps) {
+  const imageFolder = normalizedImageFolder(folder);
   const candidates = useMemo(
-    () => campusImageExtensions.map((extension) => assetPath(`/campus-images/${slug}.${extension}`)).concat(assetPath(fallbackCampusImage)),
-    [slug]
+    () => {
+      const primaryCandidates = campusImageExtensions.map((extension) => assetPath(`/${imageFolder}/${slug}.${extension}`));
+      const fallbackCandidates =
+        imageFolder === "campus-images" ? [] : campusImageExtensions.map((extension) => assetPath(`/campus-images/${slug}.${extension}`));
+
+      return primaryCandidates.concat(fallbackCandidates, assetPath(fallbackCampusImage));
+    },
+    [imageFolder, slug]
   );
   const [candidateIndex, setCandidateIndex] = useState(0);
 

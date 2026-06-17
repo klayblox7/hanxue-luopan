@@ -9,6 +9,8 @@ describe("KoreaStudyMap", () => {
     expect(screen.getByText("首尔特别市")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "延世大学" })).toBeInTheDocument();
     expect(screen.getByText(/Yonsei University/)).toBeInTheDocument();
+    expect(screen.getByText("校友名单")).toBeInTheDocument();
+    expect(screen.getByText(/韩江、奉俊昊/)).toBeInTheDocument();
   });
 
   it("updates the region and default school when a map region is selected", () => {

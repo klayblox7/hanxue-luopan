@@ -9,6 +9,7 @@ import { getAdmissionCaseSummary, type DistributionItem } from "@/data/admission
 import { koreaMapRegions, type KoreaMapRegionKey, type KoreaMapRegionShape } from "@/data/korea-map-regions";
 import { universityAddresses } from "@/data/universityAddresses";
 import { universityTuitionsRmb } from "@/data/universityTuitions";
+import { universityAlumniText } from "@/data/universityAlumni";
 import { getUniversityTier } from "@/data/universityTiers";
 import { universities, type University } from "@/data/universities";
 
@@ -422,6 +423,7 @@ function studyInfoFacts(school: University) {
     score: summary.admittedAverageGpa ? `录取均分 ${summary.admittedAverageGpa}分` : fallbackRecommendedScore(school),
     topik: admissionTopikText(summary.topikDistribution, fallbackRecommendedTopik(school)),
     tuition: universityTuitionsRmb[school.slug] ?? fallbackTuitionRange(school),
+    alumni: universityAlumniText(school.slug),
     tags: majors.length ? majors : schoolTags(school).slice(0, 3)
   };
 }
@@ -809,6 +811,10 @@ export function KoreaStudyMap() {
                 <div className="grid grid-cols-[7.225rem_minmax(0,1fr)]">
                   <div className="bg-[#fffaf0] px-4 py-3 text-[0.79rem] font-bold">热门专业</div>
                   <div className="px-4 py-3 text-[0.79rem] font-normal">{activeFacts.tags.join("、")}</div>
+                </div>
+                <div className="grid grid-cols-[7.225rem_minmax(0,1fr)] border-t border-ink/10">
+                  <div className="bg-[#fffaf0] px-4 py-3 text-[0.79rem] font-bold">校友名单</div>
+                  <div className="px-4 py-3 text-[0.79rem] font-normal">{activeFacts.alumni}</div>
                 </div>
               </div>
 

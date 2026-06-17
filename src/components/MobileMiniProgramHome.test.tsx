@@ -301,11 +301,12 @@ describe("MobileMiniProgramHome", () => {
     expect(within(dialog).getByAltText(`${schoolName}校园图片`)).toBeInTheDocument();
     const intro = within(dialog).getByTestId("recommended-school-intro");
     expect(within(intro).getByText("学校介绍")).toBeInTheDocument();
-    expect(within(intro).getByText(/成立时间：/)).toBeInTheDocument();
+    expect(within(intro).getByText(/成立时间：/)).toHaveClass("text-[0.81rem]");
     expect(within(intro).getByText(new RegExp(`${schoolName}位于`))).toBeInTheDocument();
     expect(within(dialog).queryByText("重点方向")).not.toBeInTheDocument();
     expect(within(dialog).queryByText("数据更新")).not.toBeInTheDocument();
     expect(within(dialog).queryByText("数据状态")).not.toBeInTheDocument();
+    expect(within(dialog).getByRole("button", { name: /案例画像/ })).toHaveClass("bg-[#8ddfac]");
     expect(within(dialog).getByRole("link", { name: /进入大学库/ })).toHaveAttribute("href", "/universities/");
   });
 

@@ -50,23 +50,30 @@ describe("MobileServicePage", () => {
       "TOPIK"
     ]);
     expect(within(screen.getByRole("navigation", { name: "移动端底部导航" })).getByRole("link", { name: "TOPIK" })).toHaveAttribute("aria-current", "page");
-    expect(within(screen.getByLabelText("TOPIK移动端补充信息")).getByText("入门")).toHaveClass("self-center");
+    expect(within(screen.getByLabelText("TOPIK移动端补充信息")).getByText("入门")).toHaveClass("self-center", "text-[#0b6a4a]");
   });
 
   it("replaces the shared overview block with compact desktop-derived cost sections", () => {
     render(<MobileServicePage page="cost" />);
 
     const estimatorTitle = screen.getByRole("heading", { name: "韩国留学费用估算" });
+    const profileTitle = screen.getByRole("heading", { name: "留韩学生画像" });
     const desktopCost = screen.getByRole("heading", { name: "费用构成分析" });
     const budgetIcon = screen.getByTestId("mobile-budget-card-icon");
+    const profileCard = screen.getByTestId("mobile-self-agency-profile-card");
+    const applyChannelCard = screen.getByTestId("mobile-apply-channel-card");
+    const diyAgencyCard = screen.getByTestId("mobile-diy-agency-card");
+    const referenceCards = screen.getAllByTestId("mobile-reference-card");
 
     expect(screen.getByTestId("mobile-primary-tool-card")).toHaveClass(
       "border-2",
       "bg-[#f4fbef]",
       "shadow-[0_14px_36px_rgba(11,106,74,0.16)]"
     );
-    expect(screen.getAllByTestId("mobile-reference-card")[0]).toHaveClass("border-ink/25", "bg-[#fbfaf4]", "shadow-none");
-    expect(screen.getAllByTestId("mobile-reference-card")[0]).not.toHaveClass("border-2");
+    expect(referenceCards[0]).toHaveClass("border-ink/25", "bg-[#fffefb]", "shadow-none");
+    expect(referenceCards[0]).not.toHaveClass("border-2");
+    expect(referenceCards[1]).toHaveClass("bg-[#fbfaf4]");
+    expect(referenceCards[2]).toHaveClass("bg-[#fffefb]");
     expect(screen.queryByLabelText("留学费用页面说明")).not.toBeInTheDocument();
     expect(screen.queryByText(/budget planner/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/移动版只放决策入口/)).not.toBeInTheDocument();
@@ -79,7 +86,13 @@ describe("MobileServicePage", () => {
     expect(within(budgetIcon).queryByText("汇率")).not.toBeInTheDocument();
     expect(budgetIcon.closest("a")).toHaveAttribute("href", "/exchange-rate/");
     expect(budgetIcon).toHaveClass("mt-3");
+    expect(profileCard).toHaveClass("mt-4", "border-ink/25", "bg-[#fbfaf4]", "shadow-none");
+    expect(within(profileCard).getByText("Profile")).toHaveClass("text-[0.84rem]", "text-[#687365]");
+    expect(within(profileCard).getByText("学业中上")).toHaveClass("text-[0.84rem]", "font-black");
+    expect(within(profileCard).getByText("成绩")).toHaveClass("self-center", "text-[#0b6a4a]");
     expect(estimatorTitle.compareDocumentPosition(desktopCost) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(estimatorTitle.compareDocumentPosition(profileTitle) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(profileTitle.compareDocumentPosition(desktopCost) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText("学费")).toBeInTheDocument();
     expect(within(screen.getByLabelText("留学费用移动端补充信息")).getByText("约25-45%")).toHaveClass("self-center");
     expect(screen.getByText("地方国立")).toBeInTheDocument();
@@ -88,17 +101,23 @@ describe("MobileServicePage", () => {
     expect(screen.queryByText("先用场景判断预算压力，再回到上方工具做个人估算。")).not.toBeInTheDocument();
     expect(screen.queryByText("这部分不属于韩国第一年学费，但申请前很容易漏算。")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "三大核心申请渠道" })).toBeInTheDocument();
-    expect(screen.getByText("韩国高校官方直申")).toBeInTheDocument();
+    expect(applyChannelCard).toHaveClass("rounded-lg", "border-ink/25", "bg-[#fbfaf4]", "px-4", "py-3", "shadow-none");
+    expect(within(applyChannelCard).getByText("Apply Channel")).toHaveClass("text-[0.84rem]", "text-[#687365]");
+    expect(within(applyChannelCard).getByText("韩国高校官方直申")).toHaveClass("text-[0.84rem]", "font-black");
+    expect(within(applyChannelCard).getByText("性价比")).toHaveClass("self-center", "text-[#0b6a4a]");
     expect(screen.getByText("语学院过渡申请")).toBeInTheDocument();
     expect(screen.getByText("专业留学中介")).toBeInTheDocument();
+    expect(screen.queryByText("先判断")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "直申 vs 中介申请" })).toBeInTheDocument();
-    expect(screen.getByText("核心学生群体画像")).toBeInTheDocument();
-    expect(screen.getByText("直申（DIY）")).toBeInTheDocument();
-    expect(screen.getByText("中介申请")).toBeInTheDocument();
-    expect(screen.getAllByText("优点")[0]).toHaveClass("bg-[#d8f3e7]", "text-[#0b6a4a]");
-    expect(screen.getAllByText("注意")[0]).toHaveClass("bg-[#fff3b8]", "text-[#7a5a00]");
-    expect(screen.getByText("节省中介服务费（10,000-30,000元）")).toBeInTheDocument();
-    expect(screen.getByText("需甄别机构资质与服务质量")).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { name: "留韩学生画像" })).toHaveLength(1);
+    expect(diyAgencyCard).toHaveClass("rounded-lg", "border-ink/25", "bg-[#fffefb]", "px-4", "py-3", "shadow-none");
+    expect(within(diyAgencyCard).getByText("DIY vs Agency")).toHaveClass("text-[0.84rem]", "text-[#687365]");
+    expect(within(diyAgencyCard).getByText("直申（DIY）")).toHaveClass("text-[0.84rem]", "font-black");
+    expect(within(diyAgencyCard).getByText("性价比")).toHaveClass("self-center", "text-[#0b6a4a]");
+    expect(within(diyAgencyCard).getByText("中介申请")).toHaveClass("text-[0.84rem]", "font-black");
+    expect(within(diyAgencyCard).getByText("托管型")).toHaveClass("self-center", "text-[#0b6a4a]");
+    expect(screen.queryByText("节省中介服务费（10,000-30,000元）")).not.toBeInTheDocument();
+    expect(screen.queryByText("需甄别机构资质与服务质量")).not.toBeInTheDocument();
   });
 
   it("removes the extra quick-action block from service pages", () => {
@@ -161,10 +180,19 @@ describe("MobileServicePage", () => {
 
     fireEvent.click(within(firstProjectCard).getByRole("button", { name: /全北大学.*T3.*学校信息/ }));
     const partnerDialog = screen.getByRole("dialog", { name: "全北大学学校信息" });
-    expect(within(partnerDialog).getByText("大学库学校信息")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("School detail")).toBeInTheDocument();
     expect(within(partnerDialog).getByText("全州")).toBeInTheDocument();
     expect(within(partnerDialog).getAllByText("T3").length).toBeGreaterThan(0);
-    expect(within(partnerDialog).getByRole("link", { name: "打开大学库" })).toHaveAttribute("href", "/universities/");
+    expect(within(partnerDialog).getByText("宿舍容量")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("宿舍覆盖")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("申请层级")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("TOPIK画像")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("校友名单")).toBeInTheDocument();
+    const caseProfileButton = within(partnerDialog).getByRole("button", { name: /案例画像/ });
+    expect(caseProfileButton).toHaveClass("bg-[#8ddfac]");
+    const officialHomepageLink = within(partnerDialog).getByRole("link", { name: /学校官网/ });
+    expect(officialHomepageLink).toHaveAttribute("href", expect.stringMatching(/^https?:\/\//));
+    expect(officialHomepageLink).toHaveClass("bg-[#fff4bd]");
     fireEvent.click(within(partnerDialog).getByRole("button", { name: "关闭学校信息" }));
     expect(screen.queryByRole("dialog", { name: "全北大学学校信息" })).not.toBeInTheDocument();
 
@@ -261,10 +289,12 @@ describe("MobileServicePage", () => {
     fireEvent.click(within(projectCard).getByRole("button", { name: "打开延世大学学校信息" }));
 
     const partnerDialog = screen.getByRole("dialog", { name: "延世大学学校信息" });
-    expect(within(partnerDialog).getByText("大学库学校信息")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("School detail")).toBeInTheDocument();
     expect(within(partnerDialog).getByText(/Yonsei University/)).toBeInTheDocument();
     expect(within(partnerDialog).getByText("首尔")).toBeInTheDocument();
     expect(within(partnerDialog).getAllByText("T1").length).toBeGreaterThan(0);
+    expect(within(partnerDialog).getByText("校友名单")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("TOPIK画像")).toBeInTheDocument();
   });
 
   it("opens university profiles for cooperation school names even when program partner data is missing", () => {
@@ -301,6 +331,7 @@ describe("MobileServicePage", () => {
 
     fireEvent.click(ewhaChip);
     const ewhaDialog = screen.getByRole("dialog", { name: "梨花女子大学学校信息" });
+    expect(within(ewhaDialog).getByText("School detail")).toBeInTheDocument();
     expect(within(ewhaDialog).getByText(/Ewha Womans University/)).toBeInTheDocument();
     expect(within(ewhaDialog).getByText("首尔")).toBeInTheDocument();
     fireEvent.click(within(ewhaDialog).getByRole("button", { name: "关闭学校信息" }));
@@ -359,8 +390,62 @@ describe("MobileServicePage", () => {
 
     fireEvent.click(cauChip);
     const cauDialog = screen.getByRole("dialog", { name: "中央大学学校信息" });
+    expect(within(cauDialog).getByText("School detail")).toBeInTheDocument();
     expect(within(cauDialog).getByText(/Chung-Ang University/)).toBeInTheDocument();
     expect(within(cauDialog).getAllByText("T2").length).toBeGreaterThan(0);
+  });
+
+  it("shows the same university-detail content for application cooperation schools", () => {
+    const applicationPrograms: ApplicationProgram[] = [
+      {
+        title: "示例大学 → 又石大学",
+        chinaSchool: "示例大学",
+        koreaSchools: "又石大学",
+        mode: "1+4",
+        fields: {
+          专业设置: "合作项目相关专业",
+          培养模式: "1+4：中国1年 + 韩国4年",
+          国内费用: "按学校费用表执行",
+          韩方费用: "按韩国大学收费",
+          合作院校: "又石大学",
+          申请条件: "高中毕业生可报。",
+          证书说明: "完成韩国本科课程后取得学士学位。"
+        },
+        region: "华东",
+        majorTags: ["综合项目"],
+        koreaPartners: [
+          {
+            displayName: "又石大学",
+            slug: "partner-gjs-noz-hlz-i1y",
+            tier: "T5",
+            city: "完州/镇川",
+            type: "私立",
+            campusImage: "public/campus-images/partner-gjs-noz-hlz-i1y.webp"
+          }
+        ],
+        slug: "test-woosuk-partner-detail"
+      }
+    ];
+
+    render(<MobileServicePage applicationPrograms={applicationPrograms} page="application" />);
+
+    const projectCard = screen.getByTestId("application-program-card");
+    fireEvent.click(within(projectCard).getByRole("button", { name: "示例大学" }));
+    fireEvent.click(within(projectCard).getByRole("button", { name: "打开又石大学学校信息" }));
+
+    const partnerDialog = screen.getByRole("dialog", { name: "又石大学学校信息" });
+    expect(within(partnerDialog).getByText("School detail")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("0案例")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("宿舍容量")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("宿舍覆盖")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("申请层级")).toBeInTheDocument();
+    expect(within(partnerDialog).getByText("TOPIK画像")).toBeInTheDocument();
+    expect(within(partnerDialog).getByTestId("mobile-university-focus")).toHaveTextContent("经营/商科");
+    expect(within(partnerDialog).getByTestId("mobile-university-focus")).not.toHaveTextContent("合作项目相关专业");
+    expect(within(partnerDialog).getByTestId("mobile-university-alumni")).toHaveTextContent("金起范");
+    expect(within(partnerDialog).getByTestId("mobile-university-intro")).toHaveTextContent("成立时间：1979年");
+    expect(within(partnerDialog).getByRole("button", { name: /案例画像/ })).toHaveClass("bg-[#8ddfac]");
+    expect(within(partnerDialog).queryByRole("link", { name: "打开大学库" })).not.toBeInTheDocument();
   });
 
   it("keeps duplicate-slug application cards independently expanded", () => {
@@ -490,10 +575,119 @@ describe("MobileServicePage", () => {
     expect(screen.queryByText(/language plan/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/移动版只放决策入口/)).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "TOPIK学习量阶梯" })).toBeInTheDocument();
-    expect(screen.getByText("TOPIK4 - 约600小时")).toBeInTheDocument();
+    expect(screen.getByText("TOPIK1 - 约100小时", { exact: false })).toBeInTheDocument();
+    expect(screen.getByText("TOPIK3 - 约350小时", { exact: false })).toBeInTheDocument();
+    expect(screen.getByText("TOPIK4 - 约600小时", { exact: false })).toBeInTheDocument();
+    expect(screen.getByText("TOPIK5 - 约900小时", { exact: false })).toBeInTheDocument();
+    ["(约3个月)", "(约10个月)", "(约17个月)", "(约25个月)"].forEach((monthText) => {
+      expect(screen.getByText(monthText)).toHaveClass("text-[#8b1e1e]");
+    });
     expect(screen.queryByText("TOPIK4约600小时")).not.toBeInTheDocument();
     expect(screen.getByText("T1目标")).toBeInTheDocument();
-    expect(screen.getByText("备考资料顺序")).toBeInTheDocument();
+    expect(screen.queryByText("备考资料顺序")).not.toBeInTheDocument();
+    expect(screen.queryByText("0基础")).not.toBeInTheDocument();
+    expect(screen.queryByText("发音+教材")).not.toBeInTheDocument();
+    const applyLineHeading = screen.getByRole("heading", { name: "本科申请TOPIK线" });
+    const examSystem = screen.getByTestId("mobile-topik-exam-system");
+    const examSystemHeading = within(examSystem).getByRole("heading", { name: "考试系统地图" });
+    expect(applyLineHeading.compareDocumentPosition(examSystemHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(examSystem).getByText("1-2级入门考试")).toBeInTheDocument();
+    expect(within(examSystem).getByText("TOPIK I")).toBeInTheDocument();
+    expect(within(examSystem).getByText("40分钟")).toBeInTheDocument();
+    expect(within(examSystem).getByText("30题")).toBeInTheDocument();
+    expect(within(examSystem).getByText("70题")).toBeInTheDocument();
+    expect(within(examSystem).getByText("200分")).toBeInTheDocument();
+    expect(within(examSystem).getByText("3-6级留学主战场")).toBeInTheDocument();
+    expect(within(examSystem).getByText("TOPIK II")).toBeInTheDocument();
+    expect(within(examSystem).getByText("写作")).toBeInTheDocument();
+    expect(within(examSystem).getByText("50分钟")).toBeInTheDocument();
+    expect(within(examSystem).getByText("4题")).toBeInTheDocument();
+    expect(within(examSystem).getByText("180分钟")).toBeInTheDocument();
+    expect(within(examSystem).getByText("104题")).toBeInTheDocument();
+    expect(within(examSystem).getByText("300分")).toBeInTheDocument();
+    const scoreLevels = screen.getByTestId("mobile-topik-score-levels");
+    expect(within(scoreLevels).getByRole("heading", { name: "分数怎么变成等级" })).toBeInTheDocument();
+    expect(examSystemHeading.compareDocumentPosition(within(scoreLevels).getByRole("heading", { name: "分数怎么变成等级" })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(scoreLevels).getByText("TOPIK I")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("总分 200")).toBeInTheDocument();
+    expect(within(scoreLevels).getAllByText("未合格")).toHaveLength(2);
+    expect(within(scoreLevels).getByText("0-79")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("1级")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("80-139")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("2级")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("140-200")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("TOPIK II")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("总分 300")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("3级")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("120-149")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("4级")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("150-189")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("5级")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("190-229")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("6级")).toBeInTheDocument();
+    expect(within(scoreLevels).getByText("230-300")).toBeInTheDocument();
+    const resources = screen.getByTestId("mobile-topik-resources");
+    const resourcesHeading = within(resources).getByRole("heading", { name: "网课与教材资源" });
+    expect(within(scoreLevels).getByRole("heading", { name: "分数怎么变成等级" }).compareDocumentPosition(resourcesHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(resources).getByText("完整资源表，已压缩到移动端宽度内")).toBeInTheDocument();
+    expect(within(resources).getByText("免费")).toBeInTheDocument();
+    expect(within(resources).getByText("付费")).toBeInTheDocument();
+    expect(within(resources).getByText("教材")).toBeInTheDocument();
+    expect(within(resources).getByText("课程")).toBeInTheDocument();
+    expect(within(resources).queryByText("类型")).not.toBeInTheDocument();
+    expect(within(resources).queryByText("代表资源")).not.toBeInTheDocument();
+    expect(within(resources).getByText("图片")).toBeInTheDocument();
+    expect(within(resources).queryByText("推荐使用")).not.toBeInTheDocument();
+    expect(within(resources).getByText("免费网课资源")).toBeInTheDocument();
+    expect(within(resources).getByText("付费网课资源")).toBeInTheDocument();
+    expect(within(resources).getByText("系统学习基础教材")).toBeInTheDocument();
+    expect(within(resources).getByText("TOPIK 考试专项教材")).toBeInTheDocument();
+    expect(within(resources).getByText(/全400集自学韩语/)).toBeInTheDocument();
+    expect(within(resources).getByText("Candy韩语学姐")).toBeInTheDocument();
+    expect(within(resources).getByText(/TOPIK历年真题解析/)).toBeInTheDocument();
+    expect(within(resources).getByText(/TOPIK听力\/阅读核心技巧/)).toBeInTheDocument();
+    expect(within(resources).getByText(/TOPIK\s*冲刺班/)).toBeInTheDocument();
+    expect(within(resources).getByText(/韩语\s*TOPIK\s*直播课/)).toBeInTheDocument();
+    expect(within(resources).getByText(/TOPIK\s*中级写作直播班/)).toBeInTheDocument();
+    expect(within(resources).getByText(/延世韩国语/)).toBeInTheDocument();
+    expect(within(resources).getByText(/首尔大学韩国语/)).toBeInTheDocument();
+    expect(within(resources).getByText(/新标准韩国语/)).toBeInTheDocument();
+    expect(within(resources).getByText(/TOPIK\s*官方教程及真题集/)).toBeInTheDocument();
+    expect(within(resources).getByText(/新韩国语能力考试考前对策/)).toBeInTheDocument();
+    expect(within(resources).getByText(/TOPIK\s*词汇\/语法\/阅读\/写作/)).toBeInTheDocument();
+    expect(within(resources).getByText("4000元")).toBeInTheDocument();
+    expect(within(resources).getByText("发音/语法/听读/TOPIK题型")).toBeInTheDocument();
+    expect(within(resources).getByText("基础到冲刺，督学、答疑、批改")).toBeInTheDocument();
+    expect(within(resources).getByText("词汇语法阅读写作，高频考点解析")).toBeInTheDocument();
+    expect(within(resources).queryByText("四十音、基础语法、中高级语法、常用口语、听读技巧与 TOPIK 题型解析。")).not.toBeInTheDocument();
+    expect(within(resources).queryByText("真题讲练、技巧强化、专项训练；直播+录播；配套答疑、作文精批、真题解析和模拟测试。")).not.toBeInTheDocument();
+    expect(within(resources).getAllByTestId("mobile-topik-resource-row")).toHaveLength(13);
+    expect(within(resources).getAllByRole("img")).toHaveLength(13);
+    expect(within(resources).getAllByRole("link")).toHaveLength(13);
+    expect(within(resources).getByRole("link", { name: "《全400集自学韩语全套教程》" })).toHaveAttribute(
+      "href",
+      "https://www.bilibili.com/video/BV1PXrxYZEjy/"
+    );
+    expect(within(resources).getByRole("link", { name: "TOPIK 词汇/语法/阅读/写作" })).toHaveAttribute(
+      "href",
+      "https://item.jd.com/14227433.html"
+    );
+    expect(within(resources).queryByText("适合0基础到高级，作为长期主线课。")).not.toBeInTheDocument();
+    expect(within(resources).queryByText("冲刺阶段必练，优先级最高。")).not.toBeInTheDocument();
+    expect(resources.querySelector(".overflow-x-auto")).not.toBeInTheDocument();
+    expect(resources.querySelector(".min-w-\\[42rem\\]")).not.toBeInTheDocument();
+    within(resources).getAllByTestId("mobile-topik-resource-row").forEach((row) => {
+      expect(row).not.toHaveClass("whitespace-nowrap");
+      expect(row).toHaveClass("min-h-[3rem]");
+      expect(row).toHaveClass("grid-cols-[1.24fr_2.4rem_0.46fr_1.45fr]");
+    });
+    const firstResourceCells = within(resources).getAllByTestId("mobile-topik-resource-row")[0].children;
+    expect(firstResourceCells[0]).toHaveClass("text-[0.7rem]");
+    expect(firstResourceCells[0]).toHaveClass("leading-[1.35]");
+    expect(firstResourceCells[0].lastElementChild).toHaveClass("text-[0.6rem]");
+    expect(firstResourceCells[0].lastElementChild).toHaveClass("leading-[1.3]");
+    expect(firstResourceCells[2]).toHaveClass("text-[0.64rem]");
+    expect(firstResourceCells[3]).toHaveClass("text-[0.68rem]");
     expect(screen.queryByText("从桌面版学习量表抽出最常用的判断线，先估算缺口。")).not.toBeInTheDocument();
     expect(screen.queryByText("移动端不放完整矩阵，只保留申请决策最常用的学校层级。")).not.toBeInTheDocument();
     expect(screen.queryByText("桌面版资源表很长，移动端先告诉你使用顺序。")).not.toBeInTheDocument();
@@ -501,7 +695,8 @@ describe("MobileServicePage", () => {
     fireEvent.change(screen.getByLabelText("现在水平"), { target: { value: "2" } });
     fireEvent.change(screen.getByLabelText("目标学校"), { target: { value: "t2" } });
     fireEvent.change(screen.getByLabelText("每周时间"), { target: { value: "14" } });
-    expect(screen.getByRole("button", { name: "AI规划" })).toHaveClass("bg-[#dff3dc]", "text-[#004c3f]");
+    expect(screen.getByRole("button", { name: "AI规划" })).toHaveClass("bg-[#dff3dc]", "text-[#0b6a4a]");
+    expect(screen.getByRole("button", { name: "AI规划" })).not.toHaveClass("text-[#004c3f]");
     expect(screen.getByRole("button", { name: "AI规划" })).toHaveStyle({
       boxShadow: "inset 0 0 0 1px #006241, 0 6px 14px rgba(0, 98, 65, 0.12)"
     });

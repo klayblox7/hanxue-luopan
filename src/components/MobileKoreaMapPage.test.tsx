@@ -31,7 +31,10 @@ describe("MobileKoreaMapPage", () => {
     expect(screen.getByRole("heading", { name: /地图分布/ })).toBeInTheDocument();
     const inlineSearch = screen.getByTestId("map-inline-search");
     expect(inlineSearch).toHaveClass("w-1/2");
-    expect(within(inlineSearch).getByPlaceholderText("搜索")).toBeInTheDocument();
+    const searchInput = within(inlineSearch).getByRole("searchbox", { name: "搜索校名、校友" });
+    expect(searchInput).toHaveAttribute("placeholder", "校名、校友");
+    expect(searchInput).toHaveClass("font-normal", "placeholder:italic");
+    expect(searchInput).not.toHaveClass("font-bold", "font-black");
     expect(screen.queryByPlaceholderText("搜学校 / 城市 / 专业方向")).not.toBeInTheDocument();
     expect(screen.queryByTestId("map-hero-icon")).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "返回首页" })).not.toBeInTheDocument();
@@ -127,6 +130,17 @@ describe("MobileKoreaMapPage", () => {
     expect(screen.queryByRole("heading", { name: /所学校/ })).not.toBeInTheDocument();
   });
 
+  it("filters the map list by famous alumni names", () => {
+    render(<MobileKoreaMapPage />);
+
+    const search = within(screen.getByTestId("map-inline-search")).getByRole("searchbox", { name: "搜索校名、校友" });
+    fireEvent.change(search, { target: { value: "宋汉基" } });
+
+    expect(screen.getByTestId("selected-region-count")).toHaveTextContent("1所");
+    expect(screen.getByRole("article", { name: /又石大学/ })).toBeInTheDocument();
+    expect(screen.queryByRole("article", { name: /首尔大学/ })).not.toBeInTheDocument();
+  });
+
   it("places the school actions in a compact two-column row", () => {
     render(<MobileKoreaMapPage />);
 
@@ -170,6 +184,10 @@ describe("MobileKoreaMapPage", () => {
     expect(within(dialog).getByText(/Seoul National University/)).toBeInTheDocument();
     expect(within(dialog).getByText("宿舍容量")).toBeInTheDocument();
     expect(within(dialog).getByText("宿舍覆盖")).toBeInTheDocument();
+    expect(within(dialog).queryByRole("link", { name: /费用预算/ })).not.toBeInTheDocument();
+    const officialLink = within(dialog).getByRole("link", { name: /学校官网/ });
+    expect(officialLink).toHaveAttribute("href", "https://www.snu.ac.kr");
+    expect(officialLink).toHaveAttribute("target", "_blank");
     expect(within(dialog).queryByText("数据更新")).not.toBeInTheDocument();
     expect(within(dialog).queryByText("数据状态")).not.toBeInTheDocument();
   });

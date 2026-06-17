@@ -6,7 +6,10 @@ const tierSource = readFileSync(new URL("src/data/universityTiers.ts", root), "u
 const universityMajorTags = JSON.parse(readFileSync(new URL("src/data/university-major-tags.json", root), "utf8"));
 const admissionCases = JSON.parse(readFileSync(new URL("src/data/admission-cases.json", root), "utf8"));
 const partnerSchoolProfiles = JSON.parse(readFileSync(new URL("src/data/partner-school-profiles.json", root), "utf8"));
+const universityAlumniBySlug = JSON.parse(readFileSync(new URL("src/data/universityAlumni.json", root), "utf8"));
+const universityFoundedYearsBySlug = JSON.parse(readFileSync(new URL("src/data/universityFoundedYears.json", root), "utf8"));
 const staticHomeSource = readFileSync(new URL("hanxue-luopan-home.html", root), "utf8");
+const noPublicAlumniText = "暂无公开知名校友资料";
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -71,6 +74,11 @@ function deployAssetPath(value) {
   if (withoutPublic.startsWith("./") || withoutPublic.startsWith("../")) return withoutPublic;
   if (withoutPublic.startsWith("/")) return `.${withoutPublic}`;
   return `./${withoutPublic}`;
+}
+
+function alumniTextForSlug(slug) {
+  const names = universityAlumniBySlug[slug] || [];
+  return names.length ? names.join("、") : noPublicAlumniText;
 }
 
 const campusImageBySlug = parseStaticHomeStringMap("campusImageBySlug");
@@ -183,7 +191,7 @@ function schoolInfoProfile(university) {
   const [tier] = tierProfiles.get(university.nameCn) ?? ["T4", "待补充分层"];
   const partnerProfile = partnerProfilesBySlug.get(university.slug) || {};
   const fact = schoolFactBySlug.get(university.slug) || {};
-  const founded = partnerProfile.founded || fact.founded || "资料待补";
+  const founded = partnerProfile.founded || fact.founded || universityFoundedYearsBySlug[university.slug] || "资料待补";
   const hasGenericPartnerFocus = partnerProfile.focus === genericPartnerFocus;
   const focus = hasGenericPartnerFocus ? university.focus : partnerProfile.focus || university.focus;
   const city = partnerProfile.city || university.city;
@@ -209,7 +217,8 @@ function schoolInfoProfile(university) {
       (!hasGenericPartnerFocus && partnerProfile.intro) ||
       `${university.nameCn}位于${city}，成立时间为${founded}，是一所${type}院校。该校在本项目库中主要用于${focus}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`,
     officialWebsite: partnerProfile.officialUrl || fact.officialWebsite || "",
-    logoImage: deployAssetPath(partnerProfile.logoImage || schoolLogoBySlug.get(university.slug) || "")
+    logoImage: deployAssetPath(partnerProfile.logoImage || schoolLogoBySlug.get(university.slug) || ""),
+    alumni: alumniTextForSlug(university.slug)
   };
 }
 
@@ -1000,6 +1009,7 @@ const html = `<!doctype html>
       .school-info-intro {
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
         padding: 0;
       }
 
@@ -1008,6 +1018,27 @@ const html = `<!doctype html>
         color: var(--ink);
         font-size: 0.86rem;
         line-height: 1.75;
+      }
+
+      .school-info-alumni {
+        margin: 0.65rem 1.25rem 0;
+      }
+
+      .school-info-alumni h4 {
+        margin: 0;
+        font-size: 0.86rem;
+        font-weight: 900;
+        line-height: 1.45;
+      }
+
+      .school-info-alumni p {
+        margin: 0.45rem 0 0;
+        border-top: 1px solid #a8a8a8;
+        padding-top: 0.45rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 400;
+        line-height: 1.55;
       }
 
       .school-info-intro em {
@@ -1738,7 +1769,7 @@ const html = `<!doctype html>
     <header class="header">
       <div class="header-inner">
         <a href="./hanxue-luopan-home.html" aria-label="韩学罗盘">
-          <img class="logo" src="./public/korea-link-logo.gif" alt="韩学罗盘" />
+          <img class="logo" src="./korea-link-logo.gif" alt="韩学罗盘" />
         </a>
         <div class="header-title">韩国大学库</div>
         <nav class="nav" aria-label="main navigation">
@@ -1923,7 +1954,7 @@ const html = `<!doctype html>
               ? \`<a class="school-info-link\${profile.logoImage ? " school-info-logo-link" : ""}" href="\${htmlEscape(profile.officialWebsite)}" target="_blank" rel="noopener noreferrer">\${officialWebsiteLabel}</a>\`
               : "<span>资料待补</span>";
 
-            return \`<section class="school-info-panel\${profile.campusImage ? "" : " is-no-photo"}" aria-label="\${htmlEscape(profile.name)}学校信息">\${photo}<div class="school-info-table"><h3>\${htmlEscape(profile.name)}\${titleLine ? \`<small>\${htmlEscape(titleLine)}</small>\` : ""}</h3><div class="school-info-cell">学校类型</div><div class="school-info-cell">\${htmlEscape(profile.type)}</div><div class="school-info-cell">地理位置</div><div class="school-info-cell">\${htmlEscape(profile.city)}</div><div class="school-info-cell">成立时间</div><div class="school-info-cell">\${htmlEscape(profile.founded)}</div><div class="school-info-cell">学生数</div><div class="school-info-cell">\${htmlEscape(profile.students)}\${profile.internationalStudents ? \`<small>\${htmlEscape(profile.internationalStudents)}</small>\` : ""}</div><div class="school-info-cell">参考层级</div><div class="school-info-cell">\${htmlEscape(profile.tier)}</div><div class="school-info-cell">学校官网</div><div class="school-info-cell school-info-logo-cell">\${officialWebsite}</div></div><div class="school-info-intro"><h3>\${htmlEscape(profile.name)}介绍</h3><p>\${htmlEscape(profile.intro)}</p><p><strong>重点方向：</strong>\${htmlEscape(profile.focus)}</p><em>学校简介用于快速了解合作院校，申请判断仍需结合官方招生简章、项目合同和最新费用说明。</em></div></section>\`;
+            return \`<section class="school-info-panel\${profile.campusImage ? "" : " is-no-photo"}" aria-label="\${htmlEscape(profile.name)}学校信息">\${photo}<div class="school-info-table"><h3>\${htmlEscape(profile.name)}\${titleLine ? \`<small>\${htmlEscape(titleLine)}</small>\` : ""}</h3><div class="school-info-cell">学校类型</div><div class="school-info-cell">\${htmlEscape(profile.type)}</div><div class="school-info-cell">地理位置</div><div class="school-info-cell">\${htmlEscape(profile.city)}</div><div class="school-info-cell">成立时间</div><div class="school-info-cell">\${htmlEscape(profile.founded)}</div><div class="school-info-cell">学生数</div><div class="school-info-cell">\${htmlEscape(profile.students)}\${profile.internationalStudents ? \`<small>\${htmlEscape(profile.internationalStudents)}</small>\` : ""}</div><div class="school-info-cell">参考层级</div><div class="school-info-cell">\${htmlEscape(profile.tier)}</div><div class="school-info-cell">学校官网</div><div class="school-info-cell school-info-logo-cell">\${officialWebsite}</div></div><div class="school-info-intro"><h3>\${htmlEscape(profile.name)}介绍</h3><p>\${htmlEscape(profile.intro)}</p><p><strong>重点方向：</strong>\${htmlEscape(profile.focus)}</p><div class="school-info-alumni"><h4>校友名单</h4><p>\${htmlEscape(profile.alumni)}</p></div><em>学校简介用于快速了解合作院校，申请判断仍需结合官方招生简章、项目合同和最新费用说明。</em></div></section>\`;
           }
 
           function toggleDetail(row, detailType) {

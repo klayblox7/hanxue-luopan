@@ -32,6 +32,19 @@ describe("static universities page", () => {
     expect(row?.textContent).toContain(beautyTag);
   });
 
+  it("renders alumni lists in school information panels", () => {
+    const html = readFileSync("universities.html", "utf8");
+    const dom = new JSDOM(html, { runScripts: "dangerously" });
+    const { document } = dom.window;
+
+    document.querySelector<HTMLButtonElement>(".school-info-toggle")?.click();
+
+    const panel = document.querySelector(".school-info-panel");
+
+    expect(panel?.textContent).toContain("校友名单");
+    expect(panel?.textContent).toContain("潘基文");
+  });
+
   it("serves school info images through deploy-relative urls", () => {
     const directoryHtml = readFileSync("universities.html", "utf8");
     const mapHtml = readFileSync("korea-university-map.html", "utf8");

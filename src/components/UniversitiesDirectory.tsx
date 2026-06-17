@@ -5,6 +5,8 @@ import { Fragment, type ReactNode, useMemo, useState } from "react";
 import { getAdmissionCaseSummary, type AdmissionCaseSummary, type DistributionItem } from "@/data/admissionCases";
 import { assetPath } from "@/data/assetPath";
 import partnerSchoolProfiles from "@/data/partner-school-profiles.json";
+import { universityAlumniText } from "@/data/universityAlumni";
+import { universityFoundedYear } from "@/data/universityFoundedYears";
 import { universities } from "@/data/universities";
 import majorTagData from "@/data/university-major-tags.json";
 import { getUniversityTierProfile } from "@/data/universityTiers";
@@ -164,7 +166,7 @@ function schoolInfoProfile(university: (typeof universities)[number]) {
   const supplemental = supplementalProfilesBySlug[university.slug] ?? {};
   const merged = { ...profile, ...supplemental };
   const tier = tierFor(university.nameCn).tier;
-  const founded = merged.founded || "资料待补";
+  const founded = merged.founded || universityFoundedYear(university.slug) || "资料待补";
   const city = merged.city || university.city;
   const type = merged.type || university.type;
   const hasGenericPartnerFocus = merged.focus === genericPartnerFocus;
@@ -191,7 +193,8 @@ function schoolInfoProfile(university: (typeof universities)[number]) {
       (!hasGenericPartnerFocus && merged.intro) ||
       `${university.nameCn}位于${city}，成立时间为${founded}，是一所${type}院校。该校在本项目库中主要用于${focus}方向的匹配参考，建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`,
     officialUrl: merged.officialUrl || "",
-    logoImage: publicAssetPath(merged.logoImage)
+    logoImage: publicAssetPath(merged.logoImage),
+    alumni: universityAlumniText(university.slug)
   };
 }
 
@@ -433,7 +436,7 @@ function SchoolInfoPanel({ university }: { university: (typeof universities)[num
         </div>
       </div>
 
-      <div className="flex flex-col overflow-hidden border border-[#a8a8a8] bg-paper lg:h-[calc((100cqw-2rem)/3.55)]">
+      <div className="flex flex-col overflow-y-auto border border-[#a8a8a8] bg-paper lg:h-[calc((100cqw-2rem)/3.55)]">
         <h3 className="m-0 border-b border-[#a8a8a8] bg-[#f1f1ee] px-4 py-3 text-center text-[0.98rem] font-black leading-snug">
           {profile.name}介绍
         </h3>
@@ -442,6 +445,12 @@ function SchoolInfoPanel({ university }: { university: (typeof universities)[num
           <strong>重点方向：</strong>
           {profile.focus}
         </p>
+        <div className="mx-5 mt-3">
+          <h4 className="m-0 text-[0.86rem] font-black leading-6">校友名单</h4>
+          <p className="mt-2 border-t border-[#a8a8a8] pt-2 text-[0.82rem] font-normal leading-6 text-muted">
+            {profile.alumni}
+          </p>
+        </div>
         <em className="mx-5 mb-4 mt-auto block text-xs leading-5 text-muted">
           学校简介用于快速了解合作院校，申请判断仍需结合官方招生简章、项目合同和最新费用说明。
         </em>

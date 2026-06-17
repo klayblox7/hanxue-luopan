@@ -13,8 +13,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { assetPath, routePath } from "@/data/assetPath";
 import partnerSchoolProfiles from "@/data/partner-school-profiles.json";
+import { universityAlumniText } from "@/data/universityAlumni";
 import { universities } from "@/data/universities";
 import { MobileBottomNav, type MobileBottomTabId } from "./MobileBottomNav";
+import { buildMobileUniversities, UniversitySheet } from "./MobileUniversitiesApp";
 
 type MobileServicePageId = "topik" | "cost" | "application" | "exchange" | "korean-learning";
 
@@ -48,6 +50,80 @@ type PageConfig = {
   metrics: Metric[];
   actions: ServiceAction[];
 };
+
+type MobileReferenceItem = {
+  label: string;
+  labelAccent?: string;
+  value: string;
+  detail: string;
+};
+
+type MobileReferenceSection = {
+  eyebrow: string;
+  title: string;
+  copy: string;
+  items: MobileReferenceItem[];
+};
+
+type MobileTopikScoreSegment = {
+  level: string;
+  range: string;
+  toneClass: string;
+};
+
+type MobileTopikScoreScale = {
+  title: string;
+  total: string;
+  columns: string;
+  segments: MobileTopikScoreSegment[];
+};
+
+type MobileTopikExamRow = {
+  subject: string;
+  time: string;
+  count: string;
+  score: string;
+  isTotal?: boolean;
+};
+
+type MobileTopikExamSystem = {
+  title: string;
+  pill: string;
+  rows: MobileTopikExamRow[];
+};
+
+type MobileTopikResource = {
+  course: string;
+  provider: string;
+  href: string;
+  imageAlt: string;
+  imageSrc: string;
+  cost: string;
+  core: string;
+  use: string;
+};
+
+type MobileTopikResourceSection = {
+  title: string;
+  rows: MobileTopikResource[];
+};
+
+type MobileCardSurfaceTone = "warm" | "white";
+
+const mobileCardSurfaceClasses: Record<MobileCardSurfaceTone, string> = {
+  warm: "rounded-lg border border-ink/25 bg-[#fbfaf4] px-4 py-3 shadow-none",
+  white: "rounded-lg border border-ink/25 bg-[#fffefb] px-4 py-3 shadow-none"
+};
+const mobileCardEyebrowClass = "text-[0.84rem] font-black uppercase tracking-[0.08em] text-[#687365]";
+
+function mobileCardSurfaceClass(tone: MobileCardSurfaceTone) {
+  return mobileCardSurfaceClasses[tone];
+}
+
+function alternatingMobileCardSurface(index: number, firstTone: MobileCardSurfaceTone = "warm") {
+  const nextTone: MobileCardSurfaceTone = firstTone === "warm" ? "white" : "warm";
+  return index % 2 === 0 ? firstTone : nextTone;
+}
 
 type BudgetCity = "regional" | "seoul";
 type BudgetSchool = "public" | "private";
@@ -116,6 +192,13 @@ type ApplicationPartner = {
   slug?: string;
   campusImage?: string;
   imagePosition?: string;
+};
+
+type ApplicationMobileUniversity = ReturnType<typeof buildMobileUniversities>[number];
+type ApplicationPartnerSheetMode = "info" | "case";
+type ApplicationPartnerSelection = {
+  partner: ApplicationPartner;
+  mode: ApplicationPartnerSheetMode;
 };
 
 export type ApplicationProgram = {
@@ -627,26 +710,14 @@ const mobileSelfAgencyProfile = [
 
 const mobileSelfAgencyCompare = [
   {
-    title: "直申（DIY）",
-    accent: "bg-[#e8f6dd]",
-    points: [
-      { label: "优点", text: "节省中介服务费（10,000-30,000元）" },
-      { label: "优点", text: "直接获取院校官方信息" },
-      { label: "注意", text: "要求韩语能力（TOPIK 4级+）" },
-      { label: "注意", text: "耗时较长（平均600小时）" },
-      { label: "注意", text: "需自行承担所有风险" }
-    ]
+    label: "直申（DIY）",
+    value: "性价比",
+    detail: "省中介服务费，直接看院校官方信息；但要求韩语能力和时间管理。"
   },
   {
-    title: "中介申请",
-    accent: "bg-[#fff0f3]",
-    points: [
-      { label: "优点", text: "全流程托管，节省时间" },
-      { label: "优点", text: "提供文书、面试专业辅导" },
-      { label: "优点", text: "经验丰富，规避申请陷阱" },
-      { label: "注意", text: "需支付服务费" },
-      { label: "注意", text: "需甄别机构资质与服务质量" }
-    ]
+    label: "中介申请",
+    value: "托管型",
+    detail: "全流程托管，节省时间；需支付服务费并甄别机构资质。"
   }
 ];
 
@@ -656,10 +727,10 @@ const mobileTopikReferenceSections = [
     title: "TOPIK学习量阶梯",
     copy: "",
     items: [
-      { label: "TOPIK1 - 约100小时", value: "入门", detail: "发音、助词、基础句型闭环" },
-      { label: "TOPIK3 - 约350小时", value: "本科起点", detail: "进入TOPIK II，阅读速度开始重要" },
-      { label: "TOPIK4 - 约600小时", value: "安全线", detail: "多数本科申请更稳，要配真题和写作" },
-      { label: "TOPIK5 - 约900小时", value: "T1主申", detail: "热门学校和奖学金更建议冲到这个段位" }
+      { label: "TOPIK1 - 约100小时", labelAccent: "(约3个月)", value: "入门", detail: "发音、助词、基础句型闭环" },
+      { label: "TOPIK3 - 约350小时", labelAccent: "(约10个月)", value: "本科起点", detail: "进入TOPIK II，阅读速度开始重要" },
+      { label: "TOPIK4 - 约600小时", labelAccent: "(约17个月)", value: "安全线", detail: "多数本科申请更稳，要配真题和写作" },
+      { label: "TOPIK5 - 约900小时", labelAccent: "(约25个月)", value: "T1主申", detail: "热门学校和奖学金更建议冲到这个段位" }
     ]
   },
   {
@@ -672,15 +743,205 @@ const mobileTopikReferenceSections = [
       { label: "T3/T4目标", value: "3-4级", detail: "可申请面更宽，但专业要求仍要核对" },
       { label: "T5/过渡", value: "2-3级", detail: "可看语学院或低门槛路线，别硬冲" }
     ]
+  }
+];
+
+const mobileTopikExamSystems: MobileTopikExamSystem[] = [
+  {
+    title: "1-2级入门考试",
+    pill: "TOPIK I",
+    rows: [
+      { subject: "听力", time: "40分钟", count: "30题", score: "100分" },
+      { subject: "阅读", time: "60分钟", count: "40题", score: "100分" },
+      { subject: "合计", time: "100分钟", count: "70题", score: "200分", isTotal: true }
+    ]
   },
   {
-    eyebrow: "Resources",
-    title: "备考资料顺序",
-    copy: "",
-    items: [
-      { label: "0基础", value: "发音+教材", detail: "先用系统教材，不急着刷高级真题" },
-      { label: "3-4级", value: "真题解析", detail: "听读限时训练，整理错题和语法点" },
-      { label: "4级以上", value: "写作批改", detail: "51-54题要有人反馈，分数才稳" }
+    title: "3-6级留学主战场",
+    pill: "TOPIK II",
+    rows: [
+      { subject: "听力", time: "60分钟", count: "50题", score: "100分" },
+      { subject: "写作", time: "50分钟", count: "4题", score: "100分" },
+      { subject: "阅读", time: "70分钟", count: "50题", score: "100分" },
+      { subject: "合计", time: "180分钟", count: "104题", score: "300分", isTotal: true }
+    ]
+  }
+];
+
+const mobileTopikScoreScales: MobileTopikScoreScale[] = [
+  {
+    title: "TOPIK I",
+    total: "总分 200",
+    columns: "1.35fr 1fr 1fr",
+    segments: [
+      { level: "未合格", range: "0-79", toneClass: "bg-[#f1f1ee]" },
+      { level: "1级", range: "80-139", toneClass: "bg-[#c7ddd5]" },
+      { level: "2级", range: "140-200", toneClass: "bg-[#b7dbc6]" }
+    ]
+  },
+  {
+    title: "TOPIK II",
+    total: "总分 300",
+    columns: "2fr 0.7fr 0.9fr 0.9fr 1.15fr",
+    segments: [
+      { level: "未合格", range: "0-119", toneClass: "bg-[#f1f1ee]" },
+      { level: "3级", range: "120-149", toneClass: "bg-[#c7ddd5]" },
+      { level: "4级", range: "150-189", toneClass: "bg-[#f2e4a3]" },
+      { level: "5级", range: "190-229", toneClass: "bg-[#f4c6aa]" },
+      { level: "6级", range: "230-300", toneClass: "bg-[#f2aaa1]" }
+    ]
+  }
+];
+
+const mobileTopikResourceSections: MobileTopikResourceSection[] = [
+  {
+    title: "免费网课资源",
+    rows: [
+      {
+        course: "《全400集自学韩语全套教程》",
+        provider: "言趣教育",
+        href: "https://www.bilibili.com/video/BV1PXrxYZEjy/",
+        imageAlt: "《全400集自学韩语全套教程》",
+        imageSrc: "/topik-resources/yanqu-400-cover.webp",
+        cost: "0元",
+        core: "发音/语法/听读/TOPIK题型",
+        use: "适合0基础到高级，作为长期主线课。"
+      },
+      {
+        course: "《2024最新自学韩语全套教程》",
+        provider: "Candy韩语学姐",
+        href: "https://www.yanquedu.com/korean-teacher/37.html",
+        imageAlt: "《2024最新自学韩语全套教程》",
+        imageSrc: "/topik-resources/candy-cover.webp",
+        cost: "0元",
+        core: "发音到高级，短课节奏轻",
+        use: "适合零基础入门，或备考时间充裕的学生。"
+      },
+      {
+        course: "《TOPIK历年真题解析》",
+        provider: "真题解析课程",
+        href: "https://www.bilibili.com/video/BV1eM4y1L7jV/",
+        imageAlt: "《TOPIK历年真题解析》",
+        imageSrc: "/topik-resources/topik-zhenti-cover.webp",
+        cost: "0元",
+        core: "听读写真题思路与陷阱",
+        use: "适合强化和冲刺阶段，配合真题训练。"
+      },
+      {
+        course: "《TOPIK听力/阅读核心技巧》",
+        provider: "养乐多老师",
+        href: "https://www.qtfm.cn/channels/232472/",
+        imageAlt: "《TOPIK听力/阅读核心技巧》",
+        imageSrc: "/topik-resources/yangleduo-cover.webp",
+        cost: "0元",
+        core: "听读定位、得分点、高频考点",
+        use: "适合短期冲刺，或真题训练阶段补弱项。"
+      }
+    ]
+  },
+  {
+    title: "付费网课资源",
+    rows: [
+      {
+        course: "TOPIK 冲刺班",
+        provider: "沪江网校",
+        href: "https://class.hujiang.com/category/134752",
+        imageAlt: "TOPIK 冲刺班",
+        imageSrc: "/topik-resources/topik-zhenti-cover.webp",
+        cost: "369元起",
+        core: "真题讲练、技巧、作文批改、模考",
+        use: "适合考前冲刺、需要写作批改和稳定反馈的学生。"
+      },
+      {
+        course: "韩语 TOPIK 直播课",
+        provider: "新东方",
+        href: "https://www.koolearn.com/product/c_27_207302.html",
+        imageAlt: "韩语 TOPIK 直播课",
+        imageSrc: "/topik-resources/candy-cover.webp",
+        cost: "2599元",
+        core: "基础到冲刺，督学、答疑、批改",
+        use: "适合想从基础到考试系统推进，且有学习规划需求的学生。"
+      },
+      {
+        course: "TOPIK 中级写作直播班",
+        provider: "牙牙韩语",
+        href: "https://www.diliushixian.com/course/info/185.html",
+        imageAlt: "TOPIK 中级写作直播班",
+        imageSrc: "/topik-resources/yangleduo-cover.webp",
+        cost: "4000元",
+        core: "中级写作框架、句子批改、结构",
+        use: "适合 TOPIK 中级写作薄弱、需要专项提分的考生。"
+      }
+    ]
+  },
+  {
+    title: "系统学习基础教材",
+    rows: [
+      {
+        course: "《延世韩国语》",
+        provider: "延世大学韩国语学堂",
+        href: "https://item.jd.com/12318319.html",
+        imageAlt: "《延世韩国语》",
+        imageSrc: "/topik-resources/jd-yonsei-korean.webp",
+        cost: "39元起",
+        core: "6册体系，词汇语法听读写完整",
+        use: "最适合作为系统学习主教材。"
+      },
+      {
+        course: "《首尔大学韩国语》",
+        provider: "首尔大学语言教育院",
+        href: "https://item.jd.com/11652455.html",
+        imageAlt: "《首尔大学韩国语》",
+        imageSrc: "/topik-resources/jd-snu-korean.webp",
+        cost: "42元起",
+        core: "场景口语+语法，配听力音频",
+        use: "适合初学者辅助学习，尤其是口语场景补充。"
+      },
+      {
+        course: "《新标准韩国语》",
+        provider: "韩国外国语大学语言教育院",
+        href: "https://item.jd.com/12950977.html",
+        imageAlt: "《新标准韩国语》",
+        imageSrc: "/topik-resources/jd-standard-korean.webp",
+        cost: "35元起",
+        core: "题型+语言运用，语法解析更细",
+        use: "适合自学考生，或语法理解困难的学生。"
+      }
+    ]
+  },
+  {
+    title: "TOPIK 考试专项教材",
+    rows: [
+      {
+        course: "TOPIK 官方教程及真题集",
+        provider: "国立国际教育院",
+        href: "https://item.jd.com/12706601.html",
+        imageAlt: "TOPIK 官方教程及真题集",
+        imageSrc: "/topik-resources/jd-topik-official.webp",
+        cost: "45元起",
+        core: "命题逻辑、限时模考、错题分析",
+        use: "冲刺阶段必练，优先级最高。"
+      },
+      {
+        course: "《新韩国语能力考试考前对策》",
+        provider: "TOPIK专项教研资料",
+        href: "https://item.jd.com/13029458.html",
+        imageAlt: "《新韩国语能力考试考前对策》",
+        imageSrc: "/topik-resources/jd-topik-strategy.webp",
+        cost: "45元起",
+        core: "分级技巧、备考策略、全真模拟",
+        use: "适合考前1-3个月专项强化。"
+      },
+      {
+        course: "TOPIK 词汇/语法/阅读/写作",
+        provider: "专项备考教材",
+        href: "https://item.jd.com/14227433.html",
+        imageAlt: "TOPIK 词汇/语法/阅读/写作",
+        imageSrc: "/topik-resources/jd-topik-vocab.webp",
+        cost: "45元起",
+        core: "词汇语法阅读写作，高频考点解析",
+        use: "适合强化阶段查缺补漏，尤其是写作和高级语法。"
+      }
     ]
   }
 ];
@@ -1115,6 +1376,16 @@ function applicationPartnerName(partner?: ApplicationPartner) {
   return partner?.displayName || partner?.raw || partner?.displayLabel || "韩国合作大学";
 }
 
+function mergeApplicationPartnerDetails(base: ApplicationPartner, override: ApplicationPartner): ApplicationPartner {
+  const merged: ApplicationPartner = { ...base };
+  for (const [key, value] of Object.entries(override)) {
+    if (value != null && value !== "") {
+      (merged as Record<string, unknown>)[key] = value;
+    }
+  }
+  return merged;
+}
+
 function normalizeApplicationPartnerName(value?: string) {
   return String(value || "")
     .replace(/[（(][^）)]*[）)]/g, "")
@@ -1152,7 +1423,30 @@ function applicationPartnerForName(name: string, partners?: ApplicationPartner[]
         return normalized.length > 1 && (normalized === target || normalized.includes(target) || target.includes(normalized));
       });
     });
-  return findPartner(partners) || findPartner(fallbackPartners);
+  const matchedPartner = findPartner(partners);
+  const fallbackPartner = findPartner(fallbackPartners?.filter((partner) => partner !== matchedPartner));
+  if (matchedPartner && fallbackPartner) return mergeApplicationPartnerDetails(fallbackPartner, matchedPartner);
+  return matchedPartner || fallbackPartner;
+}
+
+function applicationUniversityForPartner(
+  partner: ApplicationPartner,
+  bySlug: Map<string, ApplicationMobileUniversity>,
+  byName: Map<string, ApplicationMobileUniversity>
+) {
+  if (partner.slug) {
+    const bySlugMatch = bySlug.get(partner.slug);
+    if (bySlugMatch) return bySlugMatch;
+  }
+
+  const candidates = [partner.displayName, partner.raw, partner.displayLabel, partner.nameKr, partner.nameEn, applicationPartnerName(partner)];
+  for (const candidate of candidates) {
+    const normalized = normalizeApplicationPartnerName(candidate);
+    if (!normalized) continue;
+    const byNameMatch = byName.get(normalized);
+    if (byNameMatch) return byNameMatch;
+  }
+  return undefined;
 }
 
 function applicationPartnerFallback(name: string): ApplicationPartner {
@@ -1360,6 +1654,7 @@ function ApplicationPartnerDialog({ onClose, partner }: { onClose: () => void; p
   const meta = [partner.tier, partner.city, partner.type].filter(Boolean);
   const campusSrc = publicApplicationAssetPath(partner.campusImage);
   const logoSrc = publicApplicationAssetPath(partner.logoImage);
+  const alumni = universityAlumniText(partner.slug || "");
 
   return (
     <div className="fixed inset-0 z-50 bg-ink/40 px-3 pb-3 pt-[10dvh] lg:landscape:hidden xl:hidden" onClick={onClose}>
@@ -1413,7 +1708,7 @@ function ApplicationPartnerDialog({ onClose, partner }: { onClose: () => void; p
             <MetricTile metric={{ label: "参考层级", value: partner.tier || "资料待补" }} />
           </div>
 
-          {partner.focus || partner.intro ? (
+          {partner.focus || partner.intro || alumni ? (
             <section className="rounded-xl border border-ink/15 bg-surface p-3">
               {partner.focus ? (
                 <div className="flex items-start justify-between gap-3">
@@ -1421,6 +1716,10 @@ function ApplicationPartnerDialog({ onClose, partner }: { onClose: () => void; p
                   <p className="min-w-0 flex-1 text-right text-[0.78rem] font-semibold leading-5 text-muted">{partner.focus}</p>
                 </div>
               ) : null}
+              <div className="mt-3 border-t border-ink/10 pt-3">
+                <h3 className="text-sm font-black">校友名单</h3>
+                <p className="mt-2 border-t border-ink/20 pt-2 text-[0.78rem] font-normal leading-5 text-muted">{alumni}</p>
+              </div>
               {partner.intro ? <p className="mt-3 border-t border-ink/10 pt-3 text-[0.78rem] font-medium leading-6 text-muted">{partner.intro}</p> : null}
             </section>
           ) : null}
@@ -1431,7 +1730,7 @@ function ApplicationPartnerDialog({ onClose, partner }: { onClose: () => void; p
             </a>
             {partner.officialUrl ? (
               <a
-                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-ink bg-surface px-3 text-sm font-black text-ink"
+                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-ink bg-[#fff4bd] px-3 text-sm font-black text-ink"
                 href={partner.officialUrl}
                 rel="noreferrer"
                 target="_blank"
@@ -1542,11 +1841,23 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(6);
   const [expandedProgramKey, setExpandedProgramKey] = useState<string | null>(null);
-  const [selectedPartner, setSelectedPartner] = useState<ApplicationPartner | null>(null);
+  const [selectedPartner, setSelectedPartner] = useState<ApplicationPartnerSelection | null>(null);
   const partnerLookup = useMemo(
-    () => [...programs.flatMap((program) => program.koreaPartners || []), ...globalApplicationPartners],
+    () => [...globalApplicationPartners, ...programs.flatMap((program) => program.koreaPartners || [])],
     [programs]
   );
+  const mobileUniversities = useMemo(() => buildMobileUniversities(), []);
+  const mobileUniversityBySlug = useMemo(() => new Map(mobileUniversities.map((school) => [school.slug, school])), [mobileUniversities]);
+  const mobileUniversityByName = useMemo(() => {
+    const schoolsByName = new Map<string, ApplicationMobileUniversity>();
+    for (const school of mobileUniversities) {
+      for (const name of [school.nameCn, school.nameKr, school.nameEn]) {
+        const normalized = normalizeApplicationPartnerName(name);
+        if (normalized) schoolsByName.set(normalized, school);
+      }
+    }
+    return schoolsByName;
+  }, [mobileUniversities]);
 
   const regionOptions = useMemo(() => ["全部", ...Array.from(new Set(programs.map((program) => program.region).filter(Boolean)))], [programs]);
   const modeOptions = useMemo(() => ["全部", ...Array.from(new Set(programs.map((program) => program.mode).filter(Boolean)))], [programs]);
@@ -1597,6 +1908,14 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
     setMajorFilter("全部");
   };
 
+  const openApplicationPartner = (partner: ApplicationPartner) => {
+    const enrichedPartner = applicationPartnerForName(applicationPartnerName(partner), [partner], partnerLookup) || partner;
+    setSelectedPartner({ partner: enrichedPartner, mode: "info" });
+  };
+
+  const selectedUniversity = selectedPartner
+    ? applicationUniversityForPartner(selectedPartner.partner, mobileUniversityBySlug, mobileUniversityByName)
+    : undefined;
   const filterSummary = [regionFilter, modeFilter, majorFilter].filter((item) => item !== "全部").join(" · ") || "全部项目";
 
   return (
@@ -1647,7 +1966,7 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
               key={programKey}
               partnerLookup={partnerLookup}
               program={program}
-              onPartnerOpen={setSelectedPartner}
+              onPartnerOpen={openApplicationPartner}
               onToggle={() => setExpandedProgramKey((current) => (current === programKey ? null : programKey))}
             />
           );
@@ -1680,7 +1999,20 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
           onReset={resetApplicationFilters}
         />
       ) : null}
-      {selectedPartner ? <ApplicationPartnerDialog partner={selectedPartner} onClose={() => setSelectedPartner(null)} /> : null}
+      {selectedPartner ? (
+        selectedUniversity ? (
+          <UniversitySheet
+            ariaLabel={`${selectedUniversity.nameCn}学校信息`}
+            closeLabel="关闭学校信息"
+            mode={selectedPartner.mode}
+            school={selectedUniversity}
+            onClose={() => setSelectedPartner(null)}
+            onShowCases={() => setSelectedPartner((current) => (current ? { ...current, mode: "case" } : current))}
+          />
+        ) : (
+          <ApplicationPartnerDialog partner={selectedPartner.partner} onClose={() => setSelectedPartner(null)} />
+        )
+      ) : null}
     </section>
   );
 }
@@ -1800,68 +2132,62 @@ function ExchangeLifeCostGuide() {
   );
 }
 
+function SelfAgencyProfileCard() {
+  return (
+    <section
+      className={`mt-4 ${mobileCardSurfaceClass("warm")}`}
+      data-testid="mobile-self-agency-profile-card"
+    >
+      <p className={mobileCardEyebrowClass}>Profile</p>
+      <h2 className="mt-1 text-[0.98rem] font-black leading-tight">留韩学生画像</h2>
+      <div className="mt-2 grid gap-1.5">
+        {mobileSelfAgencyProfile.map((item) => (
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-t border-ink/15 pt-2" key={item.label}>
+            <div className="min-w-0">
+              <p className="text-[0.84rem] font-black leading-5">{item.title}</p>
+              <p className="mt-0.5 text-[0.72rem] font-medium leading-4 text-muted">{item.detail}</p>
+            </div>
+            <p className="self-center max-w-[6.6rem] text-right text-[0.84rem] font-black leading-5 text-[#0b6a4a]">{item.label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ApplicationChannelGuide() {
   return (
     <section className="mt-4 grid gap-3" aria-label="直申与中介申请判断">
-      <section className="rounded-xl border border-ink bg-surface p-4 shadow-[0_8px_24px_rgba(10,10,10,0.06)]">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">Apply Channel</p>
-            <h2 className="mt-1 text-[1.05rem] font-black leading-tight">三大核心申请渠道</h2>
-          </div>
-          <span className="rounded-full border border-ink bg-[#ffeb7a] px-3 py-1 text-[0.72rem] font-black">先判断</span>
-        </div>
-        <div className="mt-3 grid gap-2">
+      <section
+        className={mobileCardSurfaceClass("warm")}
+        data-testid="mobile-apply-channel-card"
+      >
+        <p className={mobileCardEyebrowClass}>Apply Channel</p>
+        <h2 className="mt-1 text-[0.98rem] font-black leading-tight">三大核心申请渠道</h2>
+        <div className="mt-2 grid gap-1.5">
           {mobileApplicationChannels.map((channel) => (
-            <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2 border-t border-ink/10 pt-2" key={channel.title}>
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-t border-ink/15 pt-2" key={channel.title}>
               <div className="min-w-0">
-                <h3 className="text-sm font-black leading-5">{channel.title}</h3>
+                <p className="text-[0.84rem] font-black leading-5">{channel.title}</p>
                 <p className="mt-0.5 text-[0.72rem] font-medium leading-4 text-muted">{channel.detail}</p>
               </div>
-              <span className="h-fit rounded-full border border-ink/35 bg-[#e8f6dd] px-2 py-1 text-[0.68rem] font-bold text-[#0b6a4a]">
-                {channel.tag}
-              </span>
+              <p className="self-center max-w-[6.6rem] text-right text-[0.84rem] font-black leading-5 text-[#0b6a4a]">{channel.tag}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="rounded-xl border border-ink bg-surface p-4 shadow-[0_8px_24px_rgba(10,10,10,0.06)]">
-        <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-[#0b6a4a]">DIY vs Agency</p>
-        <h2 className="mt-1 text-[1.05rem] font-black leading-tight">直申 vs 中介申请</h2>
-        <div className="mt-3 rounded-lg border border-ink/15 bg-[#fffaf0] p-3">
-          <h3 className="text-sm font-black leading-5">核心学生群体画像</h3>
-          <div className="mt-2 grid gap-2">
-            {mobileSelfAgencyProfile.map((item) => (
-              <div className="grid grid-cols-[3.2rem_minmax(0,1fr)] gap-2 border-t border-ink/10 pt-2" key={item.label}>
-                <span className="h-fit rounded-full bg-[#d8f3e7] px-2 py-1 text-center text-[0.68rem] font-bold text-[#0b6a4a]">
-                  {item.label}
-                </span>
-                <p className="text-[0.74rem] leading-5 text-muted">
-                  <span className="font-black text-ink">{item.title}</span> {item.detail}
-                </p>
+      <section className={mobileCardSurfaceClass("white")} data-testid="mobile-diy-agency-card">
+        <p className={mobileCardEyebrowClass}>DIY vs Agency</p>
+        <h2 className="mt-1 text-[0.98rem] font-black leading-tight">直申 vs 中介申请</h2>
+        <div className="mt-2 grid gap-1.5">
+          {mobileSelfAgencyCompare.map((item) => (
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-t border-ink/15 pt-2" key={item.label}>
+              <div className="min-w-0">
+                <p className="text-[0.84rem] font-black leading-5">{item.label}</p>
+                <p className="mt-0.5 text-[0.72rem] font-medium leading-4 text-muted">{item.detail}</p>
               </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-3 grid gap-2">
-          {mobileSelfAgencyCompare.map((column) => (
-            <div className={`rounded-lg border border-ink/15 p-3 ${column.accent}`} key={column.title}>
-              <h3 className="text-sm font-black leading-5">{column.title}</h3>
-              <div className="mt-2 grid gap-1.5">
-                {column.points.map((point) => (
-                  <div className="grid grid-cols-[2.6rem_minmax(0,1fr)] items-start gap-2 text-[0.72rem] leading-4" key={`${point.label}-${point.text}`}>
-                    <span
-                      className={`rounded-full px-1.5 py-0.5 text-center font-black ${
-                        point.label === "优点" ? "bg-[#d8f3e7] text-[#0b6a4a]" : "bg-[#fff3b8] text-[#7a5a00]"
-                      }`}
-                    >
-                      {point.label}
-                    </span>
-                    <span className="font-medium text-ink">{point.text}</span>
-                  </div>
-                ))}
-              </div>
+              <p className="self-center max-w-[6.6rem] text-right text-[0.84rem] font-black leading-5 text-[#0b6a4a]">{item.value}</p>
             </div>
           ))}
         </div>
@@ -1872,23 +2198,32 @@ function ApplicationChannelGuide() {
 
 function MobileReferenceSections({
   ariaLabel,
+  firstTone = "warm",
   sections
 }: {
   ariaLabel: string;
-  sections: typeof mobileCostReferenceSections;
+  firstTone?: MobileCardSurfaceTone;
+  sections: MobileReferenceSection[];
 }) {
   return (
     <section className="mt-4 grid gap-3" aria-label={ariaLabel}>
-      {sections.map((section) => (
-        <section className="rounded-lg border border-ink/25 bg-[#fbfaf4] px-4 py-3 shadow-none" data-testid="mobile-reference-card" key={section.title}>
-          <p className="text-[0.66rem] font-black uppercase tracking-[0.08em] text-[#687365]">{section.eyebrow}</p>
+      {sections.map((section, index) => (
+        <section
+          className={mobileCardSurfaceClass(alternatingMobileCardSurface(index, firstTone))}
+          data-testid="mobile-reference-card"
+          key={section.title}
+        >
+          <p className={mobileCardEyebrowClass}>{section.eyebrow}</p>
           <h2 className="mt-1 text-[0.98rem] font-black leading-tight">{section.title}</h2>
           {section.copy ? <p className="mt-2 text-xs font-medium leading-5 text-muted">{section.copy}</p> : null}
           <div className="mt-2 grid gap-1.5">
             {section.items.map((item) => (
               <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-t border-ink/15 pt-2" key={item.label}>
                 <div className="min-w-0">
-                  <p className="text-[0.84rem] font-black leading-5">{item.label}</p>
+                  <p className="text-[0.84rem] font-black leading-5">
+                    {item.label}
+                    {item.labelAccent ? <span className="ml-1 text-[#8b1e1e]">{item.labelAccent}</span> : null}
+                  </p>
                   <p className="mt-0.5 text-[0.72rem] font-medium leading-4 text-muted">{item.detail}</p>
                 </div>
                 <p className="self-center max-w-[6.6rem] text-right text-[0.84rem] font-black leading-5 text-[#0b6a4a]">{item.value}</p>
@@ -1897,6 +2232,190 @@ function MobileReferenceSections({
           </div>
         </section>
       ))}
+    </section>
+  );
+}
+
+function mobileTopikExamCellClass(row: MobileTopikExamRow, cellIndex: number, rowIndex: number, rowCount: number) {
+  const rightBorder = cellIndex === 3 ? "" : "border-r border-ink";
+  const bottomBorder = rowIndex === rowCount - 1 ? "" : "border-b border-ink";
+  const tone = row.isTotal
+    ? "bg-[#f1f1ee] font-black"
+    : cellIndex === 1
+      ? "bg-[#fff3b8] font-semibold"
+      : cellIndex === 3
+        ? "bg-[#d5eddf] font-semibold"
+        : "bg-[#fffefb] font-semibold";
+
+  return `flex min-h-10 items-center justify-center px-1.5 py-2 text-center text-[0.72rem] leading-tight ${tone} ${rightBorder} ${bottomBorder}`;
+}
+
+function MobileTopikExamSystem() {
+  const headers = ["科目", "时间", "题数", "分值"];
+
+  return (
+    <section
+      className={`mt-4 ${mobileCardSurfaceClass("warm")}`}
+      data-testid="mobile-topik-exam-system"
+    >
+      <p className="text-[0.66rem] font-black uppercase tracking-[0.08em] text-[#687365]">Exam System</p>
+      <h2 className="mt-1 text-[0.98rem] font-black leading-tight">考试系统地图</h2>
+      <div className="mt-3 grid gap-3">
+        {mobileTopikExamSystems.map((system) => (
+          <article className="rounded-lg border border-ink/15 bg-[#fffaf0] p-3" key={system.pill}>
+            <div className="flex items-center justify-between gap-3">
+              <h3 className="min-w-0 text-[0.94rem] font-black leading-tight">{system.title}</h3>
+              <span className="shrink-0 rounded-full border border-ink bg-[#f1f1ee] px-2 py-1 text-[0.68rem] font-black leading-none">
+                {system.pill}
+              </span>
+            </div>
+            <div className="mt-3 overflow-hidden rounded-md border border-ink">
+              <div className="grid grid-cols-[0.82fr_1fr_0.9fr_0.9fr]">
+                {headers.map((header, index) => (
+                  <div
+                    className={`flex min-h-10 items-center justify-center border-b border-ink bg-[#f1f1ee] px-1.5 py-2 text-center text-[0.72rem] font-black leading-tight ${
+                      index === headers.length - 1 ? "" : "border-r border-ink"
+                    }`}
+                    key={`${system.pill}-${header}`}
+                  >
+                    {header}
+                  </div>
+                ))}
+                {system.rows.flatMap((row, rowIndex) =>
+                  [row.subject, row.time, row.count, row.score].map((value, cellIndex) => (
+                    <div
+                      className={mobileTopikExamCellClass(row, cellIndex, rowIndex, system.rows.length)}
+                      key={`${system.pill}-${row.subject}-${cellIndex}`}
+                    >
+                      {value}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileTopikScoreLevels() {
+  return (
+    <section
+      className="mt-4 rounded-lg border border-ink/25 bg-[#fbfaf4] px-4 py-3 shadow-none"
+      data-testid="mobile-topik-score-levels"
+    >
+      <p className={mobileCardEyebrowClass}>Score Levels</p>
+      <h2 className="mt-1 text-[0.98rem] font-black leading-tight">分数怎么变成等级</h2>
+      <div className="mt-3 grid gap-3">
+        {mobileTopikScoreScales.map((scale) => (
+          <article className="rounded-lg border border-ink/15 bg-[#fffaf0] p-3" key={scale.title}>
+            <div className="flex items-center justify-between gap-3">
+              <h3 className="text-[0.94rem] font-black leading-none">{scale.title}</h3>
+              <span className="shrink-0 rounded-full border border-ink bg-[#f1f1ee] px-2 py-1 text-[0.68rem] font-black leading-none">
+                {scale.total}
+              </span>
+            </div>
+            <div
+              className="mt-3 grid overflow-hidden rounded-md border border-ink"
+              style={{ gridTemplateColumns: scale.columns }}
+            >
+              {scale.segments.map((segment, index) => (
+                <div
+                  className={`flex min-h-12 min-w-0 flex-col items-center justify-center gap-1 px-1 py-2 text-center leading-tight ${segment.toneClass} ${
+                    index === scale.segments.length - 1 ? "" : "border-r border-ink"
+                  }`}
+                  key={`${scale.title}-${segment.level}`}
+                >
+                  <span className="text-[0.76rem] font-black">{segment.level}</span>
+                  <span className="text-[0.64rem] font-medium text-ink">{segment.range}</span>
+                </div>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileTopikResources() {
+  const headers = ["课程", "图片", "费用", "核心内容"];
+
+  return (
+    <section
+      className={`mt-4 ${mobileCardSurfaceClass("white")}`}
+      data-testid="mobile-topik-resources"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className={mobileCardEyebrowClass}>Resources</p>
+          <h2 className="mt-1 text-[0.98rem] font-black leading-tight">网课与教材资源</h2>
+        </div>
+        <div className="flex shrink-0 gap-1.5">
+          <span className="rounded-full border border-ink bg-[#d8f3e7] px-2 py-1 text-[0.66rem] font-black leading-none text-[#0b6a4a]">免费</span>
+          <span className="rounded-full border border-ink bg-[#fff3b8] px-2 py-1 text-[0.66rem] font-black leading-none text-[#7a5a00]">付费</span>
+          <span className="rounded-full border border-ink bg-[#f5cad3] px-2 py-1 text-[0.66rem] font-black leading-none text-[#7b2235]">教材</span>
+        </div>
+      </div>
+      <p className="mt-2 text-[0.72rem] font-medium leading-5 text-muted">完整资源表，已压缩到移动端宽度内</p>
+      <div className="mt-3 overflow-hidden rounded-md border border-ink bg-[#fffaf0]">
+        <div className="grid w-full grid-cols-[1.24fr_2.4rem_0.46fr_1.45fr]">
+          {headers.map((header, index) => (
+            <div
+              className={`flex min-h-[2.5rem] items-center border-b border-ink bg-[#f5cad3] px-1 py-2 text-[0.68rem] font-black leading-tight ${
+                index === headers.length - 1 ? "" : "border-r border-ink"
+              }`}
+              key={header}
+            >
+              {header}
+            </div>
+          ))}
+        </div>
+        {mobileTopikResourceSections.map((section) => (
+          <div key={section.title}>
+            <div className="border-b border-ink bg-[#f1f1ee] px-2 py-2 text-[0.78rem] font-black leading-tight">
+              {section.title}
+            </div>
+            {section.rows.map((resource) => (
+              <div
+                className="grid min-h-[3rem] w-full grid-cols-[1.24fr_2.4rem_0.46fr_1.45fr] border-b border-ink last:border-b-0"
+                data-testid="mobile-topik-resource-row"
+                key={`${section.title}-${resource.course}`}
+              >
+                <div className="min-w-0 border-r border-ink px-1 py-2.5 text-[0.7rem] font-semibold leading-[1.35]">
+                  <span className="block break-words font-black">{resource.course}</span>
+                  <span className="mt-1 block break-words text-[0.6rem] font-semibold leading-[1.3] text-muted">{resource.provider}</span>
+                </div>
+                <div className="flex min-w-0 items-center justify-center border-r border-ink px-1 py-2.5">
+                  <a
+                    aria-label={resource.course}
+                    className="relative block size-8 overflow-hidden border border-ink/40 bg-white transition-transform active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#0b6a4a]"
+                    href={resource.href}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    <Image
+                      alt={resource.imageAlt}
+                      className="object-contain"
+                      fill
+                      sizes="32px"
+                      src={assetPath(resource.imageSrc)}
+                    />
+                  </a>
+                </div>
+                <div className="flex min-w-0 items-start border-r border-ink px-1 py-2.5 text-[0.64rem] font-black leading-tight text-[#0b6a4a]">
+                  <span className="break-words">{resource.cost}</span>
+                </div>
+                <div className="min-w-0 px-1 py-2.5 text-[0.68rem] font-semibold leading-[1.25] text-ink">
+                  <span className="break-words">{resource.core}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
@@ -2256,7 +2775,7 @@ function TopikAiPlanner() {
           还原
         </button>
         <button
-          className="min-h-11 rounded-lg bg-[#dff3dc] px-3 text-sm font-black text-[#004c3f] shadow-[0_6px_14px_rgba(0,98,65,0.12)] disabled:opacity-60"
+          className="min-h-11 rounded-lg bg-[#dff3dc] px-3 text-sm font-black text-[#0b6a4a] shadow-[0_6px_14px_rgba(0,98,65,0.12)] disabled:opacity-60"
           disabled={status === "loading"}
           style={{ boxShadow: "inset 0 0 0 1px #006241, 0 6px 14px rgba(0, 98, 65, 0.12)" }}
           type="submit"
@@ -2394,9 +2913,13 @@ export function MobileServicePage({ applicationPrograms, page }: { applicationPr
           </div>
         ) : null}
 
-        {page === "cost" ? <MobileReferenceSections ariaLabel="留学费用移动端补充信息" sections={mobileCostReferenceSections} /> : null}
+        {page === "cost" ? <SelfAgencyProfileCard /> : null}
+        {page === "cost" ? <MobileReferenceSections ariaLabel="留学费用移动端补充信息" firstTone="white" sections={mobileCostReferenceSections} /> : null}
         {page === "cost" ? <ApplicationChannelGuide /> : null}
         {page === "topik" ? <MobileReferenceSections ariaLabel="TOPIK移动端补充信息" sections={mobileTopikReferenceSections} /> : null}
+        {page === "topik" ? <MobileTopikExamSystem /> : null}
+        {page === "topik" ? <MobileTopikScoreLevels /> : null}
+        {page === "topik" ? <MobileTopikResources /> : null}
         {page === "exchange" ? <ExchangeLifeCostGuide /> : null}
         {page !== "application" && page !== "exchange" && page !== "cost" && page !== "topik" ? <ServiceOverviewBlock config={config} /> : null}
 

@@ -27,6 +27,21 @@ describe("static application page", () => {
     expect(html).not.toContain(".partner-separator");
   });
 
+  it("renders the alumni list in partner school profile cards", () => {
+    const html = readFileSync("application.html", "utf8");
+    const dom = new JSDOM(html, { runScripts: "dangerously" });
+    const { document } = dom.window;
+
+    const firstPartnerLink = document.querySelector<HTMLButtonElement>(".partner-school-link");
+    firstPartnerLink?.click();
+
+    const profile = document.querySelector(".school-profile");
+    const alumni = profile?.querySelector(".profile-alumni-text");
+
+    expect(profile?.textContent).toContain("校友名单");
+    expect(alumni?.textContent?.trim()).toBeTruthy();
+  });
+
   it("serves partner profile images through deploy-relative urls", () => {
     const html = readFileSync("application.html", "utf8");
     const match = html.match(/const programs = (\[[\s\S]*?\]);\s*const caseSummaries/);
