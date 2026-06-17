@@ -22,6 +22,24 @@ describe("MobileMiniProgramHome", () => {
     expect(screen.getByTestId("mobile-intro-close")).toHaveClass("mx-auto", "mt-5");
     expect(screen.getByTestId("mobile-intro-image")).toHaveAttribute("src", expect.stringContaining("mobile-intro-a1.png"));
 
+    fireEvent.touchStart(screen.getByTestId("mobile-intro-image-panel"), {
+      touches: [{ clientX: 260, clientY: 120 }]
+    });
+    fireEvent.touchEnd(screen.getByTestId("mobile-intro-image-panel"), {
+      changedTouches: [{ clientX: 40, clientY: 125 }],
+      touches: []
+    });
+    expect(screen.getByTestId("mobile-intro-image")).toHaveAttribute("src", expect.stringContaining("mobile-intro-a3.png"));
+
+    fireEvent.touchStart(screen.getByTestId("mobile-intro-image-panel"), {
+      touches: [{ clientX: 40, clientY: 120 }]
+    });
+    fireEvent.touchEnd(screen.getByTestId("mobile-intro-image-panel"), {
+      changedTouches: [{ clientX: 260, clientY: 124 }],
+      touches: []
+    });
+    expect(screen.getByTestId("mobile-intro-image")).toHaveAttribute("src", expect.stringContaining("mobile-intro-a1.png"));
+
     act(() => {
       vi.advanceTimersByTime(2000);
     });

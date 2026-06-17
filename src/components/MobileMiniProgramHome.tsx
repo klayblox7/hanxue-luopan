@@ -120,17 +120,22 @@ const initialRequiredSelectionState = {
 function MobileIntroOverlay({
   activeIndex,
   onClose,
-  onPinchZoomChange
+  onNext,
+  onPinchZoomChange,
+  onPrevious
 }: {
   activeIndex: number;
   onClose: () => void;
+  onNext: () => void;
   onPinchZoomChange: (isPinched: boolean) => void;
+  onPrevious: () => void;
 }) {
   const slide = mobileIntroSlides[activeIndex] ?? mobileIntroSlides[0];
   const [introScale, setIntroScale] = useState(1);
   const introScaleRef = useRef(1);
   const pinchStartDistanceRef = useRef<number | null>(null);
   const pinchStartScaleRef = useRef(1);
+  const swipeStartRef = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     introScaleRef.current = 1;
@@ -157,13 +162,28 @@ function MobileIntroOverlay({
   };
 
   const handleIntroTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length === 1 && introScaleRef.current <= 1.04) {
+      const touch = event.touches[0];
+      swipeStartRef.current = { x: touch.clientX, y: touch.clientY };
+      return;
+    }
+
     if (event.touches.length !== 2) return;
 
+    swipeStartRef.current = null;
     pinchStartDistanceRef.current = introTouchDistance(event.touches);
     pinchStartScaleRef.current = introScaleRef.current;
   };
 
   const handleIntroTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length === 1 && swipeStartRef.current && introScaleRef.current <= 1.04) {
+      const touch = event.touches[0];
+      const deltaX = touch.clientX - swipeStartRef.current.x;
+      const deltaY = touch.clientY - swipeStartRef.current.y;
+      if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY)) event.preventDefault();
+      return;
+    }
+
     if (event.touches.length !== 2 || !pinchStartDistanceRef.current) return;
 
     event.preventDefault();
@@ -173,6 +193,20 @@ function MobileIntroOverlay({
   const handleIntroTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     if (event.touches.length >= 2) return;
 
+    const wasPinching = pinchStartDistanceRef.current !== null;
+    if (!wasPinching && swipeStartRef.current && introScaleRef.current <= 1.04) {
+      const touch = event.changedTouches[0];
+      if (touch) {
+        const deltaX = touch.clientX - swipeStartRef.current.x;
+        const deltaY = touch.clientY - swipeStartRef.current.y;
+        if (Math.abs(deltaX) >= 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4) {
+          if (deltaX < 0) onNext();
+          else onPrevious();
+        }
+      }
+    }
+
+    swipeStartRef.current = null;
     pinchStartDistanceRef.current = null;
     pinchStartScaleRef.current = introScaleRef.current;
     if (introScaleRef.current <= 1.04) onPinchZoomChange(false);
@@ -578,6 +612,16 @@ export function MobileMiniProgramHome() {
     return () => clearTimeout(introTimer);
   }, [introIndex, isIntroPinched, showIntro]);
 
+  const showNextIntroSlide = () => {
+    setIsIntroPinched(false);
+    setIntroIndex((currentIndex) => (currentIndex + 1) % mobileIntroSlides.length);
+  };
+
+  const showPreviousIntroSlide = () => {
+    setIsIntroPinched(false);
+    setIntroIndex((currentIndex) => (currentIndex - 1 + mobileIntroSlides.length) % mobileIntroSlides.length);
+  };
+
   const resetRecommendations = () => {
     clearRecommendationTimer();
     setRecommendationStatus("idle");
@@ -613,7 +657,9 @@ export function MobileMiniProgramHome() {
             setIsIntroPinched(false);
             setShowIntro(false);
           }}
+          onNext={showNextIntroSlide}
           onPinchZoomChange={setIsIntroPinched}
+          onPrevious={showPreviousIntroSlide}
         />
       ) : null}
 

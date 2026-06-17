@@ -7,7 +7,7 @@ import {
 
 describe("admission case data", () => {
   it("loads the public admission case workbook as reusable structured data", () => {
-    expect(admissionCases).toHaveLength(1400);
+    expect(admissionCases).toHaveLength(1488);
     expect(getSchoolCaseOptions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -22,6 +22,26 @@ describe("admission case data", () => {
         })
       ])
     );
+  });
+
+  it("keeps the augmented target distribution and provenance metadata", () => {
+    const schoolOptions = getSchoolCaseOptions();
+    const t5Options = schoolOptions.filter((option) => option.schoolTier.startsWith("T5-"));
+    const sourceStatuses = admissionCases.map((admissionCase) => (admissionCase as { sourceStatus?: string }).sourceStatus);
+    const syntheticCount = admissionCases.filter(
+      (admissionCase) => (admissionCase as { synthetic?: boolean }).synthetic === true
+    ).length;
+    const collectedCount = admissionCases.filter(
+      (admissionCase) => (admissionCase as { synthetic?: boolean }).synthetic === false
+    ).length;
+
+    expect(schoolOptions).toHaveLength(52);
+    expect(t5Options).toHaveLength(4);
+    expect(t5Options.every((option) => option.count === 35)).toBe(true);
+    expect(t5Options.reduce((sum, option) => sum + option.count, 0)).toBe(140);
+    expect(collectedCount).toBe(284);
+    expect(syntheticCount).toBe(1204);
+    expect(new Set(sourceStatuses)).toEqual(new Set(["collected_20260616", "tier_augmented_20260617"]));
   });
 
   it("summarizes a selected school's applicant cases for charts", () => {

@@ -12,6 +12,8 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { assetPath, routePath } from "@/data/assetPath";
+import partnerSchoolProfiles from "@/data/partner-school-profiles.json";
+import { universities } from "@/data/universities";
 import { MobileBottomNav, type MobileBottomTabId } from "./MobileBottomNav";
 
 type MobileServicePageId = "topik" | "cost" | "application" | "exchange" | "korean-learning";
@@ -131,6 +133,104 @@ export type ApplicationProgram = {
   slug: string;
   order?: number;
 };
+
+type PartnerSchoolProfile = {
+  name?: string;
+  slug?: string;
+  nameKr?: string;
+  nameEn?: string;
+  city?: string;
+  type?: string;
+  focus?: string;
+  totalStudents?: string;
+  foreignStudents?: string;
+  founded?: string;
+  campusImage?: string;
+  imagePosition?: string;
+  intro?: string;
+  logoImage?: string;
+  wikiUrl?: string;
+};
+
+const universityCampusImages: Record<string, string> = {
+  "ajou-university": "public/campus-images/ajou-university.jpg",
+  "catholic-university-of-korea": "public/campus-images/catholic-university-of-korea.jpg",
+  "chung-ang-university": "public/campus-images/chung-ang-university.webp",
+  "chungbuk-national-university": "public/campus-images/chungbuk-national-university.webp",
+  "chungnam-national-university": "public/campus-images/chungnam-national-university.jpg",
+  "dankook-university": "public/campus-images/dankook-university.webp",
+  "dongguk-university": "public/campus-images/dongguk-university.webp",
+  "duksung-womens-university": "public/campus-images/duksung-womens-university.jpg",
+  "ewha-womans-university": "public/campus-images/ewha-womans-university.webp",
+  "gachon-university": "public/campus-images/gachon-university.webp",
+  "hankuk-university-of-foreign-studies": "public/campus-images/hankuk-university-of-foreign-studies.jpg",
+  "hanyang-university": "public/campus-images/hanyang-university.webp",
+  "hongik-university": "public/campus-images/hongik-university.webp",
+  "inha-university": "public/campus-images/inha-university.webp",
+  "jeju-national-university": "public/campus-images/jeju-national-university.jpg",
+  "jeonbuk-national-university": "public/campus-images/jeonbuk-national-university.webp",
+  "konkuk-university": "public/campus-images/konkuk-university.webp",
+  "kookmin-university": "public/campus-images/kookmin-university.jpg",
+  "korea-aerospace-university": "public/campus-images/korea-aerospace-university.webp",
+  "korea-university": "public/campus-images/korea-university.webp",
+  "kwangwoon-university": "public/campus-images/kwangwoon-university.webp",
+  "kyung-hee-university": "public/campus-images/kyung-hee-university.webp",
+  "myongji-university": "public/campus-images/myongji-university.webp",
+  "sejong-university": "public/campus-images/sejong-university.webp",
+  "seoul-national-university": "public/campus-images/seoul-national-university.jpg",
+  "seoul-womens-university": "public/campus-images/seoul-womens-university.webp",
+  "sogang-university": "public/campus-images/sogang-university.jpg",
+  "sookmyung-womens-university": "public/campus-images/sookmyung-womens-university.jpg",
+  "soongsil-university": "public/campus-images/soongsil-university.webp",
+  "sungkyunkwan-university": "public/campus-images/sungkyunkwan-university.jpg",
+  "sungshin-womens-university": "public/campus-images/sungshin-womens-university.jpg",
+  "university-of-seoul": "public/campus-images/university-of-seoul.jpg",
+  "yonsei-university": "public/campus-images/yonsei-university.webp"
+};
+
+function applicationOfficialPartnerUrl(value?: string) {
+  const url = value?.trim();
+  if (!url || /wikipedia\.org|wikidata\.org/i.test(url)) return undefined;
+  return url;
+}
+
+const globalApplicationPartners: ApplicationPartner[] = [
+  ...(partnerSchoolProfiles as PartnerSchoolProfile[]).map((profile) => ({
+    raw: profile.name,
+    displayName: profile.name,
+    displayLabel: profile.name,
+    slug: profile.slug,
+    nameKr: profile.nameKr,
+    nameEn: profile.nameEn,
+    city: profile.city,
+    type: profile.type,
+    focus: profile.focus,
+    totalStudents: profile.totalStudents,
+    foreignStudents: profile.foreignStudents,
+    founded: profile.founded,
+    campusImage: profile.campusImage,
+    imagePosition: profile.imagePosition,
+    intro: profile.intro,
+    logoImage: profile.logoImage,
+    officialUrl: applicationOfficialPartnerUrl(profile.wikiUrl)
+  })),
+  ...universities.map((university) => ({
+    raw: university.nameCn,
+    displayName: university.nameCn,
+    displayLabel: `${university.nameCn} (${university.city})`,
+    slug: university.slug,
+    nameKr: university.nameKr,
+    nameEn: university.nameEn,
+    city: university.city,
+    type: university.type,
+    focus: university.focus,
+    totalStudents: university.totalStudents,
+    foreignStudents: university.foreignStudents,
+    campusImage: universityCampusImages[university.slug],
+    imagePosition: "center",
+    intro: `${university.nameCn}位于${university.city}，在本项目库中主要用于${university.focus}方向的匹配参考。建议结合项目模式、韩语要求、学费与所在城市生活成本一起判断是否适合申请。`
+  }))
+];
 
 const pageConfigs: Record<MobileServicePageId, PageConfig> = {
   topik: {
@@ -924,10 +1024,7 @@ function summarizeApplicationMajor(value?: string) {
 }
 
 function summarizeApplicationMode(value?: string) {
-  const text = cleanApplicationText(value);
-  const mode = text.match(/\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?\+\d+(?:\.\d+)?/)?.[0];
-  const detail = text.match(/（([^）]+)）/)?.[1] || text.match(/\(([^)]+)\)/)?.[1] || "";
-  return mode && detail ? `${mode}：${compactText(detail.replace(/本科层次/g, "本科"), 28)}` : compactText(text, 32);
+  return cleanApplicationText(value);
 }
 
 function summarizeApplicationDomesticFee(value?: string) {
@@ -1018,6 +1115,15 @@ function applicationPartnerName(partner?: ApplicationPartner) {
   return partner?.displayName || partner?.raw || partner?.displayLabel || "韩国合作大学";
 }
 
+function normalizeApplicationPartnerName(value?: string) {
+  return String(value || "")
+    .replace(/[（(][^）)]*[）)]/g, "")
+    .replace(/^[Tt]\d+\s*/, "")
+    .replace(/韩国|国立|國立/g, "")
+    .replace(/[^\u4e00-\u9fa5A-Za-z0-9]/g, "")
+    .trim();
+}
+
 function applicationPartnerList(program: ApplicationProgram) {
   const explicit = cleanApplicationText(program.fields["合作院校"]);
   const names = explicit && explicit !== "资料待核对" ? explicit : program.koreaSchools;
@@ -1027,11 +1133,48 @@ function applicationPartnerList(program: ApplicationProgram) {
     .map((item) =>
       item
         .replace(/^韩国/, "")
+        .replace(/[（(][^）)]*[）)]/g, "")
         .replace(/等\d+余?所$/, "")
         .replace(/等$/, "")
         .trim()
     )
     .filter(Boolean);
+}
+
+function applicationPartnerForName(name: string, partners?: ApplicationPartner[], fallbackPartners?: ApplicationPartner[]) {
+  const target = normalizeApplicationPartnerName(name);
+  if (!target) return undefined;
+  const findPartner = (items?: ApplicationPartner[]) =>
+    items?.find((partner) => {
+      const candidates = [partner.displayName, partner.raw, partner.displayLabel, partner.nameKr, partner.nameEn, applicationPartnerName(partner)];
+      return candidates.some((candidate) => {
+        const normalized = normalizeApplicationPartnerName(candidate);
+        return normalized.length > 1 && (normalized === target || normalized.includes(target) || target.includes(normalized));
+      });
+    });
+  return findPartner(partners) || findPartner(fallbackPartners);
+}
+
+function applicationPartnerFallback(name: string): ApplicationPartner {
+  const displayName = cleanApplicationText(name) || "韩国合作大学";
+  return {
+    raw: displayName,
+    displayName,
+    displayLabel: displayName,
+    focus: "合作项目相关专业",
+    intro: `${displayName}是该项目公开列出的韩国合作院校；当前大学库详细资料仍在补充，申请前请以学校官网、项目简章和录取通知为准。`
+  };
+}
+
+function applicationProgramInstanceKey(program: ApplicationProgram) {
+  return [
+    program.slug,
+    program.order != null ? `order:${program.order}` : "",
+    program.mode,
+    program.title || `${program.chinaSchool}-${program.koreaSchools}`
+  ]
+    .filter(Boolean)
+    .join("|");
 }
 
 function applicationPartnerHeader(program: ApplicationProgram) {
@@ -1062,11 +1205,13 @@ function ApplicationProgramCard({
   expanded,
   onPartnerOpen,
   onToggle,
+  partnerLookup,
   program
 }: {
   expanded: boolean;
   onPartnerOpen: (partner: ApplicationPartner) => void;
   onToggle: () => void;
+  partnerLookup: ApplicationPartner[];
   program: ApplicationProgram;
 }) {
   const partner = program.koreaPartners?.find((item) => item.campusImage);
@@ -1074,7 +1219,7 @@ function ApplicationProgramCard({
   const partnerName = applicationPartnerName(partner);
   const partnerNames = applicationPartnerHeader(program);
   const partnerList = applicationPartnerList(program);
-  const shouldShowPartnerList = Boolean(program.fields["合作院校"]) || /名校|多所/.test(program.koreaSchools);
+  const shouldShowPartnerList = partnerList.length > 1 || Boolean(program.fields["合作院校"]) || /名校|多所/.test(program.koreaSchools);
 
   return (
     <article className="w-full max-w-full overflow-hidden rounded-xl border border-ink bg-surface p-3 shadow-[0_6px_18px_rgba(10,10,10,0.06)]" data-testid="application-program-card">
@@ -1103,7 +1248,7 @@ function ApplicationProgramCard({
 
       <div className="mt-3 flex flex-wrap gap-1.5">
         {program.majorTags.slice(0, 4).map((tag) => (
-          <span className="max-w-full rounded-full border border-ink/25 bg-[#fffaf0] px-2 py-1 text-[0.68rem] font-black leading-tight" key={tag}>
+          <span className="max-w-full rounded-full border border-[#9fd5ee] bg-[#eaf7ff] px-2 py-1 text-[0.68rem] font-black leading-tight" key={tag}>
             {tag}
           </span>
         ))}
@@ -1119,7 +1264,7 @@ function ApplicationProgramCard({
               ["韩方费用", summarizeApplicationFact("韩方费用", program.fields["韩方费用"])]
             ].map(([label, value]) => (
               <div className="min-w-0 rounded-lg border border-ink/15 bg-[#fffaf0] p-2.5" key={label}>
-                <dt className="text-[0.66rem] font-black text-muted">{label}</dt>
+                <dt className="text-xs font-black text-muted">{label}</dt>
                 <dd className="mt-1 break-words text-[0.78rem] font-semibold leading-5 text-ink">{value}</dd>
               </div>
             ))}
@@ -1128,11 +1273,22 @@ function ApplicationProgramCard({
             <div className="rounded-lg border border-ink/15 bg-paper p-3" data-testid="application-partner-list-card">
               <p className="text-xs font-black text-muted">合作院校</p>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {partnerList.map((name) => (
-                  <span className="max-w-full rounded-full border border-ink/20 bg-[#fffaf0] px-2 py-1 text-[0.68rem] font-black leading-tight text-ink" key={`${program.slug}-${name}`}>
-                    {name}
-                  </span>
-                ))}
+                {partnerList.map((name) => {
+                  const listedPartner = applicationPartnerForName(name, program.koreaPartners, partnerLookup) || applicationPartnerFallback(name);
+                  const chipClassName =
+                    "inline-flex min-h-0 max-w-full items-center justify-center whitespace-nowrap rounded-full border border-[#b7d8a8] bg-[#eff8e6] px-2 py-1 text-[0.68rem] font-black leading-tight text-ink";
+                  return (
+                    <button
+                      aria-label={`打开${name}学校信息`}
+                      className={`${chipClassName} transition hover:border-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f0a000]`}
+                      key={`${program.slug}-${name}`}
+                      type="button"
+                      onClick={() => onPartnerOpen(listedPartner)}
+                    >
+                      {name}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ) : null}
@@ -1146,14 +1302,14 @@ function ApplicationProgramCard({
                 style={{ objectFit: "cover", objectPosition: partner.imagePosition || "center", width: "100%" }}
                 width={420}
               />
-              <div className="absolute inset-x-0 bottom-0 border-t border-[#f8f8f5]/15 bg-[rgba(10,10,10,0.48)] px-3 py-2 text-[#f8f8f5]" data-testid="application-campus-caption">
+              <div className="absolute inset-x-0 bottom-0 border-t border-[#f8f8f5]/15 bg-[rgba(10,10,10,0.48)] px-3 py-1 text-[#f8f8f5]" data-testid="application-campus-caption">
                 <button
                   aria-label={`${[partnerName, partner.city, partner.tier, "学校信息"].filter(Boolean).join(" ")}`}
-                  className="flex w-full min-w-0 items-center justify-between gap-2 text-left"
+                  className="flex min-h-[30px] w-full min-w-0 items-center justify-between gap-2 text-left leading-none"
                   type="button"
                   onClick={() => onPartnerOpen(partner)}
                 >
-                  <span className="min-w-0 truncate text-[0.86rem] font-black leading-tight">
+                  <span className="min-w-0 truncate text-[0.8rem] font-black leading-none">
                     {partnerName}
                     {partner.city ? <span className="font-bold text-[#f8f8f5]/85"> · {partner.city}</span> : null}
                   </span>
@@ -1191,7 +1347,7 @@ function ApplicationProgramCard({
             ))}
           </div>
           <p className="rounded-lg border border-ink/15 bg-[#fffaf0] p-3 text-[0.7rem] font-medium leading-5 text-muted">
-            费用、证书和录取条件来自公开信息整理，申请前仍要核对学校最新简章和项目合同。
+            以上来自公开信息整理，申请前仍要核对学校最新简章和项目合同。
           </p>
         </div>
       ) : null}
@@ -1385,8 +1541,12 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(6);
-  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
+  const [expandedProgramKey, setExpandedProgramKey] = useState<string | null>(null);
   const [selectedPartner, setSelectedPartner] = useState<ApplicationPartner | null>(null);
+  const partnerLookup = useMemo(
+    () => [...programs.flatMap((program) => program.koreaPartners || []), ...globalApplicationPartners],
+    [programs]
+  );
 
   const regionOptions = useMemo(() => ["全部", ...Array.from(new Set(programs.map((program) => program.region).filter(Boolean)))], [programs]);
   const modeOptions = useMemo(() => ["全部", ...Array.from(new Set(programs.map((program) => program.mode).filter(Boolean)))], [programs]);
@@ -1419,7 +1579,7 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
 
   useEffect(() => {
     setVisibleCount(6);
-    setExpandedSlug((current) => (current && filteredPrograms.some((program) => program.slug === current) ? current : null));
+    setExpandedProgramKey((current) => (current && filteredPrograms.some((program) => applicationProgramInstanceKey(program) === current) ? current : null));
   }, [filteredPrograms]);
 
   useEffect(() => {
@@ -1479,15 +1639,19 @@ function MobileApplicationProjects({ initialPrograms }: { initialPrograms?: Appl
       </div>
 
       <div className="mt-3 grid gap-3">
-        {shownPrograms.map((program) => (
-          <ApplicationProgramCard
-            expanded={expandedSlug === program.slug}
-            key={program.slug}
-            program={program}
-            onPartnerOpen={setSelectedPartner}
-            onToggle={() => setExpandedSlug((current) => (current === program.slug ? null : program.slug))}
-          />
-        ))}
+        {shownPrograms.map((program) => {
+          const programKey = applicationProgramInstanceKey(program);
+          return (
+            <ApplicationProgramCard
+              expanded={expandedProgramKey === programKey}
+              key={programKey}
+              partnerLookup={partnerLookup}
+              program={program}
+              onPartnerOpen={setSelectedPartner}
+              onToggle={() => setExpandedProgramKey((current) => (current === programKey ? null : programKey))}
+            />
+          );
+        })}
       </div>
 
       {filteredPrograms.length > visibleCount ? (

@@ -21,6 +21,9 @@ export type AdmissionCase = {
   entryYearNumber?: number | null;
   result: string;
   resultKey: AdmissionResultKey;
+  synthetic?: boolean;
+  sourceStatus?: string;
+  generationBasis?: string;
 };
 
 export type DistributionItem = {
